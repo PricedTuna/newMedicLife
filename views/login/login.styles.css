@@ -1,0 +1,97 @@
+/* Importar fuente desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Definición de variables utilizadas por todos */
+:root {
+  --base-clr: #f2f4f4;
+  --line-clr: #eaecee;
+  --hover-clr: white;
+  --text-clr: #17202a;
+  --accent-clr: #5e63ff;
+  --ligth-clr: #c8caff;
+  --secondary-text-clr: #566573;
+  --test-clr: #a9cce3;
+}
+
+body {
+    font-family: 'Poppins', sans-serif; /* Fuente principal y secundaria */
+    background-color: var(--base-clr);
+    color: var(--text-clr);
+}
+
+.login-container {
+    width: 100%; /* Ocupa todo el ancho disponible de su contenedor padre */
+    max-width: 400px; /* Ancho máximo del contenedor */
+    margin: auto;
+    padding: 20px; /* Espacio interno de 20 pixeles dentro del contenedor */
+    background-color: var(--hover-clr); /* Fondo blanco del contenedor para contraste */
+    border-radius: 10px; /* Bordes redondeados en el recuadro */
+    text-align: center; /* Centrar elementos internos del contenedor horizontalmente */
+}
+
+h2 {
+    margin-bottom: 20px; /* Espaciado debajo del título */
+    font-size: 24px; /* Tamaño de fuente */
+    font-weight: 600; /* Grosor de la fuente (negrita) */
+    color: var(--accent-clr); /* Color del texto */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Espaciado entre los campos */
+    text-align: left; /* Alinear etiquetas a la izquierda */
+}
+
+#loginForm {
+    
+}
+
+label {
+    font-size: 14px; /* Tamaño de fuente */
+    font-weight: 500; /* Grosor de la fuente (negrita) */
+    color: var(--secondary-text-clr); /* Color del texto */
+}
+
+input {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    padding: 10px; /* Espacio interno de 20 pixeles */
+    border: 1px solid var(--line-clr); /* Borde de un pixel de grosor */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+    color: var(--text-clr); /* Color del texto */
+    transition: all 0.3s ease-in-out; /* Suavizar cambios */
+}
+
+input:focus {
+    border-color: var(--accent-clr); /* Color del borde */
+    box-shadow: 0px 0px 5px rgba(94, 99, 255, 0.5); /* Sombra */
+}
+
+button {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    padding: 12px; /* Espacio interno de 12 pixeles */
+    border: none; /* Eliminar borde predeterminado del botón */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: var(--accent-clr); /* Fondo del botón */
+    color: var(--hover-clr); /* Color del texto */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight: 600; /* Grosor de la fuente (negrita ) */
+    cursor: pointer; /* Cursor de manita para el botón */
+    transition: background 0.3s ease-in-out; /* Suavizar cambios */
+}
+
+button:hover {
+    /*background-color: var(--accent-clr); /* Cuando se posiciona el cursor, cambia el color a uno más oscurito */
+    background-color: #4b54d1;
+    color: var(--hover-clr); /* Y el color del texto a uno más oscuro */
+}
+
+.login-footer {
+    text-align: center; /* Centrar el contenido del pie de página */
+    margin-top: 30px; /* Margen superior */
+    font-size: 14px; /* Tamaño de fuente */
+    color: var(--secondary-text-clr); /* Color del texto */
+}
+
+.login-footer p {
+    margin: 0; /* Eliminar el margen predeterminado del párrafo */
+}

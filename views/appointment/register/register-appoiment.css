@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+:root {
+    --base-clr: #f2f4f4;
+    --line-clr: #eaecee;
+    --hover-clr: white;
+    --text-clr: #17202a;
+    --accent-clr: #5e63ff;
+    --ligth-clr: #c8caff;
+    --secondary-text-clr: #566573;
+    --test-clr: #a9cce3;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--base-clr);
+    color: var(--text-clr);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 22px;
+}
+
+.form-container {
+    background: var(--hover-clr);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    max-width: 80%;
+    width: 100%;
+}
+
+
+/* Pasos */
+
+.steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.step {
+    width: 30%;
+    padding: 0.5rem;
+    text-align: center;
+    background-color: var(--line-clr);
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.step-active {
+    background-color: var(--accent-clr);
+    color: var(--hover-clr);
+}
+
+.step-completed {
+    background-color: var(--accent-clr);
+    color: var(--line-clr);
+}
+
+
+/* Encabezado */
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+
+/* Grupos de formulario */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--secondary-text-clr);
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.75rem;
+    border: 2px solid var(--line-clr);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+
+/* Efecto en los inputs */
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent-clr);
+    box-shadow: 0 0 8px rgba(94, 99, 255, 0.5);
+}
+
+
+/* Botones */
+
+button {
+    font-size: 1rem;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.next-btn {
+    background-color: var(--accent-clr);
+    color: var(--hover-clr);
+}
+
+.next-btn:hover {
+    background-color: #4a54e1;
+}
+
+.prev-btn {
+    background-color: var(--secondary-text-clr);
+    color: var(--hover-clr);
+}
+
+.prev-btn:hover {
+    background-color: #414b56;
+}
+
+.submit-btn {
+    background-color: var(--accent-clr);
+    color: var(--hover-clr);
+}
+
+.submit-btn:hover {
+    background-color: #4a54e1;
+}
+
+
+/* Navegación */
+
+.nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--test-clr);
+    border: 2px solid var(--line-clr);
+    cursor: pointer;
+    border-radius: 50%;
+    margin: 16px;
+    transition: 150ms ease-in-out;
+}
+
+.nav:hover {
+    transform: scale(1.05);
+}
+
+.nav img {
+    width: 40%;
+    height: 40%;
+}
+
+
+/* Botones en el formulario */
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+}

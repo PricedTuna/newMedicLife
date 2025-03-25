@@ -1,0 +1,61 @@
+.header {
+    position: fixed;
+    top: 0;
+    width: 82%;
+    height: 80px;
+    background-color: var(--hover-clr);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+    padding: 1.5em;
+    border-bottom: 1px solid var(--line-clr);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 16px;
+}
+
+/* Ajustar el contenido principal para que no se solape con el header */
+main.content {
+    margin-top: 90px; /* Ajusta este valor según la altura del header */
+    padding: 20px;
+}
+
+
+.header-title {
+    display: flex;
+    flex-direction: column;
+    /* Mantiene los botones debajo del título */
+    justify-content: center;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    /* Espaciado uniforme entre botones */
+    margin-top: 8px;
+}
+
+.button-container button {
+    background-color: var(--accent-clr);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+    /* Elimina sombras innecesarias */
+}
+
+.search-container input {
+    padding: 0.5em;
+    border-radius: 0.5em;
+    border: 1px solid var(--line-clr);
+    background-color: var(--hover-clr);
+    color: var(--text-clr);
+    width: 250px;
+    box-shadow: none;
+    /* Evita que se vea elevado */
+}
+
+.search-container input::placeholder {
+    color: var(--secondary-text-clr);
+}

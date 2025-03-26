@@ -211,16 +211,6 @@ function validateStep3() {
         clearErrorMessage(licenseInput);
     }
 
-    // Validar Especialidad (solo letras y espacios, obligatorio)
-    let specialtyInput = document.getElementById('specialty');
-    let textPattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-    if (!textPattern.test(specialtyInput.value.trim())) {
-        showErrorMessage(specialtyInput, 'La especialidad solo debe contener letras y espacios.');
-        valid = false;
-    } else {
-        clearErrorMessage(specialtyInput);
-    }
-
     // Validar Foto (si es requerida y es un archivo de imagen)
     let photoInput = document.getElementById('photo');
     if (photoInput) {

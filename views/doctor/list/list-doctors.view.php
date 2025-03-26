@@ -100,8 +100,13 @@ try {
                                 <td><?php echo htmlspecialchars($doctor['birth_date']); ?></td>
                                 <td><?php echo htmlspecialchars($doctor['id_state']); ?></td>
                                 <td>
-                                    <img src="/controllers/doctor/mostrar_foto.php?id=<?php echo $doctor['id']; ?>" alt="Foto del doctor" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                    <?php if (!empty($doctor['photo'])): ?>
+                                        <img src="/controllers/doctor/mostrar_foto.php?id=<?php echo $doctor['id']; ?>" alt="Foto del doctor" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                    <?php else: ?>
+                                        <p>Sin foto</p>
+                                    <?php endif; ?>
                                 </td>
+
 
 
                                 <td class="actions-td">

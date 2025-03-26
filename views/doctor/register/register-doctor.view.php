@@ -196,10 +196,6 @@ try {
                             <input type="text" id="professionalLicense" name="professionalLicense" value="<?php echo $doctor['professional_id'] ?? ''; ?>" required>
                         </div>
                         <div class="form-group">
-                            <label for="specialty">Especialidad</label>
-                            <input type="text" id="specialty" name="specialty" value="<?php echo $doctor['specialty'] ?? ''; ?>" required>
-                        </div>
-                        <div class="form-group">
                             <label for="photo" class="file-label" id="photo-label">Subir Foto</label>
                             <input type="file" id="photo" name="photo" accept="image/*" <?php echo $doctor ? '' : 'required'; ?>>
                         </div>
@@ -287,16 +283,6 @@ try {
             valid = false;
         } else {
             clearErrorMessage(licenseInput);
-        }
-
-        // Validar Especialidad (solo letras y espacios, obligatorio)
-        let specialtyInput = document.getElementById('specialty');
-        let textPattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-        if (!textPattern.test(specialtyInput.value.trim())) {
-            showErrorMessage(specialtyInput, 'La especialidad solo debe contener letras y espacios.');
-            valid = false;
-        } else {
-            clearErrorMessage(specialtyInput);
         }
 
         return true;

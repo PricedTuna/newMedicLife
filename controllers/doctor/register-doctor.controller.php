@@ -41,9 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $email = $_POST['email'];
   $gender = $_POST['gender'];
 
-  // DATOS DE ESPECIALIDAD:
-  $specialty = $_POST['specialty'];
-
   try {
     // Validamos los campos
     validarCampo($names, 40, 'nombre');

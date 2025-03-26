@@ -7,6 +7,8 @@ function toggleSidebar() {
     console.log("pressed")
     sidebar.classList.toggle('close')
     sidebarToggleButton.classList.toggle('rotate')
+    const img = document.querySelector('#toggle-btn img');
+    img.classList.toggle('rotated');
 }
 
 document.addEventListener("DOMContentLoaded", function() {

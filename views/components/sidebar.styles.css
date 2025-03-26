@@ -94,6 +94,14 @@ html {
     }
 }
 
+#toggle-btn img {
+    transition: transform 150ms ease;
+}
+
+#toggle-btn img.rotated {
+    transform: rotate(180deg);
+}
+
 #toggle-btn:hover {
     background-color: var(--hover-clr);
 }

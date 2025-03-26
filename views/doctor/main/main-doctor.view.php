@@ -21,41 +21,14 @@ require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 <body style="display: flex;">
 
     <?php
-    $sidebarPath = $_SERVER['DOCUMENT_ROOT'] . '/views/components/sidebar.php';
+    $sidebarPath = $_SERVER['DOCUMENT_ROOT'] . '/views/doctor/list/list-doctors.view.php';
     if (file_exists($sidebarPath)) {
         include $sidebarPath;
     } else {
-        echo "<p style='color: red;'>Error: No se encontró el archivo sidebar.php en '$sidebarPath'</p>";
+        echo "<p style='color: red;'>Error: No se encontró el archivo en '$sidebarPath'</p>";
     }
     ?>
 
-    <!-- Contenido principal -->
-    <main class="content">
-        <?php
-        $headerPath = $_SERVER['DOCUMENT_ROOT'] . '/views/doctor/main/header-doctor.view.php';
-        if (file_exists($headerPath)) {
-            include $headerPath;
-        } else {
-            echo "<p style='color: red;'>Error: No se encontró el archivo header-doctor.view.php en '$headerPath'</p>";
-        }
-        ?>
-        <?php if (isset($_GET['error'])): ?>
-            <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
-                <?php echo htmlspecialchars($_GET['error']); ?>
-            </div>
-        <?php $_GET['error']=""; endif; ?>
-        <div id="dynamic-content">
-
-        </div>
-    </main>
-
-    <script>
-        if (window.location.search.includes('error')) {
-            const url = new URL(window.location);
-            url.searchParams.delete('error');
-            window.history.replaceState({}, document.title, url.pathname + url.search);
-        }
-    </script>
 
 </body>
 

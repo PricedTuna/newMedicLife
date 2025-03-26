@@ -2,8 +2,8 @@
     <div class="header-title">
         <h2>Médicos</h2>
         <div class="button-container">
-            <button id="listar-btn">Listar</button>
-            <button id="crear-btn">Crear</button>
+            <a id="listar-btn" href="/views/doctor/list/list-doctors.view.php" >Listar</a>
+            <a id="crear-btn" href="/views/doctor/register/register-doctor.view.php" >Crear</a>
         </div>
     </div>
     <div class="search-container">

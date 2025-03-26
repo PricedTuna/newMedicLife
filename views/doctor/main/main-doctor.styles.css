@@ -34,7 +34,7 @@ main.content {
     margin-top: 8px;
 }
 
-.button-container button {
+.button-container a {
     background-color: var(--accent-clr);
     color: white;
     border: none;
@@ -42,6 +42,7 @@ main.content {
     cursor: pointer;
     border-radius: 5px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+    text-decoration: none;
     /* Elimina sombras innecesarias */
 }
 

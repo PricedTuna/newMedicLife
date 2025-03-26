@@ -1,5 +1,4 @@
-<link rel="stylesheet" href="./sidebar.styles.css">
-<script src="./sidebar.app.js" defer></script>
+
 <nav id="sidebar">
         <ul>
             <li>

@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       validarCampo($internal_number, 8, 'número interior');
     }
   } catch (Exception $e) {
-    header('Location: /views/doctor/main/main-doctor.view.php?error=' . urlencode($e->getMessage()));
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()));
     exit;
   }
 
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       throw new Exception("La CURP ya existe en la base de datos.");
     }
   } catch (Exception $e) {
-    header('Location: /views/doctor/main/main-doctor.view.php?error=' . urlencode($e->getMessage()));
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()));
     exit;
   }
 
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       throw new Exception("El número de afiliación ya existe en la base de datos.");
     }
   } catch (Exception $e) {
-    header('Location: /views/doctor/main/main-doctor.view.php?error=' . urlencode($e->getMessage()));
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()));
     exit;
   }
 
@@ -178,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       throw new Exception("El número de afiliación ya existe en la base de datos.");
     }
   } catch (Exception $e) {
-    header('Location: /views/doctor/main/main-doctor.view.php?error=' . urlencode($e->getMessage()));
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()));
     exit;
   }
 
@@ -267,6 +267,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       header('Location: /views/dashboard/dashboard.view.php?success=' . urlencode("Doctor creado con éxito"));
     }
   } catch (PDOException $e) {
-    header('Location: /views/doctor/main/main-doctor.view.php?error=' . urlencode($e->getMessage()));
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()));
   }
 }

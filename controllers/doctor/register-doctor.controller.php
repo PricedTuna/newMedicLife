@@ -67,9 +67,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       validarCampo($internal_number, 8, 'número interior');
     }
   } catch (Exception $e) {
-    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()));
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);
     exit;
   }
+
+  // Subida y validación de la foto
+  $photoData = null;
+
+  if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+    $photoTmp = $_FILES['photo']['tmp_name'];
+    $photoMime = mime_content_type($photoTmp);
+
+    // Validamos que sea una imagen
+    if (!in_array($photoMime, ['image/jpeg', 'image/png', 'image/gif'])) {
+      header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode("El archivo debe ser una imagen JPG, PNG o GIF.") . '&id=' . $_POST['doctor_id']);
+      exit;
+    }
+
+    // Leemos los bytes de la imagen para guardarla como binario
+    $photoData = file_get_contents($photoTmp);
+  } elseif (empty($_POST['doctor_id'])) {
+    // En creación, la foto es obligatoria
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode("Debes subir una foto.") . '&id=' . $_POST['doctor_id']);
+    exit;
+  }
+
 
   try {
     // Si se está actualizando, se excluye el registro actual de la validación.
@@ -92,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       throw new Exception("La CURP ya existe en la base de datos.");
     }
   } catch (Exception $e) {
-    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()));
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);
     exit;
   }
 
@@ -135,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       throw new Exception("El número de afiliación ya existe en la base de datos.");
     }
   } catch (Exception $e) {
-    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()));
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);
     exit;
   }
 
@@ -178,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       throw new Exception("El número de afiliación ya existe en la base de datos.");
     }
   } catch (Exception $e) {
-    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()));
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);
     exit;
   }
 
@@ -225,12 +247,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':phone' => $phone,
         ':gender' => $gender,
         ':email' => $email,
-        ':photo' => 'FotoActualizada',
+        ':photo' => $photoData,
         ':status' => 'A',
         ':doctor_id' => $doctor_id
       ]);
 
-      header('Location: /views/dashboard/dashboard.view.php?success=' . urlencode("Doctor actualizado con éxito"));
+      header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor actualizado con éxito"));
     } else {
       $stmt = $pdo->prepare("INSERT INTO doctors (
         names, last_name, last_name2, id_state, id_municipality, id_locality, CP, street, external_number, internal_number,
@@ -260,13 +282,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':phone' => $phone,
         ':gender' => $gender,
         ':email' => $email,
-        ':photo' => 'FotoAqui',
+        ':photo' => $photoData,
         ':status' => 'A'
       ]);
 
       header('Location: /views/dashboard/dashboard.view.php?success=' . urlencode("Doctor creado con éxito"));
     }
   } catch (PDOException $e) {
-    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()));
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);
   }
 }

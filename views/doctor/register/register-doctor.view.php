@@ -2,6 +2,15 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 
 try {
+
+    // Obtener los datos del doctor si se pasa un ID
+    $doctor = null;
+    if (isset($_GET['id'])) {
+        $stmt = $pdo->prepare("SELECT * FROM doctors WHERE id = :id");
+        $stmt->execute([':id' => $_GET['id']]);
+        $doctor = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     try {
         $stmt = $pdo->query("SELECT id_state, id, name FROM municipalities");
         $stmt->execute();
@@ -22,8 +31,6 @@ try {
     die("Error al obtener tablas: " . $e->getMessage());
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -53,12 +60,6 @@ try {
         echo "<p style='color: red;'>Error: No se encontró el archivo sidebar.php en '$sidebarPath'</p>";
     }
     ?>
-
-    <?php if (isset($_GET['error'])): ?>
-        <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
-            <?php echo htmlspecialchars($_GET['error']); ?>
-        </div>
-    <?php endif; ?>
 
     <main class="content">
 

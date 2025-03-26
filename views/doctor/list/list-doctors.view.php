@@ -42,6 +42,7 @@ try {
     }
     ?>
 
+
     <main class="content">
 
         <?php
@@ -59,6 +60,12 @@ try {
             </div>
         <?php endif; ?>
 
+        <?php if (isset($_GET['success'])): ?>
+            <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                <?php echo htmlspecialchars($_GET['success']); ?>
+            </div>
+        <?php endif; ?>
+
         <div class="table-container">
 
             <table>
@@ -71,9 +78,10 @@ try {
                         <th>RFC</th>
                         <th>Teléfono</th>
                         <th>Email</th>
-                        <th>Género</th>
+                        <th>Sexo</th>
                         <th>Fecha de nacimiento</th>
                         <th>Estado</th>
+                        <th>Foto</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -91,6 +99,10 @@ try {
                                 <td><?php echo htmlspecialchars($doctor['gender']); ?></td>
                                 <td><?php echo htmlspecialchars($doctor['birth_date']); ?></td>
                                 <td><?php echo htmlspecialchars($doctor['id_state']); ?></td>
+                                <td>
+                                    <img src="/controllers/doctor/mostrar_foto.php?id=<?php echo $doctor['id']; ?>" alt="Foto del doctor" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                </td>
+
 
                                 <td class="actions-td">
                                     <form action="/controllers/doctor/delete-doctor.controller.php" method="POST" style="margin-bottom: 5px;"> <input type="text" style="display: none;" value="<?php echo $doctor['id'] ?>" name="doctor_id"> <button type="submit" class="delete-btn" data-id="<?php echo $doctor['id']; ?>">Eliminar</button></form>

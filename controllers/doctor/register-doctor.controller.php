@@ -40,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $phone = $_POST['phoneNumber'];
   $email = $_POST['email'];
   $gender = $_POST['gender'];
+  
+  $medical_area = $_POST['medical_area'];
 
   try {
     // Validamos los campos
@@ -283,7 +285,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':status' => 'A'
       ]);
 
-      header('Location: /views/dashboard/dashboard.view.php?success=' . urlencode("Doctor creado con éxito"));
+      $new_doctor_id = $pdo->lastInsertId();
+
+      $stmt = $pdo->prepare("INSERT INTO doctor_assignments (
+      id_medical_area, id_doctor
+      ) VALUES (
+      :medical_area, :id_doctor
+      )");
+
+      $stmt->execute([
+        ':medical_area' => $medical_area,
+        ':id_doctor' => $new_doctor_id,
+      ]);
+
+      header('Location: /views/doctor/list/list-doctors.view?success=' . urlencode("Doctor creado con éxito"));
     }
   } catch (PDOException $e) {
     header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);

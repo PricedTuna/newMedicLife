@@ -23,6 +23,10 @@ try {
         $stmt = $pdo->query("SELECT id_state, id_municipality, id, name FROM localities");
         $stmt->execute();
         $localities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $stmt = $pdo->query("SELECT id, name, name FROM medical_areas");
+        $stmt->execute();
+        $medical_areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (\Throwable $th) {
         print_r($th);
         exit;
@@ -195,8 +199,18 @@ try {
                             <label for="professionalLicense">Cédula Profesional</label>
                             <input type="text" id="professionalLicense" name="professionalLicense" value="<?php echo $doctor['professional_id'] ?? ''; ?>" required>
                         </div>
+
                         <div class="form-group">
-                            <label for="photo" class="file-label" id="photo-label">Subir Foto</label>
+                            <label for="speciality">Especialidad</label>
+                            <select name="medical_area" id="speciality" required>
+                                <?php foreach ($medical_areas as $medical_area): ?>
+                                    <option value="<?php echo $medical_area['id']; ?>"><?php echo $medical_area['name']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                        <label for="photo" class="file-label" id="photo-label">Subir Foto</label>
                             <input type="file" id="photo" name="photo" accept="image/*" <?php echo $doctor ? '' : 'required'; ?>>
                         </div>
 
@@ -255,7 +269,6 @@ try {
             clearErrorMessage(curpInput);
         }
 
-
         // Validar RFC (12 o 13 caracteres)
         let rfcInput = document.getElementById('rfc');
         let rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
@@ -265,6 +278,24 @@ try {
         } else {
             clearErrorMessage(rfcInput);
         }
+
+        // input file
+        let photoInput = document.getElementById('photo');
+        let photoFile = photoInput.files[0];
+
+        if (!photoFile) {
+            showErrorMessage(photoInput, 'Debes seleccionar una imagen.');
+            valid = false;
+        } else if (!photoFile.type.startsWith('image/')) {
+            showErrorMessage(photoInput, 'El archivo debe ser una imagen.');
+            valid = false;
+        } else if (photoFile.size > 2 * 1024 * 1024) { // 2MB
+            showErrorMessage(photoInput, 'La imagen no debe pesar más de 2MB.');
+            valid = false;
+        } else {
+            clearErrorMessage(photoInput);
+        }
+
 
         // Validar Número de Afiliación (solo letras y números, opcional)
         let affiliationInput = document.getElementById('affiliationNumber');

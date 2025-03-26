@@ -262,6 +262,28 @@ window.nextStep = function (step) {
 
 // Validación antes de enviar el formulario
 document.addEventListener('DOMContentLoaded', () => {
+    const firstNameInput = document.getElementById('firstName');
+
+    firstNameInput.addEventListener('blur', () => {
+      const words = firstNameInput.value.toLowerCase().split(" ");
+      firstNameInput.value = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    });
+
+    const lastNameInput = document.getElementById('lastName');
+
+    lastNameInput.addEventListener('blur', () => {
+      const words = lastNameInput.value.toLowerCase().split(" ");
+      lastNameInput.value = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    });
+
+    const motherLastNameInput = document.getElementById('motherLastName');
+
+    motherLastNameInput.addEventListener('blur', () => {
+      const words = motherLastNameInput.value.toLowerCase().split(" ");
+      motherLastNameInput.value = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    });
+
+
     if (document.getElementById('doctor-form')) {
         showStep(currentStep);
 
@@ -271,8 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!validateStep1() || !validateStep2() || !validateStep3()) {
                 event.preventDefault();
                 alert('Por favor, completa todos los campos antes de enviar.');
-            } else {
-                alert('Registro exitoso');
             }
         });
     } else {

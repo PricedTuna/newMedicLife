@@ -16,22 +16,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([':doctor_id' => $doctor_id]);
             $existingDoctor = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$existingDoctor) {
-                echo json_encode(["success" => false, "message" => "El doctor con ID $doctor_id no existe."]);
-                exit;
-            }
-
             // Eliminar doctor
+            // Eliminar relaciones antes de eliminar al doctor
+            $stmt = $pdo->prepare("DELETE FROM doctor_assignments WHERE id_doctor = :doctor_id");
+            $stmt->execute([':doctor_id' => $doctor_id]);
+
+            // Ahora sí, eliminar el doctor
             $stmt = $pdo->prepare("DELETE FROM doctors WHERE id = :doctor_id");
             $stmt->execute([':doctor_id' => $doctor_id]);
 
+
             header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor eliminado con éxito"));
-            exit;
 
         } catch (Exception $e) {
             header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("Algo sucedió mal, inténtelo de nuevo en unos minutos o contacte a soporte"));
             exit;
         }
+        
     } else {
         header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("Algo sucedió mal, inténtelo de nuevo en unos minutos o contacte a soporte"));
         exit;

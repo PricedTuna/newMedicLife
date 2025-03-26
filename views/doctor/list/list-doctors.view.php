@@ -54,20 +54,18 @@ try {
         }
         ?>
 
-        <?php if (isset($_GET['error'])): ?>
-            <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
-                <?php echo htmlspecialchars($_GET['error']); ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if (isset($_GET['success'])): ?>
-            <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
-                <?php echo htmlspecialchars($_GET['success']); ?>
-            </div>
-        <?php endif; ?>
-
         <div class="table-container">
+            <?php if (isset($_GET['error'])): ?>
+                <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                    <?php echo htmlspecialchars($_GET['error']); ?>
+                </div>
+            <?php endif; ?>
 
+            <?php if (isset($_GET['success'])): ?>
+                <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                    <?php echo htmlspecialchars($_GET['success']); ?>
+                </div>
+            <?php endif; ?>
             <table>
                 <thead>
                     <tr>

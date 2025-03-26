@@ -14,7 +14,14 @@
 
 <body>
 
-<?php include __DIR__ . '/../components/sidebar.php'; ?>
+    <?php
+    $sidebarPath = $_SERVER['DOCUMENT_ROOT'] . '/views/components/sidebar.php';
+    if (file_exists($sidebarPath)) {
+        include $sidebarPath;
+    } else {
+        echo "<p style='color: red;'>Error: No se encontró el archivo sidebar.php en '$sidebarPath'</p>";
+    }
+    ?>
 
     <main>
         <div class="main-content">

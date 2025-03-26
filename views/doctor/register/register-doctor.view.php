@@ -33,7 +33,87 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script defer>
-        console.log("FIRST")
+        function showErrorMessage(input, message) {
+            let errorElement = input.nextElementSibling;
+
+            if (!errorElement || !errorElement.classList.contains('error-message')) {
+                errorElement = document.createElement('span');
+                errorElement.classList.add('error-message');
+                errorElement.style.color = 'red';
+                input.parentNode.appendChild(errorElement);
+            }
+
+            errorElement.textContent = message;
+            input.style.border = '2px solid red';
+        }
+
+        // Función para limpiar mensajes de error
+        function clearErrorMessage(input) {
+            let errorElement = input.nextElementSibling;
+
+            if (errorElement && errorElement.classList.contains('error-message')) {
+                errorElement.remove();
+            }
+
+            input.style.border = '2px solid var(--line-clr)';
+        }
+
+        function validateInputs() {
+            // Validar CURP (18 caracteres, formato oficial)
+            let curpInput = document.getElementById('curp');
+            let curpPattern = /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
+            const curp = curpInput.value.trim();
+            if (curp.length !== 18) {
+                showErrorMessage(curpInput, 'La CURP debe tener exactamente 18 caracteres.');
+                valid = false;
+            } else if (!curpPattern.test(curp)) {
+                showErrorMessage(curpInput, 'CURP inválida. Revisa el formato.');
+                valid = false;
+            } else {
+                clearErrorMessage(curpInput);
+            }
+
+
+            // Validar RFC (12 o 13 caracteres)
+            let rfcInput = document.getElementById('rfc');
+            let rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
+            if (rfcInput.value.trim() !== '' && !rfcPattern.test(rfcInput.value.trim())) {
+                showErrorMessage(rfcInput, 'RFC inválido. Debe tener entre 12 y 13 caracteres.');
+                valid = false;
+            } else {
+                clearErrorMessage(rfcInput);
+            }
+
+            // Validar Número de Afiliación (solo letras y números, opcional)
+            let affiliationInput = document.getElementById('affiliationNumber');
+            let textNumberPattern = /^[A-Za-z0-9]+$/;
+            if (affiliationInput.value.trim() !== '' && !textNumberPattern.test(affiliationInput.value.trim())) {
+                showErrorMessage(affiliationInput, 'El número de afiliación solo puede contener letras y números.');
+                valid = false;
+            } else {
+                clearErrorMessage(affiliationInput);
+            }
+
+            // Validar Cédula Profesional (solo letras y números, opcional)
+            let licenseInput = document.getElementById('professionalLicense');
+            if (licenseInput.value.trim() !== '' && !textNumberPattern.test(licenseInput.value.trim())) {
+                showErrorMessage(licenseInput, 'La cédula profesional solo puede contener letras y números.');
+                valid = false;
+            } else {
+                clearErrorMessage(licenseInput);
+            }
+
+            // Validar Especialidad (solo letras y espacios, obligatorio)
+            let specialtyInput = document.getElementById('specialty');
+            let textPattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+            if (!textPattern.test(specialtyInput.value.trim())) {
+                showErrorMessage(specialtyInput, 'La especialidad solo debe contener letras y espacios.');
+                valid = false;
+            } else {
+                clearErrorMessage(specialtyInput);
+            }
+        }
+
         const municipalities = <?php echo json_encode($municipalities); ?>;
         const localities = <?php echo json_encode($localities); ?>;
 
@@ -78,6 +158,13 @@ try {
         document.getElementById('photo').addEventListener('change', function(event) {
             const fileName = event.target.files[0] ? event.target.files[0].name : 'Subir Foto';
             document.getElementById('photo-label').textContent = fileName;
+        });
+
+        // Puedes conectar esta función al botón de envío del formulario
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!validarInputs()) {
+                e.preventDefault();
+            }
         });
     </script>
 

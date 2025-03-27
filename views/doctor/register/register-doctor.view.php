@@ -255,6 +255,8 @@ try {
     }
 
     function validateInputs() {
+        let valid = true;
+
         // Validar CURP (18 caracteres, formato oficial)
         let curpInput = document.getElementById('curp');
         let curpPattern = /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
@@ -316,7 +318,7 @@ try {
             clearErrorMessage(licenseInput);
         }
 
-        return true;
+        return valid;
     }
 
     const municipalities = <?php echo json_encode($municipalities); ?>;
@@ -325,9 +327,6 @@ try {
     const stateSelect = document.getElementById('state');
     const municipalitySelect = document.getElementById('municipality');
     const localitySelect = document.getElementById('locality');
-
-    console.log("aqui")
-    console.log(stateSelect);
 
 
     stateSelect.addEventListener('change', () => {

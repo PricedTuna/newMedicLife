@@ -24,3 +24,5 @@ Error al eliminar: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot 
 {"doctor_id":"9"}
 {"doctor_id":"7"}
 {"doctor_id":"4"}
+{"doctor_id":"2"}
+{"doctor_id":"2"}

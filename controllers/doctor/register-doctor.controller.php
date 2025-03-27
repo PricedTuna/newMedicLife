@@ -321,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':id_doctor' => $new_doctor_id,
       ]);
 
-      header('Location: /views/doctor/list/list-doctors.view?success=' . urlencode("Doctor creado con éxito"));
+      header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito"));
     }
   } catch (PDOException $e) {
     header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);

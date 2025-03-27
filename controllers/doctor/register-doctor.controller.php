@@ -110,7 +110,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-      throw new Exception("La CURP ya existe en la base de datos.");
+      throw new Exception("La CURP que intentas registrar ya existe.");
+    }
+  } catch (Exception $e) {
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);
+    exit;
+  }
+
+  try {
+    if (!empty($_POST['doctor_id']) && is_numeric($_POST['doctor_id'])) {
+      $doctor_id = $_POST['doctor_id'];
+      $stmt = $pdo->prepare("SELECT id FROM doctors WHERE phone = :phone AND id != :doctor_id");
+      $stmt->execute([
+        ':phone' => $phone,
+        ':doctor_id' => $doctor_id
+      ]);
+    } else {
+      $stmt = $pdo->prepare("SELECT id FROM doctors WHERE phone = :phone");
+      $stmt->execute([
+        ':phone' => $phone
+      ]);
+    }
+  
+    if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+      throw new Exception("El número de teléfono que intentas registrar ya existe.");
+    }
+  } catch (Exception $e) {
+    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);
+    exit;
+  }  
+
+  try {
+    // Validación de unicidad de CURP
+    if (!empty($_POST['doctor_id']) && is_numeric($_POST['doctor_id'])) {
+      $doctor_id = $_POST['doctor_id'];
+      $stmt = $pdo->prepare("SELECT id FROM doctors WHERE CURP = :CURP AND id != :doctor_id");
+      $stmt->execute([
+        ':CURP' => $CURP,
+        ':doctor_id' => $doctor_id
+      ]);
+    } else {
+      $stmt = $pdo->prepare("SELECT id FROM doctors WHERE CURP = :CURP");
+      $stmt->execute([
+        ':CURP' => $CURP
+      ]);
+    }
+
+    if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+      throw new Exception("La CURP que intentas registrar ya existe.");
+    }
+
+    // Validación de unicidad de insurance_number (número de afiliación)
+    if (!empty($_POST['doctor_id']) && is_numeric($_POST['doctor_id'])) {
+      $doctor_id = $_POST['doctor_id'];
+      $stmt = $pdo->prepare("SELECT id FROM doctors WHERE insurance_number = :insurance_number AND id != :doctor_id");
+      $stmt->execute([
+        ':insurance_number' => $insurance_number,
+        ':doctor_id' => $doctor_id
+      ]);
+    } else {
+      $stmt = $pdo->prepare("SELECT id FROM doctors WHERE insurance_number = :insurance_number");
+      $stmt->execute([
+        ':insurance_number' => $insurance_number
+      ]);
+    }
+
+    if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+      throw new Exception("El número de afiliación que intentas registrar ya existe.");
     }
   } catch (Exception $e) {
     header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);
@@ -134,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-      throw new Exception("La CURP ya existe en la base de datos.");
+      throw new Exception("La CURP que intentas registrar ya existe.");
     }
 
     // Validación de unicidad de insurance_number (número de afiliación)
@@ -153,50 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-      throw new Exception("El número de afiliación ya existe en la base de datos.");
-    }
-  } catch (Exception $e) {
-    header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);
-    exit;
-  }
-
-  try {
-    // Validación de unicidad de CURP
-    if (!empty($_POST['doctor_id']) && is_numeric($_POST['doctor_id'])) {
-      $doctor_id = $_POST['doctor_id'];
-      $stmt = $pdo->prepare("SELECT id FROM doctors WHERE CURP = :CURP AND id != :doctor_id");
-      $stmt->execute([
-        ':CURP' => $CURP,
-        ':doctor_id' => $doctor_id
-      ]);
-    } else {
-      $stmt = $pdo->prepare("SELECT id FROM doctors WHERE CURP = :CURP");
-      $stmt->execute([
-        ':CURP' => $CURP
-      ]);
-    }
-
-    if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-      throw new Exception("La CURP ya existe en la base de datos.");
-    }
-
-    // Validación de unicidad de insurance_number (número de afiliación)
-    if (!empty($_POST['doctor_id']) && is_numeric($_POST['doctor_id'])) {
-      $doctor_id = $_POST['doctor_id'];
-      $stmt = $pdo->prepare("SELECT id FROM doctors WHERE insurance_number = :insurance_number AND id != :doctor_id");
-      $stmt->execute([
-        ':insurance_number' => $insurance_number,
-        ':doctor_id' => $doctor_id
-      ]);
-    } else {
-      $stmt = $pdo->prepare("SELECT id FROM doctors WHERE insurance_number = :insurance_number");
-      $stmt->execute([
-        ':insurance_number' => $insurance_number
-      ]);
-    }
-
-    if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-      throw new Exception("El número de afiliación ya existe en la base de datos.");
+      throw new Exception("El número de afiliación que intentas registrar ya existe.");
     }
   } catch (Exception $e) {
     header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . $_POST['doctor_id']);

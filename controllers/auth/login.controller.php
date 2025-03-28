@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         exit();
     } else {
-        echo "Error: Credenciales incorrectas"; // Depuración
+        header('Location: /index.php?error=' . urlencode("Credenciales incorrectas"));
         exit();
     }
 } else {

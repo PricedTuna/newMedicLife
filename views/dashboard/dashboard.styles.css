@@ -77,12 +77,6 @@ main p {
     }
 }
 
-.main-content {
-    padding: 20px;
-    background-color: var(--hover-clr);
-    border-radius: 5px;
-}
-
 header {
     display: flex;
     justify-content: space-between;

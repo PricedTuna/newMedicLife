@@ -1,92 +1,181 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
 :root {
-    --base-clr: #f2f4f4;
-    --line-clr: #eaecee;
-    --hover-clr: white;
-    --text-clr: #17202a;
-    --accent-clr: #5e63ff;
-    --ligth-clr: #c8caff;
-    --secondary-text-clr: #566573;
-    --test-clr: #a9cce3;
+  --base-clr: #f2f4f4;
+  --line-clr: #eaecee;
+  --hover-clr: white;
+  --text-clr: #17202a;
+  --accent-clr: #5e63ff;
+  --ligth-clr: #c8caff;
+  --secondary-text-clr: #566573;
+  --test-clr: #a9cce3;
+}
+
+html {
+  font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--base-clr);
+  color: var(--text-clr);
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+.main-content {
+  padding: 20px;
+  background-color: var(--hover-clr);
+  border-radius: 5px;
 }
 
 .table-container {
-    padding: 3rem;
-    background-color: var(--hover-clr);
-    border-radius: 16px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
-    max-width: 95%;
-    margin: 3rem auto;
-    overflow-x: auto;
+  background-color: var(--hover-clr);
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  max-width: 95%;
+  margin: 3rem auto;
+  overflow-x: auto;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'Poppins', sans-serif;
+  width: 100%;
+  border-collapse: collapse;
+  /* La fuente ya se hereda de html */
 }
 
 thead {
-    background-color: var(--accent-clr);
-    color: var(--hover-clr);
+  background-color: var(--accent-clr);
+  color: var(--hover-clr);
+  width: 100%;
 }
 
 thead th {
-    padding: 1rem;
-    text-align: left;
-    font-weight: 600;
-    font-size: 1rem;
+  padding: 0.8rem 0;
+  text-align: left;
+  font-weight: 600;
+  font-size: 1rem;
 }
 
 tbody tr {
-    border-bottom: 1px solid var(--line-clr);
-    transition: background-color 0.3s;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-clr);
+  transition: background-color 0.3s;
 }
 
 tbody tr:hover {
-    background-color: var(--ligth-clr);
+  background-color: var(--ligth-clr);
 }
-
 
 tbody td {
-    padding: 1rem;
-    color: var(--text-clr);
-    font-size: 1rem;
-}
-
-.table-title {
-    text-align: center;
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: var(--accent-clr);
-}
-
-main {
-    gap: 20px;
-}
-
-h1 {
-    color: black;
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-
-/* Contenedor Principal */
-
-.content {
-    flex-grow: 1;
-    padding: 20px;
-    margin-top: 20px;
-}
-
-thead {
-    width: 100%;
+  padding: 0.4rem;
+  color: var(--text-clr);
+  font-size: 1rem;
 }
 
 td {
-    flex-grow: 1;
+  flex-grow: 1;
+}
+
+.table-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--accent-clr);
+}
+
+main {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-left: 20px;
+}
+
+h1 {
+  color: black;
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Contenedor Principal */
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 800px) {
+  body {
+    grid-template-columns: 1fr;
+  }
+  main {
+    padding: 2em 1em 60px 1em;
+  }
+  .container {
+    border: none;
+    padding: 0;
+  }
+}
+
+.actions-td {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* <- Cambiado a stretch para que los hijos llenen el ancho */
+  gap: 5px;
+}
+
+.action-wrapper {
+  flex: 1;
+  width: 100%;
+  display: flex; /* Asegura que el botón dentro se expanda */
+}
+
+.delete-btn,
+.update-btn {
+  flex: 1;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+.update-btn {
+  background-color: #3498db;
+}
+
+.update-btn:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
+
+.photo-column {
+  padding-left: 0.8rem;
 }

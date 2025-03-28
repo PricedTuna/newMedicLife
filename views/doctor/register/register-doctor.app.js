@@ -1,15 +1,30 @@
-let currentStep = 1;
+// ===========================
+// Estado Global
+// ===========================
+
+let currentStep = 1; // Guarda el paso actual del formulario
+
+// ===========================
+// Funciones de Visualización
+// ===========================
+
+/**
+ * Muestra el paso especificado del formulario.
+ * Oculta todos los pasos y resalta el indicador del paso activo.
+ *
+ * @param {number} step - Número del paso a mostrar.
+ */
 function showStep(step) {
     console.log(`🔄 Intentando mostrar el paso: ${step}`);
 
-    let stepElement = document.getElementById(`step-${step}`);
+    const stepElement = document.getElementById(`step-${step}`);
     if (!stepElement) {
         console.error(`❌ Elemento con ID 'step-${step}' no encontrado.`);
         return;
     }
 
     // Ocultar todos los pasos
-    document.querySelectorAll('.form-step').forEach((formStep) => {
+    document.querySelectorAll('.form-step').forEach(formStep => {
         formStep.style.display = 'none';
     });
 
@@ -17,69 +32,112 @@ function showStep(step) {
     stepElement.style.display = 'block';
     console.log(`✅ Mostrando paso: ${step}`);
 
-    // Quitar la clase 'step-active' de todos los pasos
-    document.querySelectorAll('.step').forEach((stepElement) => {
-        stepElement.classList.remove('step-active');
-    });
+    // Remover la clase activa de todos los indicadores
+    document.querySelectorAll('.step').forEach(el => el.classList.remove('step-active'));
 
-    // Agregar 'step-active' al paso actual
-    let activeStep = document.querySelector(`.step[data-step='${step}']`);
-    if (activeStep) {
-        activeStep.classList.add('step-active');
+    // Resaltar el indicador del paso actual
+    const activeIndicator = document.querySelector(`.step[data-step='${step}']`);
+    if (activeIndicator) {
+        activeIndicator.classList.add('step-active');
         console.log(`🎯 Paso ${step} marcado como activo.`);
     } else {
         console.warn(`⚠️ No se encontró el paso con data-step='${step}'`);
     }
 }
 
+/**
+ * Retrocede al paso indicado.
+ *
+ * @param {number} step - Número del paso al que se desea regresar.
+ */
 function prevStep(step) {
     currentStep = step;
     showStep(currentStep);
 }
 
-// Función para mostrar mensajes de error dinámicos
+// ===========================
+// Funciones de Manejo de Errores
+// ===========================
+
+/**
+ * Muestra un mensaje de error dinámico junto a un input.
+ *
+ * @param {HTMLElement} input - Elemento input al que se le asigna el error.
+ * @param {string} message - Mensaje de error a mostrar.
+ */
 function showErrorMessage(input, message) {
     let errorElement = input.nextElementSibling;
-    
     if (!errorElement || !errorElement.classList.contains('error-message')) {
         errorElement = document.createElement('span');
         errorElement.classList.add('error-message');
         errorElement.style.color = 'red';
         input.parentNode.appendChild(errorElement);
     }
-    
     errorElement.textContent = message;
     input.style.border = '2px solid red';
 }
 
-// Función para limpiar mensajes de error
+/**
+ * Limpia el mensaje de error mostrado en un input.
+ *
+ * @param {HTMLElement} input - Elemento input del cual se elimina el error.
+ */
 function clearErrorMessage(input) {
     let errorElement = input.nextElementSibling;
-    
     if (errorElement && errorElement.classList.contains('error-message')) {
         errorElement.remove();
     }
-
     input.style.border = '2px solid var(--line-clr)';
 }
 
-// Función de validación para el Paso 1
-function validateStep1() {
-    let valid = true;
+// ===========================
+// Función Genérica de Validación de Inputs de Texto
+// ===========================
 
-    // Validar nombres y apellidos (solo letras y espacios)
-    document.querySelectorAll("#step-1 input[type='text']").forEach((input) => {
-        let namePattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-        if (!namePattern.test(input.value.trim())) {
-            showErrorMessage(input, 'Solo se permiten letras y espacios.');
+/**
+ * Valida inputs de tipo texto dentro de un contenedor dado usando una expresión regular.
+ *
+ * @param {string} containerId - ID del contenedor que agrupa los inputs.
+ * @param {RegExp} pattern - Expresión regular para validar el contenido.
+ * @param {Function} errorMsgCallback - Función que retorna el mensaje de error.
+ * @param {Function} [skipCondition] - Función opcional para determinar si se debe omitir la validación de un input.
+ * @returns {boolean} Verdadero si todos los inputs son válidos.
+ */
+function validateTextInputs(containerId, pattern, errorMsgCallback, skipCondition) {
+    let valid = true;
+    document.querySelectorAll(`#${containerId} input[type='text']`).forEach(input => {
+        if (skipCondition && skipCondition(input)) {
+            clearErrorMessage(input);
+            return;
+        }
+        if (!pattern.test(input.value.trim())) {
+            showErrorMessage(input, errorMsgCallback());
             valid = false;
         } else {
             clearErrorMessage(input);
         }
     });
+    return valid;
+}
 
-    // Validar número telefónico (10 dígitos exactos)
-    let phoneInput = document.getElementById('phoneNumber');
+// ===========================
+// Validaciones de Cada Paso
+// ===========================
+
+/**
+ * Valida los campos del Paso 1: nombres, teléfono, correo, género y fecha de nacimiento.
+ *
+ * @returns {boolean} Verdadero si la validación es exitosa.
+ */
+function validateStep1() {
+    let valid = true;
+
+    // Validar nombres y apellidos: solo letras y espacios.
+    const namePattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    valid = validateTextInputs('step-1', namePattern, () => 'Solo se permiten letras y espacios.') && valid;
+
+    // Validar número telefónico: exactamente 10 dígitos.
+    const phoneInput = document.getElementById('phoneNumber');
     if (!/^\d{10}$/.test(phoneInput.value.trim())) {
         showErrorMessage(phoneInput, 'El número debe tener 10 dígitos.');
         valid = false;
@@ -87,20 +145,18 @@ function validateStep1() {
         clearErrorMessage(phoneInput);
     }
 
-    // Validar correo electrónico
-    let emailInput = document.getElementById('email');
-    let emailValue = emailInput.value.trim();
-    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    
-    if (!emailPattern.test(emailValue)) {
+    // Validar correo electrónico.
+    const emailInput = document.getElementById('email');
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(emailInput.value.trim())) {
         showErrorMessage(emailInput, 'Correo electrónico no válido.');
         valid = false;
     } else {
         clearErrorMessage(emailInput);
     }
 
-    // Validar selección de género
-    let genderSelect = document.getElementById('gender');
+    // Validar selección de género.
+    const genderSelect = document.getElementById('gender');
     if (genderSelect.value === '') {
         showErrorMessage(genderSelect, 'Debe seleccionar un género.');
         valid = false;
@@ -108,16 +164,14 @@ function validateStep1() {
         clearErrorMessage(genderSelect);
     }
 
-    // Validar fecha de nacimiento (no vacía y menor a la fecha actual)
-    let birthDateInput = document.getElementById('birthDate');
-    let birthDateValue = birthDateInput.value;
-    
-    if (!birthDateValue) {
+    // Validar fecha de nacimiento: no vacía y debe ser en el pasado.
+    const birthDateInput = document.getElementById('birthDate');
+    if (!birthDateInput.value) {
         showErrorMessage(birthDateInput, 'Debe seleccionar una fecha de nacimiento.');
         valid = false;
     } else {
-        let birthDate = new Date(birthDateValue);
-        let today = new Date();
+        const birthDate = new Date(birthDateInput.value);
+        const today = new Date();
         if (birthDate >= today) {
             showErrorMessage(birthDateInput, 'Debe ser una fecha pasada.');
             valid = false;
@@ -128,30 +182,26 @@ function validateStep1() {
 
     return valid;
 }
-// Función de validación para el Paso 2
+
+/**
+ * Valida los campos del Paso 2: dirección y código postal.
+ *
+ * @returns {boolean} Verdadero si la validación es exitosa.
+ */
 function validateStep2() {
     let valid = true;
 
-    // Validar texto para Calle, Colonia y Número Exterior (solo letras, números y espacios)
-    document.querySelectorAll("#step-2 input[type='text']").forEach((input) => {
-        let pattern = /^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ\s]+$/;
+    // Validar campos de dirección: solo letras, números y espacios.
+    const pattern = /^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ\s]+$/;
+    valid = validateTextInputs(
+        'step-2',
+        pattern,
+        () => 'Solo se permiten letras, números y espacios.',
+        input => input.id === 'intNumber' && input.value.trim() === '' // Salta validación para "Número Interior" si está vacío
+    ) && valid;
 
-        // Excluir Número Interior de validación si está vacío
-        if (input.id === 'intNumber' && input.value.trim() === '') {
-            clearErrorMessage(input); // No mostrar error si está vacío
-            return;
-        }
-
-        if (!pattern.test(input.value.trim())) {
-            showErrorMessage(input, 'Solo se permiten letras, números y espacios.');
-            valid = false;
-        } else {
-            clearErrorMessage(input);
-        }
-    });
-
-    // Validar Código Postal (exactamente 5 dígitos numéricos)
-    let postalCodeInput = document.getElementById('postalCode');
+    // Validar Código Postal: exactamente 5 dígitos numéricos.
+    const postalCodeInput = document.getElementById('postalCode');
     if (!/^\d{5}$/.test(postalCodeInput.value.trim())) {
         showErrorMessage(postalCodeInput, 'El código postal debe tener 5 dígitos.');
         valid = false;
@@ -161,15 +211,19 @@ function validateStep2() {
 
     return valid;
 }
-// Función de validación para el Paso 3
+
+/**
+ * Valida los campos del Paso 3: CURP, RFC, número de afiliación, cédula profesional y foto.
+ *
+ * @returns {boolean} Verdadero si la validación es exitosa.
+ */
 function validateStep3() {
     let valid = true;
+    console.log("Validando Paso 3...");
 
-    console.log("Validando Paso 3..."); // Depuración
-
-    // Validar CURP (18 caracteres, formato oficial)
-    let curpInput = document.getElementById('curp');
-    let curpPattern = /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
+    // Validar CURP: debe tener 18 caracteres y formato oficial.
+    const curpInput = document.getElementById('curp');
+    const curpPattern = /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
     const curp = curpInput.value.trim();
     if (curp.length !== 18) {
         showErrorMessage(curpInput, 'La CURP debe tener exactamente 18 caracteres.');
@@ -180,11 +234,10 @@ function validateStep3() {
     } else {
         clearErrorMessage(curpInput);
     }
-    
 
-    // Validar RFC (12 o 13 caracteres)
-    let rfcInput = document.getElementById('rfc');
-    let rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
+    // Validar RFC: opcional, pero si se llena debe cumplir el formato.
+    const rfcInput = document.getElementById('rfc');
+    const rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
     if (rfcInput.value.trim() !== '' && !rfcPattern.test(rfcInput.value.trim())) {
         showErrorMessage(rfcInput, 'RFC inválido. Debe tener entre 12 y 13 caracteres.');
         valid = false;
@@ -192,33 +245,33 @@ function validateStep3() {
         clearErrorMessage(rfcInput);
     }
 
-    // Validar Número de Afiliación (solo letras y números, opcional)
-    let affiliationInput = document.getElementById('affiliationNumber');
-    let textNumberPattern = /^[A-Za-z0-9]+$/;
-    if (affiliationInput.value.trim() !== '' && !textNumberPattern.test(affiliationInput.value.trim())) {
+    // Validar Número de Afiliación: opcional, solo alfanumérico.
+    const affiliationInput = document.getElementById('affiliationNumber');
+    const alphanumericPattern = /^[A-Za-z0-9]+$/;
+    if (affiliationInput.value.trim() !== '' && !alphanumericPattern.test(affiliationInput.value.trim())) {
         showErrorMessage(affiliationInput, 'El número de afiliación solo puede contener letras y números.');
         valid = false;
     } else {
         clearErrorMessage(affiliationInput);
     }
 
-    // Validar Cédula Profesional (solo letras y números, opcional)
-    let licenseInput = document.getElementById('professionalLicense');
-    if (licenseInput.value.trim() !== '' && !textNumberPattern.test(licenseInput.value.trim())) {
+    // Validar Cédula Profesional: opcional, solo alfanumérico.
+    const licenseInput = document.getElementById('professionalLicense');
+    if (licenseInput.value.trim() !== '' && !alphanumericPattern.test(licenseInput.value.trim())) {
         showErrorMessage(licenseInput, 'La cédula profesional solo puede contener letras y números.');
         valid = false;
     } else {
         clearErrorMessage(licenseInput);
     }
 
-    // Validar Foto (si es requerida y es un archivo de imagen)
-    let photoInput = document.getElementById('photo');
+    // Validar Foto: si es requerida, debe ser un archivo de imagen.
+    const photoInput = document.getElementById('photo');
     if (photoInput) {
         if (photoInput.hasAttribute('required') && photoInput.files.length === 0) {
             showErrorMessage(photoInput, 'Debe seleccionar una foto.');
             valid = false;
         } else if (photoInput.files.length > 0) {
-            let file = photoInput.files[0];
+            const file = photoInput.files[0];
             if (!file.type.startsWith('image/')) {
                 showErrorMessage(photoInput, 'El archivo debe ser una imagen.');
                 valid = false;
@@ -228,68 +281,67 @@ function validateStep3() {
         }
     }
 
-    console.log("Paso 3 validación:", valid); // Depuración
+    console.log("Paso 3 validación:", valid);
     return valid;
 }
 
-window.nextStep = function (step) {
-    console.log("Paso actual antes de validar:", currentStep); // 🛠 Depuración
+// ===========================
+// Función para Avanzar de Paso
+// ===========================
 
+/**
+ * Valida el paso actual y, si es correcto, avanza al siguiente.
+ *
+ * @param {number} step - Número del siguiente paso.
+ */
+window.nextStep = function(step) {
+    console.log("Paso actual antes de validar:", currentStep);
+
+    // Validar el paso actual antes de avanzar
     if (currentStep === 1 && !validateStep1()) {
         alert('⚠️ Corrige los errores antes de continuar.');
         return;
     }
-
     if (currentStep === 2 && !validateStep2()) {
         alert('⚠️ Corrige los errores antes de continuar.');
         return;
     }
-
     if (currentStep === 3 && !validateStep3()) {
-        console.log("Entrando a validateStep3()..."); // 🛠 Depuración
         alert('⚠️ Corrige los errores antes de continuar.');
         return;
     }
 
-    // 📌 Actualizar currentStep antes de cambiar el paso
-    console.log("Cambiando de paso:", currentStep, "➡️", step);
+    console.log(`Cambiando de paso: ${currentStep} ➡️ ${step}`);
     currentStep = step;
-
-    // 📌 Mostrar el nuevo paso en la interfaz
     showStep(currentStep);
 };
 
+// ===========================
+// Inicialización al Cargar el DOM
+// ===========================
 
-// Validación antes de enviar el formulario
 document.addEventListener('DOMContentLoaded', () => {
-    const firstNameInput = document.getElementById('firstName');
-
-    firstNameInput.addEventListener('blur', () => {
-      const words = firstNameInput.value.toLowerCase().split(" ");
-      firstNameInput.value = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    // Capitaliza los nombres al perder el foco
+    ['firstName', 'lastName', 'motherLastName'].forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('blur', () => {
+                input.value = input.value
+                    .toLowerCase()
+                    .split(" ")
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ");
+            });
+        }
     });
 
-    const lastNameInput = document.getElementById('lastName');
-
-    lastNameInput.addEventListener('blur', () => {
-      const words = lastNameInput.value.toLowerCase().split(" ");
-      lastNameInput.value = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-    });
-
-    const motherLastNameInput = document.getElementById('motherLastName');
-
-    motherLastNameInput.addEventListener('blur', () => {
-      const words = motherLastNameInput.value.toLowerCase().split(" ");
-      motherLastNameInput.value = words.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-    });
-
-
-    if (document.getElementById('doctor-form')) {
+    // Inicializar formulario y validar al enviar
+    const doctorForm = document.getElementById('doctor-form');
+    if (doctorForm) {
         showStep(currentStep);
 
-        document.getElementById('doctor-form').addEventListener('submit', (event) => {
-            console.log("Enviando formulario..."); // Depuración
-
+        doctorForm.addEventListener('submit', (event) => {
+            console.log("Enviando formulario...");
             if (!validateStep1() || !validateStep2() || !validateStep3()) {
                 event.preventDefault();
                 alert('Por favor, completa todos los campos antes de enviar.');

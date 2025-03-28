@@ -28,11 +28,12 @@ try {
     <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
     <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
     <link rel="stylesheet" href="./list-doctors.styles.css">
+    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <script src="./list-doctors.js" defer></script>
     <title>Lista de médicos</title>
 </head>
 
-<body style="display: flex;">
+<body>
     <?php
     $sidebarPath = $_SERVER['DOCUMENT_ROOT'] . '/views/components/sidebar.php';
     if (file_exists($sidebarPath)) {
@@ -42,87 +43,69 @@ try {
     }
     ?>
 
+    <main>
+        <div class="main-content">
 
-    <main class="content">
+            <div class="table-container">
+                <?php if (isset($_GET['error'])): ?>
+                    <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                        <?php echo htmlspecialchars($_GET['error']); ?>
+                    </div>
+                <?php endif; ?>
 
-        <?php
-        $headerPath = $_SERVER['DOCUMENT_ROOT'] . '/views/doctor/main/header-doctor.view.php';
-        if (file_exists($headerPath)) {
-            include $headerPath;
-        } else {
-            echo "<p style='color: red;'>Error: No se encontró el archivo header-doctor.view.php en '$headerPath'</p>";
-        }
-        ?>
-
-        <div class="table-container">
-            <?php if (isset($_GET['error'])): ?>
-                <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
-                    <?php echo htmlspecialchars($_GET['error']); ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (isset($_GET['success'])): ?>
-                <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
-                    <?php echo htmlspecialchars($_GET['success']); ?>
-                </div>
-            <?php endif; ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
-                        <th>CURP</th>
-                        <th>RFC</th>
-                        <th>Teléfono</th>
-                        <th>Email</th>
-                        <th>Sexo</th>
-                        <th>Fecha de nacimiento</th>
-                        <th>Estado</th>
-                        <th>Foto</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (count($doctors) > 0): ?>
-                        <?php foreach ($doctors as $doctor): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($doctor['id']); ?></td>
-                                <td><?php echo htmlspecialchars($doctor['names']); ?></td>
-                                <td><?php echo htmlspecialchars($doctor['last_name'] . ' ' . $doctor['last_name2']); ?></td>
-                                <td><?php echo htmlspecialchars($doctor['CURP']); ?></td>
-                                <td><?php echo htmlspecialchars($doctor['RFC']); ?></td>
-                                <td><?php echo htmlspecialchars($doctor['phone']); ?></td>
-                                <td><?php echo htmlspecialchars($doctor['email']); ?></td>
-                                <td><?php echo htmlspecialchars($doctor['gender']); ?></td>
-                                <td><?php echo htmlspecialchars($doctor['birth_date']); ?></td>
-                                <td><?php echo htmlspecialchars($doctor['id_state']); ?></td>
-                                <td>
-                                    <?php if (!empty($doctor['photo'])): ?>
-                                        <img src="/controllers/doctor/mostrar_foto.php?id=<?php echo $doctor['id']; ?>" alt="Foto del doctor" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
-                                    <?php else: ?>
-                                        <p>Sin foto</p>
-                                    <?php endif; ?>
-                                </td>
-
-
-
-                                <td class="actions-td">
-                                    <form action="/controllers/doctor/delete-doctor.controller.php" method="POST" style="margin-bottom: 5px;"> <input type="text" style="display: none;" value="<?php echo $doctor['id'] ?>" name="doctor_id"> <button type="submit" class="delete-btn" data-id="<?php echo $doctor['id']; ?>">Eliminar</button></form>
-                                    <a href="/views/doctor/register/register-doctor.view.php?id=<?php echo $doctor['id']; ?>">
-                                        <button class="update-btn">Actualizar</button>
-                                    </a>
-                                </td>
-
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
+                <?php if (isset($_GET['success'])): ?>
+                    <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                        <?php echo htmlspecialchars($_GET['success']); ?>
+                    </div>
+                <?php endif; ?>
+                <table>
+                    <thead>
                         <tr>
-                            <td colspan="14">No hay doctores registrados.</td>
+                            <th class="photo-column">Foto</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>CURP</th>
+                            <th>Teléfono</th>
+                            <th>Sexo</th>
+                            <th>Acciones</th>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php if (count($doctors) > 0): ?>
+                            <?php foreach ($doctors as $doctor): ?>
+                                <tr>
+                                    <td class="photo-column" >
+                                        <?php if (!empty($doctor['photo'])): ?>
+                                            <img src="/controllers/doctor/mostrar_foto.php?id=<?php echo $doctor['id']; ?>" alt="Foto del doctor" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                        <?php else: ?>
+                                            <p>Sin foto</p>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($doctor['names']); ?></td>
+                                    <td><?php echo htmlspecialchars($doctor['last_name'] . ' ' . $doctor['last_name2']); ?></td>
+                                    <td><?php echo htmlspecialchars($doctor['CURP']); ?></td>
+                                    <td><?php echo htmlspecialchars($doctor['phone']); ?></td>
+                                    <td><?php echo htmlspecialchars($doctor['gender']); ?></td>
+                                    <td class="actions-td">
+                                        <form action="/controllers/doctor/delete-doctor.controller.php" method="POST" class="action-wrapper">
+                                            <input type="hidden" name="doctor_id" value="<?php echo $doctor['id']; ?>">
+                                            <button type="submit" class="delete-btn" data-id="<?php echo $doctor['id']; ?>">Eliminar</button>
+                                        </form>
+
+                                        <a href="/views/doctor/register/register-doctor.view.php?id=<?php echo $doctor['id']; ?>" class="action-wrapper">
+                                            <button class="update-btn">Actualizar</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="14">No hay doctores registrados.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </main>
 </body>

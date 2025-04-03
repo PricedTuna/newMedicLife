@@ -67,24 +67,20 @@ try {
 
     <main class="content">
 
-        <?php
-        $headerPath = $_SERVER['DOCUMENT_ROOT'] . '/views/doctor/main/header-doctor.view.php';
-        if (file_exists($headerPath)) {
-            include $headerPath;
-        } else {
-            echo "<p style='color: red;'>Error: No se encontró el archivo header-doctor.view.php en '$headerPath'</p>";
-        }
-        ?>
-
         <div class="center-container">
             <div class="form-container">
+                <div class="form-header">
+                    <a href="/views/doctor/main/main-doctor.view.php" class="form-back-btn">
+                        <button class="back-btn">Volver</button>
+                    </a>
+                    <h2 class="form-title"><?php echo $doctor ? 'Actualizar Doctor' : 'Registrar Doctor'; ?></h2>
+                </div>
                 <div class="steps">
                     <div class="step step-active" data-step="1">Paso 1</div>
                     <div class="step" data-step="2">Paso 2</div>
                     <div class="step" data-step="3">Paso 3</div>
                 </div>
 
-                <h2><?php echo $doctor ? 'Actualizar Doctor' : 'Registrar Doctor'; ?></h2>
                 <?php if (isset($_GET['error'])): ?>
                     <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
                         <?php echo htmlspecialchars($_GET['error']); ?>

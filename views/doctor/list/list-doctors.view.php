@@ -24,6 +24,7 @@ try {
     <script src="/views/components/sidebar.app.js" defer></script>
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/doctor/register/register-doctor.app.js" defer></script>
+    <link rel="stylesheet" href="/resset.css">
     <link rel="stylesheet" href="/views/doctor/main/main-doctor.styles.css">
     <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
     <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
@@ -45,7 +46,12 @@ try {
 
     <main>
         <div class="main-content">
-
+            <div class="table-header">
+                <h1>Lista de doctores</h1>
+                <a href="/views/doctor/register/register-doctor.view.php">
+                    <button class="create-btn">Agregar doctor</button>
+                </a>
+            </div>
             <div class="table-container">
                 <?php if (isset($_GET['error'])): ?>
                     <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
@@ -58,6 +64,7 @@ try {
                         <?php echo htmlspecialchars($_GET['success']); ?>
                     </div>
                 <?php endif; ?>
+
                 <table>
                     <thead>
                         <tr>
@@ -74,7 +81,7 @@ try {
                         <?php if (count($doctors) > 0): ?>
                             <?php foreach ($doctors as $doctor): ?>
                                 <tr>
-                                    <td class="photo-column" >
+                                    <td class="photo-column">
                                         <?php if (!empty($doctor['photo'])): ?>
                                             <img src="/controllers/doctor/mostrar_foto.php?id=<?php echo $doctor['id']; ?>" alt="Foto del doctor" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                                         <?php else: ?>

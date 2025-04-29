@@ -15,8 +15,9 @@
 
 /* Ajustar el contenido principal para que no se solape con el header */
 main.content {
-    margin-top: 90px; /* Ajusta este valor según la altura del header */
-    padding: 20px;
+    margin-top: 0; /* Ajusta este valor según la altura del header */
+    padding: 0;
+    margin-left: 0;
 }
 
 .header-title {

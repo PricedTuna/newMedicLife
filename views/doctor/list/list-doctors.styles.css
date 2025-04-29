@@ -198,6 +198,8 @@ h1 {
   display: none;
 }
 
+
+
 @media (max-width: 800px) {
   body {
     grid-template-columns: 1fr;

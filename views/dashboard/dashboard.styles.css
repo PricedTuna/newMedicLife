@@ -220,6 +220,32 @@ header h1 {
     background-color: #f9f9f9;
 }
 
+@media (max-width: 810px) {
+    /* 1) Cambiamos sólo la disposición interna de <main>, no tocamos el sidebar */
+    main {
+      display: flex;
+      flex-direction: column;     /* pone doctor-info debajo de main-content */
+      gap: 10px;                  /* mismo gap que antes */
+      margin-left: 20px;          /* conserva el gutter respecto al sidebar */
+      margin-right: 20px;          /* conserva el gutter respecto al sidebar */
+    }
+  
+    .main-content,
+    .doctor-info,
+    .upcoming-appointments,
+    .upcoming-appointments-month,
+    .stats,
+    .chart,
+    .patient-data,
+    #calendar {
+      width: 100%;
+      margin: 0;
+      padding: 1em;
+      box-sizing: border-box;
+    }
+  }
+  
+
 @media (max-width: 800px) {
     /* 1) Desactiva la grid del body */
     body {

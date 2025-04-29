@@ -22,7 +22,7 @@ html {
 
 main {
     display: flex;
-    gap: 15px; /* Reducir espacio entre elementos */
+    gap: 10px; /* Reducir espacio entre elementos */
     align-items: flex-start;
     margin-left: 20px;
 }
@@ -31,7 +31,7 @@ main {
 .main-content {
     flex-grow: 1;
     background-color: var(--hover-clr);
-    padding: 15px; /* Reducir padding */
+    padding: 10px; /* Reducir padding */
     border-radius: 5px;
 }
 
@@ -41,7 +41,6 @@ body {
     color: var(--text-clr);
     display: grid;
     grid-template-columns: auto 1fr;
-    padding-right: 20px; /* Pequeño espacio en el lado derecho */
 }
 
 main p {
@@ -221,71 +220,76 @@ header h1 {
     background-color: #f9f9f9;
 }
 
-@media(max-width: 800px) {
+@media (max-width: 800px) {
+    /* 1) Desactiva la grid del body */
     body {
-        grid-template-columns: 1fr;
-        padding: 0 20px; /* Dejar espacio a ambos lados */
+      display: block;                   /* ya no habrá dos columnas */
+      grid-template-columns: unset;     /* o: grid-template-columns: none; */
+      margin: 0;
+      padding: 0;
     }
+  
+    /* 2) Main con gutters fijos (izq y derecha iguales) */
     main {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    
-        /* Padding vertical fijo, horizontal relativo */
-        padding-block-start: 1.5em;    /* espacio arriba */
-        padding-block-end: 60px;       /* espacio abajo */
-        padding-inline: 5vw;           /* 5% del viewport a cada lado */
-    
-        max-width: 1000px;             /* opcional: para no crecer demasiado */
-        margin: 0 auto;                /* centra el main */
-        box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 1000px;    /* o el ancho que quieras */
+      margin: 0 auto;       /* centra en la pantalla */
+      padding-top: 1.5em;
+      padding-bottom: 60px;
+      padding-left: 20px;   /* gutter fijo */
+      padding-right: 20px;  /* gutter fijo */
+      box-sizing: border-box;
     }
-    .container {
-        border: none;
-        padding: 1em; /* Reducir padding */
-    }
-
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem; /* Menor espacio entre elementos */
-        width: 100%;
-        padding: 1em;
-    }
-
-    .search-container input {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 0.5em; /* Reducir padding */
-    }
-    
-    .stats {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1em; /* Separación pequeña */
-        flex-wrap: wrap;
-        padding: 0 1em;
-        box-sizing: border-box;
-    }
-
-    .card {
-        flex: 0 0 45%; /* Hacer las tarjetas un poco más pequeñas */
-        max-width: 45%;
-        padding: 1vmin 2vmin;
-        font-size: 2.5vmin;
-    }
-
-    .chart, .patient-data, .doctor-info, .upcoming-appointments, .upcoming-appointments-month {
-        width: 100%;
-        margin-top: 20px;
-        padding: 1em;
-        box-sizing: border-box;
-    }
-
+  
+    /* 3) Paneles al 100% del ancho interno de main */
+    .main-content,
+    .doctor-info,
+    .upcoming-appointments,
+    .upcoming-appointments-month,
+    .stats,
+    .chart,
+    .patient-data,
     #calendar {
-        margin-top: 1em;
-        padding: 1em;
-        box-sizing: border-box;
+      width: 100%;
+      margin: 0;
+      padding: 1em;
+      box-sizing: border-box;
     }
-}
+  
+    /* 4) Ajustes puntuales */
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      padding: 0.75em 0;
+    }
+  
+    .search-container input {
+      width: 100%;
+      max-width: none;
+    }
+  
+    #calendar {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 2px;
+      padding: 0.5em;
+    }
+    .day {
+      padding: 0.5em;
+      font-size: 0.9em;
+    }
+  
+    .card {
+      padding: 1vmin;
+      font-size: 1.2em;
+    }
+  
+    .chart-placeholder {
+      height: 150px;
+    }
+  
+    /* Ya no es necesario tocar márgenes extra en .doctor-info */
+  }
+  

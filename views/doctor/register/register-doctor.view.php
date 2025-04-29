@@ -72,6 +72,8 @@ try {
                 <div class="form-header">
                     <a href="/views/doctor/main/main-doctor.view.php" class="form-back-btn">
                         <button class="back-btn">Volver</button>
+                        <span class="back-btn-icon">&#8617;</span>
+
                     </a>
                     <h2 class="form-title"><?php echo $doctor ? 'Actualizar Doctor' : 'Registrar Doctor'; ?></h2>
                 </div>

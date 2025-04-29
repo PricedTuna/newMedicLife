@@ -49,6 +49,7 @@ try {
                 <h1>Lista de doctores</h1>
                 <a href="/views/doctor/register/register-doctor.view.php">
                     <button class="create-btn">Agregar doctor</button>
+                    
                 </a>
             </div>
             <div class="table-container">
@@ -63,6 +64,10 @@ try {
                         <?php echo htmlspecialchars($_GET['success']); ?>
                     </div>
                 <?php endif; ?>
+
+                <a href="/views/doctor/register/register-doctor.view.php" aria-label="Agregar doctor">
+                    <button class="icon-btn table-add-btn">+</button>
+                </a>
 
                 <table>
                     <thead>

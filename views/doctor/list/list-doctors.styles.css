@@ -226,6 +226,30 @@ h1 {
     align-items: center;
   }
 
+  /* Botón “+” discreto */
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;            /* Ajusta tamaño según te guste */
+  color: var(--accent-clr);
+  cursor: pointer;
+  width: 2em;
+  height: 2em;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.icon-btn:active {
+  transform: scale(0.9);
+  opacity: 0.7;
+}
+
+.create-btn {
+  display: none;
+}
+
   /* Oculta el encabezado */
   table thead {
     display: none;

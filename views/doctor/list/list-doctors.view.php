@@ -28,7 +28,6 @@ try {
     <link rel="stylesheet" href="/views/doctor/main/main-doctor.styles.css">
     <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
     <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
-    <link rel="stylesheet" href="./list-doctors.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <script src="./list-doctors.js" defer></script>
     <title>Lista de médicos</title>
@@ -88,11 +87,11 @@ try {
                                             <p>Sin foto</p>
                                         <?php endif; ?>
                                     </td>
-                                    <td><?php echo htmlspecialchars($doctor['names']); ?></td>
-                                    <td><?php echo htmlspecialchars($doctor['last_name'] . ' ' . $doctor['last_name2']); ?></td>
-                                    <td><?php echo htmlspecialchars($doctor['CURP']); ?></td>
-                                    <td><?php echo htmlspecialchars($doctor['phone']); ?></td>
-                                    <td><?php echo htmlspecialchars($doctor['gender']); ?></td>
+                                    <td data-label="Nombre"><?php echo htmlspecialchars($doctor['names']); ?></td>
+                                    <td data-label="Apellidos"><?php echo htmlspecialchars($doctor['last_name'] . ' ' . $doctor['last_name2']); ?></td>
+                                    <td data-label="CURP"><?php echo htmlspecialchars($doctor['CURP']); ?></td>
+                                    <td data-label="Teléfono"><?php echo htmlspecialchars($doctor['phone']); ?></td>
+                                    <td data-label="Sexo"><?php echo htmlspecialchars($doctor['gender']); ?></td>
                                     <td class="actions-td">
                                         <form action="/controllers/doctor/delete-doctor.controller.php" method="POST" class="action-wrapper">
                                             <input type="hidden" name="doctor_id" value="<?php echo $doctor['id']; ?>">

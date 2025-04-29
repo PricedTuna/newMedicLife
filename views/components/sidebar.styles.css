@@ -120,6 +120,7 @@ html {
         grid-auto-columns: 60px;
         grid-auto-flow: column;
         align-items: center;
+        justify-content: center; /*agregado sara, se supone que con este va a centrar el menu de navegacion, pero necesito checar cuando todas las pantallas esten responsivas*/
         overflow-x: scroll;
     }
     #sidebar ul li {

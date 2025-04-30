@@ -2,24 +2,30 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <script src="/views/components/sidebar.app.js" defer></script>
+    {* <link rel="stylesheet" href="./register-patient.styles.css">
+    <link rel="stylesheet" href="../../components/sidebar.styles.css">
+    <script src="../../components/sidebar.app.js" defer></script>
+    <script src="../../patient/register/register-patient.app.js" defer></script> *}
+    
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/doctor/register/register-doctor.app.js" defer></script>
-    <link rel="stylesheet" href="/resset.css">
     <link rel="stylesheet" href="/views/doctor/main/main-doctor.styles.css">
-    <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
     <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
-    <link rel="stylesheet" href="./list-doctors.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <script src="./list-doctors.js" defer></script>
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="/register-patient.styles.css">
+    <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
+    <script src="/views/components/sidebar.app.js" defer></script>
+
     <title>Lista de médicos</title>
 </head>
 <body>
 
-    {include file=$sidebarPath}
+    {include file="../../components/sidebar.tpl"}
+    
+    <main >
 
-    <main>
         <div class="main-content">
             <div class="table-header">
                 <h1>Lista de doctores</h1>
@@ -39,6 +45,10 @@
                         {$success|escape}
                     </div>
                 {/if}
+
+                <a href="/views/doctor/register/register-doctor.view.php" aria-label="Agregar doctor">
+                    <button class="icon-btn table-add-btn">+</button>
+                </a>
 
                 <table>
                     <thead>
@@ -63,11 +73,11 @@
                                             <p>Sin foto</p>
                                         {/if}
                                     </td>
-                                    <td>{$doctor.names|escape}</td>
-                                    <td>{$doctor.last_name|escape} {$doctor.last_name2|escape}</td>
-                                    <td>{$doctor.CURP|escape}</td>
-                                    <td>{$doctor.phone|escape}</td>
-                                    <td>{$doctor.gender|escape}</td>
+                                    <td data-label="Nombre">{$doctor.names|escape}</td>
+                                    <td data-label="Apellidos">{$doctor.last_name|escape} {$doctor.last_name2|escape}</td>
+                                    <td data-label="CURP">{$doctor.CURP|escape}</td>
+                                    <td data-label="Teléfono">{$doctor.phone|escape}</td>
+                                    <td data-label="Sexo">{$doctor.gender|escape}</td>
                                     <td class="actions-td">
                                         <form action="/controllers/doctor/delete-doctor.controller.php" method="POST" class="action-wrapper">
                                             <input type="hidden" name="doctor_id" value="{$doctor.id}">

@@ -10,7 +10,12 @@
     --test-clr: #a9cce3;
 }
 
-body {
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--base-clr);
     color: var(--text-clr);
@@ -19,7 +24,7 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-}
+} */
 
 .center-container {
     display: flex;
@@ -27,7 +32,10 @@ body {
     justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 22px;
+    margin-bottom: 50px;
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-right: 30px;
 }
 
 .form-container {
@@ -35,7 +43,8 @@ body {
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    max-width: 80%;
+    /*max-width: 80%;*/
+    height: 100%;
     width: 100%;
     margin-top: 20px;
 }
@@ -153,7 +162,7 @@ button {
 
 /* Navegación */
 
-.nav {
+/* .nav {
     position: absolute;
     top: 0;
     left: 0;
@@ -177,7 +186,7 @@ button {
 .nav img {
     width: 40%;
     height: 40%;
-}
+} */
 
 
 /* Input de archivo */
@@ -243,4 +252,69 @@ button {
 .form-back-btn {
     position: absolute;
     left: 0;
+}
+
+.back-btn-icon {
+    display: none;
+  }
+
+@media (max-width: 800px) {
+    /*
+    .steps {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .step {
+        flex: 0 0 80px;
+        padding: 0.3rem 0;
+        max-width: 80%;
+        font-size: 0.9rem;
+    }
+    */
+
+    .steps {
+        display: flex;
+    }
+
+    .step {
+        flex: 0 0 20%;
+        max-width: 20%;
+        padding: 1vmin 2vmin;
+        font-size: 3vmin;
+        margin: 0 2vw;
+    }
+
+    .step:nth-child(2) {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .back-btn {
+        display: none;
+      }
+
+      form-back-btn .back-btn {
+        display: none;
+      }
+       /* Flechita extra pequeña */
+  .form-back-btn .back-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;               /* ancho reducido */
+    height: 24px;              /* alto reducido */
+    background-color: var(--accent-clr);
+    color: var(--hover-clr);
+    border-radius: 4px;        /* esquinas suaves */
+    font-size: 1rem;           /* tamaño de la flecha */
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    padding: 0;
+  }
+    
 }

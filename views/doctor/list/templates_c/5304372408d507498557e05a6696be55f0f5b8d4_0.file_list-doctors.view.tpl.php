@@ -1,58 +1,61 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-04-28 02:44:39
+/* Smarty version 5.4.5, created on 2025-04-30 03:13:22
   from 'file:list-doctors.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_680eeb9758c927_90604810',
+  'unifunc' => 'content_6811955241c897_15966721',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5304372408d507498557e05a6696be55f0f5b8d4' => 
     array (
       0 => 'list-doctors.view.tpl',
-      1 => 1745808254,
+      1 => 1745982800,
       2 => 'file',
     ),
   ),
   'includes' => 
   array (
+    'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_680eeb9758c927_90604810 (\Smarty\Template $_smarty_tpl) {
+function content_6811955241c897_15966721 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/doctor/list';
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <?php echo '<script'; ?>
- src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
->
+        
     <?php echo '<script'; ?>
  src="/views/doctor/list/views-handler.js" defer><?php echo '</script'; ?>
 >
     <?php echo '<script'; ?>
  src="/views/doctor/register/register-doctor.app.js" defer><?php echo '</script'; ?>
 >
-    <link rel="stylesheet" href="/resset.css">
     <link rel="stylesheet" href="/views/doctor/main/main-doctor.styles.css">
-    <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
     <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
-    <link rel="stylesheet" href="./list-doctors.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <?php echo '<script'; ?>
  src="./list-doctors.js" defer><?php echo '</script'; ?>
 >
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="/register-patient.styles.css">
+    <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
+    <?php echo '<script'; ?>
+ src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
+>
+
     <title>Lista de médicos</title>
 </head>
 <body>
 
-    <?php $_smarty_tpl->renderSubTemplate($_smarty_tpl->getValue('sidebarPath'), $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
+    <?php $_smarty_tpl->renderSubTemplate("file:../../components/sidebar.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
 ?>
+    
+    <main >
 
-    <main>
         <div class="main-content">
             <div class="table-header">
                 <h1>Lista de doctores</h1>
@@ -74,6 +77,10 @@ $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/doctor/list';
 
                     </div>
                 <?php }?>
+
+                <a href="/views/doctor/register/register-doctor.view.php" aria-label="Agregar doctor">
+                    <button class="icon-btn table-add-btn">+</button>
+                </a>
 
                 <table>
                     <thead>
@@ -104,16 +111,16 @@ $foreach0DoElse = false;
                                             <p>Sin foto</p>
                                         <?php }?>
                                     </td>
-                                    <td><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['names'], ENT_QUOTES, 'UTF-8', true);?>
+                                    <td data-label="Nombre"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['names'], ENT_QUOTES, 'UTF-8', true);?>
 </td>
-                                    <td><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['last_name'], ENT_QUOTES, 'UTF-8', true);?>
+                                    <td data-label="Apellidos"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['last_name'], ENT_QUOTES, 'UTF-8', true);?>
  <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['last_name2'], ENT_QUOTES, 'UTF-8', true);?>
 </td>
-                                    <td><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['CURP'], ENT_QUOTES, 'UTF-8', true);?>
+                                    <td data-label="CURP"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['CURP'], ENT_QUOTES, 'UTF-8', true);?>
 </td>
-                                    <td><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['phone'], ENT_QUOTES, 'UTF-8', true);?>
+                                    <td data-label="Teléfono"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['phone'], ENT_QUOTES, 'UTF-8', true);?>
 </td>
-                                    <td><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['gender'], ENT_QUOTES, 'UTF-8', true);?>
+                                    <td data-label="Sexo"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('doctor')['gender'], ENT_QUOTES, 'UTF-8', true);?>
 </td>
                                     <td class="actions-td">
                                         <form action="/controllers/doctor/delete-doctor.controller.php" method="POST" class="action-wrapper">

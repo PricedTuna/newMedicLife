@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-04-28 03:39:38
+/* Smarty version 5.4.5, created on 2025-04-30 01:43:19
   from 'file:register-doctor.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_680ef87ad83b90_84622283',
+  'unifunc' => 'content_6811803742fc19_34446933',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'cac0066a45d4c24c58a4d5fe34813ed5815f6b54' => 
     array (
       0 => 'register-doctor.view.tpl',
-      1 => 1745811355,
+      1 => 1745977392,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:steps/step3.tpl' => 1,
   ),
 ))) {
-function content_680ef87ad83b90_84622283 (\Smarty\Template $_smarty_tpl) {
+function content_6811803742fc19_34446933 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/doctor/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -79,6 +79,7 @@ $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/doctor/register';
                 <div class="form-header">
                     <a href="/views/doctor/main/main-doctor.view.php" class="form-back-btn">
                         <button class="back-btn">Volver</button>
+                        <span class="back-btn-icon">&#8617;</span>
                     </a>
                     <h2 class="form-title">
                         <?php if ($_smarty_tpl->getValue('doctor')) {?>

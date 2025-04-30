@@ -8,6 +8,7 @@
     <script src="./register-doctor.app.js" defer></script>
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <script src="/views/components/sidebar.app.js" defer></script>
+    <script src="/views/components/sidebar.app.js" defer></script>
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/doctor/register/register-doctor.app.js" defer></script>
     <link rel="stylesheet" href="/views/doctor/main/main-doctor.styles.css">
@@ -36,6 +37,7 @@
                 <div class="form-header">
                     <a href="/views/doctor/main/main-doctor.view.php" class="form-back-btn">
                         <button class="back-btn">Volver</button>
+                        <span class="back-btn-icon">&#8617;</span>
                     </a>
                     <h2 class="form-title">
                         {if $doctor}

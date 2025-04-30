@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./register-doctor.styles.css">
+    <script src="./register-doctor.app.js" defer></script>
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <script src="/views/components/sidebar.app.js" defer></script>
+    <script src="/views/doctor/list/views-handler.js" defer></script>
+    <script src="/views/doctor/register/register-doctor.app.js" defer></script>
+    <link rel="stylesheet" href="/views/doctor/main/main-doctor.styles.css">
+    <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
+    <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
+    <title>Registro de Doctores</title>
+
+    <script>
+        // Asegúrate de que las variables de Smarty se inyecten correctamente en JavaScript
+        window.municipalities = {$municipalities|json_encode};
+        window.localities = {$localities|json_encode};
+        window.states = {$states|json_encode};
+    </script>
+
+    <script src="register-doctor.view.js" defer></script>
+</head>
+
+<body>
+
+    {include file=$sidebarPath} <!-- Aquí se incluye el sidebar, según la variable Smarty -->
+
+    <main class="content">
+
+        <div class="center-container">
+            <div class="form-container">
+                <div class="form-header">
+                    <a href="/views/doctor/main/main-doctor.view.php" class="form-back-btn">
+                        <button class="back-btn">Volver</button>
+                    </a>
+                    <h2 class="form-title">
+                        {if $doctor}
+                            Actualizar Doctor
+                        {else}
+                            Registrar Doctor
+                        {/if}
+                    </h2>
+                </div>
+
+                <!-- Indicadores de los pasos -->
+                <div class="steps">
+                    <div class="step step-active" data-step="1">Paso 1</div>
+                    <div class="step" data-step="2">Paso 2</div>
+                    <div class="step" data-step="3">Paso 3</div>
+                </div>
+
+                <!-- Si hay un error, lo mostramos aquí -->
+                {if isset($error)}
+                    <div
+                        style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                        {$error|escape}
+                    </div>
+                {/if}
+
+                <!-- Formulario para registrar o actualizar al doctor -->
+                <form action="/controllers/doctor/register-doctor.controller.php" method="POST" id="doctor-form" enctype="multipart/form-data">
+                    {include file='steps/step1.tpl'} <!-- Paso 1 -->
+                    {include file='steps/step2.tpl'} <!-- Paso 2 -->
+                    {include file='steps/step3.tpl'} <!-- Paso 3 -->
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

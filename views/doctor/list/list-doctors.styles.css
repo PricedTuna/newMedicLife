@@ -107,7 +107,6 @@ h1 {
   color: black;
   font-size: 3.5rem;
   font-weight: 700;
-  margin-bottom: 2rem;
   text-align: center;
 }
 
@@ -145,7 +144,9 @@ h1 {
 }
 
 .delete-btn,
-.update-btn {
+.update-btn,
+.create-btn,
+.back-btn {
   flex: 1;
   width: 100%;
   padding: 0.8rem;
@@ -176,6 +177,30 @@ h1 {
   transform: scale(1.05);
 }
 
+.create-btn {
+  background-color: rgb(58, 150, 0);
+}
+
+.create-btn:hover {
+  background-color: rgb(66, 172, 0);
+}
+
+.back-btn {
+  background-color: gray;
+}
+
+.back-btn:hover {
+  background-color: lightgray;
+}
+
 .photo-column {
   padding-left: 0.8rem;
+}
+
+.table-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
 }

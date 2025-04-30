@@ -3,7 +3,7 @@
 
 $host     = "localhost:3306";
 $dbname   = "medic_life";
-$username = "root";           
+$username = "mediclife";           
 $password = "root";             
 
 try {

@@ -224,3 +224,23 @@ button {
     border-radius: 1em;
     margin-bottom: 12px;
 }
+
+.form-header {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    position: relative;
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+}
+
+.form-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.form-back-btn {
+    position: absolute;
+    left: 0;
+}

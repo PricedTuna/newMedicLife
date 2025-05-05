@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-04-30 03:13:22
+/* Smarty version 5.4.5, created on 2025-04-30 22:31:21
   from 'file:list-doctors.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6811955241c897_15966721',
+  'unifunc' => 'content_6812a4b9482c29_42371603',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5304372408d507498557e05a6696be55f0f5b8d4' => 
     array (
       0 => 'list-doctors.view.tpl',
-      1 => 1745982800,
+      1 => 1746052279,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_6811955241c897_15966721 (\Smarty\Template $_smarty_tpl) {
+function content_6812a4b9482c29_42371603 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/doctor/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -43,7 +43,7 @@ $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/doctor/list';
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/register-patient.styles.css">
     <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
-    <?php echo '<script'; ?>
+        <?php echo '<script'; ?>
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
 

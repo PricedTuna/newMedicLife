@@ -11,8 +11,9 @@
   --test-clr: #a9cce3;
 }
 
+
 html {
-  font-family: Poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.5rem;
 }
 
@@ -23,6 +24,8 @@ a {
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+
 }
 
 body {
@@ -390,32 +393,4 @@ h1 {
     content: "";
     display: none;
   }
-}
-
-/* Navegación */
-
-.nav {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--test-clr);
-  border: 2px solid var(--line-clr);
-  cursor: pointer;
-  border-radius: 50%;
-  margin: 16px;
-  transition: 150ms ease-in-out;
-}
-
-.nav:hover {
-  transform: scale(1.05);
-}
-
-.nav img {
-  width: 40%;
-  height: 40%;
 }

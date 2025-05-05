@@ -259,22 +259,6 @@ button {
   }
 
 @media (max-width: 800px) {
-    /*
-    .steps {
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        width: 100%;
-        padding: 0 1rem;
-    }
-
-    .step {
-        flex: 0 0 80px;
-        padding: 0.3rem 0;
-        max-width: 80%;
-        font-size: 0.9rem;
-    }
-    */
 
     .steps {
         display: flex;

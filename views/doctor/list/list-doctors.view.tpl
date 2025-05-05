@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/register-patient.styles.css">
     <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
+    {* <link rel="stylesheet" href="../../../resset.css">  *}
     <script src="/views/components/sidebar.app.js" defer></script>
 
     <title>Lista de médicos</title>

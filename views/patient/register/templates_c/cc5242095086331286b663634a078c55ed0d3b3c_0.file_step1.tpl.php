@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-04-27 06:48:20
+/* Smarty version 5.4.5, created on 2025-05-15 02:12:46
   from 'file:steps/step1.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_680dd3344af0f6_02995560',
+  'unifunc' => 'content_68254d9e7a9590_92026619',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'cc5242095086331286b663634a078c55ed0d3b3c' => 
     array (
       0 => 'steps/step1.tpl',
-      1 => 1745736498,
+      1 => 1747275139,
       2 => 'file',
     ),
   ),
@@ -20,54 +20,65 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_680dd3344af0f6_02995560 (\Smarty\Template $_smarty_tpl) {
+function content_68254d9e7a9590_92026619 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/patient/register/steps';
-?><div class="form-step" id="step-1">
+?><input type="hidden" name="patient_id" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+">
+
+<div class="form-step" id="step-1">
     <div class="form-group">
         <label for="lastName">Apellido Paterno</label>
-        <input type="text" id="lastName" name="last_name" required>
+        <input type="text" id="lastName" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['last_name'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="fatherLastName"" required>
     </div>
     <div class="form-group">
         <label for="motherLastName">Apellido Materno</label>
-        <input type="text" id="motherLastName" name="last_name2" required>
+        <input type="text" id="motherLastName" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['last_name2'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="motherLastName" required>
     </div>
     <div class="form-group">
         <label for="firstName">Nombre</label>
-        <input type="text" id="firstName" name="names" required>
+        <input type="text" id="firstName" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['names'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="name" required>
     </div>
     <div class="form-group">
         <label for="phoneNumber">Número Telefónico</label>
-        <input type="number" id="phoneNumber" name="phone" required>
+        <input type="number" id="phoneNumber" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['phone'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="phoneNumber" required>
     </div>
     <div class="form-group">
         <label for="email">Correo Electrónico</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['email'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="email" required>
     </div>
     <div class="form-group">
         <label for="gender">Sexo</label>
         <select id="gender" name="gender" required>
             <option value="">Seleccione...</option>
-            <option value="M">Masculino</option>
-            <option value="F">Femenino</option>
+            <option value="M" <?php if ($_smarty_tpl->getValue('patient')['gender'] == 'M') {?>selected<?php }?>>Masculino</option>
+            <option value="F" <?php if ($_smarty_tpl->getValue('patient')['gender'] == 'F') {?>selected<?php }?>>Femenino</option>
         </select>
     </div>
     <div class="form-group">
         <label for="birthDate">Fecha de Nacimiento</label>
-        <input type="date" id="birthDate" name="birth_date" required>
+        <input type="date" id="birthDate" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['birth_date'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="birthDate" required>
     </div>
     <div class="form-group">
         <label for="curp">CURP</label>
-        <input type="text" id="curp" name="CURP" required>
+        <input type="text" id="curp" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['CURP'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="curp" required>
     </div>
     <div class="form-group">
         <label for="rfc">RFC</label>
-        <input type="text" id="rfc" name="RFC" required>
+        <input type="text" id="rfc" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['RFC'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="rfc" required>
     </div>
     <div class="form-group">
         <label for="affiliationNumber">Número de Afiliación</label>
-        <input type="text" id="affiliationNumber" name="insurance_number" required>
+        <input type="text" id="affiliationNumber" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['insurance_number'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="affiliationNumber" required>
     </div>
     <button type="button" class="next-btn" onclick="nextStep(2)">Siguiente</button>
-</div>
-<?php }
+</div><?php }
 }

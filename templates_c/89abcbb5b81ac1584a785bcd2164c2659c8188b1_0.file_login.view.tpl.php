@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-04-27 06:28:09
+/* Smarty version 5.4.5, created on 2025-05-06 00:24:21
   from 'file:login.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_680dce79e2dd49_64373349',
+  'unifunc' => 'content_681956b5b074f3_88858992',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '89abcbb5b81ac1584a785bcd2164c2659c8188b1' => 
     array (
       0 => 'login.view.tpl',
-      1 => 1745735287,
+      1 => 1746491049,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_680dce79e2dd49_64373349 (\Smarty\Template $_smarty_tpl) {
+function content_681956b5b074f3_88858992 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/login';
 ?><!DOCTYPE html>
 <html lang="es">

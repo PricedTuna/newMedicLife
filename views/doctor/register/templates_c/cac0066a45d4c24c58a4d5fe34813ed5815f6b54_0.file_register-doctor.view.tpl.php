@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-04-30 04:24:23
+/* Smarty version 5.4.5, created on 2025-05-13 22:48:36
   from 'file:register-doctor.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6811a5f7c66f19_29211287',
+  'unifunc' => 'content_6823cc44f2a9d5_75191789',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'cac0066a45d4c24c58a4d5fe34813ed5815f6b54' => 
     array (
       0 => 'register-doctor.view.tpl',
-      1 => 1745980391,
+      1 => 1747176510,
       2 => 'file',
     ),
   ),
@@ -23,7 +23,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:steps/step3.tpl' => 1,
   ),
 ))) {
-function content_6811a5f7c66f19_29211287 (\Smarty\Template $_smarty_tpl) {
+function content_6823cc44f2a9d5_75191789 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/doctor/register';
 ?><!DOCTYPE html>
 <html lang="es">

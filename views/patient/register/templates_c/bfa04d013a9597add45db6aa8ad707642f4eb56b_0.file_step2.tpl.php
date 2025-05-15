@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-04-27 06:48:20
+/* Smarty version 5.4.5, created on 2025-05-15 02:02:08
   from 'file:steps/step2.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_680dd3344ba692_91355554',
+  'unifunc' => 'content_68254b206ee562_82133528',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'bfa04d013a9597add45db6aa8ad707642f4eb56b' => 
     array (
       0 => 'steps/step2.tpl',
-      1 => 1745736418,
+      1 => 1747274508,
       2 => 'file',
     ),
   ),
@@ -20,28 +20,33 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_680dd3344ba692_91355554 (\Smarty\Template $_smarty_tpl) {
+function content_68254b206ee562_82133528 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/patient/register/steps';
 ?><div class="form-step" id="step-2" style="display: none;">
     <div class="form-group">
         <label for="street">Calle</label>
-        <input type="text" id="street" name="street" required>
+        <input type="text" id="street" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['street'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="street" required>
     </div>
     <div class="form-group">
         <label for="neighborhood">Colonia</label>
-        <input type="text" id="neighborhood" name="neighborhood" required>
+        <input type="text" id="neighborhood" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['neighborhood'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="neighborhood" required>
     </div>
     <div class="form-group">
         <label for="postalCode">Código Postal</label>
-        <input type="number" id="postalCode" name="CP" required>
+        <input type="number" id="postalCode" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['CP'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="postalCode" required>
     </div>
     <div class="form-group">
         <label for="extNumber">Número Exterior</label>
-        <input type="text" id="extNumber" name="external_number" required>
+        <input type="text" id="extNumber" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['external_number'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="extNumber" required>
     </div>
     <div class="form-group">
-        <label for="extNumber">Número Interior</label>
-        <input type="text" id="extNumber" name="internal_number" required>
+        <label for="intNumber">Número Interior</label>
+        <input type="text" id="extNumber" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['internal_number'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="intNumber" required>
     </div>
     <div class="form-group">
         <label for="state">Estado</label>

@@ -1,23 +1,23 @@
 <div class="form-step" id="step-2" style="display: none;">
     <div class="form-group">
         <label for="street">Calle</label>
-        <input type="text" id="street" name="street" required>
+        <input type="text" id="street" value="{$patient.street|default: ''}" name="street" required>
     </div>
     <div class="form-group">
         <label for="neighborhood">Colonia</label>
-        <input type="text" id="neighborhood" name="neighborhood" required>
+        <input type="text" id="neighborhood" value="{$patient.neighborhood|default: ''}" name="neighborhood" required>
     </div>
     <div class="form-group">
         <label for="postalCode">Código Postal</label>
-        <input type="number" id="postalCode" name="CP" required>
+        <input type="number" id="postalCode" value="{$patient.CP|default: ''}" name="postalCode" required>
     </div>
     <div class="form-group">
         <label for="extNumber">Número Exterior</label>
-        <input type="text" id="extNumber" name="external_number" required>
+        <input type="text" id="extNumber" value="{$patient.external_number|default: ''}" name="extNumber" required>
     </div>
     <div class="form-group">
-        <label for="extNumber">Número Interior</label>
-        <input type="text" id="extNumber" name="internal_number" required>
+        <label for="intNumber">Número Interior</label>
+        <input type="text" id="extNumber" value="{$patient.internal_number|default: ''}" name="intNumber" required>
     </div>
     <div class="form-group">
         <label for="state">Estado</label>

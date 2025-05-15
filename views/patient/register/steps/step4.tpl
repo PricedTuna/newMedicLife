@@ -1,7 +1,7 @@
 <div class="form-step" id="step-4" style="display: none;">
     <div class="form-group">
         <label for="contactFirstName">Nombre del Contacto</label>
-        <input type="text" id="contactFirstName" required>
+        <input type="text" id="contactFirstName"  required>
     </div>
     <div class="form-group">
         <label for="contactLastName">Apellido Paterno</label>

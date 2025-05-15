@@ -36,12 +36,28 @@ if (empty($municipalities) || empty($localities) || empty($states)) {
     echo "<script>alert('Advertencia: Algunos datos no se han cargado correctamente.');</script>";
 }
 
+try {
+    // Obtener los datos del paciente si se pasa un ID
+    $patient = null;
+    if (isset($_GET['id'])) {
+        $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id");
+        $stmt->execute([':id' => $_GET['id']]);
+        $patient = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+} catch (\Throwable $th) {
+    print_r($th);
+    exit;
+} catch (PDOException $e) {
+    die("Error al obtener tablas: " . $e->getMessage());
+}
+
 // Inicializar Smarty
 $smarty = new Smarty();
 
 $smarty->setTemplateDir(__DIR__);
 
 // Asignar las variables necesarias a Smarty
+$smarty->assign('patient', $patient);
 $smarty->assign('municipalities', $municipalities);
 $smarty->assign('localities', $localities);
 $smarty->assign('states', $states);

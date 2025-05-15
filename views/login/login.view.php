@@ -11,4 +11,10 @@ require_once('./vendor/autoload.php');
 $smarty = new Smarty;
 
 $smarty->setTemplateDir(__DIR__);
+
+if (isset($_GET['error'])) {
+    $error = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $smarty->assign('error',$error);
+}
+
 $smarty->display('login.view.tpl');

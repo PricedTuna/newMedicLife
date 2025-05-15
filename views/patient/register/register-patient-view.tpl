@@ -27,8 +27,13 @@
         {include file="../../components/sidebar.tpl"}
 
         <div class="form-container">
-            <h2>Registro de Paciente</h2>
-
+            <h2 class="form-title">
+                {if $patient}
+                    Actualizar Paciente
+                {else}
+                    Registrar Paciente
+                {/if}
+            </h2>
             {if isset($success)}
                 <!-- Mostrar mensaje de éxito -->
                 <div
@@ -43,6 +48,13 @@
                 <div class="step" data-step="3">Paso 3</div>
                 <div class="step" data-step="4">Paso 4</div>
             </div>
+
+            <!-- Si hay un error, lo mostramos aquí -->
+            {if isset($error)}
+                <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                    {$error|escape}
+                </div>
+            {/if}
 
             <form id="patient-form" action="/controllers/patient/register-patient.controller.php" method="POST">
                 {include file='steps/step1.tpl'}

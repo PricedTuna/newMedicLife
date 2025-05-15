@@ -45,7 +45,7 @@ function validateIdentificationInputs() {
     } else {
         clearErrorMessage(photoInput);
     }
-
+    doctor
     // Patrón alfanumérico para campos opcionales
     const alphanumericPattern = /^[A-Za-z0-9]+$/;
 

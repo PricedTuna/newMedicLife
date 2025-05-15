@@ -54,7 +54,7 @@ function validateStep(step) {
     return valid;
 }
 
-document.getElementById('curp').addEventListener('input', function() {
+document.getElementById('curp').addEventListener('input', function () {
     this.value = this.value.toUpperCase();
 });
 
@@ -68,6 +68,45 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Por favor, completa todos los campos antes de enviar.');
         } else {
             alert('Registro exitoso');
+            event.target.submit()
+        }
+    });
+
+
+
+    // ===========================
+    // Inicialización al Cargar el DOM
+    // ===========================
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Capitaliza los nombres al perder el foco
+        ['firstName', 'lastName', 'motherLastName'].forEach(id => {
+            const input = document.getElementById(id);
+            if (input) {
+                input.addEventListener('blur', () => {
+                    input.value = input.value
+                        .toLowerCase()
+                        .split(" ")
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                        .join(" ");
+                });
+            }
+        });
+
+        // Inicializar formulario y validar al enviar
+        const patientForm = document.getElementById('patient-form');
+        if (patientForm) {
+            showStep(currentStep);
+
+            patientForm.addEventListener('submit', (event) => {
+                console.log("Enviando formulario...");
+                if (!validateStep1() || !validateStep2() || !validateStep3()) {
+                    event.preventDefault();
+                    alert('Por favor, completa todos los campos antes de enviar.');
+                }
+            });
+        } else {
+            console.error("Formulario 'patient-form' no encontrado en el DOM.");
         }
     });
 });

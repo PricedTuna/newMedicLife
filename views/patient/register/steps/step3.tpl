@@ -3,14 +3,14 @@
         <label for="bloodType">Tipo de Sangre</label>
         <select id="bloodType" name="blood_type" required>
             <option value="">Seleccione...</option>
-            <option value="A+" {if $patient.blood_type == 'A+'}selected{/if}>A+</option>
-            <option value="A-" {if $patient.blood_type == 'A-'}selected{/if}>A-</option>
-            <option value="B+" {if $patient.blood_type == 'B+'}selected{/if}>B+</option>
-            <option value="B-" {if $patient.blood_type == 'B-'}selected{/if}>B-</option>
-            <option value="AB+" {if $patient.blood_type == 'AB+'}selected{/if}>AB+</option>
-            <option value="AB-" {if $patient.blood_type == 'AB-'}selected{/if}>AB-</option>
-            <option value="O+" {if $patient.blood_type == 'O+'}selected{/if}>O+</option>
-            <option value="O-" {if $patient.blood_type == 'O-'}selected{/if}>O-</option>
+            <option value="A+" {if isset($patient) && $patient.blood_type == 'A+'}selected{/if}>A+</option>
+            <option value="A-" {if isset($patient) && $patient.blood_type == 'A-'}selected{/if}>A-</option>
+            <option value="B+" {if isset($patient) && $patient.blood_type == 'B+'}selected{/if}>B+</option>
+            <option value="B-" {if isset($patient) && $patient.blood_type == 'B-'}selected{/if}>B-</option>
+            <option value="AB+" {if isset($patient) && $patient.blood_type == 'AB+'}selected{/if}>AB+</option>
+            <option value="AB-" {if isset($patient) && $patient.blood_type == 'AB-'}selected{/if}>AB-</option>
+            <option value="O+" {if isset($patient) && $patient.blood_type == 'O+'}selected{/if}>O+</option>
+            <option value="O-" {if isset($patient) && $patient.blood_type == 'O-'}selected{/if}>O-</option>
         </select>
     </div>
     <div class="form-group">

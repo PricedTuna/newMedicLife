@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-14 19:50:04
+/* Smarty version 5.4.5, created on 2025-05-15 03:10:14
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6824f3ec1b7124_34245959',
+  'unifunc' => 'content_68255b160312d1_74142908',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8e6d2554b441d994ef6cfeddb384406b99f9facc' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1747252201,
+      1 => 1747278611,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_6824f3ec1b7124_34245959 (\Smarty\Template $_smarty_tpl) {
+function content_68255b160312d1_74142908 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/patient/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -85,8 +85,8 @@ $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/patient/list';
                 <table>
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
+                            <th>Nombre(s)</th>
+                            <th>Apellido(s)</th>
                             <th>CURP</th>
                             <th>Teléfono</th>
                             <th>Sexo</th>

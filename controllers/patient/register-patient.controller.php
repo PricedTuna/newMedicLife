@@ -1,5 +1,7 @@
 <?php
 
+
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -7,6 +9,7 @@ error_reporting(E_ALL);
 // controllers
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/patient/patient.model.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/models/emergency_contacts/emergency_contacts.model.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recopilación centralizada de datos del formulario
@@ -34,22 +37,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'weight'            => $_POST['weight'] ?? '',
         'height'            => $_POST['height'] ?? '',
         'blood_type'        => $_POST['blood_type'] ?? '',
+        'id_emergency_contact' => $_POST['id_emergency_contact'] ?? '',
         'marital_status'    => $_POST['marital_status'] ?? '',
         'ethnic_group'      => $_POST['ethnic_group'] ?? '',
-        'religion'          => $_POST['religion'] ?? ''
+        'religion'          => $_POST['religion'] ?? '' 
     ];
 
+    $emergencyContactsId = isset($_POST['emergency_contacts_id']) && is_numeric($_POST['emergency_contacts_id']) ? $_POST['emergency_contacts_id'] : null;
+    $dataContact = [
+        'names'             => $_POST['ec_name'] ?? '',
+        'last_name'         => $_POST['ec_fatherLastName'] ?? '',
+        'last_name2'        => $_POST['ec_motherLastName'] ?? '',
+        'phone'             => $_POST['ec_phoneNumber'] ?? '',
+        'relationship'      => $_POST['ec_relationship'] ?? ''
+    ];
+
+
     try {
+
+        $emergencyContactsModel = new EmergencyContactsModel($pdo);
+        $emergencyContactsModel->validateData($dataContact, $emergencyContactsId);
         // Instanciación del modelo de Patient y validación de datos
         $patientModel = new PatientModel($pdo);
         $patientModel->validateData($data, $patientId);
-        
-        if ($patientId) {
+
+     
+    
+        if ($patientId && $emergencyContactsId) {
             // Actualización del paciente
+            $emergencyContactsModel->updateEmergencyContact($emergencyContactsId, $dataContact);
+
+            $data['id_emergency_contact'] = $emergencyContactsId;
+                      
             $patientModel->updatePatient($patientId, $data);
+
             header('Location: /views/patient/list/list-patients.view.php?success=' . urlencode("Paciente actualizado con éxito"));
         } else {
-            // Creación de un nuevo doctor
+            // Creación de un nuevo paciente
+            $newEmergencyContactsID= $emergencyContactsModel->createEmergencyContact($dataContact);
+
+            $data['id_emergency_contact'] = $newEmergencyContactsID;
+
             $newPatientId = $patientModel->createPatient($data);
             
             header('Location: /views/patient/list/list-patients.view.php?success=' . urlencode("Paciente creado con éxito"));

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-04-30 22:31:21
+/* Smarty version 5.4.5, created on 2025-05-15 03:10:57
   from 'file:list-doctors.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6812a4b9482c29_42371603',
+  'unifunc' => 'content_68255b419aea83_03672762',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5304372408d507498557e05a6696be55f0f5b8d4' => 
     array (
       0 => 'list-doctors.view.tpl',
-      1 => 1746052279,
+      1 => 1747278655,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_6812a4b9482c29_42371603 (\Smarty\Template $_smarty_tpl) {
+function content_68255b419aea83_03672762 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/doctor/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -58,9 +58,9 @@ $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/doctor/list';
 
         <div class="main-content">
             <div class="table-header">
-                <h1>Lista de doctores</h1>
+                <h1>Lista de médicos    </h1>
                 <a href="/views/doctor/register/register-doctor.view.php">
-                    <button class="create-btn">Agregar doctor</button>
+                    <button class="create-btn">Agregar médicos</button>
                 </a>
             </div>
             <div class="table-container">
@@ -86,8 +86,8 @@ $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/doctor/list';
                     <thead>
                         <tr>
                             <th class="photo-column">Foto</th>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
+                            <th>Nombre(s)</th>
+                            <th>Apellido(s)</th>
                             <th>CURP</th>
                             <th>Teléfono</th>
                             <th>Sexo</th>
@@ -140,7 +140,7 @@ $foreach0DoElse = false;
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                         <?php } else { ?>
                             <tr>
-                                <td colspan="14">No hay doctores registrados.</td>
+                                <td colspan="14">No hay médicos registrados.</td>
                             </tr>
                         <?php }?>
                     </tbody>

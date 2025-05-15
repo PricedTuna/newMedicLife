@@ -3,7 +3,7 @@
 <div class="form-step" id="step-1">
     <div class="form-group">
         <label for="lastName">Apellido Paterno</label>
-        <input type="text" id="lastName" value="{$patient.last_name|default:''}" name="fatherLastName"" required>
+        <input type="text" id="lastName" value="{$patient.last_name|default:''}" name="fatherLastName" required>
     </div>
     <div class="form-group">
         <label for="motherLastName">Apellido Materno</label>
@@ -25,8 +25,8 @@
         <label for="gender">Sexo</label>
         <select id="gender" name="gender" required>
             <option value="">Seleccione...</option>
-            <option value="M" {if $patient.gender == 'M'}selected{/if}>Masculino</option>
-            <option value="F" {if $patient.gender == 'F'}selected{/if}>Femenino</option>
+            <option value="M" {if isset($patient) && $patient.gender == 'M'}selected{/if}>Masculino</option>
+            <option value="F" {if isset($patient) && $patient.gender == 'F'}selected{/if}>Femenino</option>
         </select>
     </div>
     <div class="form-group">

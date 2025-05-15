@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-15 02:12:46
+/* Smarty version 5.4.5, created on 2025-05-15 20:35:44
   from 'file:steps/step1.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68254d9e7a9590_92026619',
+  'unifunc' => 'content_68265020173980_03239226',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'cc5242095086331286b663634a078c55ed0d3b3c' => 
     array (
       0 => 'steps/step1.tpl',
-      1 => 1747275139,
+      1 => 1747341290,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_68254d9e7a9590_92026619 (\Smarty\Template $_smarty_tpl) {
+function content_68265020173980_03239226 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/patient/register/steps';
 ?><input type="hidden" name="patient_id" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
 ">
@@ -29,7 +29,7 @@ $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/patient/register/
     <div class="form-group">
         <label for="lastName">Apellido Paterno</label>
         <input type="text" id="lastName" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['last_name'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
-" name="fatherLastName"" required>
+" name="fatherLastName" required>
     </div>
     <div class="form-group">
         <label for="motherLastName">Apellido Materno</label>
@@ -55,8 +55,8 @@ $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/patient/register/
         <label for="gender">Sexo</label>
         <select id="gender" name="gender" required>
             <option value="">Seleccione...</option>
-            <option value="M" <?php if ($_smarty_tpl->getValue('patient')['gender'] == 'M') {?>selected<?php }?>>Masculino</option>
-            <option value="F" <?php if ($_smarty_tpl->getValue('patient')['gender'] == 'F') {?>selected<?php }?>>Femenino</option>
+            <option value="M" <?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['gender'] == 'M') {?>selected<?php }?>>Masculino</option>
+            <option value="F" <?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['gender'] == 'F') {?>selected<?php }?>>Femenino</option>
         </select>
     </div>
     <div class="form-group">

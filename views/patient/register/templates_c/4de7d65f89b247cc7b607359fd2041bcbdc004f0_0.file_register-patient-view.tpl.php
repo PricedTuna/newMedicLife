@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-15 01:51:01
+/* Smarty version 5.4.5, created on 2025-05-15 20:18:31
   from 'file:register-patient-view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6825488551a614_21216851',
+  'unifunc' => 'content_68264c17de52c5_24903508',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '4de7d65f89b247cc7b607359fd2041bcbdc004f0' => 
     array (
       0 => 'register-patient-view.tpl',
-      1 => 1747273856,
+      1 => 1747340303,
       2 => 'file',
     ),
   ),
@@ -25,7 +25,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:steps/step4.tpl' => 1,
   ),
 ))) {
-function content_6825488551a614_21216851 (\Smarty\Template $_smarty_tpl) {
+function content_68264c17de52c5_24903508 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/newMedicLife/views/patient/register';
 ?><!DOCTYPE html>
 <html lang="es">

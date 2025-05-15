@@ -54,8 +54,8 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
+                            <th>Nombre(s)</th>
+                            <th>Apellido(s)</th>
                             <th>CURP</th>
                             <th>Teléfono</th>
                             <th>Sexo</th>

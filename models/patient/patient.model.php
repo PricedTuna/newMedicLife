@@ -123,7 +123,7 @@ class PatientModel
             neighborhood = :neighborhood, insurance_number = :insurance_number,
             birth_date = :birth_date, CURP = :CURP, RFC = :RFC, phone = :phone,
             email = :email, gender = :gender, weight = :weight, height = :height, blood_type = :blood_type,
-            marital_status = :marital_status, ethnic_group = :ethnic_group, religion = :religion,
+            id_emergency_contact = :id_emergency_contact, marital_status = :marital_status, ethnic_group = :ethnic_group, religion = :religion,
             status = :status
             WHERE id = :patient_id");
         $stmt->execute([
@@ -148,6 +148,7 @@ class PatientModel
             ':weight'            => $data['weight'],
             ':height'            => $data['height'],
             ':blood_type'        => $data['blood_type'],
+            ':id_emergency_contact'  => $data['id_emergency_contact'],
             ':marital_status'    => $data['marital_status'],
             ':ethnic_group'      => $data['ethnic_group'],
             ':religion'          => $data['religion'],
@@ -166,42 +167,45 @@ class PatientModel
         $stmt = $this->pdo->prepare("INSERT INTO patients (
             names, last_name, last_name2, id_state, id_municipality, id_locality,
             CP, street, external_number, internal_number, neighborhood, insurance_number,
-            birth_date, CURP, RFC, phone, email, gender, weight, height, blood_type, marital_status, ethnic_group,
-            religion, status
+            birth_date, CURP, RFC, phone, email, gender, weight, height, blood_type, id_emergency_contact,
+            marital_status, ethnic_group, religion, status
         ) VALUES (
             :names, :last_name, :last_name2, :id_state, :id_municipality, :id_locality,
             :CP, :street, :external_number, :internal_number, :neighborhood, :insurance_number,
-            :birth_date, :CURP, :RFC, :phone, :email, :gender, :weight, :height, :blood_type, :marital_status, :ethnic_group,
-            :religion, :status
+            :birth_date, :CURP, :RFC, :phone, :email, :gender, :weight, :height, :blood_type, :id_emergency_contact,
+            :marital_status, :ethnic_group, :religion, :status
         )");
+    
         $stmt->execute([
-            ':names'             => $data['names'],
-            ':last_name'         => $data['last_name'],
-            ':last_name2'        => $data['last_name2'],
-            ':id_state'          => $data['id_state'],
-            ':id_municipality'   => $data['id_municipality'],
-            ':id_locality'       => $data['id_locality'],
-            ':CP'                => $data['CP'],
-            ':street'            => $data['street'],
-            ':external_number'   => $data['external_number'],
-            ':internal_number'   => $data['internal_number'],
-            ':neighborhood'      => $data['neighborhood'],
-            ':insurance_number'  => $data['insurance_number'],
-            ':birth_date'        => $data['birth_date'],
-            ':CURP'              => $data['CURP'],
-            ':RFC'               => $data['RFC'],
-            ':phone'             => $data['phone'],
-            ':email'             => $data['email'],
-            ':gender'            => $data['gender'],
-            ':weight'            => $data['weight'],
-            ':height'            => $data['height'],
-            ':blood_type'        => $data['blood_type'],
-            ':marital_status'    => $data['marital_status'],
-            ':ethnic_group'      => $data['ethnic_group'],
-            ':religion'          => $data['religion'],
-            ':status'            => 'A'
-                ]);
+            ':names'                  => $data['names'],
+            ':last_name'              => $data['last_name'],
+            ':last_name2'             => $data['last_name2'],
+            ':id_state'               => $data['id_state'],
+            ':id_municipality'        => $data['id_municipality'],
+            ':id_locality'            => $data['id_locality'],
+            ':CP'                     => $data['CP'],
+            ':street'                 => $data['street'],
+            ':external_number'        => $data['external_number'],
+            ':internal_number'        => $data['internal_number'],
+            ':neighborhood'           => $data['neighborhood'],
+            ':insurance_number'       => $data['insurance_number'],
+            ':birth_date'             => $data['birth_date'],
+            ':CURP'                   => $data['CURP'],
+            ':RFC'                    => $data['RFC'],
+            ':phone'                  => $data['phone'],
+            ':email'                  => $data['email'],
+            ':gender'                 => $data['gender'],
+            ':weight'                 => $data['weight'],
+            ':height'                 => $data['height'],
+            ':blood_type'             => $data['blood_type'],
+            ':id_emergency_contact'  => $data['id_emergency_contact'],
+            ':marital_status'         => $data['marital_status'],
+            ':ethnic_group'           => $data['ethnic_group'],
+            ':religion'               => $data['religion'],
+            ':status'                 => 'A',
+        ]);
+    
         return $this->pdo->lastInsertId();
     }
-
+    
 }

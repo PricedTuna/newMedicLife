@@ -29,9 +29,9 @@
 
         <div class="main-content">
             <div class="table-header">
-                <h1>Lista de doctores</h1>
+                <h1>Lista de médicos    </h1>
                 <a href="/views/doctor/register/register-doctor.view.php">
-                    <button class="create-btn">Agregar doctor</button>
+                    <button class="create-btn">Agregar médicos</button>
                 </a>
             </div>
             <div class="table-container">
@@ -55,8 +55,8 @@
                     <thead>
                         <tr>
                             <th class="photo-column">Foto</th>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
+                            <th>Nombre(s)</th>
+                            <th>Apellido(s)</th>
                             <th>CURP</th>
                             <th>Teléfono</th>
                             <th>Sexo</th>
@@ -92,7 +92,7 @@
                             {/foreach}
                         {else}
                             <tr>
-                                <td colspan="14">No hay doctores registrados.</td>
+                                <td colspan="14">No hay médicos registrados.</td>
                             </tr>
                         {/if}
                     </tbody>

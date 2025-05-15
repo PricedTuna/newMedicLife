@@ -43,8 +43,15 @@ try {
         $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id");
         $stmt->execute([':id' => $_GET['id']]);
         $patient = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Si el paciente tiene un id_emergency_contacts, consulta ese contacto
+        if ($patient && !empty($patient['id_emergency_contact'])) {
+            $stmt = $pdo->prepare("SELECT * FROM emergency_contacts WHERE id = :id");
+            $stmt->execute([':id' => $patient['id_emergency_contact']]);
+            $emergencyContacts = $stmt->fetch(PDO::FETCH_ASSOC);
+        }
     }
-} catch (\Throwable $th) {
+} catch (\Throwable $th) {  
     print_r($th);
     exit;
 } catch (PDOException $e) {
@@ -57,6 +64,7 @@ $smarty = new Smarty();
 $smarty->setTemplateDir(__DIR__);
 
 // Asignar las variables necesarias a Smarty
+$smarty->assign('emergencyContacts', $emergencyContacts ?? null);
 $smarty->assign('patient', $patient);
 $smarty->assign('municipalities', $municipalities);
 $smarty->assign('localities', $localities);

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5abf46d8-8f4c-41e2-806b-56c6f5a7986f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/auth/session.controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/database.config.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.config.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/appointment/register/register-appoiment.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/appointment/register/register-appoiment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/dashboard/dashboard.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/dashboard/dashboard.view.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/doctor/list/list-doctors.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/doctor/list/list-doctors.view.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/doctor/main/main-doctor.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/doctor/main/main-doctor.view.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/doctor/register/register-doctor.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/doctor/register/register-doctor.view.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/patient/list/list-patients.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/patient/list/list-patients.view.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/patient/main/main-patient.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/patient/main/main-patient.view.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/patient/register/register-patient.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/patient/register/register-patient.view.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "EdgarVega359"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://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@github.com/PricedTuna/newMedicLife.git",
+    "accountId": "85b47674-9e23-4732-99d6-79570b26716d"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2xHRhGXpGGYHWtaEk3YWA0x7rXB" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="openDirectoriesWithSingleClick" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "priced",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-WS-251.23774.424" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5abf46d8-8f4c-41e2-806b-56c6f5a7986f" name="Changes" comment="" />
+      <created>1747593131531</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1747593131531</updated>
+      <workItem from="1747593133843" duration="360000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

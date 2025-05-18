@@ -1,4 +1,6 @@
 <?php
+// Include session controller to protect this route
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/session.controller.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

@@ -3,8 +3,8 @@
 
 $host     = "localhost:3306";
 $dbname   = "medic_life";
-$username = "mediclife";           
-$password = "root";             
+$username = "root";
+$password = "root";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

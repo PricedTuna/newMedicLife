@@ -1,5 +1,7 @@
 <?php
 // obtener_doctores.php
+// Include session controller to protect this route
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/session.controller.php';
 
 use Smarty\Smarty;
 
@@ -25,7 +27,7 @@ try {
 // Verifica si vienen mensajes desde GET
 $success = isset($_GET['success']) ? $_GET['success'] : null;
 $error = isset($_GET['error']) ? $_GET['error'] : null;
-    
+
 // Rutas
 $sidebarPath = $_SERVER['DOCUMENT_ROOT'] . '/views/components/sidebar.tpl';
 

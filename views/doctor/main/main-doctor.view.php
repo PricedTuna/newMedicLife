@@ -1,4 +1,6 @@
 <?php
+// Include session controller to protect this route
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/session.controller.php';
 $listDoctors = $_SERVER['DOCUMENT_ROOT'] . '/views/doctor/list/list-doctors.view.php';
 if (file_exists($listDoctors)) {
     include $listDoctors;

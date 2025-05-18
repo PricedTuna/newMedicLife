@@ -49,9 +49,36 @@ function validateStep(step) {
         }
     });
 
-
-
     return valid;
+}
+
+// Función para validar un campo individual
+function validateField(input) {
+    if (input.hasAttribute('required') && !input.value.trim()) {
+        input.style.border = '2px solid red';
+
+        // Crear o actualizar mensaje de error
+        let errorElement = input.nextElementSibling;
+        if (!errorElement || !errorElement.classList.contains('error-message')) {
+            errorElement = document.createElement('span');
+            errorElement.classList.add('error-message');
+            errorElement.style.color = 'red';
+            input.parentNode.appendChild(errorElement);
+        }
+        errorElement.textContent = 'Este campo es obligatorio';
+
+        return false;
+    } else {
+        input.style.border = '2px solid var(--line-clr)';
+
+        // Eliminar mensaje de error si existe
+        let errorElement = input.nextElementSibling;
+        if (errorElement && errorElement.classList.contains('error-message')) {
+            errorElement.remove();
+        }
+
+        return true;
+    }
 }
 
 document.getElementById('curp').addEventListener('input', function () {
@@ -61,6 +88,13 @@ document.getElementById('curp').addEventListener('input', function () {
 
 document.addEventListener('DOMContentLoaded', () => {
     showStep(currentStep);
+
+    // Añadir validación onBlur para todos los campos requeridos
+    document.querySelectorAll('input[required], select[required]').forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
+    });
 
     document.getElementById('patient-form').addEventListener('submit', (event) => {
         if (!validateStep(currentStep)) {
@@ -74,39 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // ===========================
-    // Inicialización al Cargar el DOM
-    // ===========================
-
-    document.addEventListener('DOMContentLoaded', () => {
-        // Capitaliza los nombres al perder el foco
-        ['firstName', 'lastName', 'motherLastName'].forEach(id => {
-            const input = document.getElementById(id);
-            if (input) {
-                input.addEventListener('blur', () => {
-                    input.value = input.value
-                        .toLowerCase()
-                        .split(" ")
-                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                        .join(" ");
-                });
-            }
-        });
-
-        // Inicializar formulario y validar al enviar
-        const patientForm = document.getElementById('patient-form');
-        if (patientForm) {
-            showStep(currentStep);
-
-            patientForm.addEventListener('submit', (event) => {
-                console.log("Enviando formulario...");
-                if (!validateStep1() || !validateStep2() || !validateStep3()) {
-                    event.preventDefault();
-                    alert('Por favor, completa todos los campos antes de enviar.');
-                }
+    // Capitaliza los nombres al perder el foco
+    ['firstName', 'lastName', 'motherLastName'].forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('blur', () => {
+                input.value = input.value
+                    .toLowerCase()
+                    .split(" ")
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ");
             });
-        } else {
-            console.error("Formulario 'patient-form' no encontrado en el DOM.");
         }
     });
 });

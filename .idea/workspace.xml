@@ -4,19 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5abf46d8-8f4c-41e2-806b-56c6f5a7986f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/auth/session.controller.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/database.config.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.config.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/appointment/register/register-appoiment.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/appointment/register/register-appoiment.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/dashboard/dashboard.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/dashboard/dashboard.view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/doctor/list/list-doctors.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/doctor/list/list-doctors.view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/doctor/main/main-doctor.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/doctor/main/main-doctor.view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/doctor/register/register-doctor.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/doctor/register/register-doctor.view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/patient/list/list-patients.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/patient/list/list-patients.view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/patient/main/main-patient.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/patient/main/main-patient.view.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/patient/register/register-patient.view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/patient/register/register-patient.view.php" afterDir="false" />
+    <list default="true" id="5abf46d8-8f4c-41e2-806b-56c6f5a7986f" name="Changes" comment="Add session protection to views and update database credentials&#10;&#10;Introduced a session controller to secure multiple views and routes, redirecting unauthorized users to the login page. Updated database credentials for local compatibility. Minor code cleanup was performed in affected files for consistency.">
+      <change beforePath="$PROJECT_DIR$/views/doctor/register/register-doctor.app.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/doctor/register/register-doctor.app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/patient/register/register-patient.app.js" beforeDir="false" afterPath="$PROJECT_DIR$/views/patient/register/register-patient.app.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,11 +67,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1747593131531</updated>
-      <workItem from="1747593133843" duration="360000" />
+      <workItem from="1747593133843" duration="746000" />
     </task>
+    <task id="LOCAL-00001" summary="Add session protection to views and update database credentials&#10;&#10;Introduced a session controller to secure multiple views and routes, redirecting unauthorized users to the login page. Updated database credentials for local compatibility. Minor code cleanup was performed in affected files for consistency.">
+      <option name="closed" value="true" />
+      <created>1747593521911</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1747593521911</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add session protection to views and update database credentials&#10;&#10;Introduced a session controller to secure multiple views and routes, redirecting unauthorized users to the login page. Updated database credentials for local compatibility. Minor code cleanup was performed in affected files for consistency." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add session protection to views and update database credentials&#10;&#10;Introduced a session controller to secure multiple views and routes, redirecting unauthorized users to the login page. Updated database credentials for local compatibility. Minor code cleanup was performed in affected files for consistency." />
   </component>
 </project>

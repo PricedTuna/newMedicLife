@@ -29,7 +29,7 @@ function validateIdentificationInputs() {
         clearErrorMessage(rfcInput);
     }
 
-    // --- Validar archivo de foto ---  
+    // --- Validar archivo de foto ---
     // Ejemplo: Se verifica que exista, sea una imagen y pese menos de 2MB.
     const photoInput = document.getElementById('photo');
     const photoFile = photoInput.files[0];
@@ -127,6 +127,68 @@ municipalitySelect.addEventListener('change', updateLocalities);
 document.getElementById('photo').addEventListener('change', event => {
     const fileName = event.target.files[0] ? event.target.files[0].name : 'Subir Foto';
     document.getElementById('photo-label').textContent = fileName;
+});
+
+// ===========================
+// VALIDACIÓN EN TIEMPO REAL (onBlur)
+// ===========================
+
+// Añadir validación onBlur para los campos de identificación
+document.addEventListener('DOMContentLoaded', () => {
+    // Validar CURP al perder el foco
+    const curpInput = document.getElementById('curp');
+    if (curpInput) {
+        curpInput.addEventListener('blur', () => {
+            const curp = curpInput.value.trim();
+            const curpPattern = /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
+            if (curp.length !== 18) {
+                showErrorMessage(curpInput, 'La CURP debe tener exactamente 18 caracteres.');
+            } else if (!curpPattern.test(curp)) {
+                showErrorMessage(curpInput, 'CURP inválida. Revisa el formato.');
+            } else {
+                clearErrorMessage(curpInput);
+            }
+        });
+    }
+
+    // Validar RFC al perder el foco
+    const rfcInput = document.getElementById('rfc');
+    if (rfcInput) {
+        rfcInput.addEventListener('blur', () => {
+            const rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
+            if (rfcInput.value.trim() !== '' && !rfcPattern.test(rfcInput.value.trim())) {
+                showErrorMessage(rfcInput, 'RFC inválido. Debe tener entre 12 y 13 caracteres.');
+            } else {
+                clearErrorMessage(rfcInput);
+            }
+        });
+    }
+
+    // Validar Número de Afiliación al perder el foco
+    const affiliationInput = document.getElementById('affiliationNumber');
+    if (affiliationInput) {
+        affiliationInput.addEventListener('blur', () => {
+            const alphanumericPattern = /^[A-Za-z0-9]+$/;
+            if (affiliationInput.value.trim() !== '' && !alphanumericPattern.test(affiliationInput.value.trim())) {
+                showErrorMessage(affiliationInput, 'El número de afiliación solo puede contener letras y números.');
+            } else {
+                clearErrorMessage(affiliationInput);
+            }
+        });
+    }
+
+    // Validar Cédula Profesional al perder el foco
+    const licenseInput = document.getElementById('professionalLicense');
+    if (licenseInput) {
+        licenseInput.addEventListener('blur', () => {
+            const alphanumericPattern = /^[A-Za-z0-9]+$/;
+            if (licenseInput.value.trim() !== '' && !alphanumericPattern.test(licenseInput.value.trim())) {
+                showErrorMessage(licenseInput, 'La cédula profesional solo puede contener letras y números.');
+            } else {
+                clearErrorMessage(licenseInput);
+            }
+        });
+    }
 });
 
 // ===========================

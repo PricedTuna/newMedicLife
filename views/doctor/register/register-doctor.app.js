@@ -335,6 +335,112 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Añadir validación onBlur para los campos del paso 1
+    document.querySelectorAll('#step-1 input, #step-1 select').forEach(input => {
+        input.addEventListener('blur', () => {
+            // Validar el campo específico que perdió el foco
+            if (input.id === 'phoneNumber') {
+                if (!/^\d{10}$/.test(input.value.trim())) {
+                    showErrorMessage(input, 'El número debe tener 10 dígitos.');
+                } else {
+                    clearErrorMessage(input);
+                }
+            } else if (input.id === 'email') {
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (!emailPattern.test(input.value.trim())) {
+                    showErrorMessage(input, 'Correo electrónico no válido.');
+                } else {
+                    clearErrorMessage(input);
+                }
+            } else if (input.id === 'gender') {
+                if (input.value === '') {
+                    showErrorMessage(input, 'Debe seleccionar un género.');
+                } else {
+                    clearErrorMessage(input);
+                }
+            } else if (input.id === 'birthDate') {
+                if (!input.value) {
+                    showErrorMessage(input, 'Debe seleccionar una fecha de nacimiento.');
+                } else {
+                    const birthDate = new Date(input.value);
+                    const today = new Date();
+                    if (birthDate >= today) {
+                        showErrorMessage(input, 'Debe ser una fecha pasada.');
+                    } else {
+                        clearErrorMessage(input);
+                    }
+                }
+            } else if (input.type === 'text') {
+                // Para otros campos de texto (nombres, etc.)
+                const namePattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+                if (!namePattern.test(input.value.trim())) {
+                    showErrorMessage(input, 'Solo se permiten letras y espacios.');
+                } else {
+                    clearErrorMessage(input);
+                }
+            }
+        });
+    });
+
+    // Añadir validación onBlur para los campos del paso 2
+    document.querySelectorAll('#step-2 input').forEach(input => {
+        input.addEventListener('blur', () => {
+            if (input.id === 'postalCode') {
+                if (!/^\d{5}$/.test(input.value.trim())) {
+                    showErrorMessage(input, 'El código postal debe tener 5 dígitos.');
+                } else {
+                    clearErrorMessage(input);
+                }
+            } else if (input.id !== 'intNumber' || input.value.trim() !== '') {
+                // Para otros campos de dirección, excepto número interior vacío
+                const pattern = /^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ\s]+$/;
+                if (!pattern.test(input.value.trim())) {
+                    showErrorMessage(input, 'Solo se permiten letras, números y espacios.');
+                } else {
+                    clearErrorMessage(input);
+                }
+            }
+        });
+    });
+
+    // Añadir validación onBlur para los campos del paso 3
+    document.querySelectorAll('#step-3 input').forEach(input => {
+        input.addEventListener('blur', () => {
+            if (input.id === 'curp') {
+                const curpPattern = /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
+                const curp = input.value.trim();
+                if (curp.length !== 18) {
+                    showErrorMessage(input, 'La CURP debe tener exactamente 18 caracteres.');
+                } else if (!curpPattern.test(curp)) {
+                    showErrorMessage(input, 'CURP inválida. Revisa el formato.');
+                } else {
+                    clearErrorMessage(input);
+                }
+            } else if (input.id === 'rfc' && input.value.trim() !== '') {
+                const rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
+                if (!rfcPattern.test(input.value.trim())) {
+                    showErrorMessage(input, 'RFC inválido. Debe tener entre 12 y 13 caracteres.');
+                } else {
+                    clearErrorMessage(input);
+                }
+            } else if ((input.id === 'affiliationNumber' || input.id === 'professionalLicense') && input.value.trim() !== '') {
+                const alphanumericPattern = /^[A-Za-z0-9]+$/;
+                if (!alphanumericPattern.test(input.value.trim())) {
+                    showErrorMessage(input, 'Solo puede contener letras y números.');
+                } else {
+                    clearErrorMessage(input);
+                }
+            } else if (input.id === 'photo' && input.files.length > 0) {
+                const file = input.files[0];
+                if (!file.type.startsWith('image/')) {
+                    showErrorMessage(input, 'El archivo debe ser una imagen.');
+                } else {
+                    clearErrorMessage(input);
+                }
+            }
+        });
+    });
+
     // Inicializar formulario y validar al enviar
     const doctorForm = document.getElementById('doctor-form');
     if (doctorForm) {

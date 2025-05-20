@@ -1,0 +1,122 @@
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: var(--base-clr);
+    color: var(--text-clr);
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+/* Ajustes específicos para el main con clase content */
+main.content {
+    margin-top: 0;
+    padding: 0;
+}
+
+.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.form-container {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-header {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    position: relative;
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+}
+
+.form-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #333;
+}
+
+.form-back-btn {
+    position: absolute;
+    left: 0;
+    text-decoration: none;
+}
+
+.back-btn {
+    background-color: transparent;
+    border: none;
+    color: #0b8fac;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.back-btn-icon {
+    font-size: 20px;
+    color: #0b8fac;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #566573;
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.75rem;
+    border: 2px solid #eaecee;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #5e63ff;
+    box-shadow: 0 0 8px rgba(94, 99, 255, 0.5);
+}
+
+.submit-btn {
+    background-color: #5e63ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s ease-in-out;
+}
+
+.submit-btn:hover {
+    background-color: #4a54e1;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .content {
+        margin-left: 0;
+    }
+}
+
+/* When sidebar is collapsed */
+body.sidebar-collapsed .content {
+    margin-left: 60px;
+}

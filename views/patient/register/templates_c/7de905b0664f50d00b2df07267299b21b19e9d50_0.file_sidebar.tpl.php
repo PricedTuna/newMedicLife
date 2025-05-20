@@ -1,4 +1,28 @@
-<nav id="sidebar">
+<?php
+/* Smarty version 5.4.5, created on 2025-05-18 21:05:22
+  from 'file:/home/angel/Desktop/mediclife/newMedicLife/views/patient/register/../../components/sidebar.tpl' */
+
+/* @var \Smarty\Template $_smarty_tpl */
+if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
+  'version' => '5.4.5',
+  'unifunc' => 'content_682a4b92c44965_43359021',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '7de905b0664f50d00b2df07267299b21b19e9d50' => 
+    array (
+      0 => '/home/angel/Desktop/mediclife/newMedicLife/views/patient/register/../../components/sidebar.tpl',
+      1 => 1747601896,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+))) {
+function content_682a4b92c44965_43359021 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/components';
+?><nav id="sidebar">
     <ul>
         <li>
             <span class="logo">
@@ -47,8 +71,6 @@
                 </svg>
             </button>
         </li>
-        
-
         <li class="active">
             <a href="/views/dashboard/dashboard.view.php"">
                     <svg xmlns=" http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -57,15 +79,6 @@
                     d="M520-640v-160q0-17 11.5-28.5T560-840h240q17 0 28.5 11.5T840-800v160q0 17-11.5 28.5T800-600H560q-17 0-28.5-11.5T520-640ZM120-480v-320q0-17 11.5-28.5T160-840h240q17 0 28.5 11.5T440-800v320q0 17-11.5 28.5T400-440H160q-17 0-28.5-11.5T120-480Zm400 320v-320q0-17 11.5-28.5T560-520h240q17 0 28.5 11.5T840-480v320q0 17-11.5 28.5T800-120H560q-17 0-28.5-11.5T520-160Zm-400 0v-160q0-17 11.5-28.5T160-360h240q17 0 28.5 11.5T440-320v160q0 17-11.5 28.5T400-120H160q-17 0-28.5-11.5T120-160Zm80-360h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z" />
                 </svg>
                 <span>Dashboard</span>
-            </a>
-        </li>
-        <li>
-            <a href="/views/appointment/main/main-appointment.view.php">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000">
-                    <path
-                        d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z" />
-                </svg>
-                <span>Citas</span>
             </a>
         </li>
         <li>
@@ -107,4 +120,5 @@
             </a>
         </li>
     </ul>
-</nav>
+</nav><?php }
+}

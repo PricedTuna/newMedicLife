@@ -1,4 +1,28 @@
-<nav id="sidebar">
+<?php
+/* Smarty version 5.4.5, created on 2025-05-19 01:45:30
+  from 'file:/home/angel/Desktop/mediclife/newMedicLife/views/appointment/list/../../components/sidebar.tpl' */
+
+/* @var \Smarty\Template $_smarty_tpl */
+if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
+  'version' => '5.4.5',
+  'unifunc' => 'content_682a8d3aeba731_30546180',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'fbd759a0c4568a8ba21cbd31d4894d05e94639c7' => 
+    array (
+      0 => '/home/angel/Desktop/mediclife/newMedicLife/views/appointment/list/../../components/sidebar.tpl',
+      1 => 1747619129,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+))) {
+function content_682a8d3aeba731_30546180 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/components';
+?><nav id="sidebar">
     <ul>
         <li>
             <span class="logo">
@@ -107,4 +131,5 @@
             </a>
         </li>
     </ul>
-</nav>
+</nav><?php }
+}

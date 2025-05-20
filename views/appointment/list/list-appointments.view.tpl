@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {* <link rel="stylesheet" href="./register-patient.styles.css">
+    <link rel="stylesheet" href="../../components/sidebar.styles.css">
+    <script src="../../components/sidebar.app.js" defer></script>
+    <script src="../../patient/register/register-patient.app.   js" defer></script> *}
+    
+    <script src="/views/doctor/list/views-handler.js" defer></script>
+    <script src="/views/appointment/register/register-appointment.app.js" defer></script>
+    <link rel="stylesheet" href="/views/appointment/main/main-appointment.styles.css">
+    <link rel="stylesheet" href="/views/appointment/register/register-appoiment.css">
+    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
+    <script src="./list-appointment.js" defer></script>
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="/register-appointment.styles.css">
+    <link rel="stylesheet" href="/views/appointment/list/list-appointments.styles.css">
+    {* <link rel="stylesheet" href="../../../resset.css">  *}
+    <script src="/views/components/sidebar.app.js" defer></script>
+
+    <title>Lista de médicos</title>
+</head>
+<body>
+
+    {include file="../../components/sidebar.tpl"}
+    
+    <main >
+
+        <div class="main-content">
+            <div class="table-header">
+                <h1>Lista de Citas    </h1>
+                <a href="/views/appointment/register/register-appoiment.php">
+                    <button class="create-btn">Crear cita</button>
+                </a>
+            </div>
+            <div class="table-container">
+                {if isset($error)}
+                    <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                        {$error|escape}
+                    </div>
+                {/if}
+
+                {if isset($success)}
+                    <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                        {$success|escape}
+                    </div>
+                {/if}
+
+                <a href="/views/doctor/register/register-doctor.view.php" aria-label="Agregar cita">
+                    <button class="icon-btn table-add-btn">+</button>
+                </a>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Numero de cita</th>
+                            <th>Paciente</th>
+                            <th>Area medica</th>
+                            <th>Medico</th>
+                            <th>Fecha y hora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {if $doctors|@count > 0}
+                            {foreach from=$doctors item=doctor}
+                                <tr>
+                                    
+                                    </td>
+                                </tr>
+                            {/foreach}
+                        {else}
+                            <tr>
+                                <td colspan="14">No hay citas registradas.</td>
+                            </tr>
+                        {/if}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

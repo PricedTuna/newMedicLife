@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {* <link rel="stylesheet" href="./register-patient.styles.css">
     <link rel="stylesheet" href="../../components/sidebar.styles.css">
     <script src="../../components/sidebar.app.js" defer></script>
     <script src="../../patient/register/register-patient.app.   js" defer></script> *}
-    
+
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/appointment/register/register-appointment.app.js" defer></script>
     <link rel="stylesheet" href="/views/appointment/main/main-appointment.styles.css">
@@ -21,28 +22,31 @@
 
     <title>Lista de médicos</title>
 </head>
+
 <body>
 
     {include file="../../components/sidebar.tpl"}
-    
-    <main >
+
+    <main>
 
         <div class="main-content">
             <div class="table-header">
-                <h1>Lista de Citas    </h1>
+                <h1>Lista de Citas </h1>
                 <a href="/views/appointment/register/register-appoiment.php">
                     <button class="create-btn">Crear cita</button>
                 </a>
             </div>
             <div class="table-container">
                 {if isset($error)}
-                    <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                    <div
+                        style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
                         {$error|escape}
                     </div>
                 {/if}
 
                 {if isset($success)}
-                    <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                    <div
+                        style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
                         {$success|escape}
                     </div>
                 {/if}
@@ -62,10 +66,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {if $doctors|@count > 0}
-                            {foreach from=$doctors item=doctor}
+                        {if $appointments|@count > 0}
+                            {foreach from=$appointments item=appointment}
                                 <tr>
-                                    
+                                    <td data-label="ID">{$appointment.id|escape}</td>
+                                    <td class="actions-td">
+                                        <form action="/controllers/doctor/delete-doctor.controller.php" method="POST"
+                                            class="action-wrapper">
+                                            <input type="hidden" name="doctor_id" value="{$appointment.id}">
+                                            <button type="submit" class="delete-btn"
+                                                data-id="{$appointment.id}">Eliminar</button>
+                                        </form>
+                                        <a href="/views/doctor/register/register-doctor.view.php?id={$appointment.id}"
+                                            class="action-wrapper">
+                                            <button class="update-btn">Actualizar</button>
+                                        </a>
                                     </td>
                                 </tr>
                             {/foreach}
@@ -80,4 +95,5 @@
         </div>
     </main>
 </body>
+
 </html>

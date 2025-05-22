@@ -2,14 +2,14 @@
 console.log("LO ESTA CARGANDO")
 document.querySelectorAll(".delete-btn").forEach(button => {
     button.addEventListener("click", function () {
-        const doctorId = this.getAttribute("data-id");
-        console.log("ID del doctor a eliminar:", doctorId); // 🔴 Verifica si el botón tiene el ID correcto
+        const appointmentId = this.getAttribute("data-id");
+        console.log("ID de la cita a eliminar:", appointmentId); // 🔴 Verifica si el botón tiene el ID correcto
 
-        if (confirm("¿Estás seguro de que deseas eliminar este doctor?")) {
-            fetch("/controllers/doctor/delete-doctor.controller.php", {
+        if (confirm("¿Estás seguro de que deseas eliminar esta cita?")) {
+            fetch("/controllers/appoiment/delete-appointment.controller.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `doctor_id=${doctorId}`
+                body: `appointment_id=${appointmentId}`
             })
             .then(response => {
                 console.log("Respuesta recibida:", response); // 🔴 Verifica si la respuesta llega

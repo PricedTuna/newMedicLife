@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-20 09:17:32
+/* Smarty version 5.4.5, created on 2025-05-21 03:27:32
   from 'file:register-appoiment.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682c48acde4771_96176990',
+  'unifunc' => 'content_682d4824899310_51797206',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '9040ae77ec06e831c4f7558815ec3d0cd6022540' => 
     array (
       0 => 'register-appoiment.tpl',
-      1 => 1747732651,
+      1 => 1747798050,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_682c48acde4771_96176990 (\Smarty\Template $_smarty_tpl) {
+function content_682d4824899310_51797206 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/appointment/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -29,13 +29,26 @@ $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/appoint
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./register-appoiment.css">
+    <link rel="stylesheet" href="/assets/css/flatpickr.min.css">
+    <?php echo '<script'; ?>
+ src="../../components/sidebar.app.js" defer><?php echo '</script'; ?>
+>
+    <link rel="stylesheet" href="../../components/sidebar.styles.css">
+    <?php echo '<script'; ?>
+ src="/assets/js/flatpickr.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="/assets/js/es.js"><?php echo '</script'; ?>
+>
     <title>Solicitar Cita</title>
 
     <?php echo '<script'; ?>
 >
         window.doctors = <?php echo json_encode($_smarty_tpl->getValue('doctors'));?>
 ;
-        window.patients= <?php echo json_encode($_smarty_tpl->getValue('patients'));?>
+        window.patients = <?php echo json_encode($_smarty_tpl->getValue('patients'));?>
+;
+        window.schedules = <?php echo json_encode($_smarty_tpl->getValue('schedules'));?>
 ;
     <?php echo '</script'; ?>
 >
@@ -47,19 +60,23 @@ $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/appoint
 
 <body>
 
+    <?php $_smarty_tpl->renderSubTemplate($_smarty_tpl->getValue('sidebarPath'), $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
+?>
+
     <div class="center-container">
         <div class="form-container">
             <h2>Solicitar Citas</h2>
             <form id="solicitarCita" method="POST" action="/controllers/appoiment/register-appoiment.controller.php">
                 <div class="form-group">
-                    <label for="curp">CURP</label>
-                    <input type="text" name="CURP" id="CURP" required>
-                    <small id="curpError" style="color: red; display: none;">CURP inválido</small>
+                    <label>Busqueda de paciente: Ingrese el nombre o CURP</label>
+                    <input type="text" id="CURP" name="curp" list="curpList" autocomplete="off" required>
+                    <datalist id="curpList"></datalist>
+                    <small id="curpError" style="color: red; display: none;"></small>
                 </div>
 
                 <div class="form-group">
                     <label for="patientId">Número de identificación del paciente</label>
-                    <input type="text" name="patientId" id="patientId" required>
+                    <input type="text" name="id_patient" id="patientId" required>
                 </div>
 
                 <div class="form-group">
@@ -69,7 +86,7 @@ $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/appoint
 
                 <div class="form-group">
                     <label for="speciality">Especialidad</label>
-                    <select name="medical_area" id="speciality" required>
+                    <select name="id_medical_area" id="speciality" required>
                         <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('medical_areas'), 'area');
 $foreach0DoElse = true;
@@ -89,22 +106,23 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 
 
                 <div class="form-group">
-                    <select name="doctor" id="doctor" required>
+                    <label for="speciality">Médico</label>
+                    <select name="id_doctor" id="doctor" required>
                         <option value="">Seleccione un médico</option>
-
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="appointmentDate">Hora y Fecha</label>
-                    <input type="datetime-local" name="appointmentDate" required>
+                    <input type="text" id="appointmentDate" name="appointment_date" required>
+                    <span id="dateError" style="color:red; display:none;">La fecha/hora no está en el horario del
+                        doctor</span>
                 </div>
 
                 <button type="submit" class="submit-btn">Registrar Datos</button>
             </form>
         </div>
     </div>
-
 </body>
 
 </html><?php }

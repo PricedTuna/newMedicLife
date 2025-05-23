@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'email'     => $_POST['email'] ?? '',
         'password'  => $_POST['password'] ?? '',
         'confirm_password' => $_POST['confirm_password'] ?? '',
-        'role'      => $_POST['role'] ?? 'user', // Default role is 'user'
+        'role'      => $_POST['role'] ?? 'S', // Default role is 'S' (Secretaria)
     ];
 
     // Validación básica
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
         // Insertar el nuevo usuario
-        $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, status) VALUES (:name, :email, :password, :role, 'A')");
+        $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, status) VALUES (:name, :email, :password, :role, 'AC')");
         $stmt->execute([
             ':name'     => $data['name'],
             ':email'    => $data['email'],

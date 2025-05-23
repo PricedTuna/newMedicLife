@@ -5,18 +5,18 @@ function validateUser($email, $password) {
     global $pdo;
 
     try {
-        $stmt = $pdo->prepare("SELECT password FROM users WHERE email = :email AND status = 'A'");
+        $stmt = $pdo->prepare("SELECT password, role FROM users WHERE email = :email AND status = 'AC'");
         $stmt->execute([':email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['password'])) {
-            return true;
+            return ['success' => true, 'role' => $user['role']];
         }
 
-        return false;
+        return ['success' => false];
     } catch (PDOException $e) {
         error_log("Error al validar usuario: " . $e->getMessage());
-        return false;
+        return ['success' => false];
     }
 }
 ?>

@@ -55,8 +55,9 @@
                     <div class="form-group">
                         <label for="role">Rol</label>
                         <select id="role" name="role" required>
-                            <option value="user">Usuario</option>
-                            <option value="admin">Administrador</option>
+                            <option value="S">Secretaria</option>
+                            <option value="A">Administrador</option>
+                            <option value="D">Doctor</option>
                         </select>
                     </div>
                     <button type="submit" class="submit-btn">Registrar</button>

@@ -9,8 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "Email recibido: " . htmlspecialchars($email) . "<br>";
     echo "Contraseña recibida: " . htmlspecialchars($password) . "<br>";
 
-    if (validateUser($email, $password)) {
+    $result = validateUser($email, $password);
+    if ($result['success']) {
         $_SESSION['usuario'] = $email;
+        $_SESSION['role'] = $result['role'];
         header('Location: /views/dashboard/dashboard.view.php');
 
         exit();

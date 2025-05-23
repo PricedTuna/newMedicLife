@@ -29,9 +29,10 @@
         <div class="form-container">
             <h2>Solicitar Citas</h2>
             <form id="solicitarCita" method="POST" action="/controllers/appoiment/register-appoiment.controller.php">
+            <input type="hidden" name="appointment_id" value="{$appointment.id}"></input>
                 <div class="form-group">
                     <label>Busqueda de paciente: Ingrese el nombre o CURP</label>
-                    <input type="text" id="CURP" name="curp" list="curpList" autocomplete="off" required>
+                    <input type="text" id="CURP" name="curp" list="curpList" autocomplete="off" value="{$appointment.curp|default:''}" required>
                     <datalist id="curpList"></datalist>
                     <small id="curpError" style="color: red; display: none;"></small>
                 </div>

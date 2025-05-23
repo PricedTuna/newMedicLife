@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-21 03:27:32
+/* Smarty version 5.4.5, created on 2025-05-23 00:04:23
   from 'file:register-appoiment.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682d4824899310_51797206',
+  'unifunc' => 'content_682fbb87e62163_33359522',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '9040ae77ec06e831c4f7558815ec3d0cd6022540' => 
     array (
       0 => 'register-appoiment.tpl',
-      1 => 1747798050,
+      1 => 1747958660,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_682d4824899310_51797206 (\Smarty\Template $_smarty_tpl) {
+function content_682fbb87e62163_33359522 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/appointment/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -67,9 +67,12 @@ $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/appoint
         <div class="form-container">
             <h2>Solicitar Citas</h2>
             <form id="solicitarCita" method="POST" action="/controllers/appoiment/register-appoiment.controller.php">
+            <input type="hidden" name="appointment_id" value="<?php echo $_smarty_tpl->getValue('appointment')['id'];?>
+"></input>
                 <div class="form-group">
                     <label>Busqueda de paciente: Ingrese el nombre o CURP</label>
-                    <input type="text" id="CURP" name="curp" list="curpList" autocomplete="off" required>
+                    <input type="text" id="CURP" name="curp" list="curpList" autocomplete="off" value="<?php echo (($tmp = $_smarty_tpl->getValue('appointment')['curp'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" required>
                     <datalist id="curpList"></datalist>
                     <small id="curpError" style="color: red; display: none;"></small>
                 </div>

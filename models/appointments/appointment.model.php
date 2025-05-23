@@ -18,17 +18,18 @@ class AppointmentModel
             throw new Exception("La cita con ID $appointmentId no existe.");
         }
 
-        $stmt = $this->pdo->prepare("UPDATE appointments SET id_patients = :id_patients,
+        $stmt = $this->pdo->prepare("UPDATE appointments SET id_patient = :id_patient,
         id_doctor = :id_doctor, id_receptionist = :id_receptionist, id_medical_area = :id_medical_area,
         created_at = :created_at, appointment_date = :appointment_date
             WHERE id = :appointment_id");
         $stmt->execute([
-            ':id_patients'             => $data['id_patients'],
-            ':id_doctor'               => $data['id_doctor'],
-            ':id_receptionist'         => $data['id_receptionist'],
-            ':id_medical_area'         => $data['id_medical_area'],
-            ':appointment_date'        => $data['appointment_date'],
-            ':appointment_id'          => $appointmentId
+            ':id_patient'      => $data['id_patient'],
+            ':id_doctor'        => $data['id_doctor'],
+            ':id_receptionist'  => $data['id_receptionist'],
+            ':id_medical_area'  => $data['id_medical_area'],
+            ':created_at'       => $data['created_at'],      // ✅ agregado
+            ':appointment_date' => $data['appointment_date'],
+            ':appointment_id'   => $appointmentId
         ]);
     }
 

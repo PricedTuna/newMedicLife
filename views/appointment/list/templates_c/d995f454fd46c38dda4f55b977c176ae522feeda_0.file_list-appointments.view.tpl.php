@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-21 04:08:09
+/* Smarty version 5.4.5, created on 2025-05-22 23:47:08
   from 'file:list-appointments.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682d51a914c3c0_96023334',
+  'unifunc' => 'content_682fb77ca0e833_34634504',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd995f454fd46c38dda4f55b977c176ae522feeda' => 
     array (
       0 => 'list-appointments.view.tpl',
-      1 => 1747800484,
+      1 => 1747957626,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_682d51a914c3c0_96023334 (\Smarty\Template $_smarty_tpl) {
+function content_682fb77ca0e833_34634504 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/appointment/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -105,18 +105,29 @@ foreach ($_from ?? [] as $_smarty_tpl->getVariable('appointment')->value) {
 $foreach0DoElse = false;
 ?>
                                 <tr>
-                                    <td data-label="ID"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('appointment')['id'], ENT_QUOTES, 'UTF-8', true);?>
+                                    <td data-label="ID"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('appointment')['cita'], ENT_QUOTES, 'UTF-8', true);?>
+</td>
+                                    <td data-label="Paciente"><?php echo $_smarty_tpl->getValue('appointment')['patient_name'];?>
+ <?php echo $_smarty_tpl->getValue('appointment')['last_name'];?>
+
+                                        <?php echo $_smarty_tpl->getValue('appointment')['last_name2'];?>
+</td>
+                                    <td data-label="Área Médica"><?php echo $_smarty_tpl->getValue('appointment')['medical_area'];?>
+</td>
+                                    <td data-label="Doctor"><?php echo $_smarty_tpl->getValue('appointment')['doctor_name'];?>
+</td>
+                                    <td data-label="Fecha"><?php echo $_smarty_tpl->getValue('appointment')['appointment_date'];?>
 </td>
                                     <td class="actions-td">
-                                        <form action="/controllers/doctor/delete-doctor.controller.php" method="POST"
+                                        <form action="/controllers/appoiment/delete-appoiment.controller.php" method="POST"
                                             class="action-wrapper">
-                                            <input type="hidden" name="doctor_id" value="<?php echo $_smarty_tpl->getValue('appointment')['id'];?>
+                                            <input type="hidden" name="appointment_id" value="<?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
 ">
                                             <button type="submit" class="delete-btn"
-                                                data-id="<?php echo $_smarty_tpl->getValue('appointment')['id'];?>
+                                                data-id="<?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
 ">Eliminar</button>
                                         </form>
-                                        <a href="/views/doctor/register/register-doctor.view.php?id=<?php echo $_smarty_tpl->getValue('appointment')['id'];?>
+                                        <a href="/views/appointment/register/register-appoiment.php?id=<?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
 "
                                             class="action-wrapper">
                                             <button class="update-btn">Actualizar</button>
@@ -126,6 +137,7 @@ $foreach0DoElse = false;
                             <?php
 }
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
+
                         <?php } else { ?>
                             <tr>
                                 <td colspan="14">No hay citas registradas.</td>

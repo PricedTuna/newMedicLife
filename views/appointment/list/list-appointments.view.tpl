@@ -69,21 +69,27 @@
                         {if $appointments|@count > 0}
                             {foreach from=$appointments item=appointment}
                                 <tr>
-                                    <td data-label="ID">{$appointment.id|escape}</td>
+                                    <td data-label="ID">{$appointment.cita|escape}</td>
+                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
+                                        {$appointment.last_name2}</td>
+                                    <td data-label="Área Médica">{$appointment.medical_area}</td>
+                                    <td data-label="Doctor">{$appointment.doctor_name}</td>
+                                    <td data-label="Fecha">{$appointment.appointment_date}</td>
                                     <td class="actions-td">
-                                        <form action="/controllers/doctor/delete-doctor.controller.php" method="POST"
+                                        <form action="/controllers/appoiment/delete-appoiment.controller.php" method="POST"
                                             class="action-wrapper">
-                                            <input type="hidden" name="doctor_id" value="{$appointment.id}">
+                                            <input type="hidden" name="appointment_id" value="{$appointment.cita}">
                                             <button type="submit" class="delete-btn"
-                                                data-id="{$appointment.id}">Eliminar</button>
+                                                data-id="{$appointment.cita}">Eliminar</button>
                                         </form>
-                                        <a href="/views/doctor/register/register-doctor.view.php?id={$appointment.id}"
+                                        <a href="/views/appointment/register/register-appoiment.php?id={$appointment.cita}"
                                             class="action-wrapper">
                                             <button class="update-btn">Actualizar</button>
                                         </a>
                                     </td>
                                 </tr>
                             {/foreach}
+
                         {else}
                             <tr>
                                 <td colspan="14">No hay citas registradas.</td>

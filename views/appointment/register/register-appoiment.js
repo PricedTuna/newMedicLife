@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //Logica de busqueda de pacientes:
 
 
-    curpInput.addEventListener("blur", function () {
+    curpInput.addEventListener("change", function () {
         const entrada = curpInput.value.trim().toUpperCase();
         const curp = entrada.split(" - ")[0]; // Extrae solo el CURP
 

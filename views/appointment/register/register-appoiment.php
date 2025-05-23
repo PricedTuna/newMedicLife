@@ -43,6 +43,33 @@ $stmt->execute();
 //Obtener todos los datos como array asociativo
 $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Obtener Citas
+if (isset($_GET['id'])) {
+    $appointmentId = $_GET['id'];
+
+    // Puedes validar o limpiar el valor
+    $appointmentId = (int)$appointmentId; // solo si es numérico
+
+    // Luego puedes usarlo en una consulta, por ejemplo:
+    $stmt = $pdo->prepare("SELECT
+        ap.id AS id,
+        p.names AS patient_name,
+        p.curp AS curp,
+        ap.appointment_date
+    FROM appointments ap
+    INNER JOIN patients p ON ap.id_patient = p.id
+    WHERE ap.id = :id");
+
+    $stmt->execute(['id' => $appointmentId]);
+    $appointment = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Si usas Smarty, lo asignas:
+} else {
+    // Redireccionar o mostrar error si falta el ID
+    header("Location: /views/appointment/list/list-appointments.php");
+    exit;
+}
+
 $smarty = new Smarty();
 
 $smarty->setTemplateDir(__DIR__);
@@ -53,5 +80,6 @@ $smarty->assign('medical_areas', $medical_areas);
 $smarty->assign('doctors', $doctors);
 $smarty->assign('patients', $patients);
 $smarty->assign('schedules', $schedules);
+$smarty->assign('appointment',$appointment);
 
 $smarty->display('register-appoiment.tpl');

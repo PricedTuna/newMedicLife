@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'id_doctor'              => $_POST['id_doctor'] ?? '',
         'id_receptionist'        => $_POST['id_recepetionist'] ?? '',
         'id_medical_area'        => $_POST['id_medical_area'] ?? '',
-        'appointment_date'       => $_POST['appointment_date'] ?? ''
+        'appointment_date'       => $_POST['appointment_date'] ?? '',
     ];
 
     try {
@@ -25,6 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($appointmentId) {
             // Actualización del doctor
+            $data['id_receptionist'] = 9;
+            
             $appointmentModel->updateAppointment($appointmentId, $data);
             header('Location: /views/appointment/list/list-appointments.view.php?success=' . urlencode("Cita actualizada con éxito"));
         } else {

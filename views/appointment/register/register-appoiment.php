@@ -26,6 +26,7 @@ $stmt = $pdo->prepare(" SELECT
 $stmt->execute();
 $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
 // Horarios de trabajo de los medicos
 $schedules = null;
 $stmt = $pdo->prepare("SELECT * FROM medical_schedules");
@@ -37,11 +38,12 @@ $patients = null;
 $busqueda = [];
 
 //EJecutar la consola
-$stmt = $pdo->prepare("SELECT * FROM patients");
+$stmt = $pdo->prepare("SELECT id, names, last_name, last_name2, CURP FROM patients");
 $stmt->execute();
 
 //Obtener todos los datos como array asociativo
 $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$smarty = new Smarty();
 
 // Obtener Citas
 if (isset($_GET['id'])) {
@@ -64,13 +66,9 @@ if (isset($_GET['id'])) {
     $appointment = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Si usas Smarty, lo asignas:
-} else {
-    // Redireccionar o mostrar error si falta el ID
-    header("Location: /views/appointment/list/list-appointments.php");
-    exit;
-}
+    $smarty->assign('appointment', $appointment);
 
-$smarty = new Smarty();
+}
 
 $smarty->setTemplateDir(__DIR__);
 
@@ -80,6 +78,5 @@ $smarty->assign('medical_areas', $medical_areas);
 $smarty->assign('doctors', $doctors);
 $smarty->assign('patients', $patients);
 $smarty->assign('schedules', $schedules);
-$smarty->assign('appointment',$appointment);
 
 $smarty->display('register-appoiment.tpl');

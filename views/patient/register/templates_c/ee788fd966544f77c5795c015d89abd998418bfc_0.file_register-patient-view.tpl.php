@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-18 21:05:22
+/* Smarty version 5.4.5, created on 2025-05-23 01:35:43
   from 'file:register-patient-view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682a4b92c3f4e8_66235554',
+  'unifunc' => 'content_682fd0ef648383_58492046',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ee788fd966544f77c5795c015d89abd998418bfc' => 
     array (
       0 => 'register-patient-view.tpl',
-      1 => 1747601896,
+      1 => 1747964101,
       2 => 'file',
     ),
   ),
@@ -25,7 +25,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:steps/step4.tpl' => 1,
   ),
 ))) {
-function content_682a4b92c3f4e8_66235554 (\Smarty\Template $_smarty_tpl) {
+function content_682fd0ef648383_58492046 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/patient/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -55,7 +55,6 @@ $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/patient
 ;
     <?php echo '</script'; ?>
 >
-
     <?php echo '<script'; ?>
  src="form_steps.js" defer><?php echo '</script'; ?>
 >
@@ -99,7 +98,7 @@ $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/patient
                 </div>
             <?php }?>
 
-            <form id="patient-form" action="/controllers/patient/register-patient.controller.php" method="POST">
+            <form id="patient-form" action="/controllers/patient/register-patient.controller.php" method="POST" enctype="multipart/form-data">
                 <?php $_smarty_tpl->renderSubTemplate('file:steps/step1.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
 ?>
                 <?php $_smarty_tpl->renderSubTemplate('file:steps/step2.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);

@@ -65,7 +65,6 @@ class PatientModel
         if ($decimalDigits > $maxLengthD) {
             throw new Exception("El campo $fieldName supera la longitud máxima de $maxLengthD caracteres decimales.");
         }
-        
     }
 
 
@@ -74,7 +73,8 @@ class PatientModel
      * @param array $data Datos a validar.
      * @param int|null $doctorId ID del doctor (en actualización).
      */
-    public function validateData($data, $patientId = null) {
+    public function validateData($data, $patientId = null)
+    {
         $this->validateField($data['names'], 40, 'nombre');
         $this->validateField($data['last_name'], 40, 'apellido paterno');
         $this->validateField($data['last_name2'], 40, 'apellido materno');
@@ -95,33 +95,34 @@ class PatientModel
         if (!empty($data['internal_number'])) {
             $this->validateField($data['internal_number'], 8, 'número interior');
         }
-        
+
         // Validación de unicidad
         $this->validateUnique('patients', 'CURP', $data['CURP'], $patientId, "La CURP que intentas registrar ya existe.");
         $this->validateUnique('patients', 'phone', $data['phone'], $patientId, "El número de teléfono que intentas registrar ya existe.");
         $this->validateUnique('patients', 'insurance_number', $data['insurance_number'], $patientId, "El número de afiliación que intentas registrar ya existe.");
     }
-    
+
     /**
      * Actualiza un paciente existente.
      * @param int $doctorId ID del paciente.
      * @param array $data Datos a actualizar.
      * @param string|null $photoData Datos binarios de la foto.
      */
-    public function updatePatient($patientId, $data) {
+    public function updatePatient($patientId, $data, $photoData)
+    {
         // Verifica que el paciente exista
         $stmt = $this->pdo->prepare("SELECT id FROM patients WHERE id = :patient_id");
         $stmt->execute([':patient_id' => $patientId]);
         if (!$stmt->fetch(PDO::FETCH_ASSOC)) {
             throw new Exception("El paciente con ID $patientId no existe.");
         }
-        
+
         $stmt = $this->pdo->prepare("UPDATE patients SET
             names = :names, last_name = :last_name, last_name2 = :last_name2,
             id_state = :id_state, id_municipality = :id_municipality, id_locality = :id_locality,
             CP = :CP, street = :street, external_number = :external_number, internal_number = :internal_number,
             neighborhood = :neighborhood, insurance_number = :insurance_number,
-            birth_date = :birth_date, CURP = :CURP, RFC = :RFC, phone = :phone,
+            birth_date = :birth_date, CURP = :CURP, RFC = :RFC, phone = :phone,photo = :photo,
             email = :email, gender = :gender, weight = :weight, height = :height, blood_type = :blood_type,
             id_emergency_contact = :id_emergency_contact, marital_status = :marital_status, ethnic_group = :ethnic_group, religion = :religion,
             status = :status
@@ -143,6 +144,7 @@ class PatientModel
             ':CURP'              => $data['CURP'],
             ':RFC'               => $data['RFC'],
             ':phone'             => $data['phone'],
+            ':photo'             => $photoData,
             ':email'             => $data['email'],
             ':gender'            => $data['gender'],
             ':weight'            => $data['weight'],
@@ -156,26 +158,27 @@ class PatientModel
             ':patient_id'         => $patientId
         ]);
     }
-    
+
     /**
      * Crea un nuevo registro de pacientes.
      * @param array $data Datos del pacientes.
      * @param string|null $photoData Datos binarios de la foto.
      * @return int ID del nuevo paciente.
      */
-    public function createPatient($data) {
+    public function createPatient($data, $photoData)
+    {
         $stmt = $this->pdo->prepare("INSERT INTO patients (
             names, last_name, last_name2, id_state, id_municipality, id_locality,
             CP, street, external_number, internal_number, neighborhood, insurance_number,
-            birth_date, CURP, RFC, phone, email, gender, weight, height, blood_type, id_emergency_contact,
+            birth_date, CURP, RFC, phone, photo, email, gender, weight, height, blood_type, id_emergency_contact,
             marital_status, ethnic_group, religion, status
         ) VALUES (
             :names, :last_name, :last_name2, :id_state, :id_municipality, :id_locality,
             :CP, :street, :external_number, :internal_number, :neighborhood, :insurance_number,
-            :birth_date, :CURP, :RFC, :phone, :email, :gender, :weight, :height, :blood_type, :id_emergency_contact,
+            :birth_date, :CURP, :RFC, :phone, :photo, :email, :gender, :weight, :height, :blood_type, :id_emergency_contact,
             :marital_status, :ethnic_group, :religion, :status
         )");
-    
+      
         $stmt->execute([
             ':names'                  => $data['names'],
             ':last_name'              => $data['last_name'],
@@ -193,6 +196,7 @@ class PatientModel
             ':CURP'                   => $data['CURP'],
             ':RFC'                    => $data['RFC'],
             ':phone'                  => $data['phone'],
+            ':photo'                  => $photoData,
             ':email'                  => $data['email'],
             ':gender'                 => $data['gender'],
             ':weight'                 => $data['weight'],
@@ -204,8 +208,7 @@ class PatientModel
             ':religion'               => $data['religion'],
             ':status'                 => 'A',
         ]);
-    
+
         return $this->pdo->lastInsertId();
     }
-    
 }

@@ -63,6 +63,7 @@
                             <th>Area medica</th>
                             <th>Medico</th>
                             <th>Fecha y hora</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,7 +77,7 @@
                                     <td data-label="Doctor">{$appointment.doctor_name}</td>
                                     <td data-label="Fecha">{$appointment.appointment_date}</td>
                                     <td class="actions-td">
-                                        <form action="/controllers/appoiment/delete-appoiment.controller.php" method="POST"
+                                        <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST"
                                             class="action-wrapper">
                                             <input type="hidden" name="appointment_id" value="{$appointment.cita}">
                                             <button type="submit" class="delete-btn"

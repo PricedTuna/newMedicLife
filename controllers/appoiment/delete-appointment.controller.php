@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $appointment_id = $_POST['appointment_id'];
 
         try {
-            $stmt = $pdo->prepare("SELECT id FROM appointment WHERE id = :appointment_id");
+            $stmt = $pdo->prepare("SELECT id FROM appointments WHERE id = :appointment_id");
             $stmt->execute([':appointment_id' => $appointment_id]);
             $appointment = $stmt->fetch(PDO::FETCH_ASSOC);
 

@@ -6,8 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(schedules);
     } else {
         console.warn("Error al cargar la variable 'doctors'");
+        console.log(doctors);
+        console.log(patients);
+        console.log(schedules);
         return;
     }
+
+    // Declaración de variables
 
     const appointmentDate = document.getElementById("appointmentDate");
     const doctorSelect = document.getElementById("doctor"); // ya lo tenías como doctorForm, usa uno solo
@@ -20,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let patientName = document.getElementById("patientName");
     const medicalArea = document.getElementById("speciality");
     const doctorForm = document.getElementById("doctor");
+
+
     // Logica de seleccion de horarios para la cita con disponibilidad para los medicos
 
     flatpickr("#appointmentDate", {
@@ -89,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
     doctorSelect.addEventListener("change", updateEnabledDays);
 
 
-    appointmentDate.addEventListener("change", function () {
+    appointmentDate.addEventListener("blur", function () {
         const selectedDate = new Date(appointmentDate.value);
         const selectedDoctorId = parseInt(doctorSelect.value);
 
@@ -187,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Cada vez que se cambia de especialidad
     medicalArea.addEventListener("change", function () {
-        medicalAreaID = getParamsMedical(medicalArea);
+        medicalAreaID = getParamsMedical(medicalArea);        
         filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
     });
 });
@@ -198,7 +205,7 @@ function getParamsMedical(medicalArea) {
     return medicalAreaID;
 }
 
-function filterDoctorsByArea(areaID, doctors, doctorSelect) {
+function filterDoctorsByArea(areaID, doctors, doctorSelect) {    
     // Filtrar los doctores por área médica
     const filtered = doctors.filter(doc => doc.medical_area_id == areaID);
 

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-18 21:05:22
+/* Smarty version 5.4.5, created on 2025-05-23 01:19:42
   from 'file:steps/step1.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682a4b92c6c3e2_84399288',
+  'unifunc' => 'content_682fcd2e78e237_04749292',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '42805e6dfe39fb526a61a9d625e84551e849cf26' => 
     array (
       0 => 'steps/step1.tpl',
-      1 => 1747601896,
+      1 => 1747963092,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_682a4b92c6c3e2_84399288 (\Smarty\Template $_smarty_tpl) {
+function content_682fcd2e78e237_04749292 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/patient/register/steps';
 ?><input type="hidden" name="patient_id" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
 ">
@@ -75,10 +75,15 @@ $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/patient
 " name="rfc" required>
     </div>
     <div class="form-group">
+        <label for="photo" class="file-label" id="photo-label">Subir Foto</label>
+        <input type="file" id="photo" name="photo" accept="image/*" <?php if (!$_smarty_tpl->getValue('patient')) {?>required<?php }?>>
+    </div>
+    <div class="form-group">
         <label for="affiliationNumber">Número de Afiliación</label>
         <input type="text" id="affiliationNumber" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['insurance_number'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
 " name="affiliationNumber" required>
     </div>
     <button type="button" class="next-btn" onclick="nextStep(2)">Siguiente</button>
-</div><?php }
+</div>
+<?php }
 }

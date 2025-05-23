@@ -17,7 +17,6 @@
         window.localities = {$localities|json_encode};
         window.states = {$states|json_encode};
     </script>
-
     <script src="form_steps.js" defer></script>
 </head>
 
@@ -56,7 +55,7 @@
                 </div>
             {/if}
 
-            <form id="patient-form" action="/controllers/patient/register-patient.controller.php" method="POST">
+            <form id="patient-form" action="/controllers/patient/register-patient.controller.php" method="POST" enctype="multipart/form-data">
                 {include file='steps/step1.tpl'}
                 {include file='steps/step2.tpl'}
                 {include file='steps/step3.tpl'}

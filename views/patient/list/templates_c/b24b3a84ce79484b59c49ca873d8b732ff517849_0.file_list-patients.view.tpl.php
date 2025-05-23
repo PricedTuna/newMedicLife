@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-18 21:05:17
+/* Smarty version 5.4.5, created on 2025-05-23 01:36:34
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682a4b8d3c3b96_18881367',
+  'unifunc' => 'content_682fd122851171_26739461',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'b24b3a84ce79484b59c49ca873d8b732ff517849' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1747601896,
+      1 => 1747964190,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_682a4b8d3c3b96_18881367 (\Smarty\Template $_smarty_tpl) {
+function content_682fd122851171_26739461 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/patient/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -85,6 +85,7 @@ $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/patient
                 <table>
                     <thead>
                         <tr>
+                            <th>Foto</th>
                             <th>Nombre(s)</th>
                             <th>Apellido(s)</th>
                             <th>CURP</th>
@@ -102,6 +103,14 @@ foreach ($_from ?? [] as $_smarty_tpl->getVariable('patient')->value) {
 $foreach0DoElse = false;
 ?>
                                 <tr>
+                                <td class="photo-column">
+                                        <?php if ($_smarty_tpl->getValue('patient')['photo']) {?>
+                                            <img src="/controllers/patient/mostrar_foto.php?id=<?php echo $_smarty_tpl->getValue('patient')['id'];?>
+" alt="Foto del paciente" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                        <?php } else { ?>
+                                            <p>Sin foto</p>
+                                        <?php }?>
+                                    </td>
                                     </td>
                                     <td data-label="Nombre"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('patient')['names'], ENT_QUOTES, 'UTF-8', true);?>
 </td>

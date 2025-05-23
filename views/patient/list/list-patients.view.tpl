@@ -54,6 +54,7 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Foto</th>
                             <th>Nombre(s)</th>
                             <th>Apellido(s)</th>
                             <th>CURP</th>
@@ -66,6 +67,13 @@
                         {if $patients|@count > 0}
                             {foreach from=$patients item=patient}
                                 <tr>
+                                <td class="photo-column">
+                                        {if $patient.photo}
+                                            <img src="/controllers/patient/mostrar_foto.php?id={$patient.id}" alt="Foto del paciente" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                        {else}
+                                            <p>Sin foto</p>
+                                        {/if}
+                                    </td>
                                     </td>
                                     <td data-label="Nombre">{$patient.names|escape}</td>
                                     <td data-label="Apellidos">{$patient.last_name|escape} {$patient.last_name2|escape}</td>

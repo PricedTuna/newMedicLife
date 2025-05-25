@@ -125,19 +125,22 @@ h1 {
 .actions-td {
   display: flex;
   flex-direction: column;
-  align-items: stretch; /* <- Cambiado a stretch para que los hijos llenen el ancho */
+  align-items: stretch;
+  /* <- Cambiado a stretch para que los hijos llenen el ancho */
   gap: 5px;
 }
 
 .action-wrapper {
   flex: 1;
   width: 100%;
-  display: flex; /* Asegura que el botón dentro se expanda */
+  display: flex;
+  /* Asegura que el botón dentro se expanda */
 }
 
 .delete-btn,
 .update-btn,
 .create-btn,
+.finish-btn,
 .back-btn {
   flex: 1;
   width: 100%;
@@ -165,6 +168,16 @@ h1 {
 }
 
 .update-btn:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
+
+.finish-btn {
+  background-color: #4edd85;
+
+}
+
+.finish-btn:hover {
   background-color: #2980b9;
   transform: scale(1.05);
 }
@@ -202,6 +215,7 @@ h1 {
 }
 
 @media (max-width: 810px) {
+
   /* Mismo padding al main que ya tenías a 800px */
   main {
     padding: 2em 1em 60px 1em;
@@ -217,6 +231,7 @@ h1 {
     margin-top: 10px;
     justify-content: flex-start;
   }
+
   .back-btn {
     margin-top: 2rem;
   }
@@ -243,10 +258,12 @@ h1 {
     justify-content: center;
     transition: opacity 0.2s, transform 0.1s;
   }
+
   .icon-btn:active {
     transform: scale(0.9);
     opacity: 0.7;
   }
+
   .create-btn {
     display: none;
   }
@@ -255,16 +272,22 @@ h1 {
   table thead {
     display: none;
   }
-  table, tbody, tr, td {
+
+  table,
+  tbody,
+  tr,
+  td {
     display: block;
     width: 100%;
   }
+
   tbody tr {
     margin-bottom: 1rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     padding: 0.5rem;
   }
+
   td {
     display: flex;
     justify-content: space-between;
@@ -272,6 +295,7 @@ h1 {
     border-bottom: 1px solid var(--line-clr);
     text-align: right;
   }
+
   td:before {
     content: attr(data-label);
     display: inline-block;
@@ -280,9 +304,11 @@ h1 {
     margin-right: 2rem;
     text-align: left;
   }
+
   td:last-child {
     border-bottom: 0;
   }
+
   .actions-td::before {
     content: "";
     display: none;
@@ -293,17 +319,21 @@ h1 {
   body {
     grid-template-columns: 1fr;
   }
+
   main {
     padding: 2em 1em 60px 1em;
   }
+
   h1 {
     font-size: 1.5em;
     padding-left: 0.50vw;
   }
+
   .container {
     border: none;
     padding: 0;
   }
+
   .create-btn {
     width: auto;
     margin-top: 10px;
@@ -322,28 +352,30 @@ h1 {
   }
 
   /* Botón “+” discreto */
-.icon-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;            /* Ajusta tamaño según te guste */
-  color: var(--accent-clr);
-  cursor: pointer;
-  width: 2em;
-  height: 2em;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s, transform 0.1s;
-}
-.icon-btn:active {
-  transform: scale(0.9);
-  opacity: 0.7;
-}
+  .icon-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    /* Ajusta tamaño según te guste */
+    color: var(--accent-clr);
+    cursor: pointer;
+    width: 2em;
+    height: 2em;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s, transform 0.1s;
+  }
 
-.create-btn {
-  display: none;
-}
+  .icon-btn:active {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+
+  .create-btn {
+    display: none;
+  }
 
   /* Oculta el encabezado */
   table thead {
@@ -351,7 +383,10 @@ h1 {
   }
 
   /* Haz que la tabla y sus elementos sean bloques */
-  table, tbody, tr, td {
+  table,
+  tbody,
+  tr,
+  td {
     display: block;
     width: 100%;
   }
@@ -383,7 +418,7 @@ h1 {
     text-transform: none;
     text-align: left;
   }
-  
+
   /* Elimina el borde inferior de la última celda para cada fila */
   td:last-child {
     border-bottom: 0;

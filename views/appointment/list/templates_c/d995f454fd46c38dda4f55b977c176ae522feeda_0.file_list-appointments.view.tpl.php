@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-23 03:54:27
+/* Smarty version 5.4.5, created on 2025-05-24 23:52:38
   from 'file:list-appointments.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682ff173002819_32288962',
+  'unifunc' => 'content_68325bc6cd59e7_85374609',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd995f454fd46c38dda4f55b977c176ae522feeda' => 
     array (
       0 => 'list-appointments.view.tpl',
-      1 => 1747972462,
+      1 => 1748130466,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_682ff173002819_32288962 (\Smarty\Template $_smarty_tpl) {
+function content_68325bc6cd59e7_85374609 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/appointment/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -120,6 +120,12 @@ $foreach0DoElse = false;
                                     <td data-label="Fecha"><?php echo $_smarty_tpl->getValue('appointment')['appointment_date'];?>
 </td>
                                     <td class="actions-td">
+                                    </form>
+                                        <a href="/views/pay/pay.view.php?id=<?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
+"
+                                            class="action-wrapper">
+                                            <button class="finish-btn">Finalizar Cita</button>
+                                        </a>
                                         <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST"
                                             class="action-wrapper">
                                             <input type="hidden" name="appointment_id" value="<?php echo $_smarty_tpl->getValue('appointment')['cita'];?>

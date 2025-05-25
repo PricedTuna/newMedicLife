@@ -77,6 +77,11 @@
                                     <td data-label="Doctor">{$appointment.doctor_name}</td>
                                     <td data-label="Fecha">{$appointment.appointment_date}</td>
                                     <td class="actions-td">
+                                    </form>
+                                        <a href="/views/pay/pay.view.php?id={$appointment.cita}"
+                                            class="action-wrapper">
+                                            <button class="finish-btn">Finalizar Cita</button>
+                                        </a>
                                         <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST"
                                             class="action-wrapper">
                                             <input type="hidden" name="appointment_id" value="{$appointment.cita}">

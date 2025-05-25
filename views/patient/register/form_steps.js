@@ -40,4 +40,33 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
+
+    const photoInput = document.getElementById('photo');
+    if (photoInput) {
+        if (photoInput.hasAttribute('required') && photoInput.files.length === 0) {
+            showErrorMessage(photoInput, 'Debe seleccionar una foto.');
+            valid = false;
+        } else if (photoInput.files.length > 0) {
+            const file = photoInput.files[0];
+            if (!file.type.startsWith('image/')) {
+                showErrorMessage(photoInput, 'El archivo debe ser una imagen.');
+                valid = false;
+            } else {
+                clearErrorMessage(photoInput);
+            }
+        }
+    }
+
+    document.getElementById('photo').addEventListener('change', event => {
+    const fileName = event.target.files[0] ? event.target.files[0].name : 'Subir Foto';
+    document.getElementById('photo-label').textContent = fileName;
 });
+});
+
+function clearErrorMessage(input) {
+    let errorElement = input.nextElementSibling;
+    if (errorElement && errorElement.classList.contains('error-message')) {
+        errorElement.remove();
+    }
+    input.style.border = '2px solid var(--line-clr)';
+}

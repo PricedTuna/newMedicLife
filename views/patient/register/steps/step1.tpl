@@ -42,6 +42,10 @@
         <input type="text" id="rfc" value="{$patient.RFC|default: ''}" name="rfc" required>
     </div>
     <div class="form-group">
+        <label for="photo" class="file-label" id="photo-label">Subir Foto</label>
+        <input type="file" id="photo" name="photo" accept="image/*" {if !$patient}required{/if}>
+    </div>
+    <div class="form-group">
         <label for="affiliationNumber">Número de Afiliación</label>
         <input type="text" id="affiliationNumber" value="{$patient.insurance_number|default: ''}" name="affiliationNumber" required>
     </div>

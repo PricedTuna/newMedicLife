@@ -16,6 +16,9 @@ try {
         $doctor = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    $doctorAssignments = null;
+    
+
     // Consultar municipios, estados, localidades y áreas médicas
     $stmt = $pdo->query("SELECT id_state, id, name FROM municipalities");
     $municipalities = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -28,13 +31,13 @@ try {
 
     $stmt = $pdo->query("SELECT id, name AS area_name FROM medical_areas");
     $medical_areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 } catch (\Throwable $th) {
     print_r($th);
     exit;
 } catch (PDOException $e) {
     die("Error al obtener tablas: " . $e->getMessage());
 }
+
 
 $smarty = new Smarty();
 
@@ -50,4 +53,3 @@ $smarty->assign('localities', $localities);
 $smarty->assign('medical_areas', $medical_areas);
 
 $smarty->display('register-doctor.view.tpl');
-?>

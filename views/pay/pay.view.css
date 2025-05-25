@@ -1,0 +1,117 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f4fa;
+    margin: 0;
+    padding: 0;
+}
+
+.payment-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.payment-box {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 112, 186, 0.2);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.payment-title {
+    color: #0070ba;
+    margin-bottom: 25px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.option {
+    display: block;
+    text-align: left;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.option:hover {
+    border-color: #0070ba;
+}
+
+.option input {
+    margin-right: 10px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #0070ba;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #005f9e;
+}
+
+.hidden {
+    display: none;
+}
+
+#cash-fields {
+    margin-top: 20px;
+    text-align: left;
+}
+
+#cash-fields label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#cash-fields input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+#restante {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #0070ba;
+}
+
+#paypal-fields {
+    margin-top: 20px;
+    text-align: left;
+}
+
+#paypal-fields label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#paypal-fields input,
+#paypal-fields select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+

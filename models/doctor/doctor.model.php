@@ -2,11 +2,11 @@
 // models/DoctorModel.php
 class DoctorModel {
     private $pdo;
-    
+
     public function __construct($pdo) {
         $this->pdo = $pdo;
     }
-    
+
     // Valida que un campo no esté vacío y no exceda la longitud máxima
     private function validateField($value, $maxLength, $fieldName) {
         if (empty($value)) {
@@ -16,14 +16,14 @@ class DoctorModel {
             throw new Exception("El campo $fieldName supera la longitud máxima de $maxLength caracteres.");
         }
     }
-    
+
     // Valida que un campo cumpla con el patrón especificado
     private function validateRegex($value, $pattern, $fieldName) {
         if (!preg_match($pattern, $value)) {
             throw new Exception("El campo $fieldName no tiene el formato correcto.");
         }
     }
-    
+
     // Verifica la unicidad de un campo, excluyendo opcionalmente un ID
     private function validateUnique($table, $field, $value, $doctorId = null, $customMessage = null) {
         $query = "SELECT id FROM $table WHERE $field = :value";
@@ -38,7 +38,7 @@ class DoctorModel {
             throw new Exception($customMessage ?? "El campo $field ya está en uso.");
         }
     }
-    
+
     /**
      * Valida todos los datos del formulario.
      * @param array $data Datos a validar.
@@ -60,17 +60,17 @@ class DoctorModel {
         $this->validateRegex($data['phone'], '/^\d{10}$/', 'teléfono');
         $this->validateRegex($data['email'], '/^[\w\.\-]+@[\w\.\-]+\.\w{2,4}$/', 'correo electrónico');
         $this->validateField($data['gender'], 2, 'género');
-        
+
         if (!empty($data['internal_number'])) {
             $this->validateField($data['internal_number'], 8, 'número interior');
         }
-        
+
         // Validación de unicidad
         $this->validateUnique('doctors', 'CURP', $data['CURP'], $doctorId, "La CURP que intentas registrar ya existe.");
         $this->validateUnique('doctors', 'phone', $data['phone'], $doctorId, "El número de teléfono que intentas registrar ya existe.");
         $this->validateUnique('doctors', 'insurance_number', $data['insurance_number'], $doctorId, "El número de afiliación que intentas registrar ya existe.");
     }
-    
+
     /**
      * Actualiza un doctor existente.
      * @param int $doctorId ID del doctor.
@@ -84,7 +84,7 @@ class DoctorModel {
         if (!$stmt->fetch(PDO::FETCH_ASSOC)) {
             throw new Exception("El doctor con ID $doctorId no existe.");
         }
-        
+
         $stmt = $this->pdo->prepare("UPDATE doctors SET
             names = :names, last_name = :last_name, last_name2 = :last_name2,
             id_state = :id_state, id_municipality = :id_municipality, id_locality = :id_locality,
@@ -118,7 +118,7 @@ class DoctorModel {
             ':doctor_id'         => $doctorId
         ]);
     }
-    
+
     /**
      * Crea un nuevo registro de doctor.
      * @param array $data Datos del doctor.
@@ -159,5 +159,15 @@ class DoctorModel {
             ':status'            => 'A'
         ]);
         return $this->pdo->lastInsertId();
+    }
+
+    /**
+     * Obtiene todos los doctores activos.
+     * @return array Lista de doctores activos con sus datos básicos.
+     */
+    public function getAllActiveDoctors() {
+        $stmt = $this->pdo->prepare("SELECT id, names, last_name, last_name2, email FROM doctors WHERE status = 'A' ORDER BY names, last_name, last_name2");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

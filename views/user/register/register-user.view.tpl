@@ -60,7 +60,56 @@
                             <option value="D">Doctor</option>
                         </select>
                     </div>
+                    <div class="form-group" id="doctor-select-container" style="display: none;">
+                        <label for="doctor_id">Seleccionar Doctor</label>
+                        <select id="doctor_id" name="doctor_id">
+                            <option value="">Seleccione un doctor</option>
+                            {foreach from=$doctors item=doctor}
+                                <option value="{$doctor.id}">{$doctor.names} {$doctor.last_name} {$doctor.last_name2} - {$doctor.email}</option>
+                            {/foreach}
+                        </select>
+                    </div>
                     <button type="submit" class="submit-btn">Registrar</button>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const roleSelect = document.getElementById('role');
+                            const doctorSelectContainer = document.getElementById('doctor-select-container');
+                            const doctorSelect = document.getElementById('doctor_id');
+                            const nameInput = document.getElementById('name');
+                            const emailInput = document.getElementById('email');
+
+                            // Función para mostrar/ocultar el selector de doctores
+                            function toggleDoctorSelect() {
+                                if (roleSelect.value === 'D') {
+                                    doctorSelectContainer.style.display = 'block';
+                                    doctorSelect.required = true;
+                                } else {
+                                    doctorSelectContainer.style.display = 'none';
+                                    doctorSelect.required = false;
+                                    doctorSelect.value = '';
+                                }
+                            }
+
+                            // Inicializar el estado
+                            toggleDoctorSelect();
+
+                            // Escuchar cambios en el selector de rol
+                            roleSelect.addEventListener('change', toggleDoctorSelect);
+
+                            // Cuando se selecciona un doctor, autocompletar nombre y email
+                            doctorSelect.addEventListener('change', function() {
+                                if (this.value && roleSelect.value === 'D') {
+                                    const selectedOption = this.options[this.selectedIndex];
+                                    const doctorInfo = selectedOption.text.split(' - ');
+                                    if (doctorInfo.length === 2) {
+                                        nameInput.value = doctorInfo[0];
+                                        emailInput.value = doctorInfo[1];
+                                    }
+                                }
+                            });
+                        });
+                    </script>
                 </form>
             </div>
         </div>

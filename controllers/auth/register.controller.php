@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/models/doctor/doctor.model.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recopilación de datos del formulario
@@ -14,7 +15,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'password'  => $_POST['password'] ?? '',
         'confirm_password' => $_POST['confirm_password'] ?? '',
         'role'      => $_POST['role'] ?? 'S', // Default role is 'S' (Secretaria)
+        'doctor_id' => $_POST['doctor_id'] ?? null,
     ];
+
+    // Si el rol es Doctor y se seleccionó un doctor, obtener sus datos
+    if ($data['role'] === 'D' && !empty($data['doctor_id'])) {
+        $doctorModel = new DoctorModel($pdo);
+        $stmt = $pdo->prepare("SELECT names, last_name, last_name2, email FROM doctors WHERE id = :doctor_id AND status = 'A'");
+        $stmt->execute([':doctor_id' => $data['doctor_id']]);
+        $doctor = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($doctor) {
+            // Usar los datos del doctor para el usuario
+            $data['name'] = $doctor['names'] . ' ' . $doctor['last_name'] . ' ' . $doctor['last_name2'];
+            $data['email'] = $doctor['email'];
+        }
+    }
 
     // Validación básica
     $errors = [];
@@ -64,13 +80,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
         // Insertar el nuevo usuario
-        $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, status) VALUES (:name, :email, :password, :role, 'AC')");
-        $stmt->execute([
-            ':name'     => $data['name'],
-            ':email'    => $data['email'],
-            ':password' => $hashedPassword,
-            ':role'     => $data['role']
-        ]);
+        if ($data['role'] === 'D' && !empty($data['doctor_id'])) {
+            // Si es un doctor, guardar también el ID del doctor
+            $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, doctor_id, status) VALUES (:name, :email, :password, :role, :doctor_id, 'AC')");
+            $stmt->execute([
+                ':name'     => $data['name'],
+                ':email'    => $data['email'],
+                ':password' => $hashedPassword,
+                ':role'     => $data['role'],
+                ':doctor_id'=> $data['doctor_id']
+            ]);
+        } else {
+            // Para otros roles
+            $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, status) VALUES (:name, :email, :password, :role, 'AC')");
+            $stmt->execute([
+                ':name'     => $data['name'],
+                ':email'    => $data['email'],
+                ':password' => $hashedPassword,
+                ':role'     => $data['role']
+            ]);
+        }
 
         // Redirigir al dashboard con mensaje de éxito
         header('Location: /views/dashboard/dashboard.view.php?success=' . urlencode("Usuario registrado con éxito"));

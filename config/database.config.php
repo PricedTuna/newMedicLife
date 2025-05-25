@@ -2,7 +2,7 @@
 // config/database.php
 
 $host     = "localhost:3306";
-$dbname   = "medic_life";
+$dbname   = "new_medic_life";
 $username = "root";
 $password = "root";
 

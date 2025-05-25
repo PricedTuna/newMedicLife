@@ -1,22 +1,55 @@
-<!DOCTYPE html>
+<?php
+/* Smarty version 5.4.5, created on 2025-05-25 02:56:49
+  from 'file:pay.view.tpl' */
+
+/* @var \Smarty\Template $_smarty_tpl */
+if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
+  'version' => '5.4.5',
+  'unifunc' => 'content_68326ad1883e04_58361130',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'baba7ce0c015fb7b25d6b6ec4921fad357cc236b' => 
+    array (
+      0 => 'pay.view.tpl',
+      1 => 1748134606,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+))) {
+function content_68326ad1883e04_58361130 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\pay';
+?><!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="pay.view.css">
-    <script src="/views/doctor/list/views-handler.js" defer></script>
-    <script src="/views/appointment/register/register-appointment.app.js" defer></script>
+    <?php echo '<script'; ?>
+ src="/views/doctor/list/views-handler.js" defer><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="/views/appointment/register/register-appointment.app.js" defer><?php echo '</script'; ?>
+>
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <script src="/views/components/sidebar.app.js" defer></script>
-    <script src="pay.view.js" defer></script>
+    <?php echo '<script'; ?>
+ src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="pay.view.js" defer><?php echo '</script'; ?>
+>
     <title>Pago con PayPal</title>
 </head>
 
 <body>
 
-    {include file=$sidebarPath}
+    <?php $_smarty_tpl->renderSubTemplate($_smarty_tpl->getValue('sidebarPath'), $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
+?>
 
     <main class="payment-container">
         <div class="payment-box">
@@ -73,4 +106,5 @@
 
 </body>
 
-</html>
+</html><?php }
+}

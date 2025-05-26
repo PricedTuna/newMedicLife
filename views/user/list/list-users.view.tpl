@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/views/components/sidebar.app.js" defer></script>
-    <link rel="stylesheet" href="./list-users.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="./list-users.styles.css">
     <title>Lista de Usuarios</title>
 </head>
 

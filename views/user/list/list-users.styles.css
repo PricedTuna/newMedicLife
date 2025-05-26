@@ -96,7 +96,6 @@ td {
 }
 
 main {
-  display: flex;
   gap: 20px;
   align-items: flex-start;
   margin-left: 20px;
@@ -292,31 +291,5 @@ h1 {
   .actions-td::before {
     content: "";
     display: none;
-  }
-}
-
-@media (max-width: 800px) {
-  body {
-    grid-template-columns: 1fr;
-  }
-
-  main {
-    padding: 2em 1em 60px 1em;
-  }
-
-  h1 {
-    font-size: 1.5em;
-    padding-left: 0.50vw;
-  }
-
-  .container {
-    border: none;
-    padding: 0;
-  }
-
-  .create-btn {
-    width: auto;
-    margin-top: 10px;
-    justify-content: flex-start;
   }
 }

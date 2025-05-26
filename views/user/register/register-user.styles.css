@@ -176,7 +176,6 @@ body.sidebar-collapsed .content {
 /* Ajuste para el contenedor principal */
 .center-container {
     flex-direction: column;
-    padding: 2rem;
 }
 
 /* Estilos para los botones de acción */

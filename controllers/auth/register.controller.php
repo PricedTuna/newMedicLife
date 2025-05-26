@@ -12,6 +12,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $editMode = isset($_POST['edit_mode']) && $_POST['edit_mode'] == '1';
     $userId = $editMode ? ($_POST['user_id'] ?? null) : null;
 
+    // Si estamos en modo edición, obtener los datos actuales del usuario
+    $currentUserData = null;
+    if ($editMode && $userId) {
+        $stmt = $pdo->prepare("SELECT role, id_doctor FROM users WHERE id = :user_id");
+        $stmt->execute([':user_id' => $userId]);
+        $currentUserData = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     // Recopilación de datos del formulario
     $data = [
         'name'      => $_POST['name'] ?? '',
@@ -21,6 +29,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'role'      => $_POST['role'] ?? 'S', // Default role is 'S' (Secretaria)
         'id_doctor' => $_POST['id_doctor'] ?? null,
     ];
+
+    // Si estamos en modo edición, mantener el rol original para todos los usuarios
+    if ($editMode && $currentUserData) {
+        // Mantener el rol original
+        $data['role'] = $currentUserData['role'];
+
+        // Si es un doctor, mantener también el id_doctor original
+        if ($currentUserData['role'] === 'D' && !empty($currentUserData['id_doctor'])) {
+            $data['id_doctor'] = $currentUserData['id_doctor'];
+        }
+    }
 
     // Si el rol es Doctor y se seleccionó un doctor, obtener sus datos
     if ($data['role'] === 'D' && !empty($data['id_doctor'])) {

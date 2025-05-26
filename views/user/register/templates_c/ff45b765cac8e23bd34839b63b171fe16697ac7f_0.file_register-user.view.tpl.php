@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 02:52:08
+/* Smarty version 5.4.5, created on 2025-05-26 03:10:14
   from 'file:register-user.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833d7586761a4_91211918',
+  'unifunc' => 'content_6833db96007052_88649810',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ff45b765cac8e23bd34839b63b171fe16697ac7f' => 
     array (
       0 => 'register-user.view.tpl',
-      1 => 1748227488,
+      1 => 1748228958,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833d7586761a4_91211918 (\Smarty\Template $_smarty_tpl) {
+function content_6833db96007052_88649810 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -155,6 +155,30 @@ echo $_smarty_tpl->getValue('userData')['email'];
                             // Inicializar el estado
                             toggleDoctorSelect();
 
+                            // Si estamos en modo edición, deshabilitar el selector de rol para todos los usuarios
+                            const editMode = document.querySelector('input[name="edit_mode"]');
+                            if (editMode) {
+                                // Deshabilitar el selector de rol para todos los usuarios en modo edición
+                                roleSelect.disabled = true;
+                                roleSelect.classList.add('input-disabled');
+
+                                // Si además es un doctor y hay un doctor seleccionado, deshabilitar también el selector de doctor
+                                if (roleSelect.value === 'D' && doctorSelect.value) {
+                                    const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
+                                    const doctorInfo = selectedOption.text.split(' - ');
+                                    if (doctorInfo.length === 2) {
+                                        nameInput.readOnly = true;
+                                        emailInput.readOnly = true;
+                                        nameInput.classList.add('input-disabled');
+                                        emailInput.classList.add('input-disabled');
+
+                                        // Deshabilitar el selector de doctor cuando se edita un usuario doctor
+                                        doctorSelect.disabled = true;
+                                        doctorSelect.classList.add('input-disabled');
+                                    }
+                                }
+                            }
+
                             // Escuchar cambios en el selector de rol
                             roleSelect.addEventListener('change', toggleDoctorSelect);
 
@@ -174,8 +198,8 @@ echo $_smarty_tpl->getValue('userData')['email'];
                                         emailInput.classList.add('input-disabled');
                                     }
                                 } else {
-                                    nameInput.disabled = false;
-                                    emailInput.disabled = false;
+                                    nameInput.readOnly = false;
+                                    emailInput.readOnly = false;
 
                                     nameInput.value = '';
                                     emailInput.value = '';

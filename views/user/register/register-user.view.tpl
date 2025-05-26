@@ -108,6 +108,30 @@
                             // Inicializar el estado
                             toggleDoctorSelect();
 
+                            // Si estamos en modo edición, deshabilitar el selector de rol para todos los usuarios
+                            const editMode = document.querySelector('input[name="edit_mode"]');
+                            if (editMode) {
+                                // Deshabilitar el selector de rol para todos los usuarios en modo edición
+                                roleSelect.disabled = true;
+                                roleSelect.classList.add('input-disabled');
+
+                                // Si además es un doctor y hay un doctor seleccionado, deshabilitar también el selector de doctor
+                                if (roleSelect.value === 'D' && doctorSelect.value) {
+                                    const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
+                                    const doctorInfo = selectedOption.text.split(' - ');
+                                    if (doctorInfo.length === 2) {
+                                        nameInput.readOnly = true;
+                                        emailInput.readOnly = true;
+                                        nameInput.classList.add('input-disabled');
+                                        emailInput.classList.add('input-disabled');
+
+                                        // Deshabilitar el selector de doctor cuando se edita un usuario doctor
+                                        doctorSelect.disabled = true;
+                                        doctorSelect.classList.add('input-disabled');
+                                    }
+                                }
+                            }
+
                             // Escuchar cambios en el selector de rol
                             roleSelect.addEventListener('change', toggleDoctorSelect);
 
@@ -127,8 +151,8 @@
                                         emailInput.classList.add('input-disabled');
                                     }
                                 } else {
-                                    nameInput.disabled = false;
-                                    emailInput.disabled = false;
+                                    nameInput.readOnly = false;
+                                    emailInput.readOnly = false;
 
                                     nameInput.value = '';
                                     emailInput.value = '';

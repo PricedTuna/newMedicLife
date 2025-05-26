@@ -29,7 +29,11 @@ if (isset($_GET['id'])) {
     // Luego puedes usarlo en una consulta, por ejemplo:
     $stmt = $pdo->prepare("SELECT
         ap.id AS id,
+        ap.id_patient AS id_patient,
+        p.email AS email,
         p.names AS patient_name,
+        p.last_name AS last_name,
+        p.last_name2 AS last_name2,
         p.curp AS curp,
         ap.appointment_date
     FROM appointments ap

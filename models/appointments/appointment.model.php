@@ -20,7 +20,7 @@ class AppointmentModel
 
         $stmt = $this->pdo->prepare("UPDATE appointments SET id_patient = :id_patient,
         id_doctor = :id_doctor, id_receptionist = :id_receptionist, id_medical_area = :id_medical_area,
-        created_at = :created_at, appointment_date = :appointment_date
+        created_at = :created_at, appointment_date = :appointment_date, status = :status
             WHERE id = :appointment_id");
         $stmt->execute([
             ':id_patient'      => $data['id_patient'],
@@ -29,7 +29,8 @@ class AppointmentModel
             ':id_medical_area'  => $data['id_medical_area'],
             ':created_at'       => $data['created_at'],      // ✅ agregado
             ':appointment_date' => $data['appointment_date'],
-            ':appointment_id'   => $appointmentId
+            ':appointment_id'   => $appointmentId,
+            ':status'           => 'A'
         ]);
     }
 
@@ -42,9 +43,9 @@ class AppointmentModel
     public function createAppointment($data)
     {
         $stmt = $this->pdo->prepare("INSERT INTO appointments (
-        id_patient, id_doctor, id_receptionist, id_medical_area, appointment_date
+        id_patient, id_doctor, id_receptionist, id_medical_area, appointment_date, status
     ) VALUES (
-        :id_patient, :id_doctor, :id_receptionist, :id_medical_area, :appointment_date
+        :id_patient, :id_doctor, :id_receptionist, :id_medical_area, :appointment_date, :status
     )");
 
         $stmt->execute([
@@ -52,7 +53,8 @@ class AppointmentModel
             ':id_doctor'        => $data['id_doctor'],
             ':id_receptionist'  => $data['id_receptionist'],
             ':id_medical_area'  => $data['id_medical_area'],
-            ':appointment_date' => $data['appointment_date']
+            ':appointment_date' => $data['appointment_date'],
+            ':status' => 'A'
         ]);
 
         return $this->pdo->lastInsertId();

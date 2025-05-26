@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-25 02:56:49
+/* Smarty version 5.4.5, created on 2025-05-26 07:10:06
   from 'file:pay.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68326ad1883e04_58361130',
+  'unifunc' => 'content_6833f7aed0be40_52050818',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'baba7ce0c015fb7b25d6b6ec4921fad357cc236b' => 
     array (
       0 => 'pay.view.tpl',
-      1 => 1748134606,
+      1 => 1748236203,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_68326ad1883e04_58361130 (\Smarty\Template $_smarty_tpl) {
+function content_6833f7aed0be40_52050818 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\pay';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -55,6 +55,13 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\pay';
         <div class="payment-box">
             <h2 class="payment-title">Selecciona el método de pago</h2>
             <form action="/controllers/pay/pay.controller.php" method="POST">
+            <input type="hidden" name="id_patient" value="<?php echo (($tmp = $_smarty_tpl->getValue('appointment')['id_patient'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" ></input>
+            <input type="hidden" name="email" value="<?php echo (($tmp = $_smarty_tpl->getValue('appointment')['email'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" ></input>
+            <input type="hidden" name="id_cita" value="<?php echo (($tmp = $_smarty_tpl->getValue('appointment')['id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" ></input>
+
                 <label class="option">
                     <input type="radio" name="metodo_pago" value="efectivo" id="efectivo" required />
                     Pago en Efectivo
@@ -81,7 +88,10 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\pay';
                 <div id="paypal-fields" class="hidden">
                     <label>
                         Nombre completo:
-                        <input type="text" id="paypal_name" name="paypal_name" required />
+                        <input type="text" id="paypal_name" name="paypal_name" value="<?php echo (($tmp = $_smarty_tpl->getValue('appointment')['patient_name'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+ <?php echo (($tmp = $_smarty_tpl->getValue('appointment')['last_name'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+ <?php echo (($tmp = $_smarty_tpl->getValue('appointment')['last_name2'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" required />
                     </label>
                     <label>
                         Correo electrónico (PayPal):

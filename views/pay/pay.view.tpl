@@ -22,6 +22,10 @@
         <div class="payment-box">
             <h2 class="payment-title">Selecciona el método de pago</h2>
             <form action="/controllers/pay/pay.controller.php" method="POST">
+            <input type="hidden" name="id_patient" value="{$appointment.id_patient|default:''}" ></input>
+            <input type="hidden" name="email" value="{$appointment.email|default:''}" ></input>
+            <input type="hidden" name="id_cita" value="{$appointment.id|default:''}" ></input>
+
                 <label class="option">
                     <input type="radio" name="metodo_pago" value="efectivo" id="efectivo" required />
                     Pago en Efectivo
@@ -48,7 +52,7 @@
                 <div id="paypal-fields" class="hidden">
                     <label>
                         Nombre completo:
-                        <input type="text" id="paypal_name" name="paypal_name" required />
+                        <input type="text" id="paypal_name" name="paypal_name" value="{$appointment.patient_name|default:''} {$appointment.last_name|default:''} {$appointment.last_name2|default:''}" required />
                     </label>
                     <label>
                         Correo electrónico (PayPal):

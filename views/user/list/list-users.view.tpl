@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="./list-users.styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./list-users.js" defer></script>
     <title>Lista de Usuarios</title>
 </head>
 

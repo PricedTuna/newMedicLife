@@ -7,6 +7,7 @@
     <script src="/views/components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="./register-user.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Registro de Usuarios</title>
 </head>
 
@@ -200,6 +201,48 @@
 
         </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userForm = document.getElementById('user-form');
+
+            userForm.addEventListener('submit', function(event) {
+                // Prevent the default form submission
+                event.preventDefault();
+
+                // Determine the action based on form mode
+                let title, confirmButtonText;
+                const isEditMode = document.querySelector('input[name="edit_mode"]') !== null;
+                const isPasswordChangeMode = document.querySelector('input[name="password_change_mode"]') !== null;
+
+                if (isPasswordChangeMode) {
+                    title = "¿Estás seguro de que deseas cambiar la contraseña?";
+                    confirmButtonText = "Cambiar contraseña";
+                } else if (isEditMode) {
+                    title = "¿Estás seguro de que deseas actualizar este usuario?";
+                    confirmButtonText = "Actualizar";
+                } else {
+                    title = "¿Estás seguro de que deseas registrar este usuario?";
+                    confirmButtonText = "Registrar";
+                }
+
+                // Show SweetAlert confirmation
+                Swal.fire({
+                    title: title,
+                    text: "",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: confirmButtonText,
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // If confirmed, submit the form
+                        userForm.submit();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

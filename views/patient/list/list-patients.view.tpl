@@ -6,13 +6,14 @@
     <link rel="stylesheet" href="../../components/sidebar.styles.css">
     <script src="../../components/sidebar.app.js" defer></script>
     <script src="../../patient/register/register-patient.app.js" defer></script> *}
-    
+
     <script src="/views/patient/list/views-handler.js" defer></script>
     <script src="/views/patient/register/register-patient.app.js" defer></script>
     <link rel="stylesheet" href="/views/patient/main/main-patient.styles.css">
     <link rel="stylesheet" href="/views/patient/register/register-patient.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
-    <script src="./list-patient.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./list-patients.js" defer></script>
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/register-patient.styles.css">
     <link rel="stylesheet" href="/views/patient/list/list-patients.styles.css">
@@ -24,7 +25,7 @@
 <body>
 
     {include file="../../components/sidebar.tpl"}
-    
+
     <main >
 
         <div class="main-content">

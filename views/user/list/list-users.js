@@ -1,14 +1,13 @@
-
-console.log("Loading patient deletion script");
+console.log("Loading user deletion script");
 document.querySelectorAll(".delete-btn").forEach(button => {
     button.addEventListener("click", async function(event) {
         event.preventDefault(); // Prevent form submission
 
-        const patientId = this.getAttribute("data-id");
-        console.log("ID del paciente a eliminar:", patientId);
+        const userId = this.getAttribute("data-id");
+        console.log("ID del usuario a eliminar:", userId);
 
         const result = await Swal.fire({
-            title: "¿Estás seguro de que deseas eliminar este paciente?",
+            title: "¿Estás seguro de que deseas eliminar este usuario?",
             text: "",
             icon: "warning",
             showCancelButton: true,

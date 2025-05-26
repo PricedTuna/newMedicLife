@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="/views/appointment/main/main-appointment.styles.css">
     <link rel="stylesheet" href="/views/appointment/register/register-appoiment.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
-    <script src="./list-appointment.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./list-appointments.js" defer></script>
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/register-appointment.styles.css">
     <link rel="stylesheet" href="/views/appointment/list/list-appointments.styles.css">

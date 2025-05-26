@@ -15,14 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'password'  => $_POST['password'] ?? '',
         'confirm_password' => $_POST['confirm_password'] ?? '',
         'role'      => $_POST['role'] ?? 'S', // Default role is 'S' (Secretaria)
-        'doctor_id' => $_POST['doctor_id'] ?? null,
+        'id_doctor' => $_POST['id_doctor'] ?? null,
     ];
 
     // Si el rol es Doctor y se seleccionó un doctor, obtener sus datos
-    if ($data['role'] === 'D' && !empty($data['doctor_id'])) {
+    if ($data['role'] === 'D' && !empty($data['id_doctor'])) {
         $doctorModel = new DoctorModel($pdo);
-        $stmt = $pdo->prepare("SELECT names, last_name, last_name2, email FROM doctors WHERE id = :doctor_id AND status = 'A'");
-        $stmt->execute([':doctor_id' => $data['doctor_id']]);
+        $stmt = $pdo->prepare("SELECT names, last_name, last_name2, email FROM doctors WHERE id = :id_doctor AND status = 'A'");
+        $stmt->execute([':id_doctor' => $data['id_doctor']]);
         $doctor = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($doctor) {
@@ -80,15 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
         // Insertar el nuevo usuario
-        if ($data['role'] === 'D' && !empty($data['doctor_id'])) {
+        if ($data['role'] === 'D' && !empty($data['id_doctor'])) {
             // Si es un doctor, guardar también el ID del doctor
-            $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, doctor_id, status) VALUES (:name, :email, :password, :role, :doctor_id, 'AC')");
+            $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, id_doctor, status) VALUES (:name, :email, :password, :role, :id_doctor, 'AC')");
             $stmt->execute([
                 ':name'     => $data['name'],
                 ':email'    => $data['email'],
                 ':password' => $hashedPassword,
                 ':role'     => $data['role'],
-                ':doctor_id'=> $data['doctor_id']
+                ':id_doctor'=> $data['id_doctor']
             ]);
         } else {
             // Para otros roles

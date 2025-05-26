@@ -6,13 +6,13 @@
     <link rel="stylesheet" href="../../components/sidebar.styles.css">
     <script src="../../components/sidebar.app.js" defer></script>
     <script src="../../patient/register/register-patient.app.js" defer></script> *}
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./list-doctors.js" module defer></script>
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/doctor/register/register-doctor.app.js" defer></script>
     <link rel="stylesheet" href="/views/doctor/main/main-doctor.styles.css">
     <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
-    <script src="./list-doctors.js" defer></script>
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/register-patient.styles.css">
     <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
@@ -24,7 +24,7 @@
 <body>
 
     {include file="../../components/sidebar.tpl"}
-    
+
     <main >
 
         <div class="main-content">
@@ -80,10 +80,10 @@
                                     <td data-label="Teléfono">{$doctor.phone|escape}</td>
                                     <td data-label="Sexo">{$doctor.gender|escape}</td>
                                     <td class="actions-td">
-                                        <form action="/controllers/doctor/delete-doctor.controller.php" method="POST" class="action-wrapper">
+
                                             <input type="hidden" name="doctor_id" value="{$doctor.id}">
                                             <button type="submit" class="delete-btn" data-id="{$doctor.id}">Eliminar</button>
-                                        </form>
+
                                         <a href="/views/doctor/register/register-doctor.view.php?id={$doctor.id}" class="action-wrapper">
                                             <button class="update-btn">Actualizar</button>
                                         </a>

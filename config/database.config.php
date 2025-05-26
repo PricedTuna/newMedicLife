@@ -4,7 +4,7 @@
 $host     = "localhost:3306";
 $dbname   = "new_medic_life";
 $username = "root";
-$password = "PricedTuna";
+$password = "root";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

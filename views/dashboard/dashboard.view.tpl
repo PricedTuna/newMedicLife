@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="../components/sidebar.styles.css">
     <script src="../components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="./dashboard.styles.css">
-    <script src="./dashboard.app.js" async></script>
-
+    <script src="./dashboard.app.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>

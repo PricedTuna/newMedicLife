@@ -1,11 +1,20 @@
 
 console.log("LO ESTA CARGANDO")
 document.querySelectorAll(".delete-btn").forEach(button => {
-    button.addEventListener("click", function () {
+    button.addEventListener("click", async function () {
         const doctorId = this.getAttribute("data-id");
         console.log("ID del doctor a eliminar:", doctorId); // 🔴 Verifica si el botón tiene el ID correcto
 
-        if (confirm("¿Estás seguro de que deseas eliminar este doctor?")) {
+        const result = await Swal.fire({
+            title: "¿Estás seguro de que deseas eliminar este doctor?",
+            text: "",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar"
+        })
+
+        if (result.isConfirmed) {
             fetch("/controllers/doctor/delete-doctor.controller.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },

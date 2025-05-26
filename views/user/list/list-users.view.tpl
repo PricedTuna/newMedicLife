@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/views/components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="./list-users.styles.css">
     <title>Lista de Usuarios</title>
 </head>
 
 <body>
 
-    {include file=$sidebarPath} <!-- Aquí se incluye el sidebar, según la variable Smarty -->
+    {include file="../../components/sidebar.tpl"}
 
     <main>
         <div class="main-content">

@@ -1,26 +1,27 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 04:01:22
+/* Smarty version 5.4.5, created on 2025-05-26 04:26:16
   from 'file:list-users.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833e7925d1f19_79333796',
+  'unifunc' => 'content_6833ed68eefac9_76222324',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '618f4818f17cbb451db906d5a4602b3d410e1a26' => 
     array (
       0 => 'list-users.view.tpl',
-      1 => 1748232079,
+      1 => 1748233520,
       2 => 'file',
     ),
   ),
   'includes' => 
   array (
+    'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_6833e7925d1f19_79333796 (\Smarty\Template $_smarty_tpl) {
+function content_6833ed68eefac9_76222324 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/list';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -31,14 +32,15 @@ $_smarty_current_dir = '/var/www/html/views/user/list';
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="./list-users.styles.css">
     <title>Lista de Usuarios</title>
 </head>
 
 <body>
 
-    <?php $_smarty_tpl->renderSubTemplate($_smarty_tpl->getValue('sidebarPath'), $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
-?> <!-- Aquí se incluye el sidebar, según la variable Smarty -->
+    <?php $_smarty_tpl->renderSubTemplate("file:../../components/sidebar.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
+?>
 
     <main>
         <div class="main-content">

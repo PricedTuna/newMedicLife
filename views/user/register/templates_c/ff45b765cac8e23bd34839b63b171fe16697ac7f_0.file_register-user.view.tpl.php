@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 02:23:06
+/* Smarty version 5.4.5, created on 2025-05-26 02:52:08
   from 'file:register-user.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833d08a450838_76211589',
+  'unifunc' => 'content_6833d7586761a4_91211918',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ff45b765cac8e23bd34839b63b171fe16697ac7f' => 
     array (
       0 => 'register-user.view.tpl',
-      1 => 1748226156,
+      1 => 1748227488,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833d08a450838_76211589 (\Smarty\Template $_smarty_tpl) {
+function content_6833d7586761a4_91211918 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -62,14 +62,28 @@ $_smarty_current_dir = '/var/www/html/views/user/register';
                     </div>
                 <?php }?>
 
-                <!-- Formulario para registrar usuario -->
+                <!-- Si hay un mensaje de éxito, lo mostramos aquí -->
+                <?php if ((true && ($_smarty_tpl->hasVariable('success') && null !== ($_smarty_tpl->getValue('success') ?? null)))) {?>
+                    <div
+                        style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                        <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('success'), ENT_QUOTES, 'UTF-8', true);?>
+
+                    </div>
+                <?php }?>
+
+                <!-- Formulario para registrar o actualizar usuario -->
                 <form action="/controllers/auth/register.controller.php" method="POST" id="user-form">
+                    <?php if ($_smarty_tpl->getValue('editMode')) {?>
+                        <input type="hidden" name="user_id" value="<?php echo $_smarty_tpl->getValue('userData')['id'];?>
+">
+                        <input type="hidden" name="edit_mode" value="1">
+                    <?php }?>
                     <div class="form-group">
                         <label for="role">Rol</label>
                         <select id="role" name="role" required>
-                            <option value="S">Secretaria</option>
-                            <option value="A">Administrador</option>
-                            <option value="D">Doctor</option>
+                            <option value="S" <?php if ($_smarty_tpl->getValue('editMode') && $_smarty_tpl->getValue('userData')['role'] == 'S') {?>selected<?php }?>>Secretaria</option>
+                            <option value="A" <?php if ($_smarty_tpl->getValue('editMode') && $_smarty_tpl->getValue('userData')['role'] == 'A') {?>selected<?php }?>>Administrador</option>
+                            <option value="D" <?php if ($_smarty_tpl->getValue('editMode') && $_smarty_tpl->getValue('userData')['role'] == 'D') {?>selected<?php }?>>Doctor</option>
                       </select>
                     </div>
 
@@ -84,7 +98,7 @@ foreach ($_from ?? [] as $_smarty_tpl->getVariable('doctor')->value) {
 $foreach0DoElse = false;
 ?>
                                 <option value="<?php echo $_smarty_tpl->getValue('doctor')['id'];?>
-"><?php echo $_smarty_tpl->getValue('doctor')['names'];?>
+" <?php if ($_smarty_tpl->getValue('editMode') && $_smarty_tpl->getValue('userData')['id_doctor'] == $_smarty_tpl->getValue('doctor')['id']) {?>selected<?php }?>><?php echo $_smarty_tpl->getValue('doctor')['names'];?>
  <?php echo $_smarty_tpl->getValue('doctor')['last_name'];?>
  <?php echo $_smarty_tpl->getValue('doctor')['last_name2'];?>
  - <?php echo $_smarty_tpl->getValue('doctor')['email'];?>
@@ -96,21 +110,26 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                     </div>
                     <div class="form-group">
                         <label for="name">Nombre completo</label>
-                        <input type="text" id="name" name="name" placeholder="Nombre completo" required>
+                        <input type="text" id="name" name="name" placeholder="Nombre completo" value="<?php if ($_smarty_tpl->getValue('editMode')) {
+echo $_smarty_tpl->getValue('userData')['name'];
+}?>" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Correo Electrónico</label>
-                        <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
+                        <input type="email" id="email" name="email" placeholder="Correo electrónico" value="<?php if ($_smarty_tpl->getValue('editMode')) {
+echo $_smarty_tpl->getValue('userData')['email'];
+}?>" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña</label>
-                        <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                        <input type="password" id="password" name="password" placeholder="Contraseña" <?php if (!$_smarty_tpl->getValue('editMode')) {?>required<?php }?>>
+                        <?php if ($_smarty_tpl->getValue('editMode')) {?><small style="color: #666;">Dejar en blanco para mantener la contraseña actual</small><?php }?>
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirmar Contraseña</label>
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" required>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" <?php if (!$_smarty_tpl->getValue('editMode')) {?>required<?php }?>>
                     </div>
-                    <button type="submit" class="submit-btn">Registrar</button>
+                    <button type="submit" class="submit-btn"><?php if ($_smarty_tpl->getValue('editMode')) {?>Actualizar<?php } else { ?>Registrar<?php }?></button>
 
                     <?php echo '<script'; ?>
 >
@@ -169,6 +188,76 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                     <?php echo '</script'; ?>
 >
                 </form>
+            </div>
+
+            <!-- Lista de usuarios registrados -->
+            <div class="users-list-container">
+                <h3 class="users-list-title">Usuarios Registrados</h3>
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>ID Doctor</th>
+                            <th>Fecha de Creación</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+$_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('users'), 'user');
+$foreach1DoElse = true;
+foreach ($_from ?? [] as $_smarty_tpl->getVariable('user')->value) {
+$foreach1DoElse = false;
+?>
+                            <tr>
+                                <td><?php echo $_smarty_tpl->getValue('user')['id'];?>
+</td>
+                                <td><?php echo $_smarty_tpl->getValue('user')['name'];?>
+</td>
+                                <td><?php echo $_smarty_tpl->getValue('user')['email'];?>
+</td>
+                                <td>
+                                    <?php if ($_smarty_tpl->getValue('user')['role'] == 'S') {?>Secretaria
+                                    <?php } elseif ($_smarty_tpl->getValue('user')['role'] == 'A') {?>Administrador
+                                    <?php } elseif ($_smarty_tpl->getValue('user')['role'] == 'D') {?>Doctor
+                                    <?php } else {
+echo $_smarty_tpl->getValue('user')['role'];?>
+
+                                    <?php }?>
+                                </td>
+                                <td><?php echo (($tmp = $_smarty_tpl->getValue('user')['id_doctor'] ?? null)===null||$tmp==='' ? '-' ?? null : $tmp);?>
+</td>
+                                <td><?php echo $_smarty_tpl->getValue('user')['created_at'];?>
+</td>
+                                <td>
+                                    <?php if ($_smarty_tpl->getValue('user')['status'] == 'AC') {?>Activo
+                                    <?php } else {
+echo $_smarty_tpl->getValue('user')['status'];?>
+
+                                    <?php }?>
+                                </td>
+                                <td class="actions-td">
+                                    <form action="/controllers/auth/delete-user.controller.php" method="POST" class="action-wrapper">
+                                        <input type="hidden" name="user_id" value="<?php echo $_smarty_tpl->getValue('user')['id'];?>
+">
+                                        <button type="submit" class="delete-btn" data-id="<?php echo $_smarty_tpl->getValue('user')['id'];?>
+">Eliminar</button>
+                                    </form>
+                                    <a href="/views/user/register/register-user.view.php?id=<?php echo $_smarty_tpl->getValue('user')['id'];?>
+" class="action-wrapper">
+                                        <button class="update-btn">Actualizar</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php
+}
+$_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>

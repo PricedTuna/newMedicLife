@@ -8,6 +8,10 @@ require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/doctor/doctor.model.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verificar si estamos en modo edición
+    $editMode = isset($_POST['edit_mode']) && $_POST['edit_mode'] == '1';
+    $userId = $editMode ? ($_POST['user_id'] ?? null) : null;
+
     // Recopilación de datos del formulario
     $data = [
         'name'      => $_POST['name'] ?? '',
@@ -48,24 +52,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
         $errors[] = "El formato del correo electrónico no es válido.";
     } else {
-        // Verificar si el email ya existe
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
-        $stmt->execute([':email' => $data['email']]);
-        if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-            $errors[] = "Este correo electrónico ya está registrado.";
+        // Verificar si el email ya existe (solo para nuevos usuarios o si el email cambió)
+        if (!$editMode) {
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
+            $stmt->execute([':email' => $data['email']]);
+            if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+                $errors[] = "Este correo electrónico ya está registrado.";
+            }
+        } else {
+            // En modo edición, verificar si el email ya existe pero pertenece a otro usuario
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email AND id != :user_id");
+            $stmt->execute([':email' => $data['email'], ':user_id' => $userId]);
+            if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+                $errors[] = "Este correo electrónico ya está registrado por otro usuario.";
+            }
         }
     }
 
     // Validar contraseña
-    if (empty($data['password'])) {
-        $errors[] = "La contraseña es obligatoria.";
-    } elseif (strlen($data['password']) < 8) {
-        $errors[] = "La contraseña debe tener al menos 8 caracteres.";
-    }
+    if (!$editMode) {
+        // Para nuevos usuarios, la contraseña es obligatoria
+        if (empty($data['password'])) {
+            $errors[] = "La contraseña es obligatoria.";
+        } elseif (strlen($data['password']) < 8) {
+            $errors[] = "La contraseña debe tener al menos 8 caracteres.";
+        }
 
-    // Validar confirmación de contraseña
-    if ($data['password'] !== $data['confirm_password']) {
-        $errors[] = "Las contraseñas no coinciden.";
+        // Validar confirmación de contraseña
+        if ($data['password'] !== $data['confirm_password']) {
+            $errors[] = "Las contraseñas no coinciden.";
+        }
+    } else {
+        // En modo edición, la contraseña es opcional
+        if (!empty($data['password'])) {
+            // Si se proporciona una contraseña, validarla
+            if (strlen($data['password']) < 8) {
+                $errors[] = "La contraseña debe tener al menos 8 caracteres.";
+            }
+
+            // Validar confirmación de contraseña
+            if ($data['password'] !== $data['confirm_password']) {
+                $errors[] = "Las contraseñas no coinciden.";
+            }
+        }
     }
 
     // Si hay errores, redirigir de vuelta al formulario
@@ -76,36 +105,97 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // Encriptar la contraseña
-        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+        if (!$editMode) {
+            // CREAR NUEVO USUARIO
+            // Encriptar la contraseña
+            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
-        // Insertar el nuevo usuario
-        if ($data['role'] === 'D' && !empty($data['id_doctor'])) {
-            // Si es un doctor, guardar también el ID del doctor
-            $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, id_doctor, status) VALUES (:name, :email, :password, :role, :id_doctor, 'AC')");
-            $stmt->execute([
-                ':name'     => $data['name'],
-                ':email'    => $data['email'],
-                ':password' => $hashedPassword,
-                ':role'     => $data['role'],
-                ':id_doctor'=> $data['id_doctor']
-            ]);
+            // Insertar el nuevo usuario
+            if ($data['role'] === 'D' && !empty($data['id_doctor'])) {
+                // Si es un doctor, guardar también el ID del doctor
+                $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, id_doctor, status) VALUES (:name, :email, :password, :role, :id_doctor, 'AC')");
+                $stmt->execute([
+                    ':name'     => $data['name'],
+                    ':email'    => $data['email'],
+                    ':password' => $hashedPassword,
+                    ':role'     => $data['role'],
+                    ':id_doctor'=> $data['id_doctor']
+                ]);
+            } else {
+                // Para otros roles
+                $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, status) VALUES (:name, :email, :password, :role, 'AC')");
+                $stmt->execute([
+                    ':name'     => $data['name'],
+                    ':email'    => $data['email'],
+                    ':password' => $hashedPassword,
+                    ':role'     => $data['role']
+                ]);
+            }
+
+            // Redirigir al dashboard con mensaje de éxito
+            header('Location: /views/dashboard/dashboard.view.php?success=' . urlencode("Usuario registrado con éxito"));
+            exit;
         } else {
-            // Para otros roles
-            $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, status) VALUES (:name, :email, :password, :role, 'AC')");
-            $stmt->execute([
-                ':name'     => $data['name'],
-                ':email'    => $data['email'],
-                ':password' => $hashedPassword,
-                ':role'     => $data['role']
-            ]);
-        }
+            // ACTUALIZAR USUARIO EXISTENTE
+            if (!empty($data['password'])) {
+                // Si se proporcionó una nueva contraseña, actualizarla
+                $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
-        // Redirigir al dashboard con mensaje de éxito
-        header('Location: /views/dashboard/dashboard.view.php?success=' . urlencode("Usuario registrado con éxito"));
-        exit;
+                if ($data['role'] === 'D' && !empty($data['id_doctor'])) {
+                    // Actualizar usuario con ID de doctor y nueva contraseña
+                    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, password = :password, role = :role, id_doctor = :id_doctor WHERE id = :user_id");
+                    $stmt->execute([
+                        ':name'     => $data['name'],
+                        ':email'    => $data['email'],
+                        ':password' => $hashedPassword,
+                        ':role'     => $data['role'],
+                        ':id_doctor'=> $data['id_doctor'],
+                        ':user_id'  => $userId
+                    ]);
+                } else {
+                    // Actualizar usuario sin ID de doctor pero con nueva contraseña
+                    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, password = :password, role = :role, id_doctor = NULL WHERE id = :user_id");
+                    $stmt->execute([
+                        ':name'     => $data['name'],
+                        ':email'    => $data['email'],
+                        ':password' => $hashedPassword,
+                        ':role'     => $data['role'],
+                        ':user_id'  => $userId
+                    ]);
+                }
+            } else {
+                // Actualizar sin cambiar la contraseña
+                if ($data['role'] === 'D' && !empty($data['id_doctor'])) {
+                    // Actualizar usuario con ID de doctor sin cambiar contraseña
+                    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, role = :role, id_doctor = :id_doctor WHERE id = :user_id");
+                    $stmt->execute([
+                        ':name'     => $data['name'],
+                        ':email'    => $data['email'],
+                        ':role'     => $data['role'],
+                        ':id_doctor'=> $data['id_doctor'],
+                        ':user_id'  => $userId
+                    ]);
+                } else {
+                    // Actualizar usuario sin ID de doctor y sin cambiar contraseña
+                    $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email, role = :role, id_doctor = NULL WHERE id = :user_id");
+                    $stmt->execute([
+                        ':name'     => $data['name'],
+                        ':email'    => $data['email'],
+                        ':role'     => $data['role'],
+                        ':user_id'  => $userId
+                    ]);
+                }
+            }
+
+            // Redirigir a la página de registro con mensaje de éxito
+            header('Location: /views/user/register/register-user.view.php?success=' . urlencode("Usuario actualizado con éxito"));
+            exit;
+        }
     } catch (PDOException $e) {
-        header('Location: /views/user/register/register-user.view.php?error=' . urlencode("Error al registrar el usuario: " . $e->getMessage()));
+        $errorMsg = $editMode ?
+            "Error al actualizar el usuario: " . $e->getMessage() :
+            "Error al registrar el usuario: " . $e->getMessage();
+        header('Location: /views/user/register/register-user.view.php?error=' . urlencode($errorMsg));
         exit;
     }
 } else {

@@ -101,12 +101,14 @@
                     {/if}
                     <div class="form-group">
                         <label for="password">Contraseña</label>
-                        <input type="password" id="password" name="password" placeholder="Contraseña" {if !$editMode || $passwordChangeMode}required{/if}>
+                        <input type="password" id="password" name="password" placeholder="Contraseña" {if !$editMode || $passwordChangeMode}required{/if} onblur="validatePassword()">
+                        <div id="password-error" class="error-message" style="color: red; display: none;"></div>
                         {if $editMode && !$passwordChangeMode}<small style="color: #666;">Dejar en blanco para mantener la contraseña actual</small>{/if}
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirmar Contraseña</label>
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" {if !$editMode || $passwordChangeMode}required{/if}>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" {if !$editMode || $passwordChangeMode}required{/if} onblur="validatePasswordMatch()">
+                        <div id="confirm-password-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
                     <button type="submit" class="submit-btn">
                         {if $passwordChangeMode}
@@ -203,12 +205,72 @@
     </main>
 
     <script>
+        function validatePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordError = document.getElementById('password-error');
+            const isEditMode = document.querySelector('input[name="edit_mode"]') !== null;
+            const isPasswordChangeMode = document.querySelector('input[name="password_change_mode"]') !== null;
+
+            // Clear previous error
+            passwordError.style.display = 'none';
+            passwordError.textContent = '';
+
+            // Skip validation if password is empty and we're in edit mode (not password change mode)
+            if (passwordInput.value === '' && isEditMode && !isPasswordChangeMode) {
+                return true;
+            }
+
+            // Validate password length
+            if (passwordInput.value.length < 8) {
+                passwordError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+                passwordError.style.display = 'block';
+                return false;
+            }
+
+            return true;
+        }
+
+        function validatePasswordMatch() {
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm_password');
+            const confirmPasswordError = document.getElementById('confirm-password-error');
+            const isEditMode = document.querySelector('input[name="edit_mode"]') !== null;
+            const isPasswordChangeMode = document.querySelector('input[name="password_change_mode"]') !== null;
+
+            // Clear previous error
+            confirmPasswordError.style.display = 'none';
+            confirmPasswordError.textContent = '';
+
+            // Skip validation if both passwords are empty and we're in edit mode (not password change mode)
+            if (passwordInput.value === '' && confirmPasswordInput.value === '' && isEditMode && !isPasswordChangeMode) {
+                return true;
+            }
+
+            // Validate password match
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                confirmPasswordError.textContent = 'Las contraseñas no coinciden.';
+                confirmPasswordError.style.display = 'block';
+                return false;
+            }
+
+            return true;
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const userForm = document.getElementById('user-form');
 
             userForm.addEventListener('submit', function(event) {
                 // Prevent the default form submission
                 event.preventDefault();
+
+                // Validate password fields before submission
+                const isPasswordValid = validatePassword();
+                const isPasswordMatchValid = validatePasswordMatch();
+
+                // If validation fails, stop form submission
+                if (!isPasswordValid || !isPasswordMatchValid) {
+                    return;
+                }
 
                 // Determine the action based on form mode
                 let title, confirmButtonText;

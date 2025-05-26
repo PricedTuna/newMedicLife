@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 09:44:04
+/* Smarty version 5.4.5, created on 2025-05-26 11:39:46
   from 'file:C:\proyectos\mediclife\newMedicLife/views/components/sidebar.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68341bc49e17b7_35957398',
+  'unifunc' => 'content_683436e25d5e64_56401455',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_68341bc49e17b7_35957398 (\Smarty\Template $_smarty_tpl) {
+function content_683436e25d5e64_56401455 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\components';
 ?><nav id="sidebar">
     <ul>

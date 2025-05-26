@@ -70,20 +70,33 @@ if (isset($_GET['id'])) {
 
     $stmt->execute(['id' => $appointmentId]);
     $appointment = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
-    
+
+    // Construir el nombre completo evitando espacios extras
+    if ($appointment) {
+        $parts = array_filter([
+            $appointment['patient_name'] ?? '',
+            $appointment['last_name'] ?? '',
+            $appointment['last_name2'] ?? '',
+        ], fn($v) => !empty($v));
+
+        $appointment['full_name'] = implode(' ', $parts);
+    }
+
     $smarty->assign('appointment', $appointment);
 } else {
-    try {
-        $stmt = $pdo->prepare("SELECT * FROM appointments");
-        $stmt->execute();
-        $allAppointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
-       
-    } catch (PDOException $e) {
-        die("Error al obtener todas las citas: " . $e->getMessage());
-    }
-    
-    $smarty->assign('allAppointments', $allAppointments);
+    $smarty->assign('appointment', $appointment); // Vacío si no hay ID
 }
+
+try {
+    $stmt = $pdo->prepare("SELECT * FROM appointments");
+    $stmt->execute();
+    $allAppointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error al obtener todas las citas: " . $e->getMessage());
+}
+
+$smarty->assign('allAppointments', $allAppointments);
+
 
 // Configuración de Smarty
 $smarty->setTemplateDir(__DIR__);
@@ -94,7 +107,7 @@ $smarty->assign('medical_areas', $medical_areas);
 $smarty->assign('doctors', $doctors);
 $smarty->assign('patients', $patients);
 $smarty->assign('schedules', $schedules);
-$smarty->assign('appointment', $appointment); // Siempre asignar, aunque esté vacío
+
 // Agrega esto JUSTO ANTES de $smarty->display()
 $smarty->clearCompiledTemplate();
 $smarty->clearAllCache();

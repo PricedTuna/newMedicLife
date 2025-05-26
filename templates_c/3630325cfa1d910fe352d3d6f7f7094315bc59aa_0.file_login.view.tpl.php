@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-25 02:22:39
+/* Smarty version 5.4.5, created on 2025-05-26 01:58:21
   from 'file:login.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683262cfef61a9_16284527',
+  'unifunc' => 'content_6833cabd9e77d7_91189210',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    'a697cd43fcf0bc67bffac3c6e081fab2913f52c0' => 
+    '3630325cfa1d910fe352d3d6f7f7094315bc59aa' => 
     array (
       0 => 'login.view.tpl',
-      1 => 1748132536,
+      1 => 1748223206,
       2 => 'file',
     ),
   ),
@@ -20,8 +20,8 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_683262cfef61a9_16284527 (\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\login';
+function content_6833cabd9e77d7_91189210 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = '/var/www/html/views/login';
 ?><!DOCTYPE html>
 <html lang="es">
 <head>

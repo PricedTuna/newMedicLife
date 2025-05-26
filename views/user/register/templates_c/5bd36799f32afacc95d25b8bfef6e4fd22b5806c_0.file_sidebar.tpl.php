@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-25 02:22:54
-  from 'file:C:\proyectos\mediclife\newMedicLife\views\doctor\list\../../components/sidebar.tpl' */
+/* Smarty version 5.4.5, created on 2025-05-26 02:14:24
+  from 'file:/var/www/html/views/components/sidebar.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683262de84c431_13972024',
+  'unifunc' => 'content_6833ce807ebff0_53584203',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '60e7f4dd45b305aef84695060e7c67e862baa562' => 
+    '5bd36799f32afacc95d25b8bfef6e4fd22b5806c' => 
     array (
-      0 => 'C:\\proyectos\\mediclife\\newMedicLife\\views\\doctor\\list\\../../components/sidebar.tpl',
-      1 => 1748132536,
+      0 => '/var/www/html/views/components/sidebar.tpl',
+      1 => 1748223206,
       2 => 'file',
     ),
   ),
@@ -20,8 +20,8 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_683262de84c431_13972024 (\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\components';
+function content_6833ce807ebff0_53584203 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = '/var/www/html/views/components';
 ?><nav id="sidebar">
     <ul>
         <li>
@@ -112,13 +112,13 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\component
             </a>
         </li>
         <li>
-            <a href="usuario.html">
+            <a href="/views/user/register/register-user.view.php">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#e8eaed">
                     <path
                         d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Zm80 0h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
                 </svg>
-                <span>Usuario</span>
+                <span>Registrar Usuario</span>
             </a>
         </li>
         <li>
@@ -131,5 +131,6 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\component
             </a>
         </li>
     </ul>
-</nav><?php }
+</nav>
+<?php }
 }

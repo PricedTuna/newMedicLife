@@ -1,4 +1,29 @@
-<!DOCTYPE html>
+<?php
+/* Smarty version 5.4.5, created on 2025-05-26 02:08:03
+  from 'file:dashboard.view.tpl' */
+
+/* @var \Smarty\Template $_smarty_tpl */
+if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
+  'version' => '5.4.5',
+  'unifunc' => 'content_6833cd039ec970_27267785',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '8c75a1dcb3f3dbef5c37f456fb092d1aab2e2784' => 
+    array (
+      0 => 'dashboard.view.tpl',
+      1 => 1748223206,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+    'file:../components/sidebar.tpl' => 1,
+  ),
+))) {
+function content_6833cd039ec970_27267785 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = '/var/www/html/views/dashboard';
+?><!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -6,26 +31,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard </title>
     <link rel="stylesheet" href="../components/sidebar.styles.css">
-    <script src="../components/sidebar.app.js" defer></script>
+    <?php echo '<script'; ?>
+ src="../components/sidebar.app.js" defer><?php echo '</script'; ?>
+>
     <link rel="stylesheet" href="./dashboard.styles.css">
-    <script src="./dashboard.app.js" async></script>
+    <?php echo '<script'; ?>
+ src="./dashboard.app.js" async><?php echo '</script'; ?>
+>
 
 </head>
 
 <body>
 
-    {include file='../components/sidebar.tpl'}
+    <?php $_smarty_tpl->renderSubTemplate('file:../components/sidebar.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
+?>
 
     <main>
         <div class="main-content">
             <header>
                 <h1>Dashboard</h1>
-                {if isset($smarty.get.success)}
+                <?php if ((true && (true && null !== ($_GET['success'] ?? null)))) {?>
                     <div
                         style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
-                        {$smarty.get.success|escape}
+                        <?php echo htmlspecialchars((string)$_GET['success'], ENT_QUOTES, 'UTF-8', true);?>
+
                     </div>
-                {/if}
+                <?php }?>
                 <div class="search-container">
                     <input type="text" placeholder="Search type of keywords">
                 </div>
@@ -78,4 +109,5 @@
     </main>
 </body>
 
-</html>
+</html><?php }
+}

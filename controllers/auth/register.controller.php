@@ -8,8 +8,9 @@ require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/doctor/doctor.model.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Verificar si estamos en modo edición
+    // Verificar si estamos en modo edición o cambio de contraseña
     $editMode = isset($_POST['edit_mode']) && $_POST['edit_mode'] == '1';
+    $passwordChangeMode = isset($_POST['password_change_mode']) && $_POST['password_change_mode'] == '1';
     $userId = $editMode ? ($_POST['user_id'] ?? null) : null;
 
     // Si estamos en modo edición, obtener los datos actuales del usuario
@@ -58,39 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validación básica
     $errors = [];
 
-    // Validar nombre
-    if (empty($data['name'])) {
-        $errors[] = "El nombre es obligatorio.";
-    } elseif (strlen($data['name']) > 100) {
-        $errors[] = "El nombre no puede exceder los 100 caracteres.";
-    }
-
-    // Validar email
-    if (empty($data['email'])) {
-        $errors[] = "El correo electrónico es obligatorio.";
-    } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "El formato del correo electrónico no es válido.";
-    } else {
-        // Verificar si el email ya existe (solo para nuevos usuarios o si el email cambió)
-        if (!$editMode) {
-            $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
-            $stmt->execute([':email' => $data['email']]);
-            if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-                $errors[] = "Este correo electrónico ya está registrado.";
-            }
-        } else {
-            // En modo edición, verificar si el email ya existe pero pertenece a otro usuario
-            $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email AND id != :user_id");
-            $stmt->execute([':email' => $data['email'], ':user_id' => $userId]);
-            if ($stmt->fetch(PDO::FETCH_ASSOC)) {
-                $errors[] = "Este correo electrónico ya está registrado por otro usuario.";
-            }
-        }
-    }
-
-    // Validar contraseña
-    if (!$editMode) {
-        // Para nuevos usuarios, la contraseña es obligatoria
+    // Si estamos en modo de cambio de contraseña, solo validamos la contraseña
+    if ($passwordChangeMode) {
+        // En modo de cambio de contraseña, la contraseña es obligatoria
         if (empty($data['password'])) {
             $errors[] = "La contraseña es obligatoria.";
         } elseif (strlen($data['password']) < 8) {
@@ -102,16 +73,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = "Las contraseñas no coinciden.";
         }
     } else {
-        // En modo edición, la contraseña es opcional
-        if (!empty($data['password'])) {
-            // Si se proporciona una contraseña, validarla
-            if (strlen($data['password']) < 8) {
+        // Validación normal para registro o actualización
+
+        // Validar nombre
+        if (empty($data['name'])) {
+            $errors[] = "El nombre es obligatorio.";
+        } elseif (strlen($data['name']) > 100) {
+            $errors[] = "El nombre no puede exceder los 100 caracteres.";
+        }
+
+        // Validar email
+        if (empty($data['email'])) {
+            $errors[] = "El correo electrónico es obligatorio.";
+        } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "El formato del correo electrónico no es válido.";
+        } else {
+            // Verificar si el email ya existe (solo para nuevos usuarios o si el email cambió)
+            if (!$editMode) {
+                $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
+                $stmt->execute([':email' => $data['email']]);
+                if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $errors[] = "Este correo electrónico ya está registrado.";
+                }
+            } else {
+                // En modo edición, verificar si el email ya existe pero pertenece a otro usuario
+                $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email AND id != :user_id");
+                $stmt->execute([':email' => $data['email'], ':user_id' => $userId]);
+                if ($stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $errors[] = "Este correo electrónico ya está registrado por otro usuario.";
+                }
+            }
+        }
+
+        // Validar contraseña
+        if (!$editMode) {
+            // Para nuevos usuarios, la contraseña es obligatoria
+            if (empty($data['password'])) {
+                $errors[] = "La contraseña es obligatoria.";
+            } elseif (strlen($data['password']) < 8) {
                 $errors[] = "La contraseña debe tener al menos 8 caracteres.";
             }
 
             // Validar confirmación de contraseña
             if ($data['password'] !== $data['confirm_password']) {
                 $errors[] = "Las contraseñas no coinciden.";
+            }
+        } else {
+            // En modo edición (no cambio de contraseña), la contraseña es opcional
+            if (!empty($data['password'])) {
+                // Si se proporciona una contraseña, validarla
+                if (strlen($data['password']) < 8) {
+                    $errors[] = "La contraseña debe tener al menos 8 caracteres.";
+                }
+
+                // Validar confirmación de contraseña
+                if ($data['password'] !== $data['confirm_password']) {
+                    $errors[] = "Las contraseñas no coinciden.";
+                }
             }
         }
     }
@@ -153,6 +171,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Redirigir al dashboard con mensaje de éxito
             header('Location: /views/dashboard/dashboard.view.php?success=' . urlencode("Usuario registrado con éxito"));
+            exit;
+        } else if ($passwordChangeMode) {
+            // CAMBIAR CONTRASEÑA DE USUARIO
+            // Encriptar la nueva contraseña
+            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+
+            // Actualizar solo la contraseña del usuario
+            $stmt = $pdo->prepare("UPDATE users SET password = :password WHERE id = :user_id");
+            $stmt->execute([
+                ':password' => $hashedPassword,
+                ':user_id'  => $userId
+            ]);
+
+            // Redirigir a la página de registro con mensaje de éxito
+            header('Location: /views/user/register/register-user.view.php?success=' . urlencode("Contraseña actualizada con éxito"));
             exit;
         } else {
             // ACTUALIZAR USUARIO EXISTENTE

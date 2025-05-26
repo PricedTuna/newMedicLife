@@ -20,14 +20,20 @@ $doctors = $doctorModel->getAllActiveDoctors();
 // Obtener la lista de todos los usuarios
 $users = getAllUsers();
 
-// Verificar si estamos en modo edición
+// Verificar si estamos en modo edición o cambio de contraseña
 $editMode = false;
+$passwordChangeMode = false;
 $userData = null;
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $userId = $_GET['id'];
     $userData = getUserById($userId);
     if ($userData) {
         $editMode = true;
+
+        // Verificar si estamos en modo de cambio de contraseña
+        if (isset($_GET['password_change']) && $_GET['password_change'] == '1') {
+            $passwordChangeMode = true;
+        }
     }
 }
 
@@ -38,6 +44,7 @@ $smarty->assign('sidebarPath', $sidebarPath);
 $smarty->assign('doctors', $doctors);
 $smarty->assign('users', $users);
 $smarty->assign('editMode', $editMode);
+$smarty->assign('passwordChangeMode', $passwordChangeMode);
 $smarty->assign('userData', $userData);
 
 $smarty->display('register-user.view.tpl');

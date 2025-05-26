@@ -23,7 +23,15 @@
                         <button class="back-btn">Volver</button>
                         <span class="back-btn-icon">&#8617;</span>
                     </a>
-                    <h2 class="form-title">Registrar usuario</h2>
+                    <h2 class="form-title">
+                        {if $passwordChangeMode}
+                            Cambiar contraseña
+                        {elseif $editMode}
+                            Actualizar usuario
+                        {else}
+                            Registrar usuario
+                        {/if}
+                    </h2>
                 </div>
 
                 <!-- Si hay un error, lo mostramos aquí -->
@@ -47,7 +55,11 @@
                     {if $editMode}
                         <input type="hidden" name="user_id" value="{$userData.id}">
                         <input type="hidden" name="edit_mode" value="1">
+                        {if $passwordChangeMode}
+                        <input type="hidden" name="password_change_mode" value="1">
+                        {/if}
                     {/if}
+                    {if !$passwordChangeMode}
                     <div class="form-group">
                         <label for="role">Rol</label>
                         <select id="role" name="role" required>
@@ -74,16 +86,36 @@
                         <label for="email">Correo Electrónico</label>
                         <input type="email" id="email" name="email" placeholder="Correo electrónico" value="{if $editMode}{$userData.email}{/if}" required>
                     </div>
+                    {else}
+                    <input type="hidden" name="name" value="{$userData.name}">
+                    <input type="hidden" name="email" value="{$userData.email}">
+                    <input type="hidden" name="role" value="{$userData.role}">
+                    {if $userData.id_doctor}
+                    <input type="hidden" name="id_doctor" value="{$userData.id_doctor}">
+                    {/if}
+                    <div class="form-group">
+                        <p><strong>Usuario:</strong> {$userData.name}</p>
+                        <p><strong>Correo:</strong> {$userData.email}</p>
+                    </div>
+                    {/if}
                     <div class="form-group">
                         <label for="password">Contraseña</label>
-                        <input type="password" id="password" name="password" placeholder="Contraseña" {if !$editMode}required{/if}>
-                        {if $editMode}<small style="color: #666;">Dejar en blanco para mantener la contraseña actual</small>{/if}
+                        <input type="password" id="password" name="password" placeholder="Contraseña" {if !$editMode || $passwordChangeMode}required{/if}>
+                        {if $editMode && !$passwordChangeMode}<small style="color: #666;">Dejar en blanco para mantener la contraseña actual</small>{/if}
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirmar Contraseña</label>
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" {if !$editMode}required{/if}>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" {if !$editMode || $passwordChangeMode}required{/if}>
                     </div>
-                    <button type="submit" class="submit-btn">{if $editMode}Actualizar{else}Registrar{/if}</button>
+                    <button type="submit" class="submit-btn">
+                        {if $passwordChangeMode}
+                            Cambiar contraseña
+                        {elseif $editMode}
+                            Actualizar
+                        {else}
+                            Registrar
+                        {/if}
+                    </button>
 
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
@@ -209,6 +241,9 @@
                                     </form>
                                     <a href="/views/user/register/register-user.view.php?id={$user.id}" class="action-wrapper">
                                         <button class="update-btn">Actualizar</button>
+                                    </a>
+                                    <a href="/views/user/register/register-user.view.php?id={$user.id}&password_change=1" class="action-wrapper">
+                                        <button class="password-btn">Cambiar contraseña</button>
                                     </a>
                                 </td>
                             </tr>

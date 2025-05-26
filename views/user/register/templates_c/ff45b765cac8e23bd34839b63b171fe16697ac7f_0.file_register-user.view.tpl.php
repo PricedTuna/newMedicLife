@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 03:10:14
+/* Smarty version 5.4.5, created on 2025-05-26 03:18:38
   from 'file:register-user.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833db96007052_88649810',
+  'unifunc' => 'content_6833dd8ebfa3f9_62721754',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ff45b765cac8e23bd34839b63b171fe16697ac7f' => 
     array (
       0 => 'register-user.view.tpl',
-      1 => 1748228958,
+      1 => 1748229284,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833db96007052_88649810 (\Smarty\Template $_smarty_tpl) {
+function content_6833dd8ebfa3f9_62721754 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -50,7 +50,15 @@ $_smarty_current_dir = '/var/www/html/views/user/register';
                         <button class="back-btn">Volver</button>
                         <span class="back-btn-icon">&#8617;</span>
                     </a>
-                    <h2 class="form-title">Registrar usuario</h2>
+                    <h2 class="form-title">
+                        <?php if ($_smarty_tpl->getValue('passwordChangeMode')) {?>
+                            Cambiar contraseña
+                        <?php } elseif ($_smarty_tpl->getValue('editMode')) {?>
+                            Actualizar usuario
+                        <?php } else { ?>
+                            Registrar usuario
+                        <?php }?>
+                    </h2>
                 </div>
 
                 <!-- Si hay un error, lo mostramos aquí -->
@@ -77,7 +85,11 @@ $_smarty_current_dir = '/var/www/html/views/user/register';
                         <input type="hidden" name="user_id" value="<?php echo $_smarty_tpl->getValue('userData')['id'];?>
 ">
                         <input type="hidden" name="edit_mode" value="1">
+                        <?php if ($_smarty_tpl->getValue('passwordChangeMode')) {?>
+                        <input type="hidden" name="password_change_mode" value="1">
+                        <?php }?>
                     <?php }?>
+                    <?php if (!$_smarty_tpl->getValue('passwordChangeMode')) {?>
                     <div class="form-group">
                         <label for="role">Rol</label>
                         <select id="role" name="role" required>
@@ -120,16 +132,42 @@ echo $_smarty_tpl->getValue('userData')['name'];
 echo $_smarty_tpl->getValue('userData')['email'];
 }?>" required>
                     </div>
+                    <?php } else { ?>
+                    <input type="hidden" name="name" value="<?php echo $_smarty_tpl->getValue('userData')['name'];?>
+">
+                    <input type="hidden" name="email" value="<?php echo $_smarty_tpl->getValue('userData')['email'];?>
+">
+                    <input type="hidden" name="role" value="<?php echo $_smarty_tpl->getValue('userData')['role'];?>
+">
+                    <?php if ($_smarty_tpl->getValue('userData')['id_doctor']) {?>
+                    <input type="hidden" name="id_doctor" value="<?php echo $_smarty_tpl->getValue('userData')['id_doctor'];?>
+">
+                    <?php }?>
+                    <div class="form-group">
+                        <p><strong>Usuario:</strong> <?php echo $_smarty_tpl->getValue('userData')['name'];?>
+</p>
+                        <p><strong>Correo:</strong> <?php echo $_smarty_tpl->getValue('userData')['email'];?>
+</p>
+                    </div>
+                    <?php }?>
                     <div class="form-group">
                         <label for="password">Contraseña</label>
-                        <input type="password" id="password" name="password" placeholder="Contraseña" <?php if (!$_smarty_tpl->getValue('editMode')) {?>required<?php }?>>
-                        <?php if ($_smarty_tpl->getValue('editMode')) {?><small style="color: #666;">Dejar en blanco para mantener la contraseña actual</small><?php }?>
+                        <input type="password" id="password" name="password" placeholder="Contraseña" <?php if (!$_smarty_tpl->getValue('editMode') || $_smarty_tpl->getValue('passwordChangeMode')) {?>required<?php }?>>
+                        <?php if ($_smarty_tpl->getValue('editMode') && !$_smarty_tpl->getValue('passwordChangeMode')) {?><small style="color: #666;">Dejar en blanco para mantener la contraseña actual</small><?php }?>
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirmar Contraseña</label>
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" <?php if (!$_smarty_tpl->getValue('editMode')) {?>required<?php }?>>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" <?php if (!$_smarty_tpl->getValue('editMode') || $_smarty_tpl->getValue('passwordChangeMode')) {?>required<?php }?>>
                     </div>
-                    <button type="submit" class="submit-btn"><?php if ($_smarty_tpl->getValue('editMode')) {?>Actualizar<?php } else { ?>Registrar<?php }?></button>
+                    <button type="submit" class="submit-btn">
+                        <?php if ($_smarty_tpl->getValue('passwordChangeMode')) {?>
+                            Cambiar contraseña
+                        <?php } elseif ($_smarty_tpl->getValue('editMode')) {?>
+                            Actualizar
+                        <?php } else { ?>
+                            Registrar
+                        <?php }?>
+                    </button>
 
                     <?php echo '<script'; ?>
 >
@@ -274,6 +312,10 @@ echo $_smarty_tpl->getValue('user')['status'];?>
                                     <a href="/views/user/register/register-user.view.php?id=<?php echo $_smarty_tpl->getValue('user')['id'];?>
 " class="action-wrapper">
                                         <button class="update-btn">Actualizar</button>
+                                    </a>
+                                    <a href="/views/user/register/register-user.view.php?id=<?php echo $_smarty_tpl->getValue('user')['id'];?>
+&password_change=1" class="action-wrapper">
+                                        <button class="password-btn">Cambiar contraseña</button>
                                     </a>
                                 </td>
                             </tr>

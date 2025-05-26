@@ -17,9 +17,6 @@ $smarty->setTemplateDir(__DIR__);
 $doctorModel = new DoctorModel($pdo);
 $doctors = $doctorModel->getAllActiveDoctors();
 
-// Obtener la lista de todos los usuarios
-$users = getAllUsers();
-
 // Verificar si estamos en modo edición o cambio de contraseña
 $editMode = false;
 $passwordChangeMode = false;
@@ -42,7 +39,6 @@ $smarty->assign('error', $_GET['error'] ?? null);
 $smarty->assign('success', $_GET['success'] ?? null);
 $smarty->assign('sidebarPath', $sidebarPath);
 $smarty->assign('doctors', $doctors);
-$smarty->assign('users', $users);
 $smarty->assign('editMode', $editMode);
 $smarty->assign('passwordChangeMode', $passwordChangeMode);
 $smarty->assign('userData', $userData);

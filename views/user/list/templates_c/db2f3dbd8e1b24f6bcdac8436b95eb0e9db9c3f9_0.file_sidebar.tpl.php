@@ -1,17 +1,17 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 03:42:11
-  from 'file:/var/www/html/views/dashboard/../components/sidebar.tpl' */
+/* Smarty version 5.4.5, created on 2025-05-26 03:50:17
+  from 'file:/var/www/html/views/components/sidebar.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833e31335f718_05726567',
+  'unifunc' => 'content_6833e4f904bff8_68958082',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '5e92ffba2f9cca9081ad5c4ee07fc11389872bf1' => 
+    'db2f3dbd8e1b24f6bcdac8436b95eb0e9db9c3f9' => 
     array (
-      0 => '/var/www/html/views/dashboard/../components/sidebar.tpl',
+      0 => '/var/www/html/views/components/sidebar.tpl',
       1 => 1748229875,
       2 => 'file',
     ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833e31335f718_05726567 (\Smarty\Template $_smarty_tpl) {
+function content_6833e4f904bff8_68958082 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/components';
 ?><nav id="sidebar">
     <ul>

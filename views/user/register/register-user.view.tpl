@@ -19,7 +19,7 @@
         <div class="center-container">
             <div class="form-container">
                 <div class="form-header">
-                    <a href="/views/dashboard/dashboard.view.php" class="form-back-btn">
+                    <a href="/views/user/list/list-users.view.php" class="form-back-btn">
                         <button class="back-btn">Volver</button>
                         <span class="back-btn-icon">&#8617;</span>
                     </a>
@@ -198,59 +198,6 @@
                 </form>
             </div>
 
-            <!-- Lista de usuarios registrados -->
-            <div class="users-list-container">
-                <h3 class="users-list-title">Usuarios Registrados</h3>
-                <table class="users-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Rol</th>
-                            <th>ID Doctor</th>
-                            <th>Fecha de Creación</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {foreach from=$users item=user}
-                            <tr>
-                                <td>{$user.id}</td>
-                                <td>{$user.name}</td>
-                                <td>{$user.email}</td>
-                                <td>
-                                    {if $user.role == 'S'}Secretaria
-                                    {elseif $user.role == 'A'}Administrador
-                                    {elseif $user.role == 'D'}Doctor
-                                    {else}{$user.role}
-                                    {/if}
-                                </td>
-                                <td>{$user.id_doctor|default:'-'}</td>
-                                <td>{$user.created_at}</td>
-                                <td>
-                                    {if $user.status == 'AC'}Activo
-                                    {else}{$user.status}
-                                    {/if}
-                                </td>
-                                <td class="actions-td">
-                                    <form action="/controllers/auth/delete-user.controller.php" method="POST" class="action-wrapper">
-                                        <input type="hidden" name="user_id" value="{$user.id}">
-                                        <button type="submit" class="delete-btn" data-id="{$user.id}">Eliminar</button>
-                                    </form>
-                                    <a href="/views/user/register/register-user.view.php?id={$user.id}" class="action-wrapper">
-                                        <button class="update-btn">Actualizar</button>
-                                    </a>
-                                    <a href="/views/user/register/register-user.view.php?id={$user.id}&password_change=1" class="action-wrapper">
-                                        <button class="password-btn">Cambiar contraseña</button>
-                                    </a>
-                                </td>
-                            </tr>
-                        {/foreach}
-                    </tbody>
-                </table>
-            </div>
         </div>
     </main>
 </body>

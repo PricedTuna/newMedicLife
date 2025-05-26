@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 03:18:38
+/* Smarty version 5.4.5, created on 2025-05-26 03:41:57
   from 'file:register-user.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833dd8ebfa3f9_62721754',
+  'unifunc' => 'content_6833e305dd7c04_34155207',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ff45b765cac8e23bd34839b63b171fe16697ac7f' => 
     array (
       0 => 'register-user.view.tpl',
-      1 => 1748229284,
+      1 => 1748229897,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833dd8ebfa3f9_62721754 (\Smarty\Template $_smarty_tpl) {
+function content_6833e305dd7c04_34155207 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -46,7 +46,7 @@ $_smarty_current_dir = '/var/www/html/views/user/register';
         <div class="center-container">
             <div class="form-container">
                 <div class="form-header">
-                    <a href="/views/dashboard/dashboard.view.php" class="form-back-btn">
+                    <a href="/views/user/list/list-users.view.php" class="form-back-btn">
                         <button class="back-btn">Volver</button>
                         <span class="back-btn-icon">&#8617;</span>
                     </a>
@@ -252,79 +252,6 @@ echo $_smarty_tpl->getValue('userData')['email'];
                 </form>
             </div>
 
-            <!-- Lista de usuarios registrados -->
-            <div class="users-list-container">
-                <h3 class="users-list-title">Usuarios Registrados</h3>
-                <table class="users-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Rol</th>
-                            <th>ID Doctor</th>
-                            <th>Fecha de Creación</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-$_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('users'), 'user');
-$foreach1DoElse = true;
-foreach ($_from ?? [] as $_smarty_tpl->getVariable('user')->value) {
-$foreach1DoElse = false;
-?>
-                            <tr>
-                                <td><?php echo $_smarty_tpl->getValue('user')['id'];?>
-</td>
-                                <td><?php echo $_smarty_tpl->getValue('user')['name'];?>
-</td>
-                                <td><?php echo $_smarty_tpl->getValue('user')['email'];?>
-</td>
-                                <td>
-                                    <?php if ($_smarty_tpl->getValue('user')['role'] == 'S') {?>Secretaria
-                                    <?php } elseif ($_smarty_tpl->getValue('user')['role'] == 'A') {?>Administrador
-                                    <?php } elseif ($_smarty_tpl->getValue('user')['role'] == 'D') {?>Doctor
-                                    <?php } else {
-echo $_smarty_tpl->getValue('user')['role'];?>
-
-                                    <?php }?>
-                                </td>
-                                <td><?php echo (($tmp = $_smarty_tpl->getValue('user')['id_doctor'] ?? null)===null||$tmp==='' ? '-' ?? null : $tmp);?>
-</td>
-                                <td><?php echo $_smarty_tpl->getValue('user')['created_at'];?>
-</td>
-                                <td>
-                                    <?php if ($_smarty_tpl->getValue('user')['status'] == 'AC') {?>Activo
-                                    <?php } else {
-echo $_smarty_tpl->getValue('user')['status'];?>
-
-                                    <?php }?>
-                                </td>
-                                <td class="actions-td">
-                                    <form action="/controllers/auth/delete-user.controller.php" method="POST" class="action-wrapper">
-                                        <input type="hidden" name="user_id" value="<?php echo $_smarty_tpl->getValue('user')['id'];?>
-">
-                                        <button type="submit" class="delete-btn" data-id="<?php echo $_smarty_tpl->getValue('user')['id'];?>
-">Eliminar</button>
-                                    </form>
-                                    <a href="/views/user/register/register-user.view.php?id=<?php echo $_smarty_tpl->getValue('user')['id'];?>
-" class="action-wrapper">
-                                        <button class="update-btn">Actualizar</button>
-                                    </a>
-                                    <a href="/views/user/register/register-user.view.php?id=<?php echo $_smarty_tpl->getValue('user')['id'];?>
-&password_change=1" class="action-wrapper">
-                                        <button class="password-btn">Cambiar contraseña</button>
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php
-}
-$_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
-                    </tbody>
-                </table>
-            </div>
         </div>
     </main>
 </body>

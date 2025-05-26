@@ -21,18 +21,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("UPDATE users SET status = 'IN' WHERE id = :user_id");
             $stmt->execute([':user_id' => $user_id]);
 
-            header('Location: /views/user/register/register-user.view.php?success=' . urlencode("Usuario eliminado con éxito"));
+            header('Location: /views/user/list/list-users.view.php?success=' . urlencode("Usuario eliminado con éxito"));
             exit;
         } catch (Exception $e) {
-            header('Location: /views/user/register/register-user.view.php?error=' . urlencode("Error al eliminar el usuario: " . $e->getMessage()));
+            header('Location: /views/user/list/list-users.view.php?error=' . urlencode("Error al eliminar el usuario: " . $e->getMessage()));
             exit;
         }
     } else {
-        header('Location: /views/user/register/register-user.view.php?error=' . urlencode("ID de usuario inválido"));
+        header('Location: /views/user/list/list-users.view.php?error=' . urlencode("ID de usuario inválido"));
         exit;
     }
 } else {
-    header('Location: /views/user/register/register-user.view.php');
+    header('Location: /views/user/list/list-users.view.php');
     exit;
 }
 ?>

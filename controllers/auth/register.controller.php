@@ -137,7 +137,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Si hay errores, redirigir de vuelta al formulario
     if (!empty($errors)) {
         $errorString = implode(", ", $errors);
-        header('Location: /views/user/register/register-user.view.php?error=' . urlencode($errorString));
+        // Si estamos en modo edición o cambio de contraseña, redirigir al formulario de registro
+        // De lo contrario, redirigir a la lista de usuarios
+        if ($editMode || $passwordChangeMode) {
+            header('Location: /views/user/register/register-user.view.php?error=' . urlencode($errorString) . ($editMode ? '&id=' . $userId : '') . ($passwordChangeMode ? '&password_change=1' : ''));
+        } else {
+            header('Location: /views/user/list/list-users.view.php?error=' . urlencode($errorString));
+        }
         exit;
     }
 
@@ -169,8 +175,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
             }
 
-            // Redirigir al dashboard con mensaje de éxito
-            header('Location: /views/dashboard/dashboard.view.php?success=' . urlencode("Usuario registrado con éxito"));
+            // Redirigir a la lista de usuarios con mensaje de éxito
+            header('Location: /views/user/list/list-users.view.php?success=' . urlencode("Usuario registrado con éxito"));
             exit;
         } else if ($passwordChangeMode) {
             // CAMBIAR CONTRASEÑA DE USUARIO
@@ -184,8 +190,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':user_id'  => $userId
             ]);
 
-            // Redirigir a la página de registro con mensaje de éxito
-            header('Location: /views/user/register/register-user.view.php?success=' . urlencode("Contraseña actualizada con éxito"));
+            // Redirigir a la lista de usuarios con mensaje de éxito
+            header('Location: /views/user/list/list-users.view.php?success=' . urlencode("Contraseña actualizada con éxito"));
             exit;
         } else {
             // ACTUALIZAR USUARIO EXISTENTE
@@ -239,20 +245,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // Redirigir a la página de registro con mensaje de éxito
-            header('Location: /views/user/register/register-user.view.php?success=' . urlencode("Usuario actualizado con éxito"));
+            // Redirigir a la lista de usuarios con mensaje de éxito
+            header('Location: /views/user/list/list-users.view.php?success=' . urlencode("Usuario actualizado con éxito"));
             exit;
         }
     } catch (PDOException $e) {
         $errorMsg = $editMode ?
             "Error al actualizar el usuario: " . $e->getMessage() :
             "Error al registrar el usuario: " . $e->getMessage();
-        header('Location: /views/user/register/register-user.view.php?error=' . urlencode($errorMsg));
+        // Si estamos en modo edición o cambio de contraseña, redirigir al formulario de registro
+        // De lo contrario, redirigir a la lista de usuarios
+        if ($editMode || $passwordChangeMode) {
+            header('Location: /views/user/register/register-user.view.php?error=' . urlencode($errorMsg) . ($editMode ? '&id=' . $userId : '') . ($passwordChangeMode ? '&password_change=1' : ''));
+        } else {
+            header('Location: /views/user/list/list-users.view.php?error=' . urlencode($errorMsg));
+        }
         exit;
     }
 } else {
-    // Si no es una solicitud POST, redirigir al formulario
-    header('Location: /views/user/register/register-user.view.php');
+    // Si no es una solicitud POST, redirigir a la lista de usuarios
+    header('Location: /views/user/list/list-users.view.php');
     exit;
 }
 ?>

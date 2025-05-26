@@ -1,30 +1,43 @@
+console.log("LO ESTA CARGANDO");
 
-console.log("LO ESTA CARGANDO")
-document.querySelectorAll(".delete-btn").forEach(button => {
-    button.addEventListener("click", function () {
-        const doctorId = this.getAttribute("data-id");
-        console.log("ID del paciente a eliminar:", doctorId); // 🔴 Verifica si el botón tiene el ID correcto
+// Escuchar clics en botones de borrar paciente
+document.querySelectorAll(".delete-btn").forEach((button) => {
+  button.addEventListener("click", function () {
+    const patientId = this.getAttribute("data-id"); // Cambié doctorId por patientId para que coincida con el body
+    console.log("ID del paciente a eliminar:", patientId);
 
-        if (confirm("¿Estás seguro de que deseas eliminar este paciente?")) {
-            fetch("/controllers/patient/delete-patient.controller.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `patient_id=${patientId}`
-            })
-            .then(response => {
-                console.log("Respuesta recibida:", response); // 🔴 Verifica si la respuesta llega
-                return response.json();
-            })
-            .then(data => {
-                console.log("Datos recibidos:", data); // 🔴 Verifica la respuesta JSON
-                if (data.success) {
-                    alert(data.message);
-                    location.reload();
-                } else {
-                    alert("Error: " + data.message);
-                }
-            })
-            .catch(error => console.error("Error en la petición:", error));
-        }
-    });
+    if (confirm("¿Estás seguro de que deseas eliminar este paciente?")) {
+      fetch("/controllers/patient/delete-patient.controller.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `patient_id=${encodeURIComponent(patientId)}`,
+      })
+        .then((response) => {
+          console.log("Respuesta recibida:", response);
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Datos recibidos:", data);
+          if (data.success) {
+            alert(data.message);
+            location.reload();
+          } else {
+            alert("Error: " + data.message);
+          }
+        })
+        .catch((error) => console.error("Error en la petición:", error));
+    }
+  });
+});
+
+// Control botón para activar/desactivar asistente de voz
+document.getElementById("voiceToggleBtn").addEventListener("click", () => {
+  VoiceAssistant.toggle();
+
+  const btn = document.getElementById("voiceToggleBtn");
+  if (VoiceAssistant.isActive()) {
+    btn.textContent = "Desactivar Asistente de Voz";
+  } else {
+    btn.textContent = "Activar Asistente de Voz";
+  }
 });

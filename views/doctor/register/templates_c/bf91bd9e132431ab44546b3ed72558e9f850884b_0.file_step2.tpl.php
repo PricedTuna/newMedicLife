@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-27 00:04:15
+/* Smarty version 5.4.5, created on 2025-05-27 06:42:56
   from 'file:steps/step2.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6834e55ff28198_00985853',
+  'unifunc' => 'content_683542d04d64d1_29408335',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'bf91bd9e132431ab44546b3ed72558e9f850884b' => 
     array (
       0 => 'steps/step2.tpl',
-      1 => 1748231918,
+      1 => 1748320974,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6834e55ff28198_00985853 (\Smarty\Template $_smarty_tpl) {
+function content_683542d04d64d1_29408335 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\doctor\\register\\steps';
 ?><!-- Paso 2 -->
 <div class="form-step" id="step-2" style="display: none;">
@@ -60,7 +60,7 @@ foreach ($_from ?? [] as $_smarty_tpl->getVariable('state')->value) {
 $foreach0DoElse = false;
 ?>
                 <option value="<?php echo $_smarty_tpl->getValue('state')['id'];?>
-" <?php if ($_smarty_tpl->getValue('doctor')['state'] == $_smarty_tpl->getValue('state')['id']) {?>selected<?php }?>>
+" <?php if ((true && (true && null !== ($_smarty_tpl->getValue('doctor')['state'] ?? null))) && $_smarty_tpl->getValue('doctor')['state'] == $_smarty_tpl->getValue('state')['id']) {?>selected<?php }?>>
                     <?php echo $_smarty_tpl->getValue('state')['name'];?>
 
                 </option>
@@ -68,6 +68,7 @@ $foreach0DoElse = false;
 }
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
         </select>
+
     </div>
     <div class="form-group">
         <label for="municipality">Municipio</label>
@@ -84,6 +85,5 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 
     <button type="button" class="prev-btn" onclick="prevStep(1)">Atrás</button>
     <button type="button" class="next-btn" onclick="nextStep(3)">Siguiente</button>
-</div>
-<?php }
+</div><?php }
 }

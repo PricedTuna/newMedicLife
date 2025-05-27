@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-27 00:04:16
+/* Smarty version 5.4.5, created on 2025-05-27 07:25:19
   from 'file:steps/step3.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6834e56013e358_34957947',
+  'unifunc' => 'content_68354cbf49d971_90956747',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '555f128db4a419150969826e72e4950349afac6a' => 
     array (
       0 => 'steps/step3.tpl',
-      1 => 1748231918,
+      1 => 1748323515,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6834e56013e358_34957947 (\Smarty\Template $_smarty_tpl) {
+function content_68354cbf49d971_90956747 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\doctor\\register\\steps';
 ?><!-- Paso 3 -->
 <div class="form-step" id="step-3" style="display: none;">
@@ -37,11 +37,13 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\doctor\\r
     <div class="form-group">
         <label for="affiliationNumber">Número de Afiliación</label>
         <input type="text" id="affiliationNumber" name="affiliationNumber" value="<?php echo (($tmp = $_smarty_tpl->getValue('doctor')['insurance_number'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
-" required>
+"
+            required>
     </div>
     <div class="form-group">
         <label for="professionalLicense">Cédula Profesional</label>
-        <input type="text" id="professionalLicense" name="professionalLicense" value="<?php echo (($tmp = $_smarty_tpl->getValue('doctor')['professional_id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+        <input type="text" id="professionalLicense" name="professionalLicense"
+            value="<?php echo (($tmp = $_smarty_tpl->getValue('doctor')['professional_id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
 " required>
     </div>
 
@@ -50,13 +52,14 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\doctor\\r
         <select name="medical_area" id="speciality" required>
             <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('medical_areas'), 'medical_area');
-$foreach1DoElse = true;
+$foreach0DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('medical_area')->value) {
-$foreach1DoElse = false;
+$foreach0DoElse = false;
 ?>
                 <option value="<?php echo $_smarty_tpl->getValue('medical_area')['id'];?>
-" <?php if ($_smarty_tpl->getValue('doctor')['medical_area'] == $_smarty_tpl->getValue('medical_area')['id']) {?>selected<?php }?>>
-                    <?php echo $_smarty_tpl->getValue('medical_area')['name'];?>
+"
+                    <?php if ((true && (true && null !== ($_smarty_tpl->getValue('doctor')['id_medical_area'] ?? null))) && $_smarty_tpl->getValue('doctor')['id_medical_area'] == $_smarty_tpl->getValue('medical_area')['id']) {?>selected<?php }?>>
+                    <?php echo $_smarty_tpl->getValue('medical_area')['area_name'];?>
 
                 </option>
             <?php
@@ -64,6 +67,7 @@ $foreach1DoElse = false;
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
         </select>
     </div>
+
 
     <div class="form-group">
         <label for="photo" class="file-label" id="photo-label">Subir Foto</label>
@@ -76,6 +80,5 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
     </button>
     <input type="hidden" name="id" value="<?php echo (($tmp = $_smarty_tpl->getValue('doctor')['id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
 ">
-</div>
-<?php }
+</div><?php }
 }

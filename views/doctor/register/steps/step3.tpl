@@ -10,23 +10,27 @@
     </div>
     <div class="form-group">
         <label for="affiliationNumber">Número de Afiliación</label>
-        <input type="text" id="affiliationNumber" name="affiliationNumber" value="{$doctor.insurance_number|default:''}" required>
+        <input type="text" id="affiliationNumber" name="affiliationNumber" value="{$doctor.insurance_number|default:''}"
+            required>
     </div>
     <div class="form-group">
         <label for="professionalLicense">Cédula Profesional</label>
-        <input type="text" id="professionalLicense" name="professionalLicense" value="{$doctor.professional_id|default:''}" required>
+        <input type="text" id="professionalLicense" name="professionalLicense"
+            value="{$doctor.professional_id|default:''}" required>
     </div>
 
     <div class="form-group">
         <label for="speciality">Especialidad</label>
         <select name="medical_area" id="speciality" required>
             {foreach from=$medical_areas item=medical_area}
-                <option value="{$medical_area.id}" {if $doctor.medical_area == $medical_area.id}selected{/if}>
-                    {$medical_area.name}
+                <option value="{$medical_area.id}"
+                    {if isset($doctor.id_medical_area) && $doctor.id_medical_area == $medical_area.id}selected{/if}>
+                    {$medical_area.area_name}
                 </option>
             {/foreach}
         </select>
     </div>
+
 
     <div class="form-group">
         <label for="photo" class="file-label" id="photo-label">Subir Foto</label>

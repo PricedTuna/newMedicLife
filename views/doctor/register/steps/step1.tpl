@@ -27,8 +27,9 @@
         <label for="gender">Sexo</label>
         <select id="gender" name="gender" required>
             <option value="">Seleccione...</option>
-            <option value="M" {if $doctor.gender == 'M'}selected{/if}>Masculino</option>
-            <option value="F" {if $doctor.gender == 'F'}selected{/if}>Femenino</option>
+            <option value="M" {if isset($doctor.gender) && $doctor.gender == 'M'}selected{/if}>Masculino</option>
+            <option value="F" {if isset($doctor.gender) && $doctor.gender == 'F'}selected{/if}>Femenino</option>
+
         </select>
     </div>
     <div class="form-group">

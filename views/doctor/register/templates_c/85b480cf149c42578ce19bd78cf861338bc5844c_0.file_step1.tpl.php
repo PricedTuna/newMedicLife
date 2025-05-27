@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-27 00:04:15
+/* Smarty version 5.4.5, created on 2025-05-27 06:40:02
   from 'file:steps/step1.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6834e55fdf0fb7_55031591',
+  'unifunc' => 'content_6835422221a568_97732973',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '85b480cf149c42578ce19bd78cf861338bc5844c' => 
     array (
       0 => 'steps/step1.tpl',
-      1 => 1748231918,
+      1 => 1748320798,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6834e55fdf0fb7_55031591 (\Smarty\Template $_smarty_tpl) {
+function content_6835422221a568_97732973 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\doctor\\register\\steps';
 ?><!-- Paso 1 -->
 <input type="hidden" name="doctor_id" value="<?php echo (($tmp = $_smarty_tpl->getValue('doctor')['id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
@@ -57,8 +57,9 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\doctor\\r
         <label for="gender">Sexo</label>
         <select id="gender" name="gender" required>
             <option value="">Seleccione...</option>
-            <option value="M" <?php if ($_smarty_tpl->getValue('doctor')['gender'] == 'M') {?>selected<?php }?>>Masculino</option>
-            <option value="F" <?php if ($_smarty_tpl->getValue('doctor')['gender'] == 'F') {?>selected<?php }?>>Femenino</option>
+            <option value="M" <?php if ((true && (true && null !== ($_smarty_tpl->getValue('doctor')['gender'] ?? null))) && $_smarty_tpl->getValue('doctor')['gender'] == 'M') {?>selected<?php }?>>Masculino</option>
+            <option value="F" <?php if ((true && (true && null !== ($_smarty_tpl->getValue('doctor')['gender'] ?? null))) && $_smarty_tpl->getValue('doctor')['gender'] == 'F') {?>selected<?php }?>>Femenino</option>
+
         </select>
     </div>
     <div class="form-group">
@@ -67,6 +68,5 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\doctor\\r
 " required>
     </div>
     <button type="button" class="next-btn" onclick="nextStep(2)">Siguiente</button>
-</div>
-<?php }
+</div><?php }
 }

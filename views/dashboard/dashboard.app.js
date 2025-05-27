@@ -1,5 +1,6 @@
+let selectedDoctorId = null;
 document.addEventListener("DOMContentLoaded", () => {
-  if (typeof doctors !== "undefined") {
+  if (typeof doctors !== "undefined" && typeof appointments !== "undefined") {
     console.log("Variables cargadas");
     console.log(doctors);
   } else {
@@ -7,11 +8,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const now = new Date();
-  generateCalendar(now.getFullYear(), now.getMonth());
 
   // FILTRO POR DOCTOR
   const doctorSelect = document.getElementById("doctor-select");
   const tableRows = document.querySelectorAll(".chart-placeholder tbody tr");
+
+  generateCalendar(now.getFullYear(), now.getMonth(), doctorSelect.value);
 
   doctorSelect.addEventListener("change", () => {
     const selectedDoctorId = doctorSelect.value;
@@ -30,8 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedDoctorId = doctorSelect.value;
 
     // Mostrar/ocultar filas por doctor
+    let numerAppointments = 0;
     tableRows.forEach((row) => {
       if (!selectedDoctorId || row.dataset.doctorId === selectedDoctorId) {
+        numerAppointments++;
         row.style.display = "";
       } else {
         row.style.display = "none";
@@ -42,29 +46,80 @@ document.addEventListener("DOMContentLoaded", () => {
     const doctor = doctors.find((d) => d.id == selectedDoctorId);
 
     if (doctor) {
+      const now = new Date();
+      const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+      generateCalendar(now.getFullYear(), now.getMonth(), selectedDoctorId);
+      // Filtrar citas futuras
+      const upcomingAppointments = appointments
+        .filter(
+          (a) =>
+            a.id_doctor == selectedDoctorId &&
+            new Date(a.appointment_date) > now &&
+            a.status == "A"
+        )
+        .sort(
+          (a, b) => new Date(a.appointment_date) - new Date(b.appointment_date)
+        );
+
+      // Filtrar citas del mes actual
+      const monthAppointments = appointments
+        .filter((a) => {
+          const apptDate = new Date(a.appointment_date);
+          return (
+            a.id_doctor == selectedDoctorId &&
+            apptDate >= firstDayOfMonth &&
+            apptDate <= lastDayOfMonth &&
+            a.status == "A"
+          );
+        })
+        .sort(
+          (a, b) => new Date(a.appointment_date) - new Date(b.appointment_date)
+        );
+
+      const nextAppointment = upcomingAppointments[0];
+
       // Mostrar datos del doctor
       document.getElementById("doctor-name").textContent = `${doctor.names} ${
         doctor.last_name
       } ${doctor.last_name2 || ""}`;
 
-      // Cargar foto desde PHP por ID
       const photoDiv = document.getElementById("doctor-photo");
       photoDiv.style.backgroundImage = `url('/controllers/doctor/mostrar_foto.php?id=${doctor.id}')`;
       photoDiv.style.backgroundSize = "cover";
       photoDiv.style.backgroundPosition = "center";
 
-      // Ejemplo de campos que puedes haber precargado
       document.getElementById("doctor-appointments").textContent =
-        doctor.totalAppointments || 0;
-        
-      // Opcional: podrías cargar citas futuras y del mes aquí si ya están disponibles
+        numerAppointments;
+
+      // Mostrar próxima cita
+      document.getElementById("next-appointments").textContent = nextAppointment
+        ? new Date(nextAppointment.appointment_date).toLocaleString()
+        : "Sin próximas citas";
+
+      // Mostrar todas las citas del mes actual con ID
+      const monthAppointmentsContainer =
+        document.getElementById("month-appointments");
+      monthAppointmentsContainer.innerHTML = ""; // Limpiar contenido anterior
+
+      if (monthAppointments.length > 0) {
+        monthAppointments.forEach((appt) => {
+          const apptDate = new Date(appt.appointment_date).toLocaleString();
+          const item = document.createElement("li");
+          item.textContent = `Cita: ${appt.cita} - Fecha: ${apptDate}`;
+          monthAppointmentsContainer.appendChild(item);
+        });
+      } else {
+        monthAppointmentsContainer.innerHTML = "<li>Sin citas este mes</li>";
+      }
     }
   });
 });
 
 console.log("Dashboard.js cargado correctamente");
 
-function generateCalendar(year, month) {
+function generateCalendar(year, month, selectedDoctorId) {
   const calendar = document.getElementById("calendar");
   if (!calendar) {
     console.error("Elemento #calendar no encontrado");
@@ -125,9 +180,62 @@ function generateCalendar(year, month) {
     const dayElement = document.createElement("div");
     dayElement.className = "day";
     dayElement.textContent = day;
+
+    const dayStr = new Date(year, month, day).toISOString().split("T")[0];
+
+    // Doctor seleccionado actual (puedes obtenerlo así para la generación del calendario)
+    const selectedDoctorId =
+      document.getElementById("doctor-select")?.value || null;
+
+    // Verificar si hay cita en ese día para el doctor seleccionado
+    const hasAppointment = appointments.some((appt) => {
+      const apptDateStr = new Date(appt.appointment_date)
+        .toISOString()
+        .split("T")[0];
+      return (
+        apptDateStr === dayStr &&
+        appt.status === "A" &&
+        appt.id_doctor == selectedDoctorId
+      );
+    });
+
+    if (hasAppointment) {
+      dayElement.classList.add("has-appointment"); // Clase para poner fondo amarillo
+    }
+
     dayElement.onclick = () => {
-      alert(`Cita para el ${day} de ${monthNames[month]} de ${year}`);
+      const selectedDoctorId = document.getElementById("doctor-select").value;
+      const selectedDate = new Date(year, month, day);
+
+      // Normalizar a solo YYYY-MM-DD
+      const selectedDayStr = selectedDate.toISOString().split("T")[0];
+
+      const filteredAppointments = appointments.filter((appt) => {
+        const apptDateStr = new Date(appt.appointment_date)
+          .toISOString()
+          .split("T")[0];
+        return (
+          apptDateStr === selectedDayStr &&
+          appt.status === "A" &&
+          appt.id_doctor == selectedDoctorId
+        );
+      });
+
+      const container = document.getElementById("day-appointments");
+      container.innerHTML = "";
+
+      if (filteredAppointments.length > 0) {
+        filteredAppointments.forEach((appt) => {
+          const apptItem = document.createElement("li");
+          const apptTime = new Date(appt.appointment_date).toLocaleTimeString();
+          apptItem.textContent = `Cita: ${appt.cita} - Hora: ${apptTime} - Paciente: ${appt.patient_names}  ${appt.patient_last_name}  ${appt.patient_last_name2}`;
+          container.appendChild(apptItem);
+        });
+      } else {
+        container.innerHTML = "<li>Sin citas este día</li>";
+      }
     };
+
     daysContainer.appendChild(dayElement);
   }
 

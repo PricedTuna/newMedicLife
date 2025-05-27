@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 23:45:01
+/* Smarty version 5.4.5, created on 2025-05-27 10:38:40
   from 'file:dashboard.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6834e0dda92d56_65619615',
+  'unifunc' => 'content_68357a108ff375_34657721',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'daa41c9bfeb4072c560a2a02e0990612be290729' => 
     array (
       0 => 'dashboard.view.tpl',
-      1 => 1748295900,
+      1 => 1748335118,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_6834e0dda92d56_65619615 (\Smarty\Template $_smarty_tpl) {
+function content_68357a108ff375_34657721 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\dashboard';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -39,6 +39,8 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\dashboard
     <?php echo '<script'; ?>
 >
         var doctors = <?php echo json_encode($_smarty_tpl->getValue('doctors'));?>
+;
+        var appointments = <?php echo json_encode($_smarty_tpl->getValue('appointments'));?>
 ;
     <?php echo '</script'; ?>
 >
@@ -105,6 +107,7 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                                 <th>Área Médica</th>
                                 <th>Doctor</th>
                                 <th>Fecha</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -137,7 +140,23 @@ $foreach1DoElse = false;
                                         </td>
                                         <td data-label="Fecha"><?php echo $_smarty_tpl->getValue('appointment')['appointment_date'];?>
 </td>
-                                        <td class="actions-td"></td>
+
+                                        <td class="actions-td">
+                                            <a href="/views/patient/register/register-patient.view.php?id=<?php echo $_smarty_tpl->getValue('patient')['id'];?>
+"
+                                                class="action-wrapper">
+                                                <button class="update-btn">Concluir</button>
+                                            </a>
+                                            <form action="/controllers/patient/delete-patient.controller.php" method="POST"
+                                                class="action-wrapper">
+                                                <input type="hidden" name="patient_id" value="<?php echo $_smarty_tpl->getValue('patient')['id'];?>
+">
+                                                <button type="submit" class="delete-btn"
+                                                    data-id="<?php echo $_smarty_tpl->getValue('patient')['id'];?>
+">Cancelar</button>
+                                            </form>
+
+                                        </td>
                                     </tr>
                                 <?php }?>
                             <?php
@@ -153,13 +172,24 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
             </section>
             <section class="patient-data">
                 <h3>Calendario</h3>
+
+                <!-- Calendario -->
                 <div id="calendar" class="calendar"></div>
+
+                <!-- Citas del día seleccionado -->
+                <div class="day-appointments">
+                    <h4>Citas para el día seleccionado</h4>
+                    <ul id="day-appointments">
+                        <li>Selecciona un día para ver las citas.</li>
+                    </ul>
+                </div>
             </section>
+
         </div>
         <div class="doctor-info">
             <div class="doctor-card">
                 <div id="doctor-photo" class="doctor-photo">
-                    
+
                 </div>
                 <h3 id="doctor-name">Nombre del doctor</h3>
                 <div class="doctor-stats">
@@ -173,11 +203,14 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                 </div>
             </section>
             <section class="upcoming-appointments-month">
-                <h3>Citas del mes </h3>
+                <h3>Citas del mes</h3>
                 <div id="month-appointments">
-                    <!-- Aquí se insertarán las citas del mes -->
+                    <ul class="appointments-list">
+                        <!-- Las citas se insertarán aquí como <li> -->
+                    </ul>
                 </div>
             </section>
+
         </div>
 
     </main>

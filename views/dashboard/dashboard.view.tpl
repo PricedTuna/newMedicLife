@@ -11,6 +11,7 @@
 
     <script>
         var doctors = {$doctors|json_encode};
+        var appointments = {$appointments|json_encode};
     </script>
     <script src="/views/dashboard/dashboard.app.js"></script>
 
@@ -74,6 +75,7 @@
                                 <th>Área Médica</th>
                                 <th>Doctor</th>
                                 <th>Fecha</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -91,7 +93,20 @@
                                             {$appointment.doctor_last_name2}
                                         </td>
                                         <td data-label="Fecha">{$appointment.appointment_date}</td>
-                                        <td class="actions-td"></td>
+
+                                        <td class="actions-td">
+                                            <a href="/views/patient/register/register-patient.view.php?id={$patient.id}"
+                                                class="action-wrapper">
+                                                <button class="update-btn">Concluir</button>
+                                            </a>
+                                            <form action="/controllers/patient/delete-patient.controller.php" method="POST"
+                                                class="action-wrapper">
+                                                <input type="hidden" name="patient_id" value="{$patient.id}">
+                                                <button type="submit" class="delete-btn"
+                                                    data-id="{$patient.id}">Cancelar</button>
+                                            </form>
+
+                                        </td>
                                     </tr>
                                 {/if}
                             {/foreach}
@@ -105,13 +120,24 @@
             </section>
             <section class="patient-data">
                 <h3>Calendario</h3>
+
+                <!-- Calendario -->
                 <div id="calendar" class="calendar"></div>
+
+                <!-- Citas del día seleccionado -->
+                <div class="day-appointments">
+                    <h4>Citas para el día seleccionado</h4>
+                    <ul id="day-appointments">
+                        <li>Selecciona un día para ver las citas.</li>
+                    </ul>
+                </div>
             </section>
+
         </div>
         <div class="doctor-info">
             <div class="doctor-card">
                 <div id="doctor-photo" class="doctor-photo">
-                    
+
                 </div>
                 <h3 id="doctor-name">Nombre del doctor</h3>
                 <div class="doctor-stats">
@@ -125,11 +151,14 @@
                 </div>
             </section>
             <section class="upcoming-appointments-month">
-                <h3>Citas del mes </h3>
+                <h3>Citas del mes</h3>
                 <div id="month-appointments">
-                    <!-- Aquí se insertarán las citas del mes -->
+                    <ul class="appointments-list">
+                        <!-- Las citas se insertarán aquí como <li> -->
+                    </ul>
                 </div>
             </section>
+
         </div>
 
     </main>

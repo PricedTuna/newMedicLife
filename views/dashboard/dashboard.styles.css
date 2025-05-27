@@ -287,8 +287,7 @@ header h1 {
     .upcoming-appointments-month,
     .stats,
     .chart,
-    .patient-data
-     {
+    .patient-data {
         width: 100%;
         margin: 0;
         padding: 1em;
@@ -334,8 +333,7 @@ header h1 {
     .upcoming-appointments-month,
     .stats,
     .chart,
-    .patient-data
-    {
+    .patient-data {
         width: 100%;
         margin: 0;
         padding: 1em;
@@ -384,7 +382,8 @@ header h1 {
     background-color: white;
     border-radius: 8px;
     overflow: hidden;
-    min-width: 600px; /* Evita que se vea mal en pantallas muy angostas */
+    min-width: 600px;
+    /* Evita que se vea mal en pantallas muy angostas */
 }
 
 .chart-placeholder th,
@@ -417,6 +416,7 @@ header h1 {
 
 /* Responsive para móviles */
 @media screen and (max-width: 768px) {
+
     .chart-placeholder table,
     .chart-placeholder thead,
     .chart-placeholder tbody,
@@ -449,7 +449,8 @@ header h1 {
     .chart-placeholder td[data-label]::before {
         display: inline-block;
         font-weight: 600;
-        min-width: 90px; /* reducido */
+        min-width: 90px;
+        /* reducido */
         color: #003366;
         margin-right: 0.5rem;
         white-space: nowrap;
@@ -458,4 +459,116 @@ header h1 {
     .chart-placeholder td:last-child {
         border-bottom: none;
     }
+
+    .chart-placeholder .action-wrapper {
+        width: 100%;
+        margin-bottom: 4px;
+    }
+
+    .chart-placeholder .delete-btn,
+    .chart-placeholder .update-btn {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 0.85rem;
+    }
 }
+
+.delete-btn,
+.update-btn {
+    flex: 1;
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+}
+
+.update-btn {
+    background-color: #3498db;
+}
+
+.update-btn:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+.day-appointments {
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.day-appointments h4 {
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.day-appointments ul {
+    list-style: disc;
+    padding-left: 20px;
+}
+
+.day-appointments li {
+    margin-bottom: 5px;
+}
+.day.has-appointment {
+  background-color: yellow;
+  cursor: pointer;
+}
+
+/* boton para buscar doctor */
+.doctor-select-container {
+    margin-top: 1rem;
+    max-width: 320px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .doctor-select-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #1e3a8a; /* Azul oscuro */
+  }
+
+  #doctor-select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 2px solid #3b82f6; /* Azul */
+    border-radius: 6px;
+    background-color: #e0e7ff; /* Azul claro */
+    color: #1e3a8a;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+
+  #doctor-select:hover {
+    border-color: #2563eb; /* Azul más intenso */
+  }
+
+  #doctor-select:focus {
+    outline: none;
+    border-color: #1d4ed8; /* Azul enfocado */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Sombra azul */
+    background-color: #c7d2fe; /* Azul muy claro */
+  }
+
+  /* Opcional: estilo para el placeholder opción */
+  #doctor-select option[value=""] {
+    color: #2563eb;
+    font-style: italic;
+  } 

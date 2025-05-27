@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-27 10:38:40
+/* Smarty version 5.4.5, created on 2025-05-28 00:37:59
   from 'file:dashboard.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68357a108ff375_34657721',
+  'unifunc' => 'content_68363ec7b6bdd8_47852457',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'daa41c9bfeb4072c560a2a02e0990612be290729' => 
     array (
       0 => 'dashboard.view.tpl',
-      1 => 1748335118,
+      1 => 1748385477,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_68357a108ff375_34657721 (\Smarty\Template $_smarty_tpl) {
+function content_68363ec7b6bdd8_47852457 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\dashboard';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -92,9 +92,22 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 
                     </div>
                 <?php }?>
-                <div class="search-container">
-                    <input type="text" placeholder="Search type of keywords">
-                </div>
+
+                <?php if ((true && ($_smarty_tpl->hasVariable('error') && null !== ($_smarty_tpl->getValue('error') ?? null)))) {?>
+                    <div
+                        style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                        <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('error'), ENT_QUOTES, 'UTF-8', true);?>
+
+                    </div>
+                <?php }?>
+
+                <?php if ((true && ($_smarty_tpl->hasVariable('success') && null !== ($_smarty_tpl->getValue('success') ?? null)))) {?>
+                    <div
+                        style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                        <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('success'), ENT_QUOTES, 'UTF-8', true);?>
+
+                    </div>
+                <?php }?>
             </header>
                         <section class="chart">
                 <h3>Visitas de Pacientes</h3>
@@ -142,20 +155,24 @@ $foreach1DoElse = false;
 </td>
 
                                         <td class="actions-td">
-                                            <a href="/views/patient/register/register-patient.view.php?id=<?php echo $_smarty_tpl->getValue('patient')['id'];?>
-"
+                                            <form action="/controllers/dashboard/dashboard.controller.php" method="POST"
                                                 class="action-wrapper">
-                                                <button class="update-btn">Concluir</button>
-                                            </a>
-                                            <form action="/controllers/patient/delete-patient.controller.php" method="POST"
-                                                class="action-wrapper">
-                                                <input type="hidden" name="patient_id" value="<?php echo $_smarty_tpl->getValue('patient')['id'];?>
+                                                <input type="hidden" name="id_cita" value="<?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
 ">
+                                                <input type="hidden" name="action" value="update">
+                                                <button type="submit" class="update-btn"
+                                                    data-id="<?php echo $_smarty_tpl->getValue('patient')['id'];?>
+">Terminada</button>
+                                            </form>
+                                            <form action="/controllers/dashboard/dashboard.controller.php" method="POST"
+                                                class="action-wrapper">
+                                                <input type="hidden" name="id_cita" value="<?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
+">
+                                                <input type="hidden" name="action" value="cancel">
                                                 <button type="submit" class="delete-btn"
                                                     data-id="<?php echo $_smarty_tpl->getValue('patient')['id'];?>
 ">Cancelar</button>
                                             </form>
-
                                         </td>
                                     </tr>
                                 <?php }?>

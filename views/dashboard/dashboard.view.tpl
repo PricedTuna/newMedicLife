@@ -46,9 +46,20 @@
                         {$smarty.get.success|escape}
                     </div>
                 {/if}
-                <div class="search-container">
-                    <input type="text" placeholder="Search type of keywords">
-                </div>
+
+                {if isset($error)}
+                    <div
+                        style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                        {$error|escape}
+                    </div>
+                {/if}
+
+                {if isset($success)}
+                    <div
+                        style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                        {$success|escape}
+                    </div>
+                {/if}
             </header>
             {* <section class="stats">
                 <div class="card">
@@ -95,17 +106,20 @@
                                         <td data-label="Fecha">{$appointment.appointment_date}</td>
 
                                         <td class="actions-td">
-                                            <a href="/views/patient/register/register-patient.view.php?id={$patient.id}"
+                                            <form action="/controllers/dashboard/dashboard.controller.php" method="POST"
                                                 class="action-wrapper">
-                                                <button class="update-btn">Concluir</button>
-                                            </a>
-                                            <form action="/controllers/patient/delete-patient.controller.php" method="POST"
+                                                <input type="hidden" name="id_cita" value="{$appointment.cita}">
+                                                <input type="hidden" name="action" value="update">
+                                                <button type="submit" class="update-btn"
+                                                    data-id="{$patient.id}">Terminada</button>
+                                            </form>
+                                            <form action="/controllers/dashboard/dashboard.controller.php" method="POST"
                                                 class="action-wrapper">
-                                                <input type="hidden" name="patient_id" value="{$patient.id}">
+                                                <input type="hidden" name="id_cita" value="{$appointment.cita}">
+                                                <input type="hidden" name="action" value="cancel">
                                                 <button type="submit" class="delete-btn"
                                                     data-id="{$patient.id}">Cancelar</button>
                                             </form>
-
                                         </td>
                                     </tr>
                                 {/if}

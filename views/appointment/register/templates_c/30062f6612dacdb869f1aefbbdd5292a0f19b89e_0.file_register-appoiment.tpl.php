@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-27 10:26:50
+/* Smarty version 5.4.5, created on 2025-05-28 00:40:42
   from 'file:register-appoiment.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6835774add5f53_39923709',
+  'unifunc' => 'content_68363f6a8d9d21_14158318',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6835774add5f53_39923709 (\Smarty\Template $_smarty_tpl) {
+function content_68363f6a8d9d21_14158318 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\appointment\\register';
 ?><!DOCTYPE html>
 <html lang="es">

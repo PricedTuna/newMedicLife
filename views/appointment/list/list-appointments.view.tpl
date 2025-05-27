@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de citas</title>
@@ -15,6 +16,7 @@
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/appointment/list/list-appointments.styles.css">
 </head>
+
 <body>
     {include file="../../components/sidebar.tpl"}
 
@@ -34,7 +36,8 @@
             {/if}
 
             {if isset($success)}
-                <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                <div
+                    style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
                     {$success|escape}
                 </div>
             {/if}
@@ -57,7 +60,8 @@
                             {if $appointment.status == 'A'}
                                 <tr>
                                     <td data-label="ID">{$appointment.cita}</td>
-                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name} {$appointment.last_name2}</td>
+                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
+                                        {$appointment.last_name2}</td>
                                     <td data-label="Área Médica">{$appointment.medical_area}</td>
                                     <td data-label="Doctor">{$appointment.doctor_name}</td>
                                     <td data-label="Fecha">{$appointment.appointment_date}</td>
@@ -65,12 +69,50 @@
                                         <a href="/views/pay/pay.view.php?id={$appointment.cita}" class="action-wrapper">
                                             <button class="finish-btn">Finalizar Cita</button>
                                         </a>
-                                        <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST" class="action-wrapper">
+                                        <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST"
+                                            class="action-wrapper">
                                             <input type="hidden" name="appointment_id" value="{$appointment.cita}">
-                                            <button type="submit" class="delete-btn" data-id="{$appointment.cita}">Eliminar</button>
+                                            <button type="submit" class="delete-btn"
+                                                data-id="{$appointment.cita}">Eliminar</button>
                                         </form>
-                                        <a href="/views/appointment/register/register-appoiment.php?id={$appointment.cita}" class="action-wrapper">
+                                        <a href="/views/appointment/register/register-appoiment.php?id={$appointment.cita}"
+                                            class="action-wrapper">
                                             <button class="update-btn">Actualizar</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {/if}
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <h2>Citas Terminadas</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Numero de cita</th>
+                            <th>Paciente</th>
+                            <th>Área médica</th>
+                            <th>Médico</th>
+                            <th>Fecha y hora</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$appointments item=appointment}
+                            {if $appointment.status == 'T'}
+                                <tr>
+                                    <td data-label="ID">{$appointment.cita}</td>
+                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
+                                        {$appointment.last_name2}</td>
+                                    <td data-label="Área Médica">{$appointment.medical_area}</td>
+                                    <td data-label="Doctor">{$appointment.doctor_name}</td>
+                                    <td data-label="Fecha">{$appointment.appointment_date}</td>
+                                    <td class="actions-td">
+                                        <a href="/views/pay/pay.view.php?id={$appointment.cita}" class="action-wrapper">
+                                            <button class="finish-btn">Finalizar Cita</button>
                                         </a>
                                     </td>
                                 </tr>
@@ -98,7 +140,8 @@
                             {if $appointment.status == 'F'}
                                 <tr>
                                     <td data-label="ID">{$appointment.cita}</td>
-                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name} {$appointment.last_name2}</td>
+                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
+                                        {$appointment.last_name2}</td>
                                     <td data-label="Área Médica">{$appointment.medical_area}</td>
                                     <td data-label="Doctor">{$appointment.doctor_name}</td>
                                     <td data-label="Fecha">{$appointment.appointment_date}</td>
@@ -114,6 +157,5 @@
         </div>
     </main>
 </body>
+
 </html>
-
-

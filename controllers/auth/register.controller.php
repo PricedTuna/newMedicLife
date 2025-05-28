@@ -6,6 +6,10 @@ error_reporting(E_ALL);
 
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/doctor/doctor.model.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators can perform user management actions
+isAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verificar si estamos en modo edición o cambio de contraseña

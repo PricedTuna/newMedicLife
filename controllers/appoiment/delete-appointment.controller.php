@@ -1,6 +1,10 @@
 <?php
 
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators and secretaries can delete appointments
+checkUserRole(['A', 'S']);
 
 header('Content-Type: application/json'); // Indicamos que la respuesta es JSON
 
@@ -20,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 //Eliminar la cita
                 $stmt = $pdo->prepare("DELETE FROM appointments WHERE id = :appointment_id");
                 $stmt->execute([':appointment_id' => $appointment_id]);
-                     
+
             }
 
             header('Location: /views/appointment/list/list-appointments.view.php?success=' . urlencode("cita eliminad con éxito"));

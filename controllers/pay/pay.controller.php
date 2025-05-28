@@ -6,6 +6,10 @@ error_reporting(E_ALL);
 
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/pay/pay.model.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators and secretaries can access payment functionality
+checkUserRole(['A', 'S']);
 
 $paypalModel = new PaymentModel($pdo);
 

@@ -1,6 +1,10 @@
 <?php
 
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators and secretaries can delete patients
+checkUserRole(['A', 'S']);
 
 header('Content-Type: application/json'); // Indicamos que la respuesta es JSON
 
@@ -22,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 //Eliminar al paciente
                 $stmt = $pdo->prepare("DELETE FROM patients WHERE id = :patient_id");
                 $stmt->execute([':patient_id' => $patient_id]);
-                     
+
                 //Eliminar el contacto de emergencia existente
                 if ($emergencyContactId) {
                     try {

@@ -8,6 +8,10 @@ error_reporting(E_ALL);
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/doctor/doctor.model.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/doctor/doctor-assignment.model.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators and secretaries can manage doctors
+checkUserRole(['A', 'S']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recopilación centralizada de datos del formulario
@@ -34,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'gender'            => $_POST['gender'] ?? '',
         'medical_area'      => $_POST['medical_area'] ?? ''
     ];
-    
+
     // Manejo y validación de la foto
     $photoData = null;
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
@@ -49,12 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode("Debes subir una foto.") . '&id=' . ($doctorId ?? ''));
         exit;
     }
-    
+
     try {
         // Instanciación del modelo de Doctor y validación de datos
         $doctorModel = new DoctorModel($pdo);
         $doctorModel->validateData($data, $doctorId);
-        
+
         if ($doctorId) {
             // Actualización del doctor
             $doctorModel->updateDoctor($doctorId, $data, $photoData);
@@ -62,11 +66,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // Creación de un nuevo doctor
             $newDoctorId = $doctorModel->createDoctor($data, $photoData);
-            
+
             // Asignación del doctor al área médica
             $assignmentModel = new DoctorAssignmentModel($pdo);
             $assignmentModel->assignMedicalArea($newDoctorId, $data['medical_area']);
-            
+
             header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito"));
         }
     } catch (Exception $e) {

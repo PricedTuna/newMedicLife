@@ -1,6 +1,10 @@
 <?php
 
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators and secretaries can delete doctors
+checkUserRole(['A', 'S']);
 
 header('Content-Type: application/json'); // Indicamos que la respuesta es JSON
 

@@ -7,6 +7,10 @@ error_reporting(E_ALL);
 // controllers/DoctorController.php
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/appointments/appointment.model.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators and secretaries can manage appointments
+checkUserRole(['A', 'S']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recopilación centralizada de datos del formulario
@@ -26,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($appointmentId) {
             // Actualización del doctor
             $data['id_receptionist'] = 9;
-            
+
             $appointmentModel->updateAppointment($appointmentId, $data);
             header('Location: /views/appointment/list/list-appointments.view.php?success=' . urlencode("Cita actualizada con éxito"));
         } else {

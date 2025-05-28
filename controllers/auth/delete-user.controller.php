@@ -1,6 +1,10 @@
 <?php
 
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators can delete users
+isAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['user_id']) && is_numeric($_POST['user_id'])) {

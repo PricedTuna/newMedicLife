@@ -1,6 +1,11 @@
 <?php
 // Include session controller to protect this route
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/session.controller.php';
+// Include role controller to check if user has admin role
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators can access this page
+isAdmin();
 
 use Smarty\Smarty;
 

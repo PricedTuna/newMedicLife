@@ -1,4 +1,28 @@
-<nav id="sidebar">
+<?php
+/* Smarty version 5.4.5, created on 2025-05-28 03:37:47
+  from 'file:/var/www/html/views/user/list/../../components/sidebar.tpl' */
+
+/* @var \Smarty\Template $_smarty_tpl */
+if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
+  'version' => '5.4.5',
+  'unifunc' => 'content_6836850b880e38_55860834',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '1a8af37c2c02b7a0e0d1680d9e55e9e24bc32f8e' => 
+    array (
+      0 => '/var/www/html/views/user/list/../../components/sidebar.tpl',
+      1 => 1748401924,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+))) {
+function content_6836850b880e38_55860834 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = '/var/www/html/views/components';
+?><nav id="sidebar">
     <ul>
         <li>
             <span class="logo">
@@ -87,7 +111,9 @@
                 <span>Médicos</span>
             </a>
         </li>
-        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'A'): ?>
+        <?php echo '<?php'; ?>
+ if (isset($_SESSION['role']) && $_SESSION['role'] === 'A'): <?php echo '?>'; ?>
+
         <li>
             <a href="/views/user/list/list-users.view.php">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -98,7 +124,9 @@
                 <span>Usuarios</span>
             </a>
         </li>
-        <?php endif; ?>
+        <?php echo '<?php'; ?>
+ endif; <?php echo '?>'; ?>
+
         <li>
             <a href="/views/user/profile/user-profile.view.php">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000">
@@ -119,3 +147,5 @@
         </li>
     </ul>
 </nav>
+<?php }
+}

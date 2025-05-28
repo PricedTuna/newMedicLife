@@ -10,6 +10,10 @@ error_reporting(E_ALL);
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/patient/patient.model.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/emergency_contacts/emergency_contacts.model.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators and secretaries can manage patients
+checkUserRole(['A', 'S']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recopilación centralizada de datos del formulario
@@ -40,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'id_emergency_contact' => $_POST['id_emergency_contact'] ?? '',
         'marital_status'    => $_POST['marital_status'] ?? '',
         'ethnic_group'      => $_POST['ethnic_group'] ?? '',
-        'religion'          => $_POST['religion'] ?? '' 
+        'religion'          => $_POST['religion'] ?? ''
     ];
 
     $emergencyContactsId = isset($_POST['emergency_contacts_id']) && is_numeric($_POST['emergency_contacts_id']) ? $_POST['emergency_contacts_id'] : null;
@@ -76,14 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $patientModel = new PatientModel($pdo);
         $patientModel->validateData($data, $patientId);
 
-     
-    
+
+
         if ($patientId && $emergencyContactsId) {
             // Actualización del paciente
             $emergencyContactsModel->updateEmergencyContact($emergencyContactsId, $dataContact);
 
             $data['id_emergency_contact'] = $emergencyContactsId;
-                      
+
             $patientModel->updatePatient($patientId, $data,$photoData);
 
             header('Location: /views/patient/list/list-patients.view.php?success=' . urlencode("Paciente actualizado con éxito"));
@@ -94,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data['id_emergency_contact'] = $newEmergencyContactsID;
 
             $newPatientId = $patientModel->createPatient($data,$photoData);
-            
+
             header('Location: /views/patient/list/list-patients.view.php?success=' . urlencode("Paciente creado con éxito"));
         }
     } catch (Exception $e) {

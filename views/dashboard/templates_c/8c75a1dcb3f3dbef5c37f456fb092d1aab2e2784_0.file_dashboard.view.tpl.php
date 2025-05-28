@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 02:08:03
+/* Smarty version 5.4.5, created on 2025-05-28 02:26:23
   from 'file:dashboard.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833cd039ec970_27267785',
+  'unifunc' => 'content_6836744f27e1b0_71679915',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8c75a1dcb3f3dbef5c37f456fb092d1aab2e2784' => 
     array (
       0 => 'dashboard.view.tpl',
-      1 => 1748223206,
+      1 => 1748398180,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_6833cd039ec970_27267785 (\Smarty\Template $_smarty_tpl) {
+function content_6836744f27e1b0_71679915 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/dashboard';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -36,9 +36,11 @@ $_smarty_current_dir = '/var/www/html/views/dashboard';
 >
     <link rel="stylesheet" href="./dashboard.styles.css">
     <?php echo '<script'; ?>
- src="./dashboard.app.js" async><?php echo '</script'; ?>
+ src="./dashboard.app.js" defer><?php echo '</script'; ?>
 >
-
+    <?php echo '<script'; ?>
+ src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
+>
 </head>
 
 <body>
@@ -109,5 +111,6 @@ $_smarty_current_dir = '/var/www/html/views/dashboard';
     </main>
 </body>
 
-</html><?php }
+</html>
+<?php }
 }

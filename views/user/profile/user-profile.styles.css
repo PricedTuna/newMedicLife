@@ -1,0 +1,100 @@
+/* User Profile Styles */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+}
+
+.profile-section h2 {
+    color: #0b8fac;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.info-item .label {
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.info-item .value {
+    font-size: 1.1rem;
+}
+
+.doctor-section {
+    margin-top: 1rem;
+    background-color: #f8f9fa;
+}
+
+.doctor-photo {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.doctor-photo img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #0b8fac;
+}
+
+.medical-areas-list {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.medical-areas-list li {
+    margin-bottom: 0.5rem;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 1rem;
+    border: 1px solid red;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .profile-info {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}

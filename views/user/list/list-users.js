@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Handle delete confirmation
-document.querySelectorAll(".dropdown-item.delete").forEach(button => {
+console.log("Loading user deletion script");
+document.querySelectorAll(".delete-btn").forEach(button => {
     button.addEventListener("click", async function(event) {
         event.preventDefault(); // Prevent form submission
 
@@ -59,3 +60,4 @@ document.querySelectorAll(".dropdown-item.delete").forEach(button => {
         }
     });
 });
+

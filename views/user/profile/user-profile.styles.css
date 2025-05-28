@@ -89,6 +89,7 @@ main {
 /* Profile Sections */
 .profile-section {
   display: flex;
+  margin-top: 1.5rem;
   flex-direction: column;
   background-color: var(--hover-clr);
   border-radius: 16px;

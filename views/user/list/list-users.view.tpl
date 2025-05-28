@@ -76,21 +76,16 @@
                                         {/if}
                                     </td>
                                     <td class="actions-td">
-                                        <div class="dropdown">
-                                            <button class="dropdown-btn">Acciones <span class="dropdown-icon">▼</span></button>
-                                            <div class="dropdown-content">
-                                                <a href="/views/user/register/register-user.view.php?id={$user.id}" class="dropdown-item update">
-                                                    Actualizar
-                                                </a>
-                                                <a href="/views/user/register/register-user.view.php?id={$user.id}&password_change=1" class="dropdown-item password">
-                                                    Cambiar contraseña
-                                                </a>
-                                                <form action="/controllers/auth/delete-user.controller.php" method="POST" class="dropdown-item-form">
-                                                    <input type="hidden" name="user_id" value="{$user.id}">
-                                                    <button type="submit" class="dropdown-item delete" data-id="{$user.id}">Eliminar</button>
-                                                </form>
-                                            </div>
-                                        </div>
+                                        <form action="/controllers/auth/delete-user.controller.php" method="POST" class="action-wrapper">
+                                            <input type="hidden" name="user_id" value="{$user.id}">
+                                            <button type="submit" class="delete-btn" data-id="{$user.id}">Eliminar</button>
+                                        </form>
+                                        <a href="/views/user/register/register-user.view.php?id={$user.id}" class="action-wrapper">
+                                            <button class="update-btn">Actualizar</button>
+                                        </a>
+                                        <a href="/views/user/register/register-user.view.php?id={$user.id}&password_change=1" class="action-wrapper">
+                                            <button class="password-btn">Cambiar contraseña</button>
+                                        </a>
                                     </td>
                                 </tr>
                             {/foreach}

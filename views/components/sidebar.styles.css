@@ -31,6 +31,7 @@ html {
     transition: 300ms ease-in-out;
     overflow: hidden;
     text-wrap: nowrap;
+    z-index: 999;
 }
 
 #sidebar.close {

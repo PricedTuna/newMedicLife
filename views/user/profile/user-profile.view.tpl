@@ -6,13 +6,13 @@
     <script src="/views/components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="./user-profile.styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <title>Perfil de Usuario | Medic Life</title>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const fileInput = document.getElementById('doctor-photo');
+            const fileInput = document.getElementById('doctor-photo-profile');
             const imagePreview = document.getElementById('image-preview');
             const previewPlaceholder = document.getElementById('preview-placeholder');
 
@@ -105,7 +105,7 @@
                         <div class="profile-section doctor-section">
                             <h2>Información del Doctor</h2>
                             <div class="profile-info">
-                                <div class="doctor-photo">
+                                <div class="doctor-photo-profile">
                                     {if $doctorData.photo}
                                         <img src="/controllers/doctor/mostrar_foto.php?id={$doctorData.id}" alt="Foto del doctor">
                                     {else}
@@ -122,10 +122,10 @@
                                     <form action="/controllers/doctor/update_photo.php" method="POST" enctype="multipart/form-data">
                                         <input type="hidden" name="doctor_id" value="{$doctorData.id}">
                                         <div class="form-group">
-                                            <label for="doctor-photo" class="custom-file-upload">
+                                            <label for="doctor-photo-profile" class="custom-file-upload">
                                                 <i class="bi bi-cloud-arrow-up"></i> Seleccionar nueva foto
                                             </label>
-                                            <input type="file" id="doctor-photo" name="doctor_photo" accept="image/*" required>
+                                            <input type="file" id="doctor-photo-profile" name="doctor_photo" accept="image/*" required>
                                             <div id="image-preview-container" class="image-preview-container">
                                                 <img id="image-preview" class="image-preview" src="" alt="Vista previa" style="display: none;">
                                                 <div id="preview-placeholder" class="preview-placeholder">

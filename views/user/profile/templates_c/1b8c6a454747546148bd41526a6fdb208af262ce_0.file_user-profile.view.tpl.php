@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-28 07:01:06
+/* Smarty version 5.4.5, created on 2025-05-28 07:25:03
   from 'file:user-profile.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6836b4b2046a12_74807127',
+  'unifunc' => 'content_6836ba4fd73aa2_25345279',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1b8c6a454747546148bd41526a6fdb208af262ce' => 
     array (
       0 => 'user-profile.view.tpl',
-      1 => 1748414329,
+      1 => 1748417102,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_6836b4b2046a12_74807127 (\Smarty\Template $_smarty_tpl) {
+function content_6836ba4fd73aa2_25345279 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/profile';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -33,16 +33,16 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
 >
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="./user-profile.styles.css">
     <?php echo '<script'; ?>
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
 >
+    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <title>Perfil de Usuario | Medic Life</title>
     <?php echo '<script'; ?>
 >
         document.addEventListener('DOMContentLoaded', function() {
-            const fileInput = document.getElementById('doctor-photo');
+            const fileInput = document.getElementById('doctor-photo-profile');
             const imagePreview = document.getElementById('image-preview');
             const previewPlaceholder = document.getElementById('preview-placeholder');
 
@@ -147,7 +147,7 @@ echo $_smarty_tpl->getValue('user')['status'];?>
                         <div class="profile-section doctor-section">
                             <h2>Información del Doctor</h2>
                             <div class="profile-info">
-                                <div class="doctor-photo">
+                                <div class="doctor-photo-profile">
                                     <?php if ($_smarty_tpl->getValue('doctorData')['photo']) {?>
                                         <img src="/controllers/doctor/mostrar_foto.php?id=<?php echo $_smarty_tpl->getValue('doctorData')['id'];?>
 " alt="Foto del doctor">
@@ -166,10 +166,10 @@ echo $_smarty_tpl->getValue('user')['status'];?>
                                         <input type="hidden" name="doctor_id" value="<?php echo $_smarty_tpl->getValue('doctorData')['id'];?>
 ">
                                         <div class="form-group">
-                                            <label for="doctor-photo" class="custom-file-upload">
+                                            <label for="doctor-photo-profile" class="custom-file-upload">
                                                 <i class="bi bi-cloud-arrow-up"></i> Seleccionar nueva foto
                                             </label>
-                                            <input type="file" id="doctor-photo" name="doctor_photo" accept="image/*" required>
+                                            <input type="file" id="doctor-photo-profile" name="doctor_photo" accept="image/*" required>
                                             <div id="image-preview-container" class="image-preview-container">
                                                 <img id="image-preview" class="image-preview" src="" alt="Vista previa" style="display: none;">
                                                 <div id="preview-placeholder" class="preview-placeholder">

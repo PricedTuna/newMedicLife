@@ -167,7 +167,7 @@ main {
 }
 
 /* Doctor Photo */
-.doctor-photo {
+.doctor-photo-profile {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -180,7 +180,7 @@ main {
   margin-bottom: 1.5rem;
 }
 
-.doctor-photo img {
+.doctor-photo-profile img {
   width: 180px;
   height: 180px;
   max-width: 100%;
@@ -194,7 +194,7 @@ main {
   z-index: 10;
 }
 
-.doctor-photo img:hover {
+.doctor-photo-profile img:hover {
   transform: scale(1.05);
 }
 
@@ -462,7 +462,7 @@ main {
   }
 
   /* Adjust doctor photo container for better alignment */
-  .doctor-photo {
+  .doctor-photo-profile {
     width: 100%;
     margin-bottom: 1.5rem;
   }
@@ -514,7 +514,7 @@ main {
     padding: 1.5rem;
   }
 
-  .doctor-photo img, .no-photo {
+  .doctor-photo-profile img, .no-photo {
     width: 150px;
     height: 150px;
   }
@@ -571,7 +571,7 @@ main {
   }
 
   /* Further adjust photo and form elements for very small screens */
-  .doctor-photo img, .no-photo {
+  .doctor-photo-profile img, .no-photo {
     width: 120px;
     height: 120px;
   }

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/views/doctor/main/main-doctor.styles.css">
     <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
     <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <title>Registro de Doctores</title>
 
     <script>
@@ -21,6 +22,31 @@
         window.municipalities = {$municipalities|json_encode};
         window.localities = {$localities|json_encode};
         window.states = {$states|json_encode};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('photo');
+            const imagePreview = document.getElementById('doctor-image-preview');
+            const previewPlaceholder = document.getElementById('doctor-preview-placeholder');
+
+            if (fileInput) {
+                fileInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            imagePreview.src = e.target.result;
+                            imagePreview.style.display = 'block';
+                            previewPlaceholder.style.display = 'none';
+                        }
+
+                        reader.readAsDataURL(this.files[0]);
+                    } else {
+                        imagePreview.style.display = 'none';
+                        previewPlaceholder.style.display = 'flex';
+                    }
+                });
+            }
+        });
     </script>
 
     <script src="register-doctor.view.js" defer></script>

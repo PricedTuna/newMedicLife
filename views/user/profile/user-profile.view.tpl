@@ -10,6 +10,32 @@
     <link rel="stylesheet" href="./user-profile.styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Perfil de Usuario | Medic Life</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('doctor-photo');
+            const imagePreview = document.getElementById('image-preview');
+            const previewPlaceholder = document.getElementById('preview-placeholder');
+
+            if (fileInput) {
+                fileInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            imagePreview.src = e.target.result;
+                            imagePreview.style.display = 'block';
+                            previewPlaceholder.style.display = 'none';
+                        }
+
+                        reader.readAsDataURL(this.files[0]);
+                    } else {
+                        imagePreview.style.display = 'none';
+                        previewPlaceholder.style.display = 'flex';
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -96,12 +122,21 @@
                                     <form action="/controllers/doctor/update_photo.php" method="POST" enctype="multipart/form-data">
                                         <input type="hidden" name="doctor_id" value="{$doctorData.id}">
                                         <div class="form-group">
-                                            <label for="doctor-photo">Seleccionar nueva foto:</label>
+                                            <label for="doctor-photo" class="custom-file-upload">
+                                                <i class="bi bi-cloud-arrow-up"></i> Seleccionar nueva foto
+                                            </label>
                                             <input type="file" id="doctor-photo" name="doctor_photo" accept="image/*" required>
+                                            <div id="image-preview-container" class="image-preview-container">
+                                                <img id="image-preview" class="image-preview" src="" alt="Vista previa" style="display: none;">
+                                                <div id="preview-placeholder" class="preview-placeholder">
+                                                    <i class="bi bi-image"></i>
+                                                    <span>Vista previa de la imagen</span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-actions">
                                             <button type="submit" class="save-photo-btn">Guardar</button>
-                                            <button type="button" class="cancel-btn" onclick="document.getElementById('photo-upload-form').style.display='none'">Cancelar</button>
+                                            <button type="button" class="cancel-btn" onclick="document.getElementById('photo-upload-form').style.display='none'; document.getElementById('image-preview').style.display='none'; document.getElementById('preview-placeholder').style.display='flex';">Cancelar</button>
                                         </div>
                                     </form>
                                 </div>

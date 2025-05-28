@@ -33,12 +33,17 @@ body {
   background-color: var(--base-clr);
   color: var(--text-clr);
   display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 main {
   display: flex;
   flex: 1;
   padding: 0 20px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .main-content {
@@ -50,6 +55,7 @@ main {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* Profile Header */
@@ -73,9 +79,11 @@ main {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  max-width: 95%;
+  max-width: 100%;
   margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
+  padding: 0 1rem;
 }
 
 /* Profile Sections */
@@ -87,6 +95,9 @@ main {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   padding: 2rem;
   transition: transform 0.3s, box-shadow 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .profile-section:hover {
@@ -112,6 +123,8 @@ main {
   flex-wrap: wrap;
   gap: 1.5rem;
   justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Info Items */
@@ -124,7 +137,11 @@ main {
   background-color: var(--base-clr);
   transition: transform 0.2s;
   flex: 1 1 300px;
-  min-width: 250px;
+  min-width: 200px;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .info-item:hover {
@@ -158,11 +175,15 @@ main {
   z-index: 5;
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .doctor-photo img {
   width: 180px;
   height: 180px;
+  max-width: 100%;
   object-fit: cover;
   border-radius: 50%;
   border: 4px solid var(--doctor-photo-border);
@@ -180,6 +201,7 @@ main {
 .no-photo {
   width: 180px;
   height: 180px;
+  max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,12 +247,17 @@ main {
   border: 1px solid var(--line-clr);
   z-index: 10;
   position: relative;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-group label {
@@ -251,12 +278,14 @@ main {
   font-size: 16px;
   font-weight: 600;
   border-radius: 8px;
-  cursor: pointer;k
+  cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: none;
   margin-bottom: 1rem;
   width: 100%;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 .custom-file-upload:hover {
@@ -289,6 +318,8 @@ main {
   overflow: hidden;
   position: relative;
   background-color: var(--base-clr);
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .image-preview {
@@ -307,6 +338,9 @@ main {
   height: 100%;
   color: var(--secondary-text-clr);
   gap: 0.5rem;
+  text-align: center;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 .preview-placeholder i {
@@ -322,6 +356,9 @@ main {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
+  flex-wrap: wrap;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .save-photo-btn, .cancel-btn {
@@ -334,6 +371,10 @@ main {
   font-size: 0.9rem;
   transition: background-color 0.3s;
   border: none;
+  flex: 1 1 auto;
+  min-width: 120px;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 .save-photo-btn {
@@ -394,22 +435,69 @@ main {
 
 /* Responsive styles */
 @media (max-width: 992px) {
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    width: 100%;
+    padding: 0 15px;
+    box-sizing: border-box;
+  }
+
+  .main-content {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
   .profile-info {
     justify-content: flex-start;
   }
 
   .info-item {
     flex: 1 1 calc(50% - 1.5rem);
+    min-width: 200px; /* Reduced min-width for better fit */
+  }
+
+  /* Adjust doctor photo container for better alignment */
+  .doctor-photo {
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Ensure photo upload form fits within container */
+  .photo-upload-form {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Adjust form actions to ensure they don't overflow */
+  .form-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .save-photo-btn, .cancel-btn {
+    flex: 1 1 auto;
+    min-width: 120px;
+    margin-bottom: 0.5rem;
   }
 }
 
 @media (max-width: 768px) {
+  .profile-container {
+    padding: 0;
+  }
+
   .profile-info {
     flex-direction: column;
   }
 
   .info-item {
     flex: 1 1 100%;
+    min-width: 100%;
   }
 
   .profile-header {
@@ -430,15 +518,46 @@ main {
     width: 150px;
     height: 150px;
   }
+
+  /* Improve image preview container on smaller screens */
+  .image-preview-container {
+    height: 180px;
+  }
+
+  /* Ensure custom file upload button is properly sized */
+  .custom-file-upload {
+    padding: 0.6rem 1rem;
+    font-size: 14px;
+  }
+
+  /* Adjust form layout for better mobile experience */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  /* Ensure buttons are properly sized */
+  .update-photo-btn {
+    width: auto;
+    min-width: 120px;
+  }
 }
 
 @media (max-width: 576px) {
   .main-content {
-    padding: 15px;
+    padding: 10px;
+    margin: 0;
+    width: 100%;
+  }
+
+  .profile-container {
+    max-width: 100%;
+    padding: 0;
   }
 
   .profile-section {
     padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
   }
 
   .profile-header h1 {
@@ -447,5 +566,48 @@ main {
 
   .info-item {
     padding: 0.8rem;
+    min-width: 100%; /* Ensure full width on very small screens */
+    margin-bottom: 0.5rem;
+  }
+
+  /* Further adjust photo and form elements for very small screens */
+  .doctor-photo img, .no-photo {
+    width: 120px;
+    height: 120px;
+  }
+
+  .update-photo-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .photo-upload-form {
+    padding: 1rem;
+  }
+
+  .image-preview-container {
+    height: 150px;
+  }
+
+  .preview-placeholder i {
+    font-size: 2rem;
+  }
+
+  .preview-placeholder span {
+    font-size: 0.8rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .save-photo-btn, .cancel-btn {
+    width: 100%;
+  }
+
+  /* Ensure profile section hover doesn't cause layout shifts */
+  .profile-section:hover {
+    transform: none;
   }
 }

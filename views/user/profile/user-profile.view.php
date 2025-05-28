@@ -56,6 +56,15 @@ try {
         }
     }
 
+    // Check for success or error messages
+    if (isset($_GET['success'])) {
+        $smarty->assign('success', $_GET['success']);
+    }
+
+    if (isset($_GET['error'])) {
+        $smarty->assign('error', $_GET['error']);
+    }
+
     // Assign variables to template
     $smarty->assign('user', $user);
     $smarty->assign('doctorData', $doctorData);

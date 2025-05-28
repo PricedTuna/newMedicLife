@@ -1,100 +1,380 @@
-/* User Profile Styles */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+:root {
+  --base-clr: #f2f4f4;
+  --line-clr: #eaecee;
+  --hover-clr: white;
+  --text-clr: #17202a;
+  --accent-clr: #5e63ff;
+  --light-clr: #c8caff;
+  --secondary-text-clr: #566573;
+  --doctor-section-bg: #f8f9fa;
+  --doctor-photo-border: #0b8fac;
+}
+
+html {
+  font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--base-clr);
+  color: var(--text-clr);
+  display: flex;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  padding: 0 20px;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: var(--hover-clr);
+  border-radius: 5px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Profile Header */
 .profile-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 2px solid var(--accent-clr);
 }
 
+.profile-header h1 {
+  color: var(--accent-clr);
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Profile Container */
 .profile-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 95%;
+  margin: 0 auto;
+  width: 100%;
 }
 
+/* Profile Sections */
 .profile-section {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--hover-clr);
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.profile-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .profile-section h2 {
-    color: #0b8fac;
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e0e0e0;
+  color: var(--accent-clr);
+  margin-top: 0;
+  margin-bottom: 2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--line-clr);
+  font-size: 1.8rem;
+  text-align: center;
+  position: relative;
+  z-index: 5;
 }
 
+/* Profile Info Flex Container */
 .profile-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: space-between;
 }
 
+/* Info Items */
 .info-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: var(--base-clr);
+  transition: transform 0.2s;
+  flex: 1 1 300px;
+  min-width: 250px;
+}
+
+.info-item:hover {
+  transform: scale(1.02);
+  background-color: var(--light-clr);
 }
 
 .info-item .label {
-    font-weight: bold;
-    color: #555;
-    font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--secondary-text-clr);
+  font-size: 0.9rem;
 }
 
 .info-item .value {
-    font-size: 1.1rem;
+  font-size: 1.1rem;
+  color: var(--text-clr);
 }
 
+/* Doctor Section */
 .doctor-section {
-    margin-top: 1rem;
-    background-color: #f8f9fa;
+  margin-top: 1rem;
+  background-color: var(--doctor-section-bg);
 }
 
+/* Doctor Photo */
 .doctor-photo {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
 }
 
 .doctor-photo img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #0b8fac;
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--doctor-photo-border);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 10;
 }
 
+.doctor-photo img:hover {
+  transform: scale(1.05);
+}
+
+.no-photo {
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 4px solid var(--doctor-photo-border);
+  background-color: #f1f1f1;
+  color: #666;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.update-photo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--doctor-photo-border);
+  color: white;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s;
+  position: relative;
+  z-index: 10;
+}
+
+.update-photo-btn:hover {
+  background-color: #096d85;
+}
+
+/* Photo Upload Form */
+.photo-upload-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-top: 1rem;
+  border: 1px solid var(--line-clr);
+  z-index: 10;
+  position: relative;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-clr);
+}
+
+.form-group input[type="file"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--line-clr);
+  border-radius: 4px;
+  background-color: var(--base-clr);
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.save-photo-btn, .cancel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+  border: none;
+}
+
+.save-photo-btn {
+  background-color: var(--accent-clr);
+  color: white;
+}
+
+.save-photo-btn:hover {
+  background-color: #4a4fd9;
+}
+
+.cancel-btn {
+  background-color: #e0e0e0;
+  color: var(--text-clr);
+}
+
+.cancel-btn:hover {
+  background-color: #d0d0d0;
+}
+
+/* Medical Areas List */
 .medical-areas-list {
-    margin: 0;
-    padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style-type: disc;
 }
 
 .medical-areas-list li {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.2rem 0;
+}
+
+/* Error and Success Messages */
+.error-message, .success-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
 }
 
 .error-message {
-    color: red;
-    margin-bottom: 1rem;
-    border: 1px solid red;
-    padding: 0.5rem;
-    border-radius: 5px;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+  background-color: #fadbd8;
+}
+
+.success-message {
+  color: #27ae60;
+  border: 1px solid #27ae60;
+  background-color: #d5f5e3;
 }
 
 /* Responsive styles */
-@media (max-width: 768px) {
-    .profile-info {
-        grid-template-columns: 1fr;
-    }
+@media (max-width: 992px) {
+  .profile-info {
+    justify-content: flex-start;
+  }
 
-    .profile-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
+  .info-item {
+    flex: 1 1 calc(50% - 1.5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-info {
+    flex-direction: column;
+  }
+
+  .info-item {
+    flex: 1 1 100%;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .profile-header h1 {
+    font-size: 2rem;
+  }
+
+  .profile-section {
+    padding: 1.5rem;
+  }
+
+  .doctor-photo img, .no-photo {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-content {
+    padding: 15px;
+  }
+
+  .profile-section {
+    padding: 1rem;
+  }
+
+  .profile-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .info-item {
+    padding: 0.8rem;
+  }
 }

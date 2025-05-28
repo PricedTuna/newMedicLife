@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-28 03:44:53
+/* Smarty version 5.4.5, created on 2025-05-28 06:22:20
   from 'file:user-profile.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683686b5160c86_95625788',
+  'unifunc' => 'content_6836ab9c999626_75140687',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1b8c6a454747546148bd41526a6fdb208af262ce' => 
     array (
       0 => 'user-profile.view.tpl',
-      1 => 1748401887,
+      1 => 1748413338,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683686b5160c86_95625788 (\Smarty\Template $_smarty_tpl) {
+function content_6836ab9c999626_75140687 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/profile';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -31,13 +31,14 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
     <?php echo '<script'; ?>
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="./user-profile.styles.css">
     <?php echo '<script'; ?>
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
 >
-    <title>Perfil de Usuario</title>
+    <title>Perfil de Usuario | Medic Life</title>
 </head>
 
 <body>
@@ -53,6 +54,13 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
             <?php if ((true && ($_smarty_tpl->hasVariable('error') && null !== ($_smarty_tpl->getValue('error') ?? null)))) {?>
                 <div class="error-message">
                     <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('error'), ENT_QUOTES, 'UTF-8', true);?>
+
+                </div>
+            <?php }?>
+
+            <?php if ((true && ($_smarty_tpl->hasVariable('success') && null !== ($_smarty_tpl->getValue('success') ?? null)))) {?>
+                <div class="success-message">
+                    <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('success'), ENT_QUOTES, 'UTF-8', true);?>
 
                 </div>
             <?php }?>
@@ -111,12 +119,34 @@ echo $_smarty_tpl->getValue('user')['status'];?>
                         <div class="profile-section doctor-section">
                             <h2>Información del Doctor</h2>
                             <div class="profile-info">
-                                <?php if ($_smarty_tpl->getValue('doctorData')['photo']) {?>
-                                    <div class="doctor-photo">
+                                <div class="doctor-photo">
+                                    <?php if ($_smarty_tpl->getValue('doctorData')['photo']) {?>
                                         <img src="/controllers/doctor/mostrar_foto.php?id=<?php echo $_smarty_tpl->getValue('doctorData')['id'];?>
 " alt="Foto del doctor">
-                                    </div>
-                                <?php }?>
+                                    <?php } else { ?>
+                                        <div class="no-photo">Sin foto</div>
+                                    <?php }?>
+                                    <button type="button" class="update-photo-btn" onclick="document.getElementById('photo-upload-form').style.display='block'">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                      </svg>
+                                    </button>
+                                </div>
+
+                                <div id="photo-upload-form" class="photo-upload-form" style="display: none;">
+                                    <form action="/controllers/doctor/update_photo.php" method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="doctor_id" value="<?php echo $_smarty_tpl->getValue('doctorData')['id'];?>
+">
+                                        <div class="form-group">
+                                            <label for="doctor-photo">Seleccionar nueva foto:</label>
+                                            <input type="file" id="doctor-photo" name="doctor_photo" accept="image/*" required>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="save-photo-btn">Guardar</button>
+                                            <button type="button" class="cancel-btn" onclick="document.getElementById('photo-upload-form').style.display='none'">Cancelar</button>
+                                        </div>
+                                    </form>
+                                </div>
                                 <div class="info-item">
                                     <span class="label">Nombre Completo:</span>
                                     <span class="value"><?php echo $_smarty_tpl->getValue('doctorData')['names'];?>

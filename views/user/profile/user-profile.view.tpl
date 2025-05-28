@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/views/components/sidebar.app.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="./user-profile.styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Perfil de Usuario</title>
+    <title>Perfil de Usuario | Medic Life</title>
 </head>
 
 <body>
@@ -23,6 +24,12 @@
             {if isset($error)}
                 <div class="error-message">
                     {$error|escape}
+                </div>
+            {/if}
+
+            {if isset($success)}
+                <div class="success-message">
+                    {$success|escape}
                 </div>
             {/if}
 
@@ -72,11 +79,32 @@
                         <div class="profile-section doctor-section">
                             <h2>Información del Doctor</h2>
                             <div class="profile-info">
-                                {if $doctorData.photo}
-                                    <div class="doctor-photo">
+                                <div class="doctor-photo">
+                                    {if $doctorData.photo}
                                         <img src="/controllers/doctor/mostrar_foto.php?id={$doctorData.id}" alt="Foto del doctor">
-                                    </div>
-                                {/if}
+                                    {else}
+                                        <div class="no-photo">Sin foto</div>
+                                    {/if}
+                                    <button type="button" class="update-photo-btn" onclick="document.getElementById('photo-upload-form').style.display='block'">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                      </svg>
+                                    </button>
+                                </div>
+
+                                <div id="photo-upload-form" class="photo-upload-form" style="display: none;">
+                                    <form action="/controllers/doctor/update_photo.php" method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="doctor_id" value="{$doctorData.id}">
+                                        <div class="form-group">
+                                            <label for="doctor-photo">Seleccionar nueva foto:</label>
+                                            <input type="file" id="doctor-photo" name="doctor_photo" accept="image/*" required>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="save-photo-btn">Guardar</button>
+                                            <button type="button" class="cancel-btn" onclick="document.getElementById('photo-upload-form').style.display='none'">Cancelar</button>
+                                        </div>
+                                    </form>
+                                </div>
                                 <div class="info-item">
                                     <span class="label">Nombre Completo:</span>
                                     <span class="value">{$doctorData.names} {$doctorData.last_name} {$doctorData.last_name2}</span>

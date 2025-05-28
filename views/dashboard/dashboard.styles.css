@@ -6,7 +6,7 @@
     --hover-clr: white;
     --text-clr: #17202a;
     --accent-clr: #5e63ff;
-    --secondary-text-clr: ##566573;
+    --secondary-text-clr: #566573;
     --test-clr: #a9cce3;
 }
 
@@ -156,7 +156,6 @@ header h1 {
 }
 
 .doctor-photo {
-    background-color: var(--line-clr);
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -229,7 +228,7 @@ header h1 {
       margin-left: 20px;          /* conserva el gutter respecto al sidebar */
       margin-right: 20px;          /* conserva el gutter respecto al sidebar */
     }
-  
+
     .main-content,
     .doctor-info,
     .upcoming-appointments,
@@ -244,7 +243,7 @@ header h1 {
       box-sizing: border-box;
     }
   }
-  
+
 
 @media (max-width: 800px) {
     /* 1) Desactiva la grid del body */
@@ -254,7 +253,7 @@ header h1 {
       margin: 0;
       padding: 0;
     }
-  
+
     /* 2) Main con gutters fijos (izq y derecha iguales) */
     main {
       display: flex;
@@ -268,7 +267,7 @@ header h1 {
       padding-right: 20px;  /* gutter fijo */
       box-sizing: border-box;
     }
-  
+
     /* 3) Paneles al 100% del ancho interno de main */
     .main-content,
     .doctor-info,
@@ -283,7 +282,7 @@ header h1 {
       padding: 1em;
       box-sizing: border-box;
     }
-  
+
     /* 4) Ajustes puntuales */
     header {
       flex-direction: column;
@@ -291,12 +290,12 @@ header h1 {
       width: 100%;
       padding: 0.75em 0;
     }
-  
+
     .search-container input {
       width: 100%;
       max-width: none;
     }
-  
+
     #calendar {
       grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: 2px;
@@ -306,16 +305,15 @@ header h1 {
       padding: 0.5em;
       font-size: 0.9em;
     }
-  
+
     .card {
       padding: 1vmin;
       font-size: 1.2em;
     }
-  
+
     .chart-placeholder {
       height: 150px;
     }
-  
+
     /* Ya no es necesario tocar márgenes extra en .doctor-info */
   }
-  

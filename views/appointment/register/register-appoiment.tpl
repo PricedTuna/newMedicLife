@@ -16,6 +16,8 @@
         window.doctors = {$doctors|json_encode};
         window.patients = {$patients|json_encode};
         window.schedules = {$schedules|json_encode};
+        window.allAppointments = {$allAppointments|json_encode};
+        window.appointment = {$appointment|json_encode};
     </script>
     <script src="/views/appointment/register/register-appoiment.js"></script>
 
@@ -29,34 +31,42 @@
         <div class="form-container">
             <h2>Solicitar Citas</h2>
             <form id="solicitarCita" method="POST" action="/controllers/appoiment/register-appoiment.controller.php">
-            <input type="hidden" name="appointment_id" value="{$appointment.id}"></input>
+                <input type="hidden" name="appointment_id" value="{$appointment.id|default: ''}"></input>
+                <input type="hidden" id="appointmentId" name="appointment_id" value="{$appointment.id|default: ''}">
                 <div class="form-group">
                     <label>Busqueda de paciente: Ingrese el nombre o CURP</label>
-                    <input type="text" id="CURP" name="curp" list="curpList" autocomplete="off" value="{$appointment.curp|default:''}" required>
+                    <input type="text" id="CURP" name="curp" list="curpList" autocomplete="off"
+                        value="{$appointment.curp|default:''} {$appointment.full_name|default:''}" required>
                     <datalist id="curpList"></datalist>
                     <small id="curpError" style="color: red; display: none;"></small>
                 </div>
 
                 <div class="form-group">
                     <label for="patientId">Número de identificación del paciente</label>
-                    <input type="text" name="id_patient" id="patientId" required>
+                    <input type="text" name="id_patient" id="patientId" value="{$appointment.id_patient|default:''}"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="name">Nombre del paciente</label>
-                    <input type="text" id="patientName" placeholder="Nombre completo" disabled></input>
+                    <input type="text" id="patientName" placeholder="Nombre completo"
+                        value="{$appointment.patient_name|default:''} {$appointment.last_name|default:''} {$appointment.last_name2|default:''}"
+                        disabled></input>
                 </div>
 
                 <div class="form-group">
                     <label for="speciality">Especialidad</label>
                     <select name="id_medical_area" id="speciality" required>
                         {foreach from=$medical_areas item=area}
-                            <option value="{$area.id}">
+                            <option value="{$area.id}"
+                                {if isset($appointment) && isset($appointment.id_medical_area) && $area.id == $appointment.id_medical_area}
+                                selected {/if}>
                                 {$area.name}
                             </option>
                         {/foreach}
                     </select>
                 </div>
+
 
 
                 <div class="form-group">
@@ -68,7 +78,8 @@
 
                 <div class="form-group">
                     <label for="appointmentDate">Hora y Fecha</label>
-                    <input type="text" id="appointmentDate" name="appointment_date" required>
+                    <input type="text" id="appointmentDate" name="appointment_date"
+                        value="{$appointment.appointment_date|default:''}" required>
                     <span id="dateError" style="color:red; display:none;">La fecha/hora no está en el horario del
                         doctor</span>
                 </div>
@@ -77,6 +88,7 @@
             </form>
         </div>
     </div>
+
 </body>
 
 </html>

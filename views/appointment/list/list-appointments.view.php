@@ -21,12 +21,12 @@ $stmt = $pdo->query("SELECT
     p.last_name2 AS last_name2,
     ma.name AS medical_area,
     d.names AS doctor_name,
-    ap.appointment_date AS appointment_date
-
-    FROM appointments ap
-    INNER JOIN patients p on ap.id_patient = p.id   
-    INNER JOIN doctors d on ap.id_doctor = d.id
-    INNER JOIN medical_areas ma on ma.id = ap.id_medical_area
+    ap.appointment_date AS appointment_date,
+    ap.status AS status
+FROM appointments ap
+INNER JOIN patients p on ap.id_patient = p.id   
+INNER JOIN doctors d on ap.id_doctor = d.id
+INNER JOIN medical_areas ma on ma.id = ap.id_medical_area
         ");
 $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

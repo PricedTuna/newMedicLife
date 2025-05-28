@@ -25,11 +25,12 @@
         <select name="state" id="state" required>
             <option value="">Seleccione...</option>
             {foreach from=$states item=state}
-                <option value="{$state.id}" {if $doctor.state == $state.id}selected{/if}>
+                <option value="{$state.id}" {if isset($doctor.state) && $doctor.state == $state.id}selected{/if}>
                     {$state.name}
                 </option>
             {/foreach}
         </select>
+
     </div>
     <div class="form-group">
         <label for="municipality">Municipio</label>

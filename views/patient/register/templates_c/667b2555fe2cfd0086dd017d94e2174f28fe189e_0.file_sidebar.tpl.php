@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-20 21:09:54
-  from 'file:/home/angel/Desktop/mediclife/newMedicLife/views/appointment/register/../../components/sidebar.tpl' */
+/* Smarty version 5.4.5, created on 2025-05-26 11:41:22
+  from 'file:C:\proyectos\mediclife\newMedicLife\views\patient\register\../../components/sidebar.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_682cefa2574ad7_32592258',
+  'unifunc' => 'content_68343742161094_81964265',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '312475cd52e7fbaf315169f3fe2f789a8ac265bf' => 
+    '667b2555fe2cfd0086dd017d94e2174f28fe189e' => 
     array (
-      0 => '/home/angel/Desktop/mediclife/newMedicLife/views/appointment/register/../../components/sidebar.tpl',
-      1 => 1747619129,
+      0 => 'C:\\proyectos\\mediclife\\newMedicLife\\views\\patient\\register\\../../components/sidebar.tpl',
+      1 => 1748132536,
       2 => 'file',
     ),
   ),
@@ -20,8 +20,8 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_682cefa2574ad7_32592258 (\Smarty\Template $_smarty_tpl) {
-$_smarty_current_dir = '/home/angel/Desktop/mediclife/newMedicLife/views/components';
+function content_68343742161094_81964265 (\Smarty\Template $_smarty_tpl) {
+$_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\components';
 ?><nav id="sidebar">
     <ul>
         <li>

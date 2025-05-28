@@ -1,240 +1,268 @@
-document.addEventListener('DOMContentLoaded', function () {
-    if (typeof doctors !== "undefined" && typeof patients !== "undefined" && typeof schedules !== "undefined") {
-        console.log("Las variables se ha cargado correctamente");
-        console.log(doctors);
-        console.log(patients);
-        console.log(schedules);
+document.addEventListener("DOMContentLoaded", function () {
+  if (
+    typeof doctors !== "undefined" &&
+    typeof patients !== "undefined" &&
+    typeof schedules !== "undefined"
+  ) {
+    console.log("Variables cargadas");
+    console.log(allAppointments);
+    console.log(appointment);
+  } else {
+    if (typeof appointment !== "undefined" && appointment === null) {
+      console.log("Appointment es null, inicializando sin cita previa");
+      // Código alternativo
     } else {
-        console.warn("Error al cargar la variable 'doctors'");
-        console.log(doctors);
-        console.log(patients);
-        console.log(schedules);
-        return;
+      console.warn("Variables faltantes o appointment indefinido");
+    }
+    return;
+  }
+
+  const appointmentDate = document.getElementById("appointmentDate");
+  const dateError = document.getElementById("dateError");
+  const doctorSelect = document.getElementById("doctor");
+  const patientIdInput = document.getElementById("patientId");
+  const curpError = document.getElementById("curpError");
+  const curpInput = document.getElementById("CURP");
+  const datalist = document.getElementById("curpList");
+  const patientName = document.getElementById("patientName");
+  const medicalArea = document.getElementById("speciality");
+  const doctorForm = document.getElementById("doctor");
+
+  // Validación y búsqueda paciente por CURP --------------------------------------------------------------------------------------
+  curpInput.addEventListener("change", function () {
+    const entrada = curpInput.value.trim().toUpperCase();
+    const curp = entrada.split(" - ")[0];
+
+    if (isValidCURP(curp)) {
+      const patient = patients.find((p) => p.CURP === curp);
+
+      if (patient) {
+        patientIdInput.value = patient.id;
+        patientName.value = [
+          patient.names,
+          patient.last_name, // En este espacio es donde se lleva a cabo la
+          patient.last_name2, // validación de la CURP e insertar el valor de id
+        ] // paciente en su campo
+          .filter(Boolean)
+          .join(" ");
+        curpError.style.display = "none";
+      } else {
+        patientIdInput.value = "";
+        patientName.value = "";
+        curpError.textContent = "No se encontró un paciente con esa CURP.";
+        curpError.style.display = "block";
+      }
+    } else {
+      patientIdInput.value = "";
+      patientName.value = "";
+      curpError.textContent = "Formato de CURP inválido.";
+      curpError.style.display = "block";
+    }
+  });
+  //--------------------------------------------------------------------------------------------------------------------------------
+
+  // Inicializar flatpickr UNA vez
+  let fp = flatpickr("#appointmentDate", {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    minDate: "today",
+    locale: "es",
+    disable: [],
+  });
+
+  // Rellenar datalist de CURP
+  patients.forEach((p) => {
+    const option = document.createElement("option");
+    option.value =
+      p.CURP + " - " + p.names + " " + p.last_name + " " + (p.last_name2 || "");
+    datalist.appendChild(option);
+  });
+
+  const dayNameToNumber = {
+    sunday: 0,
+    monday: 1,
+    tuesday: 2,
+    wednesday: 3,
+    thursday: 4,
+    friday: 5,
+    saturday: 6,
+  };
+
+  function updateEnabledDays() {
+    const selectedDoctorId = parseInt(doctorSelect.value);
+    console.log(selectedDoctorId);
+
+    if (!selectedDoctorId) {
+      fp.set("disable", [(date) => true]);
+      return;
     }
 
-    // Declaración de variables
+    console.log("Se entro al updateEnableDays");
 
-    const appointmentDate = document.getElementById("appointmentDate");
-    const doctorSelect = document.getElementById("doctor"); // ya lo tenías como doctorForm, usa uno solo
-    const dateError = document.getElementById("dateError"); // asegúrate de tener este ID en el HTML
+    const workingDays = schedules
+      .filter((s) => s.id_doctor === selectedDoctorId)
+      .map((s) => s.day.toLowerCase())
+      .map((day) => dayNameToNumber[day])
+      .filter((v, i, a) => a.indexOf(v) === i);
 
-    const patientIdInput = document.getElementById("patientId");
-    const curpError = document.getElementById("curpError");
-    let curpInput = document.getElementById("CURP");
-    let datalist = document.getElementById("curpList");
-    let patientName = document.getElementById("patientName");
-    const medicalArea = document.getElementById("speciality");
-    const doctorForm = document.getElementById("doctor");
+    fp.set("disable", [(date) => !workingDays.includes(date.getDay())]);
+    console.log(workingDays);
 
+    if (appointmentDate.value) {
+      const selectedDate = new Date(appointmentDate.value);
+      if (!workingDays.includes(selectedDate.getDay())) {
+        fp.clear();
+      }
+    }
+  }
+  updateEnabledDays();
 
-    // Logica de seleccion de horarios para la cita con disponibilidad para los medicos
+  appointmentDate.addEventListener("change", function () {
+    const selectedDate = new Date(appointmentDate.value);
+    const selectedDoctorId = parseInt(doctorSelect.value);
+    const selectedPatientId = parseInt(patientIdInput.value);
 
-    flatpickr("#appointmentDate", {
-        enableTime: true,          // permite seleccionar hora
-        dateFormat: "Y-m-d H:i",   // formato fecha y hora
-        minDate: "today",          // fecha mínima (hoy)
-        locale: "es"
-        // aquí puedes añadir más configuraciones según necesites
-    });
-
-    // Rellenar el datalist con CURP y nombres
-    patients.forEach(p => {
-        const option = document.createElement("option");
-        option.value = p.CURP + " - " + p.names + " " + p.last_name + " " + (p.last_name2 || "");
-        datalist.appendChild(option);
-    });
-
-
-    const dayNameToNumber = {
-        sunday: 0,
-        monday: 1,
-        tuesday: 2,
-        wednesday: 3,
-        thursday: 4,
-        friday: 5,
-        saturday: 6
-    };
-
-    let fp = flatpickr("#appointmentDate", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        minDate: "today",
-        locale: "es", // <- Esto activa el idioma español
-        disable: [] // vacío al principio
-    });
-
-    function updateEnabledDays() {
-        const selectedDoctorId = parseInt(doctorSelect.value);
-        if (!selectedDoctorId) {
-            fp.set('disable', [date => true]); // Deshabilita todo si no hay doctor
-            return;
-        }
-
-        const workingDays = schedules
-            .filter(s => s.id_doctor === selectedDoctorId)
-            .map(s => s.day.toLowerCase())
-            .map(day => dayNameToNumber[day])
-            .filter((v, i, a) => a.indexOf(v) === i);
-
-        fp.set('disable', [
-            date => !workingDays.includes(date.getDay())
-        ]);
-
-        // Limpiar fecha si seleccionada no es válida
-        if (appointmentDate.value) {
-            const selectedDate = new Date(appointmentDate.value);
-            if (!workingDays.includes(selectedDate.getDay())) {
-                fp.clear();
-            }
-        }
+    // Solo continuar si se ha seleccionado doctor y paciente
+    if (
+      !selectedDoctorId ||
+      !selectedPatientId ||
+      isNaN(selectedDate.getTime())
+    ) {
+      dateError.textContent = "Seleccione doctor, paciente y una fecha válida.";
+      dateError.style.display = "inline";
+      appointmentDate.setCustomValidity("Faltan datos para validar la cita.");
+      return;
     }
 
-    // Ejecuta al cargar para configurar flatpickr con el doctor por defecto (si hay)
-    updateEnabledDays();
+    const dayOfWeek = selectedDate
+      .toLocaleDateString("en-US", { weekday: "long" })
+      .toLowerCase();
+    const hourMinutes = selectedDate.toTimeString().slice(0, 5);
 
-    // Ejecuta cada vez que cambie el doctor
-    doctorSelect.addEventListener("change", updateEnabledDays);
+    const doctorSchedules = schedules.filter(
+      (s) =>
+        parseInt(s.id_doctor) === selectedDoctorId &&
+        s.day.toLowerCase() === dayOfWeek
+    );
 
+    const isWithinSchedule = doctorSchedules.some((s) => {
+      const [selH, selM] = hourMinutes.split(":").map(Number);
+      const selectedMinutes = selH * 60 + selM;
 
-    appointmentDate.addEventListener("blur", function () {
-        const selectedDate = new Date(appointmentDate.value);
-        const selectedDoctorId = parseInt(doctorSelect.value);
+      const [startH, startM] = s.start_time.split(":").map(Number);
+      const startMinutes = startH * 60 + startM;
 
-        if (!selectedDoctorId || isNaN(selectedDate.getTime())) {
-            console.warn("Doctor no seleccionado o fecha inválida");
-            return;
-        }
+      const [endH, endM] = s.end_time.split(":").map(Number);
+      const endMinutes = endH * 60 + endM;
 
-        const dayOfWeek = selectedDate.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase(); // ej: "monday"
-        const hourMinutes = selectedDate.toTimeString().slice(0, 5); // "HH:MM"
-
-        console.log(dayOfWeek);
-
-
-        const doctorSchedules = schedules.filter(s => parseInt(s.id_doctor) === selectedDoctorId && s.day.toLowerCase() === dayOfWeek);
-
-        console.log(doctorSchedules);
-        console.log(schedules);
-
-
-        const isValid = doctorSchedules.some(s => {
-            // Extraemos la hora y minutos seleccionados
-            const [selH, selM] = hourMinutes.split(":").map(Number);
-            const selectedMinutes = selH * 60 + selM;
-
-            // Extraemos la hora y minutos de inicio del horario del doctor
-            const [startH, startM] = s.start_time.split(":").map(Number);
-            const startMinutes = startH * 60 + startM;
-
-            // Extraemos la hora y minutos de fin del horario del doctor
-            const [endH, endM] = s.end_time.split(":").map(Number);
-            const endMinutes = endH * 60 + endM;
-            console.log("Hora seleccionada (minutos):", selectedMinutes);
-            console.log("Inicio:", startMinutes, "Fin:", endMinutes);
-
-            // Comparamos si la hora seleccionada está dentro del rango permitido
-            return selectedMinutes >= startMinutes && selectedMinutes <= endMinutes;
-        });
-
-
-
-        if (!isValid) {
-            dateError.style.display = "inline";
-            appointmentDate.setCustomValidity("Fecha u hora fuera del horario del doctor");
-            console.warn("La fecha/hora está fuera del horario permitido");
-        } else {
-            dateError.style.display = "none";
-            appointmentDate.setCustomValidity(""); // válida
-        }
+      return selectedMinutes >= startMinutes && selectedMinutes <= endMinutes;
     });
-    //-----------------------------------------------------------------------------------------------------------------------------------------------
-    //Logica de busqueda de pacientes:
 
-
-    curpInput.addEventListener("change", function () {
-        const entrada = curpInput.value.trim().toUpperCase();
-        const curp = entrada.split(" - ")[0]; // Extrae solo el CURP
-
-        if (isValidCURP(curp)) {
-            const patient = patients.find(p => p.CURP === curp);
-
-            if (patient) {
-                patientIdInput.value = patient.id;
-                patientName.value = [patient.names, patient.last_name, patient.last_name2]
-                    .filter(Boolean).join(" ");
-                curpError.style.display = "none";
-                console.log("Paciente encontrado:", patient);
-            } else {
-                patientIdInput.value = "";
-                patientName.value = "";
-                curpError.textContent = "No se encontró un paciente con esa CURP.";
-                curpError.style.display = "block";
-            }
-        } else {
-            patientIdInput.value = "";
-            patientName.value = "";
-            curpError.textContent = "Formato de CURP inválido.";
-            curpError.style.display = "block";
-        }
-    })
-
-    //'----------------------------------------------------------------------------------------------------------------------------
-
-    //logica de seleccion de areas medicas y medicos disponibles
-
-
-    if (!medicalArea || !doctorForm) {
-        console.warn("No se encontró uno de los selects en el DOM.");
-        return;
+    if (!isWithinSchedule) {
+      dateError.textContent = "Fecha u hora fuera del horario del doctor.";
+      dateError.style.display = "inline";
+      appointmentDate.setCustomValidity(
+        "Fecha u hora fuera del horario del doctor"
+      );
+      return;
     }
 
-    // Inicial: al cargar la página
-    let medicalAreaID = getParamsMedical(medicalArea);
+    const selectedDateStr = appointmentDate.value; // directamente del input (datetime-local)
+
+    const currentAppointmentId = parseInt(
+      document.getElementById("appointmentId")?.value || 0
+    );
+
+    const isDuplicate = allAppointments.some(
+      (appt) =>
+        parseInt(appt.id_doctor) === selectedDoctorId &&
+        parseInt(appt.id_patient) === selectedPatientId &&
+        appt.id != currentAppointmentId &&
+        appt.appointment_date.slice(0, 16) === selectedDateStr // asumiendo formato YYYY-MM-DDTHH:mm
+    );
+
+    if (isDuplicate) {
+      dateError.textContent =
+        "Ya existe una cita en ese horario para este paciente y doctor.";
+      dateError.style.display = "inline";
+      appointmentDate.setCustomValidity("Cita duplicada.");
+    } else {
+      dateError.style.display = "none";
+      appointmentDate.setCustomValidity("");
+    }
+  });
+
+  console.log(appointment.id_doctor);
+
+  let medicalAreaID = getParamsMedical(medicalArea);
+
+  filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
+
+  medicalArea.addEventListener("change", function () {
+    medicalAreaID = getParamsMedical(medicalArea);
+    console.log(medicalAreaID);
+    console.log(doctors);
+    console.log(doctorForm);
+    doctorSelect.innerHTML = '<option value="">Selecciona un Doctor</option>';
     filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
+  });
 
-    // Cada vez que se cambia de especialidad
-    medicalArea.addEventListener("change", function () {
-        medicalAreaID = getParamsMedical(medicalArea);        
-        filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
-    });
+  doctorForm.addEventListener("change", function () {
+    console.log("se entro a doctorForm");
+
+    updateEnabledDays();
+  });
+
+  if (typeof appointment !== "undefined" && appointment.id_doctor) {
+    setTimeout(() => {
+      doctorForm.value = appointment.id_doctor;
+      updateEnabledDays();
+    }, 100);
+  }
+
+  if (!medicalArea || !doctorForm) {
+    console.warn("No se encontró uno de los selects en el DOM.");
+    return;
+  }
 });
 
 function getParamsMedical(medicalArea) {
-    const medicalAreaID = medicalArea.value;
-    console.log("Área médica seleccionada:", medicalAreaID);
-    return medicalAreaID;
+  return medicalArea.value;
 }
 
-function filterDoctorsByArea(areaID, doctors, doctorSelect) {    
-    // Filtrar los doctores por área médica
-    const filtered = doctors.filter(doc => doc.medical_area_id == areaID);
+function filterDoctorsByArea(
+  areaID,
+  doctors,
+  doctorSelect,
+  selectedDoctorId = null
+) {
+  const filtered = doctors.filter((doc) => doc.medical_area_id == areaID);
+  doctorSelect.innerHTML = ""; // limpia opciones
 
-    console.log("Doctores filtrados:", filtered);
+  // Opción por defecto
+  const defaultOption = document.createElement("option");
+  defaultOption.text = "Selecciona un Doctor";
+  defaultOption.value = "";
+  doctorSelect.appendChild(defaultOption);
 
-    // Limpiar select
-    doctorSelect.innerHTML = "";
+  // Agrega opciones filtradas
+  filtered.forEach((doctor) => {
+    const option = document.createElement("option");
+    option.value = doctor.doctor_id;
+    option.text = doctor.doctor_name;
+    doctorSelect.appendChild(option);
+  });
 
-    // Añadir opción por defecto
-    const defaultOption = document.createElement("option");
-    defaultOption.text = "-- Selecciona un doctor --";
-    defaultOption.value = "";
-    doctorSelect.appendChild(defaultOption);
-
-    // Insertar doctores filtrados como opciones
-    filtered.forEach(doctor => {
-        const option = document.createElement("option");
-        option.value = doctor.doctor_id;
-        option.text = doctor.doctor_name;
-        doctorSelect.appendChild(option);
-    });
-
-
-
+  // Si hay un doctor seleccionado explícito, úsalo
+  if (selectedDoctorId) {
+    doctorSelect.value = selectedDoctorId;
+  } else {
+    // Por defecto no seleccionar ningún doctor (opción por defecto)
+    doctorSelect.value = "";
+  }
 }
 
 function isValidCURP(curp) {
-    const regex = /^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/;
-    return regex.test(curp);
+  const regex = /^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/;
+  return regex.test(curp);
 }
-
-

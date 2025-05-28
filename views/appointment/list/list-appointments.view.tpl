@@ -3,84 +3,70 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {* <link rel="stylesheet" href="./register-patient.styles.css">
-    <link rel="stylesheet" href="../../components/sidebar.styles.css">
-    <script src="../../components/sidebar.app.js" defer></script>
-    <script src="../../patient/register/register-patient.app.   js" defer></script> *}
+    <title>Lista de citas</title>
 
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/appointment/register/register-appointment.app.js" defer></script>
+    <script src="/views/components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="/views/appointment/main/main-appointment.styles.css">
     <link rel="stylesheet" href="/views/appointment/register/register-appoiment.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="./list-appointments.js" defer></script>
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <link rel="stylesheet" href="/register-appointment.styles.css">
     <link rel="stylesheet" href="/views/appointment/list/list-appointments.styles.css">
-    {* <link rel="stylesheet" href="../../../resset.css">  *}
-    <script src="/views/components/sidebar.app.js" defer></script>
-
-    <title>Lista de médicos</title>
+    <script src="./list-appointments.js" defer></script>
 </head>
 
 <body>
-
     {include file="../../components/sidebar.tpl"}
 
     <main>
-
         <div class="main-content">
             <div class="table-header">
-                <h1>Lista de Citas </h1>
+                <h1>Lista de Citas</h1>
                 <a href="/views/appointment/register/register-appoiment.php">
                     <button class="create-btn">Crear cita</button>
                 </a>
             </div>
+
+            {if isset($error)}
+                <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                    {$error|escape}
+                </div>
+            {/if}
+
+            {if isset($success)}
+                <div
+                    style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                    {$success|escape}
+                </div>
+            {/if}
+
             <div class="table-container">
-                {if isset($error)}
-                    <div
-                        style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
-                        {$error|escape}
-                    </div>
-                {/if}
-
-                {if isset($success)}
-                    <div
-                        style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
-                        {$success|escape}
-                    </div>
-                {/if}
-
-                <a href="/views/doctor/register/register-doctor.view.php" aria-label="Agregar cita">
-                    <button class="icon-btn table-add-btn">+</button>
-                </a>
-
+                <h2>Citas Activas</h2>
                 <table>
                     <thead>
                         <tr>
                             <th>Numero de cita</th>
                             <th>Paciente</th>
-                            <th>Area medica</th>
-                            <th>Medico</th>
+                            <th>Área médica</th>
+                            <th>Médico</th>
                             <th>Fecha y hora</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {if $appointments|@count > 0}
-                            {foreach from=$appointments item=appointment}
+                        {foreach from=$appointments item=appointment}
+                            {if $appointment.status == 'A'}
                                 <tr>
-                                    <td data-label="ID">{$appointment.cita|escape}</td>
+                                    <td data-label="ID">{$appointment.cita}</td>
                                     <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
                                         {$appointment.last_name2}</td>
                                     <td data-label="Área Médica">{$appointment.medical_area}</td>
                                     <td data-label="Doctor">{$appointment.doctor_name}</td>
                                     <td data-label="Fecha">{$appointment.appointment_date}</td>
                                     <td class="actions-td">
-                                    </form>
-                                        <a href="/views/pay/pay.view.php?id={$appointment.cita}"
-                                            class="action-wrapper">
+                                        <a href="/views/pay/pay.view.php?id={$appointment.cita}" class="action-wrapper">
                                             <button class="finish-btn">Finalizar Cita</button>
                                         </a>
                                         <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST"
@@ -95,13 +81,76 @@
                                         </a>
                                     </td>
                                 </tr>
-                            {/foreach}
+                            {/if}
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
 
-                        {else}
-                            <tr>
-                                <td colspan="14">No hay citas registradas.</td>
-                            </tr>
-                        {/if}
+            <div class="table-container">
+                <h2>Citas Terminadas</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Numero de cita</th>
+                            <th>Paciente</th>
+                            <th>Área médica</th>
+                            <th>Médico</th>
+                            <th>Fecha y hora</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$appointments item=appointment}
+                            {if $appointment.status == 'T'}
+                                <tr>
+                                    <td data-label="ID">{$appointment.cita}</td>
+                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
+                                        {$appointment.last_name2}</td>
+                                    <td data-label="Área Médica">{$appointment.medical_area}</td>
+                                    <td data-label="Doctor">{$appointment.doctor_name}</td>
+                                    <td data-label="Fecha">{$appointment.appointment_date}</td>
+                                    <td class="actions-td">
+                                        <a href="/views/pay/pay.view.php?id={$appointment.cita}" class="action-wrapper">
+                                            <button class="finish-btn">Finalizar Cita</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {/if}
+                        {/foreach}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <h2>Citas Finalizadas</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Numero de cita</th>
+                            <th>Paciente</th>
+                            <th>Área médica</th>
+                            <th>Médico</th>
+                            <th>Fecha y hora</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$appointments item=appointment}
+                            {if $appointment.status == 'F'}
+                                <tr>
+                                    <td data-label="ID">{$appointment.cita}</td>
+                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
+                                        {$appointment.last_name2}</td>
+                                    <td data-label="Área Médica">{$appointment.medical_area}</td>
+                                    <td data-label="Doctor">{$appointment.doctor_name}</td>
+                                    <td data-label="Fecha">{$appointment.appointment_date}</td>
+                                    <td class="actions-td">
+                                        <span style="color: gray;">Finalizada</span>
+                                    </td>
+                                </tr>
+                            {/if}
+                        {/foreach}
                     </tbody>
                 </table>
             </div>

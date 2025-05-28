@@ -6,77 +6,106 @@ error_reporting(E_ALL);
 
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/pay/pay.model.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/email/email.controller.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
 
 // Only administrators and secretaries can access payment functionality
 checkUserRole(['A', 'S']);
 
 $paypalModel = new PaymentModel($pdo);
+$emailController = new EmailController();
+session_start(); // Recuperar datos previos como id_patient, id_user si se necesitan
 
 // 1. Manejar retorno de PayPal (pago exitoso)
 if (isset($_GET['token']) && isset($_GET['PayerID'])) {
     try {
-        $status = $paypalModel->captureAndStorePayment($_GET['token'], $_GET['PayerID']);
-        // Pago exitoso, mostrar mensaje o redirigir
-        header('Location: /views/pay/success.php?status=' . urlencode($status));
+        $id_cita = $_GET['id_cita'] ?? null;
+        $status = $paypalModel->captureAndStorePayment($_GET['token'], $_GET['PayerID'], $id_cita);
+        $paypalModel->updateAppointment($_SESSION['patient_appointment']);
+
+        $subject = "Confirmación de pago exitoso";
+        $message = "Hola $name,\n\nTu pago de $monto MXN ha sido recibido con éxito.\nGracias por tu preferencia.\n\nSaludos.";
+        $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
+
+        // Usa el controlador de email si existe
+        $result = $emailController->sendEmail($_SESSION['patient_email'], $subject, $message, $from);
+        header('Location: /views/appointment/list/list-appointments.view.php?success=' . urlencode("La cita ha sido pagada con éxito."));
         exit;
     } catch (Exception $e) {
-        header('Location: /views/pay/pay.view.php?error=' . urlencode($e->getMessage()));
+        header('Location: /views/appointment/list/list-appointments.view.php?error=' . urlencode($e->getMessage()));
         exit;
     }
 }
 
-// 2. Manejar cancelación de PayPal
+// 2. Cancelación de PayPal
 if (isset($_GET['paypal_cancel'])) {
-    header("Location: /views/pay/pay.view.php?error=" . urlencode("Pago cancelado por el usuario."));
+    header("Location: /views/appointment/list/list-appointments.view.php?error=" . urlencode("Pago cancelado por el usuario."));
     exit;
 }
 
-// 3. Manejar envío del formulario (POST)
+// 3. Procesar formulario POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Recopilación de datos
     $metodoPago = $_POST['metodo_pago'] ?? null;
     $name = $_POST['name'] ?? 'Cliente';
     $email = $_POST['email'] ?? 'cliente@correo.com';
     $monto = isset($_POST['monto']) ? floatval($_POST['monto']) : 0;
     $pagaCon = isset($_POST['paga_con']) ? floatval($_POST['paga_con']) : 0;
+    $id_patient = $_POST['id_patient'] ?? '';
+    $id_cita = $_POST['id_cita'] ?? '';
+
+
+    session_start();
+    $id_user = $_SESSION['id_user'] ?? 1;
 
     try {
         if (!$metodoPago) {
             throw new Exception("Debe seleccionar un método de pago.");
         }
 
+        if ($metodoPago === 'efectivo') {
+            if ($monto <= 0 || $pagaCon < $monto) {
+                throw new Exception("Datos incorrectos para pago en efectivo.");
+            }
+
+            $paypalModel->savePay($id_user, $id_patient, $monto, 'cash');
+            $paypalModel->updateAppointment($id_cita);
+
+            if (empty($email)) {
+                throw new Exception("No se proporcionó correo electrónico.");
+            }
+
+            $subject = "Confirmación de pago exitoso";
+            $message = "Hola $name,\n\nTu pago de $monto MXN ha sido recibido con éxito.\nGracias por tu preferencia.\n\nSaludos.";
+            $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
+
+            // Usa el controlador de email si existe
+            $result = $emailController->sendEmail($email, $subject, $message, $from);
+
+            // Redirecciona con mensaje de éxito
+            header('Location: /views/appointment/list/list-appointments.view.php?success=' . urlencode("La cita ha sido pagada con éxito y se envió correo de confirmación."));
+            exit;
+        }
+
+
         if ($metodoPago === 'paypal') {
             if ($monto <= 0) {
                 throw new Exception("Monto inválido para PayPal.");
             }
 
-            // Crear y redirigir a PayPal
-            $paypalModel->createPayment($name, $email, $monto);
+            // Guardar datos en sesión para usarlos después de redirección de PayPal
+            $_SESSION['id_patient'] = $id_patient;
+            $_SESSION['id_user'] = 1;
+            $_SESSION['patient_appointment'] = $id_cita;
+            $_SESSION['patient_email'] = $email;
 
-            // Nota: createPayment debe redirigir con header y exit
-        }
-
-        elseif ($metodoPago === 'efectivo') {
-            if ($monto <= 0 || $pagaCon < $monto) {
-                throw new Exception("Datos incorrectos para pago en efectivo.");
-            }
-
-            $restante = $pagaCon - $monto;
-
-            // Puedes guardar en base de datos si lo deseas
-
-            header('Location: /views/pay/pay.view.php?restante=' . urlencode($restante));
+            $paypalModel->createPayment($name, $email, $monto, "MXN", $id_cita);
             exit;
         }
 
-        else {
-            throw new Exception("Método de pago no soportado.");
-        }
-
+        throw new Exception("Método de pago no soportado.");
     } catch (Exception $e) {
-        header('Location: /views/pay/pay.view.php?error=' . urlencode($e->getMessage()));
+        header('Location: /views/appointment/list/list-appointments.view.php?error=' . urlencode($e->getMessage()));
         exit;
     }
 }

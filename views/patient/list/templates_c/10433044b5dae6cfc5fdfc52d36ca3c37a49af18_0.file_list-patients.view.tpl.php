@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-25 02:22:52
+/* Smarty version 5.4.5, created on 2025-05-26 23:18:26
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683262dcdd3947_43323427',
+  'unifunc' => 'content_6834daa2ac4674_37127586',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '10433044b5dae6cfc5fdfc52d36ca3c37a49af18' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1748132536,
+      1 => 1748294304,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683262dcdd3947_43323427 (\Smarty\Template $_smarty_tpl) {
+function content_6834daa2ac4674_37127586 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\patient\\list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -38,7 +38,7 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\patient\\
     <link rel="stylesheet" href="/views/patient/register/register-patient.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <?php echo '<script'; ?>
- src="./list-patient.js" defer><?php echo '</script'; ?>
+ src="/views/patient/list/list-patients.js" defer><?php echo '</script'; ?>
 >
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/register-patient.styles.css">
@@ -47,15 +47,17 @@ $_smarty_current_dir = 'C:\\proyectos\\mediclife\\newMedicLife\\views\\patient\\
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
 
-    <title>Lista de médicos</title>
+    <title>patients</title>
 </head>
 <body>
+    <?php echo '<script'; ?>
+ src="/voiceAssistant.js"><?php echo '</script'; ?>
+>
 
     <?php $_smarty_tpl->renderSubTemplate("file:../../components/sidebar.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
 ?>
     
     <main >
-
         <div class="main-content">
             <div class="table-header">
                 <h1>Lista de pacientes</h1>

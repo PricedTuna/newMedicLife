@@ -23,9 +23,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //  ========= keyboard shortcuts
     document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && e.key === 's') {
-            e.preventDefault(); // Evita que se abra el guardado del navegador
-            alert('¡Atajo Ctrl + S activado!');
+        if (e.ctrlKey && e.key === 'd') {
+            e.preventDefault();
+            window.location.href = '/views/dashboard/dashboard.view.php';
+        }
+        if (e.ctrlKey && e.key === 'm') {
+            e.preventDefault();
+            window.location.href = '/views/doctor/list/list-doctors.view.php';
+        }
+        if (e.ctrlKey && e.key === 'p') {
+            e.preventDefault();
+            window.location.href = '/views/patient/list/list-patients.view.php';
+        }
+        if (e.ctrlKey && e.key === 'u') {
+            e.preventDefault();
+            window.location.href = '/views/user/list/list-users.view.php';
+        }
+        if (e.ctrlKey && e.key === 'c') {
+            e.preventDefault();
+            window.location.href = '/views/appointment/list/list-appointments.view.php';
         }
     });
 

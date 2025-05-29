@@ -80,10 +80,10 @@
                                     <td data-label="Teléfono">{$doctor.phone|escape}</td>
                                     <td data-label="Sexo">{$doctor.gender|escape}</td>
                                     <td class="actions-td">
-
+                                        <form action="/controllers/doctor/delete-doctor.controller.php" method="POST" class="action-wrapper">
                                             <input type="hidden" name="doctor_id" value="{$doctor.id}">
                                             <button type="submit" class="delete-btn" data-id="{$doctor.id}">Eliminar</button>
-
+                                        </form>
                                         <a href="/views/doctor/register/register-doctor.view.php?id={$doctor.id}" class="action-wrapper">
                                             <button class="update-btn">Actualizar</button>
                                         </a>

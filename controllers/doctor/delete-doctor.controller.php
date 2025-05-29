@@ -16,24 +16,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $doctor_id = $_POST['doctor_id'];
 
         try {
+            // Verificar existencia del doctor
             $stmt = $pdo->prepare("SELECT id FROM doctors WHERE id = :doctor_id");
             $stmt->execute([':doctor_id' => $doctor_id]);
             $existingDoctor = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Eliminar doctor
-            // Eliminar relaciones antes de eliminar al doctor
-            $stmt = $pdo->prepare("DELETE FROM doctor_assignments WHERE id_doctor = :doctor_id");
-            $stmt->execute([':doctor_id' => $doctor_id]);
+            if ($existingDoctor) {
+                // Cambiar el estado a 'inactivo' (puedes usar otro valor si tu DB usa boolean o enum)
+                $stmt = $pdo->prepare("UPDATE doctors SET status = 'I' WHERE id = :doctor_id");
+                $stmt->execute([':doctor_id' => $doctor_id]);
 
-            // Ahora sí, eliminar el doctor
-            $stmt = $pdo->prepare("DELETE FROM doctors WHERE id = :doctor_id");
-            $stmt->execute([':doctor_id' => $doctor_id]);
-
-
-            header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor eliminado con éxito"));
+                header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor desactivado con éxito"));
+            } else {
+                header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("Doctor no encontrado"));
+            }
 
         } catch (Exception $e) {
-            header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("Algo sucedió mal, inténtelo de nuevo en unos minutos o contacte a soporte"));
+            header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("Algo salió mal. Intente más tarde."));
             exit;
         }
 

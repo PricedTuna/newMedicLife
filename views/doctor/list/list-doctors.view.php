@@ -22,7 +22,7 @@ $smarty->setCompileDir(__DIR__ . '/templates_c');
 
 // Obtener doctores
 try {
-    $stmt = $pdo->query("SELECT * FROM doctors");
+    $stmt = $pdo->query("SELECT * FROM doctors WHERE status != 'I'");
     $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Error al obtener doctores: " . $e->getMessage());

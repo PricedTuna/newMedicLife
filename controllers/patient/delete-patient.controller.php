@@ -16,32 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $patient_id = $_POST['patient_id'];
 
         try {
-            $stmt = $pdo->prepare("SELECT id_emergency_contact FROM patients WHERE id = :patient_id");
+            $stmt = $pdo->prepare("UPDATE patients SET status = 'I' WHERE id = :patient_id");
             $stmt->execute([':patient_id' => $patient_id]);
-            $patient = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($patient) {
-                $emergencyContactId = $patient['id_emergency_contact'];
-
-                //Eliminar al paciente
-                $stmt = $pdo->prepare("DELETE FROM patients WHERE id = :patient_id");
-                $stmt->execute([':patient_id' => $patient_id]);
-
-                //Eliminar el contacto de emergencia existente
-                if ($emergencyContactId) {
-                    try {
-                        $stmt = $pdo->prepare("DELETE FROM emergency_contacts WHERE id = :id");
-                        $stmt->execute([':id' => $emergencyContactId]);
-                    } catch (PDOException $e) {
-                        echo "Error al eliminar contacto de emergencia: " . $e->getMessage();
-                        exit;
-                    }
-                }
-            }
 
             header('Location: /views/patient/list/list-patients.view.php?success=' . urlencode("Paciente eliminado con éxito"));
         } catch (Exception $e) {
-            header('Location: /views/patient/list/list-patients.view.php?error=' . urlencode("Algo sucedió mal, inténtelo de nuevo en unos minutos o contacte a soporte"));
+            echo var_dump($e); exit;
+            header('Location: /views/patient/list/list-patients.view.php?error=' . urlencode("Algoooooo sucedió mal, inténtelo de nuevo en unos minutos o contacte a soporte"));
             exit;
         }
     } else {

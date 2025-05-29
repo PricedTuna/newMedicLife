@@ -1,9 +1,8 @@
 
 
 document.querySelectorAll(".delete-btn").forEach(button => {
-    button.addEventListener("click", async function () {
-        const doctorId = this.getAttribute("data-id");
-        
+    button.addEventListener("click", async function (event) {
+        event.preventDefault();
 
         const result = await Swal.fire({
             title: "¿Estás seguro de que deseas eliminar este doctor?",
@@ -15,25 +14,8 @@ document.querySelectorAll(".delete-btn").forEach(button => {
         })
 
         if (result.isConfirmed) {
-            fetch("/controllers/doctor/delete-doctor.controller.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `doctor_id=${doctorId}`
-            })
-            .then(response => {
-                
-                return response.json();
-            })
-            .then(data => {
-                
-                if (data.success) {
-                    alert(data.message);
-                    location.reload();
-                } else {
-                    alert("Error: " + data.message);
-                }
-            })
-            .catch(error => console.error("Error en la petición:", error));
+            const form = this.closest('form');
+            form.submit();
         }
     });
 });

@@ -1,11 +1,7 @@
-
-
-// Escuchar clics en botones de borrar paciente
 document.querySelectorAll('.delete-btn').forEach((button) => {
   button.addEventListener('click', async function (event) {
-    const patientId = this.getAttribute('data-id'); // Cambié doctorId por patientId para que coincida con el body
-    
-    event.preventDefault(); // Prevent form submission
+
+    event.preventDefault();
 
     const result = await Swal.fire({
       title: '¿Estás seguro de que deseas eliminar este paciente?',

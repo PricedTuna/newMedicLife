@@ -29,7 +29,6 @@ a {
 }
 
 body {
-  min-height: 100vh;
   min-height: 100dvh;
   background-color: var(--base-clr);
   color: var(--text-clr);
@@ -383,7 +382,7 @@ h1 {
     text-transform: none;
     text-align: left;
   }
-  
+
   /* Elimina el borde inferior de la última celda para cada fila */
   td:last-child {
     border-bottom: 0;

@@ -178,7 +178,7 @@ class PatientModel
             :birth_date, :CURP, :RFC, :phone, :photo, :email, :gender, :weight, :height, :blood_type, :id_emergency_contact,
             :marital_status, :ethnic_group, :religion, :status
         )");
-      
+
         $stmt->execute([
             ':names'                  => $data['names'],
             ':last_name'              => $data['last_name'],
@@ -210,5 +210,20 @@ class PatientModel
         ]);
 
         return $this->pdo->lastInsertId();
+    }
+
+    /**
+     * Obtiene todos los pacientes activos
+     * @return array Lista de pacientes activos
+     */
+    public function getAllActivePatients()
+    {
+        try {
+            $stmt = $this->pdo->query("SELECT * FROM patients WHERE status != 'I'");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener pacientes: " . $e->getMessage());
+            return [];
+        }
     }
 }

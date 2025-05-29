@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de citas</title>
@@ -29,20 +28,23 @@
                 </a>
             </div>
 
-            {if isset($error)}
-                <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
-                    {$error|escape}
-                </div>
-            {/if}
-
-            {if isset($success)}
-                <div
-                    style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
-                    {$success|escape}
-                </div>
-            {/if}
-
             <div class="table-container">
+                {if isset($error)}
+                    <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                        {$error|escape}
+                    </div>
+                {/if}
+
+                {if isset($success)}
+                    <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                        {$success|escape}
+                    </div>
+                {/if}
+
+                <a href="/views/appointment/register/register-appoiment.php" aria-label="Crear cita">
+                    <button class="icon-btn table-add-btn">+</button>
+                </a>
+
                 <h2>Citas Activas</h2>
                 <table>
                     <thead>
@@ -56,33 +58,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {foreach from=$appointments item=appointment}
-                            {if $appointment.status == 'A'}
-                                <tr>
-                                    <td data-label="ID">{$appointment.cita}</td>
-                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
-                                        {$appointment.last_name2}</td>
-                                    <td data-label="Área Médica">{$appointment.medical_area}</td>
-                                    <td data-label="Doctor">{$appointment.doctor_name}</td>
-                                    <td data-label="Fecha">{$appointment.appointment_date}</td>
-                                    <td class="actions-td">
-                                        <a href="/views/pay/pay.view.php?id={$appointment.cita}" class="action-wrapper">
-                                            <button class="finish-btn">Finalizar Cita</button>
-                                        </a>
-                                        <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST"
-                                            class="action-wrapper">
-                                            <input type="hidden" name="appointment_id" value="{$appointment.cita}">
-                                            <button type="submit" class="delete-btn"
-                                                data-id="{$appointment.cita}">Eliminar</button>
-                                        </form>
-                                        <a href="/views/appointment/register/register-appoiment.php?id={$appointment.cita}"
-                                            class="action-wrapper">
-                                            <button class="update-btn">Actualizar</button>
-                                        </a>
-                                    </td>
-                                </tr>
-                            {/if}
-                        {/foreach}
+                        {if isset($appointments) && count($appointments) > 0}
+                            {foreach from=$appointments item=appointment}
+                                {if $appointment.status == 'A'}
+                                    <tr>
+                                        <td data-label="ID">{$appointment.cita}</td>
+                                        <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
+                                            {$appointment.last_name2}</td>
+                                        <td data-label="Área Médica">{$appointment.medical_area}</td>
+                                        <td data-label="Doctor">{$appointment.doctor_name}</td>
+                                        <td data-label="Fecha">{$appointment.appointment_date}</td>
+                                        <td class="actions-td">
+                                            <a href="/views/pay/pay.view.php?id={$appointment.cita}" class="action-wrapper">
+                                                <button class="finish-btn">Finalizar Cita</button>
+                                            </a>
+                                            <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST"
+                                                class="action-wrapper">
+                                                <input type="hidden" name="appointment_id" value="{$appointment.cita}">
+                                                <button type="submit" class="delete-btn"
+                                                    data-id="{$appointment.cita}">Eliminar</button>
+                                            </form>
+                                            <a href="/views/appointment/register/register-appoiment.php?id={$appointment.cita}"
+                                                class="action-wrapper">
+                                                <button class="update-btn">Actualizar</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {/if}
+                            {/foreach}
+                        {else}
+                            <tr>
+                                <td colspan="6">No hay citas activas registradas.</td>
+                            </tr>
+                        {/if}
                     </tbody>
                 </table>
             </div>
@@ -101,23 +109,36 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {foreach from=$appointments item=appointment}
-                            {if $appointment.status == 'T'}
+                        {if isset($appointments) && count($appointments) > 0}
+                            {assign var="hasTerminated" value=false}
+                            {foreach from=$appointments item=appointment}
+                                {if $appointment.status == 'T'}
+                                    {assign var="hasTerminated" value=true}
+                                    <tr>
+                                        <td data-label="ID">{$appointment.cita}</td>
+                                        <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
+                                            {$appointment.last_name2}</td>
+                                        <td data-label="Área Médica">{$appointment.medical_area}</td>
+                                        <td data-label="Doctor">{$appointment.doctor_name}</td>
+                                        <td data-label="Fecha">{$appointment.appointment_date}</td>
+                                        <td class="actions-td">
+                                            <a href="/views/pay/pay.view.php?id={$appointment.cita}" class="action-wrapper">
+                                                <button class="finish-btn">Finalizar Cita</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {/if}
+                            {/foreach}
+                            {if !$hasTerminated}
                                 <tr>
-                                    <td data-label="ID">{$appointment.cita}</td>
-                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
-                                        {$appointment.last_name2}</td>
-                                    <td data-label="Área Médica">{$appointment.medical_area}</td>
-                                    <td data-label="Doctor">{$appointment.doctor_name}</td>
-                                    <td data-label="Fecha">{$appointment.appointment_date}</td>
-                                    <td class="actions-td">
-                                        <a href="/views/pay/pay.view.php?id={$appointment.cita}" class="action-wrapper">
-                                            <button class="finish-btn">Finalizar Cita</button>
-                                        </a>
-                                    </td>
+                                    <td colspan="6">No hay citas terminadas.</td>
                                 </tr>
                             {/if}
-                        {/foreach}
+                        {else}
+                            <tr>
+                                <td colspan="6">No hay citas terminadas registradas.</td>
+                            </tr>
+                        {/if}
                     </tbody>
                 </table>
             </div>
@@ -136,26 +157,38 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {foreach from=$appointments item=appointment}
-                            {if $appointment.status == 'F'}
+                        {if isset($appointments) && count($appointments) > 0}
+                            {assign var="hasFinalized" value=false}
+                            {foreach from=$appointments item=appointment}
+                                {if $appointment.status == 'F'}
+                                    {assign var="hasFinalized" value=true}
+                                    <tr>
+                                        <td data-label="ID">{$appointment.cita}</td>
+                                        <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
+                                            {$appointment.last_name2}</td>
+                                        <td data-label="Área Médica">{$appointment.medical_area}</td>
+                                        <td data-label="Doctor">{$appointment.doctor_name}</td>
+                                        <td data-label="Fecha">{$appointment.appointment_date}</td>
+                                        <td class="actions-td">
+                                            <span style="color: gray;">Finalizada</span>
+                                        </td>
+                                    </tr>
+                                {/if}
+                            {/foreach}
+                            {if !$hasFinalized}
                                 <tr>
-                                    <td data-label="ID">{$appointment.cita}</td>
-                                    <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
-                                        {$appointment.last_name2}</td>
-                                    <td data-label="Área Médica">{$appointment.medical_area}</td>
-                                    <td data-label="Doctor">{$appointment.doctor_name}</td>
-                                    <td data-label="Fecha">{$appointment.appointment_date}</td>
-                                    <td class="actions-td">
-                                        <span style="color: gray;">Finalizada</span>
-                                    </td>
+                                    <td colspan="6">No hay citas finalizadas.</td>
                                 </tr>
                             {/if}
-                        {/foreach}
+                        {else}
+                            <tr>
+                                <td colspan="6">No hay citas finalizadas registradas.</td>
+                            </tr>
+                        {/if}
                     </tbody>
                 </table>
             </div>
         </div>
     </main>
 </body>
-
 </html>

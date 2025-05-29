@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 
 use Smarty\Smarty;
 
-require_once('./vendor/autoload.php');
+require_once $_SERVER["DOCUMENT_ROOT"] . "/vendor/autoload.php";
 
 $smarty = new Smarty;
 

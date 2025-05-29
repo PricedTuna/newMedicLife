@@ -20,11 +20,9 @@
     {* <link rel="stylesheet" href="../../../resset.css">  *}
     <script src="/views/components/sidebar.app.js" defer></script>
 
-    <title>Pacientes</title>
+    <title>Lista de pacientes</title>
 </head>
 <body>
-    <script src="/voiceAssistant.js"></script>
-
     {include file="../../components/sidebar.tpl"}
 
     <main >

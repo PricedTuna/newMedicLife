@@ -5,7 +5,7 @@
     <title>Lista de citas</title>
 
     <script src="/views/doctor/list/views-handler.js" defer></script>
-    <script src="/views/appointment/register/register-appointment.app.js" defer></script>
+    <script src="/views/appointment/register/register-appoiment.js" defer></script>
     <script src="/views/components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="/views/appointment/main/main-appointment.styles.css">
     <link rel="stylesheet" href="/views/appointment/register/register-appoiment.css">
@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/appointment/list/list-appointments.styles.css">
-    <script src="./list-appointments.js" defer></script>
+    <script src="/views/appointment/list/list-appointments.js" defer></script>
 </head>
 
 <body>

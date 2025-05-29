@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 :root {
     --base-clr: #f2f4f4;
     --line-clr: #eaecee;
@@ -47,6 +48,7 @@ html {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 16px;
+
     .logo {
         font-weight: 600;
     }
@@ -54,6 +56,7 @@ html {
 
 #sidebar ul li.active a {
     color: var(--accent-clr);
+
     svg {
         fill: var(--accent-clr);
     }
@@ -90,6 +93,7 @@ html {
     border-radius: .5em;
     background: none;
     cursor: pointer;
+
     svg {
         transition: rotate 150ms ease;
     }
@@ -115,18 +119,22 @@ html {
         top: unset;
         bottom: 0;
     }
+
     #sidebar ul {
         padding: 0;
         display: grid;
         grid-auto-columns: 60px;
         grid-auto-flow: column;
         align-items: center;
-        justify-content: center; /*agregado sara, se supone que con este va a centrar el menu de navegacion, pero necesito checar cuando todas las pantallas esten responsivas*/
+        justify-content: center;
+        /*agregado sara, se supone que con este va a centrar el menu de navegacion, pero necesito checar cuando todas las pantallas esten responsivas*/
         overflow-x: scroll;
     }
+
     #sidebar ul li {
         height: 100%;
     }
+
     #sidebar ul a {
         width: 60px;
         height: 60px;
@@ -134,6 +142,7 @@ html {
         border-radius: 0;
         justify-content: center;
     }
+
     #sidebar ul li span,
     #sidebar ul li:first-child {
         display: none;
@@ -143,4 +152,44 @@ html {
 
 .swal2-popup {
     line-height: 2.5rem;
+}
+
+/* Estilo del boton para asistente de voz */
+#voiceToggleBtn {
+    background-color: #2563eb;
+    /* Azul base */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+#voiceToggleBtn:hover {
+    background-color: #1d4ed8;
+    /* Azul más oscuro */
+    transform: scale(1.03);
+}
+
+#voiceToggleBtn:active {
+    background-color: #1e40af;
+    /* Azul aún más oscuro */
+    transform: scale(0.98);
+}
+
+#voiceToggleBtn:focus {
+    outline: 3px solid #93c5fd;
+    outline-offset: 2px;
+}
+
+/* 🔽 Estilo responsivo para pantallas pequeñas */
+@media (max-width: 600px) {
+    #voiceToggleBtn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
 }

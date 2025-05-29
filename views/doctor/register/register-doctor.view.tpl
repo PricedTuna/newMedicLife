@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
     <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <title>Registro de Doctores</title>
+    <title>Registro de Médicos</title>
 
     <script>
         // Asegúrate de que las variables de Smarty se inyecten correctamente en JavaScript
@@ -67,9 +67,9 @@
                     </a>
                     <h2 class="form-title">
                         {if $doctor}
-                            Actualizar Doctor
+                            Actualizar Médico
                         {else}
-                            Registrar Doctor
+                            Registrar Médico
                         {/if}
                     </h2>
                 </div>

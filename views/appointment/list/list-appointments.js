@@ -17,11 +17,4 @@ document.querySelectorAll(".delete-btn").forEach((button) => {
     }
   });
 
-  const btn = document.getElementById("voiceBtn");
-  btn.addEventListener("click", () => {
-    VoiceAssistant.toggle();
-    btn.textContent = VoiceAssistant.isActive()
-      ? "Desactivar asistente de voz"
-      : "Activar asistente de voz";
-  });
 });

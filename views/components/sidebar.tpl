@@ -117,5 +117,8 @@
                 <span>Cerrar Sesión</span>
             </a>
         </li>
+        <button id="voiceToggleBtn" aria-label="Asistente de voz" title="Asistente de voz">
+            🔈
+        </button>
     </ul>
 </nav>

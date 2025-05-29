@@ -347,3 +347,60 @@ button {
   }
 
 }
+
+/* Estilos para la captura de horarios de doctores */
+.section-title {
+    font-size: 1.25rem;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.schedule-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.schedule-row {
+    background-color: #f1f5f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.day-label {
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.schedule-time-inputs {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.time-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.time-field label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.time-field input[type="time"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}

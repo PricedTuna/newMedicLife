@@ -15,7 +15,7 @@ let currentStep = 1; // Guarda el paso actual del formulario
  * @param {number} step - Número del paso a mostrar.
  */
 function showStep(step) {
-    console.log(`🔄 Intentando mostrar el paso: ${step}`);
+    
 
     const stepElement = document.getElementById(`step-${step}`);
     if (!stepElement) {
@@ -30,7 +30,7 @@ function showStep(step) {
 
     // Mostrar el paso actual
     stepElement.style.display = 'block';
-    console.log(`✅ Mostrando paso: ${step}`);
+    
 
     // Remover la clase activa de todos los indicadores
     document.querySelectorAll('.step').forEach(el => el.classList.remove('step-active'));
@@ -39,7 +39,7 @@ function showStep(step) {
     const activeIndicator = document.querySelector(`.step[data-step='${step}']`);
     if (activeIndicator) {
         activeIndicator.classList.add('step-active');
-        console.log(`🎯 Paso ${step} marcado como activo.`);
+        
     } else {
         console.warn(`⚠️ No se encontró el paso con data-step='${step}'`);
     }
@@ -219,7 +219,7 @@ function validateStep2() {
  */
 function validateStep3() {
     let valid = true;
-    console.log("Validando Paso 3...");
+    
 
     // Validar CURP: debe tener 18 caracteres y formato oficial.
     const curpInput = document.getElementById('curp');
@@ -281,7 +281,7 @@ function validateStep3() {
         }
     }
 
-    console.log("Paso 3 validación:", valid);
+    
     return valid;
 }
 
@@ -295,7 +295,7 @@ function validateStep3() {
  * @param {number} step - Número del siguiente paso.
  */
 window.nextStep = function(step) {
-    console.log("Paso actual antes de validar:", currentStep);
+    
 
     // Validar el paso actual antes de avanzar
     if (currentStep === 1 && !validateStep1()) {
@@ -311,7 +311,7 @@ window.nextStep = function(step) {
         return;
     }
 
-    console.log(`Cambiando de paso: ${currentStep} ➡️ ${step}`);
+    
     currentStep = step;
     showStep(currentStep);
 };
@@ -447,7 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showStep(currentStep);
 
         doctorForm.addEventListener('submit', (event) => {
-            console.log("Enviando formulario...");
+            
             if (!validateStep1() || !validateStep2() || !validateStep3()) {
                 event.preventDefault();
                 alert('Por favor, completa todos los campos antes de enviar.');

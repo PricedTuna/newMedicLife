@@ -16,12 +16,12 @@ function showStep(step) {
 
     let currentStepElement = document.querySelector(`.step[data-step='${step}']`);
     if (currentStepElement) {
-        console.log({ currentStepElement })
-        console.log(currentStepElement)
+        
+        
         currentStepElement.classList.add('step-active');
     }
 
-    console.log(`Mostrando paso: ${step}`); // Debugging
+    
 }
 
 function nextStep(step) {

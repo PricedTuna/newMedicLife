@@ -1,9 +1,9 @@
 
-console.log("LO ESTA CARGANDO")
+
 document.querySelectorAll(".delete-btn").forEach(button => {
     button.addEventListener("click", async function () {
         const doctorId = this.getAttribute("data-id");
-        console.log("ID del doctor a eliminar:", doctorId); // 🔴 Verifica si el botón tiene el ID correcto
+        
 
         const result = await Swal.fire({
             title: "¿Estás seguro de que deseas eliminar este doctor?",
@@ -21,11 +21,11 @@ document.querySelectorAll(".delete-btn").forEach(button => {
                 body: `doctor_id=${doctorId}`
             })
             .then(response => {
-                console.log("Respuesta recibida:", response); // 🔴 Verifica si la respuesta llega
+                
                 return response.json();
             })
             .then(data => {
-                console.log("Datos recibidos:", data); // 🔴 Verifica la respuesta JSON
+                
                 if (data.success) {
                     alert(data.message);
                     location.reload();

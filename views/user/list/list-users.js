@@ -1,4 +1,4 @@
-console.log('Loading user list scripts');
+
 
 // Handle dropdown toggle for mobile
 document.addEventListener('DOMContentLoaded', function () {
@@ -34,13 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Handle delete confirmation
-console.log('Loading user deletion script');
+
 document.querySelectorAll('.delete-btn').forEach(button => {
   button.addEventListener('click', async function (event) {
     event.preventDefault(); // Prevent form submission
 
     const userId = this.getAttribute('data-id');
-    console.log('ID del usuario a eliminar:', userId);
+    
 
     const result = await Swal.fire({
       title: '¿Estás seguro de que deseas eliminar este usuario?',

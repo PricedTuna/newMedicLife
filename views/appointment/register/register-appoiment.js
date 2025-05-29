@@ -1,22 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  if (
-    typeof doctors !== "undefined" &&
-    typeof patients !== "undefined" &&
-    typeof schedules !== "undefined"
-  ) {
-    console.log("Variables cargadas");
-    console.log(allAppointments);
-    console.log(appointment);
-  } else {
-    if (typeof appointment !== "undefined" && appointment === null) {
-      console.log("Appointment es null, inicializando sin cita previa");
-      // Código alternativo
-    } else {
-      console.warn("Variables faltantes o appointment indefinido");
-    }
-    return;
-  }
-
   const appointmentDate = document.getElementById("appointmentDate");
   const dateError = document.getElementById("dateError");
   const doctorSelect = document.getElementById("doctor");
@@ -90,14 +72,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateEnabledDays() {
     const selectedDoctorId = parseInt(doctorSelect.value);
-    console.log(selectedDoctorId);
 
     if (!selectedDoctorId) {
       fp.set("disable", [(date) => true]);
       return;
     }
-
-    console.log("Se entro al updateEnableDays");
 
     const workingDays = schedules
       .filter((s) => s.id_doctor === selectedDoctorId)
@@ -106,7 +85,6 @@ document.addEventListener("DOMContentLoaded", function () {
       .filter((v, i, a) => a.indexOf(v) === i);
 
     fp.set("disable", [(date) => !workingDays.includes(date.getDay())]);
-    console.log(workingDays);
 
     if (appointmentDate.value) {
       const selectedDate = new Date(appointmentDate.value);
@@ -192,24 +170,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  console.log(appointment.id_doctor);
-
   let medicalAreaID = getParamsMedical(medicalArea);
 
   filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
 
   medicalArea.addEventListener("change", function () {
     medicalAreaID = getParamsMedical(medicalArea);
-    console.log(medicalAreaID);
-    console.log(doctors);
-    console.log(doctorForm);
     doctorSelect.innerHTML = '<option value="">Selecciona un Doctor</option>';
     filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
   });
 
   doctorForm.addEventListener("change", function () {
-    console.log("se entro a doctorForm");
-
     updateEnabledDays();
   });
 

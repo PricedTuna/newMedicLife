@@ -1,11 +1,5 @@
 let selectedDoctorId = null;
 document.addEventListener("DOMContentLoaded", () => {
-  if (typeof doctors !== "undefined" && typeof appointments !== "undefined") {
-    console.log("Variables cargadas");
-    console.log(doctors);
-  } else {
-    console.log("variable de doctor no cargada ");
-  }
 
   const now = new Date();
 
@@ -43,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Buscar datos del doctor
-    const doctor = doctors.find((d) => d.id == selectedDoctorId);
+    const doctor = doctors.find((d) => d.id === selectedDoctorId);
 
     if (doctor) {
       const now = new Date();
@@ -116,8 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-console.log("Dashboard.js cargado correctamente");
 
 function generateCalendar(year, month, selectedDoctorId) {
   const calendar = document.getElementById("calendar");

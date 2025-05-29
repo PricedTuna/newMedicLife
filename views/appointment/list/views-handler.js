@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("QUE ROLLO CHIKUELO");
     const contentDiv = document.getElementById("dynamic-content");
 
     if (!contentDiv) {
@@ -35,7 +34,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     document.getElementById("listar-btn").addEventListener("click", () => loadView("/views/doctor/list/list-doctors.view.php"));
-    document.getElementById("crear-btn").addEventListener("click", () => console.log("polla"));
 
     // Cargar la vista predeterminada al iniciar
     loadView("/views/doctor/list/list-doctors.view.php");

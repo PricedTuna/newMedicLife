@@ -1,6 +1,6 @@
 document.querySelectorAll(".delete-btn").forEach((button) => {
-  button.addEventListener("click", async function () {
-    const appointmentId = this.getAttribute("data-id");
+  button.addEventListener("click", async function (event) {
+    event.preventDefault();
 
       const result = await Swal.fire({
           title: "¿Estás seguro de que deseas eliminar esta cita?",
@@ -12,27 +12,11 @@ document.querySelectorAll(".delete-btn").forEach((button) => {
       });
 
     if (result.isConfirmed) {
-      fetch("/controllers/appoiment/delete-appointment.controller.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `appointment_id=${appointmentId}`,
-      })
-        .then((response) => {
-          
-          return response.json();
-        })
-        .then((data) => {
-          
-          if (data.success) {
-            alert(data.message);
-            location.reload();
-          } else {
-            alert("Error: " + data.message);
-          }
-        })
-        .catch((error) => console.error("Error en la petición:", error));
+      const form = this.closest('form');
+      form.submit();
     }
   });
+
   const btn = document.getElementById("voiceBtn");
   btn.addEventListener("click", () => {
     VoiceAssistant.toggle();

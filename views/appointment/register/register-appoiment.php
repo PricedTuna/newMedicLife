@@ -11,6 +11,8 @@ use Smarty\Smarty;
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 
+$smarty = new Smarty();
+
 // Obtener áreas médicas
 $medical_areas = null;
 $stmt = $pdo->prepare("SELECT * FROM medical_areas");
@@ -60,8 +62,6 @@ $patients = null;
 $stmt = $pdo->prepare("SELECT id, names, last_name, last_name2, CURP FROM patients");
 $stmt->execute();
 $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$smarty = new Smarty();
 
 // Inicializar variables correctamente
 $appointment[] = null;

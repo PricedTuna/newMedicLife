@@ -1,4 +1,3 @@
-let selectedDoctorId = null;
 document.addEventListener("DOMContentLoaded", () => {
 
   const now = new Date();
@@ -37,7 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Buscar datos del doctor
-    const doctor = doctors.find((d) => d.id === selectedDoctorId);
+    const doctor = doctors.find((doctor) => ''+doctor.id === selectedDoctorId);
+    console.log({doctors, selectedDoctorId, doctor})
 
     if (doctor) {
       const now = new Date();
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-function generateCalendar(year, month, selectedDoctorId) {
+function generateCalendar(year, month) {
   const calendar = document.getElementById("calendar");
   if (!calendar) {
     console.error("Elemento #calendar no encontrado");
@@ -176,8 +176,7 @@ function generateCalendar(year, month, selectedDoctorId) {
     const dayStr = new Date(year, month, day).toISOString().split("T")[0];
 
     // Doctor seleccionado actual (puedes obtenerlo así para la generación del calendario)
-    const selectedDoctorId =
-      document.getElementById("doctor-select")?.value || null;
+    const selectedDoctorId = document.getElementById("doctor-select")?.value || null;
 
     // Verificar si hay cita en ese día para el doctor seleccionado
     const hasAppointment = appointments.some((appt) => {

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-28 23:36:14
+/* Smarty version 5.4.5, created on 2025-05-29 01:07:55
   from 'file:dashboard.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68379deeaccd43_61993020',
+  'unifunc' => 'content_6837b36b1fd278_69447929',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8c75a1dcb3f3dbef5c37f456fb092d1aab2e2784' => 
     array (
       0 => 'dashboard.view.tpl',
-      1 => 1748474862,
+      1 => 1748480873,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_68379deeaccd43_61993020 (\Smarty\Template $_smarty_tpl) {
+function content_6837b36b1fd278_69447929 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/dashboard';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -68,6 +68,22 @@ $_smarty_current_dir = '/var/www/html/views/dashboard';
 
                 <h1>Dashboard</h1>
 
+                                <?php if ((true && (true && null !== ($_GET['success'] ?? null)))) {?>
+                                    <div
+                                        style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                                        <?php echo htmlspecialchars((string)$_GET['success'], ENT_QUOTES, 'UTF-8', true);?>
+
+                                    </div>
+                                <?php }?>
+
+                                <?php if ((true && ($_smarty_tpl->hasVariable('error') && null !== ($_smarty_tpl->getValue('error') ?? null)))) {?>
+                                    <div
+                                        style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                                        <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('error'), ENT_QUOTES, 'UTF-8', true);?>
+
+                                    </div>
+                                <?php }?>
+
 
                 <div class="doctor-select-container" style="margin-top: 1rem;">
                     <label for="doctor-select">Selecciona un doctor:</label>
@@ -89,23 +105,6 @@ $foreach0DoElse = false;
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                     </select>
                 </div>
-
-
-                <?php if ((true && (true && null !== ($_GET['success'] ?? null)))) {?>
-                    <div
-                        style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
-                        <?php echo htmlspecialchars((string)$_GET['success'], ENT_QUOTES, 'UTF-8', true);?>
-
-                    </div>
-                <?php }?>
-
-                <?php if ((true && ($_smarty_tpl->hasVariable('error') && null !== ($_smarty_tpl->getValue('error') ?? null)))) {?>
-                    <div
-                        style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
-                        <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('error'), ENT_QUOTES, 'UTF-8', true);?>
-
-                    </div>
-                <?php }?>
 
                 <?php if ((true && ($_smarty_tpl->hasVariable('success') && null !== ($_smarty_tpl->getValue('success') ?? null)))) {?>
                     <div

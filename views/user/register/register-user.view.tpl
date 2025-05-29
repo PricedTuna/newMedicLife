@@ -64,7 +64,7 @@
                     <div class="form-group">
                         <label for="role">Rol</label>
                         <select id="role" name="role" required>
-                            <option value="S" {if $editMode && $userData.role == 'S'}selected{/if}>Secretaria</option>
+                            <option value="S" {if $editMode && $userData.role == 'S'}selected{/if}>Administración</option>
                             <option value="A" {if $editMode && $userData.role == 'A'}selected{/if}>Administrador</option>
                             <option value="D" {if $editMode && $userData.role == 'D'}selected{/if}>Doctor</option>
                       </select>

@@ -1,6 +1,9 @@
 <?php
 // obtener_doctores.php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
 
+// Only administrators and secretaries can delete doctors
+checkUserRole(['A', 'S']);
 use Smarty\Smarty;
 
 ini_set('display_errors', 1);
@@ -14,7 +17,7 @@ $smarty = new Smarty();
 $smarty->setTemplateDir(__DIR__);
 $smarty->setCompileDir(__DIR__ . '/templates_c');
 
-$stmt = $pdo->query("SELECT 
+$stmt = $pdo->query("SELECT
     ap.id as cita,
     p.names AS patient_name,
     p.last_name AS last_name,
@@ -24,7 +27,7 @@ $stmt = $pdo->query("SELECT
     ap.appointment_date AS appointment_date,
     ap.status AS status
 FROM appointments ap
-INNER JOIN patients p on ap.id_patient = p.id   
+INNER JOIN patients p on ap.id_patient = p.id
 INNER JOIN doctors d on ap.id_doctor = d.id
 INNER JOIN medical_areas ma on ma.id = ap.id_medical_area
         ");

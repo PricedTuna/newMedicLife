@@ -1,6 +1,7 @@
 <?php
 // Include session controller to protect this route
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/session.controller.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -14,7 +15,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 $smarty = new Smarty;
 
 $doctors = null;
-$stmt = $pdo->prepare("SELECT 
+$stmt = $pdo->prepare("SELECT
         d.id AS id,
         d.names AS names,
         d.last_name AS last_name,
@@ -28,7 +29,7 @@ $stmt->execute();
 $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $appointments = null;
-$stmt = $pdo->prepare("SELECT 
+$stmt = $pdo->prepare("SELECT
 ap.id AS cita,
 ap.id_patient AS id_patient,
 ap.id_doctor AS id_doctor,
@@ -51,8 +52,13 @@ INNER JOIN medical_areas ma ON ma.id = ap.id_medical_area
 $stmt->execute();
 $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$error = isset($_GET['error']) ? $_GET['error'] : null;
+
 $smarty->setTemplateDir(__DIR__);
 $smarty->assign('doctors', $doctors);
 $smarty->assign('appointments', $appointments);
+$smarty->assign('error', $error);
+$smarty->assign('isDoctor', $_SESSION['role'] === 'D');
+$smarty->assign('userEmail', $_SESSION['usuario']);
 
 $smarty->display('dashboard.view.tpl');

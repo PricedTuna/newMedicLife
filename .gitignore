@@ -8,3 +8,4 @@
 /dataSources/
 /dataSources.local.xml
 /vendor/
+**/templates_c/

@@ -7,7 +7,6 @@
     <script src="../../components/sidebar.app.js" defer></script>
     <script src="../../patient/register/register-patient.app.js" defer></script> *}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="./list-doctors.js" module defer></script>
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/doctor/register/register-doctor.app.js" defer></script>
     <link rel="stylesheet" href="/views/doctor/main/main-doctor.styles.css">
@@ -16,6 +15,7 @@
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/register-patient.styles.css">
     <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
+    <script src="/views/doctor/list/list-doctors.js" module defer></script>
     {* <link rel="stylesheet" href="../../../resset.css">  *}
     <script src="/views/components/sidebar.app.js" defer></script>
 

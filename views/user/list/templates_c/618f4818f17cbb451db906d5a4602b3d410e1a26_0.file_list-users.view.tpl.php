@@ -7,16 +7,16 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
   'unifunc' => 'content_6836bb0d6f14e4_41237744',
   'has_nocache_code' => false,
-  'file_dependency' => 
+  'file_dependency' =>
   array (
-    '618f4818f17cbb451db906d5a4602b3d410e1a26' => 
+    '618f4818f17cbb451db906d5a4602b3d410e1a26' =>
     array (
       0 => 'list-users.view.tpl',
       1 => 1748417292,
       2 => 'file',
     ),
   ),
-  'includes' => 
+  'includes' =>
   array (
     'file:../../components/sidebar.tpl' => 1,
   ),
@@ -104,7 +104,7 @@ $foreach0DoElse = false;
                                     <td data-label="Correo"><?php echo $_smarty_tpl->getValue('user')['email'];?>
 </td>
                                     <td data-label="Rol">
-                                        <?php if ($_smarty_tpl->getValue('user')['role'] == 'S') {?>Secretaria
+                                        <?php if ($_smarty_tpl->getValue('user')['role'] == 'S') {?>Administración
                                         <?php } elseif ($_smarty_tpl->getValue('user')['role'] == 'A') {?>Administrador
                                         <?php } elseif ($_smarty_tpl->getValue('user')['role'] == 'D') {?>Doctor
                                         <?php } else {

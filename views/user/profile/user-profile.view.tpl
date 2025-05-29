@@ -79,7 +79,7 @@
                             <div class="info-item">
                                 <span class="label">Rol:</span>
                                 <span class="value">
-                                    {if $user.role == 'S'}Secretaria
+                                    {if $user.role == 'S'}Administración
                                     {elseif $user.role == 'A'}Administrador
                                     {elseif $user.role == 'D'}Doctor
                                     {else}{$user.role}

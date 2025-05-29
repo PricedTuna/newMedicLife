@@ -25,4 +25,13 @@ document.addEventListener("DOMContentLoaded", function() {
             item.parentElement.classList.remove("active"); // Elimina la clase si no coincide
         }
     });
+
+    //  ========= keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault(); // Evita que se abra el guardado del navegador
+            alert('¡Atajo Ctrl + S activado!');
+        }
+    });
+
 });

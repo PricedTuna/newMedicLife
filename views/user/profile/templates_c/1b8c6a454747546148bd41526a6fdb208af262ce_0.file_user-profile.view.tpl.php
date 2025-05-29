@@ -7,16 +7,16 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
   'unifunc' => 'content_6836ba4fd73aa2_25345279',
   'has_nocache_code' => false,
-  'file_dependency' => 
+  'file_dependency' =>
   array (
-    '1b8c6a454747546148bd41526a6fdb208af262ce' => 
+    '1b8c6a454747546148bd41526a6fdb208af262ce' =>
     array (
       0 => 'user-profile.view.tpl',
       1 => 1748417102,
       2 => 'file',
     ),
   ),
-  'includes' => 
+  'includes' =>
   array (
     'file:../../components/sidebar.tpl' => 1,
   ),
@@ -116,7 +116,7 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
                             <div class="info-item">
                                 <span class="label">Rol:</span>
                                 <span class="value">
-                                    <?php if ($_smarty_tpl->getValue('user')['role'] == 'S') {?>Secretaria
+                                    <?php if ($_smarty_tpl->getValue('user')['role'] == 'S') {?>Administración
                                     <?php } elseif ($_smarty_tpl->getValue('user')['role'] == 'A') {?>Administrador
                                     <?php } elseif ($_smarty_tpl->getValue('user')['role'] == 'D') {?>Doctor
                                     <?php } else {

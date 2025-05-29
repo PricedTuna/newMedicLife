@@ -5,7 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/session.controller.p
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
 
 // Only administrators can access this page
-isAdmin();
+checkUserRole(['A', 'S']);
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

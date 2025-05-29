@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = validateUser($email, $password);
     if ($result['success']) {
         $_SESSION['usuario'] = $email;
+        $_SESSION['userId'] = $email;
         $_SESSION['role'] = $result['role'];
         header('Location: /views/dashboard/dashboard.view.php');
 

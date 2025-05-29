@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             header('Location: /views/appointment/list/list-appointments.view.php?success=' . urlencode("cita eliminad con éxito"));
         } catch (Exception $e) {
-            header('Location: /views/appointment/list/list-appointments.view.php?error=' . urlencode("Algo sucedió mal, inténtelo de nuevo en unos minutos o contacte a soporte 1"));
+            header('Location: /views/appointment/list/list-appointments.view.php?error=' . urlencode("Algo sucedió mal, inténtelo de nuevo en unos minutos o contacte a soporte"));
             exit;
         }
     } else {

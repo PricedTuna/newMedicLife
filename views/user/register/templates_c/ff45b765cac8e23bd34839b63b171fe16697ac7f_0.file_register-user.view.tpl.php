@@ -7,16 +7,16 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
   'unifunc' => 'content_683674dae88df7_25991536',
   'has_nocache_code' => false,
-  'file_dependency' => 
+  'file_dependency' =>
   array (
-    'ff45b765cac8e23bd34839b63b171fe16697ac7f' => 
+    'ff45b765cac8e23bd34839b63b171fe16697ac7f' =>
     array (
       0 => 'register-user.view.tpl',
       1 => 1748398180,
       2 => 'file',
     ),
   ),
-  'includes' => 
+  'includes' =>
   array (
   ),
 ))) {
@@ -96,7 +96,7 @@ $_smarty_current_dir = '/var/www/html/views/user/register';
                     <div class="form-group">
                         <label for="role">Rol</label>
                         <select id="role" name="role" required>
-                            <option value="S" <?php if ($_smarty_tpl->getValue('editMode') && $_smarty_tpl->getValue('userData')['role'] == 'S') {?>selected<?php }?>>Secretaria</option>
+                            <option value="S" <?php if ($_smarty_tpl->getValue('editMode') && $_smarty_tpl->getValue('userData')['role'] == 'S') {?>selected<?php }?>>Administración</option>
                             <option value="A" <?php if ($_smarty_tpl->getValue('editMode') && $_smarty_tpl->getValue('userData')['role'] == 'A') {?>selected<?php }?>>Administrador</option>
                             <option value="D" <?php if ($_smarty_tpl->getValue('editMode') && $_smarty_tpl->getValue('userData')['role'] == 'D') {?>selected<?php }?>>Doctor</option>
                       </select>

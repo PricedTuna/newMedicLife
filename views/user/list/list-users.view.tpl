@@ -62,7 +62,7 @@
                                     <td data-label="Nombre">{$user.name}</td>
                                     <td data-label="Correo">{$user.email}</td>
                                     <td data-label="Rol">
-                                        {if $user.role == 'S'}Secretaria
+                                        {if $user.role == 'S'}Administración
                                         {elseif $user.role == 'A'}Administrador
                                         {elseif $user.role == 'D'}Doctor
                                         {else}{$user.role}

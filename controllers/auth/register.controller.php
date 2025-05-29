@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'email'     => $_POST['email'] ?? '',
         'password'  => $_POST['password'] ?? '',
         'confirm_password' => $_POST['confirm_password'] ?? '',
-        'role'      => $_POST['role'] ?? 'S', // Default role is 'S' (Secretaria)
+        'role'      => $_POST['role'] ?? 'S', // Default role is 'S' (Administración)
         'id_doctor' => $_POST['id_doctor'] ?? null,
     ];
 

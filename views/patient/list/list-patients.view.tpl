@@ -84,7 +84,7 @@
                                     <td class="actions-td">
                                         <form action="/controllers/patient/delete-patient.controller.php" method="POST" class="action-wrapper">
                                             <input type="hidden" name="patient_id" value="{$patient.id}">
-                                            <button type="submit" class="delete-btn" data-id="{$patient.id}">Eliminar</button>
+                                            <button type="submit" class="delete-btn" data-id="{$patient.id}"> Eliminar</button>
                                         </form>
                                         <a href="/views/patient/register/register-patient.view.php?id={$patient.id}" class="action-wrapper">
                                             <button class="update-btn">Actualizar</button>

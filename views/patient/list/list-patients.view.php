@@ -2,6 +2,10 @@
 // obtener_doctores.php
 // Include session controller to protect this route
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/session.controller.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+
+// Only administrators and secretaries can delete doctors
+checkUserRole(['A', 'S']);
 
 use Smarty\Smarty;
 

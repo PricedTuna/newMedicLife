@@ -21,8 +21,12 @@ class DashboardController {
     public function getDashboardData() {
         $data = [];
 
+        // Determinar si el usuario es un doctor
+        $isDoctor = isset($_SESSION['role']) && $_SESSION['role'] === 'D';
+        $doctorId = $isDoctor && isset($_SESSION['doctorId']) ? $_SESSION['doctorId'] : null;
+
         // Obtener doctores con áreas médicas
-        $data['doctors'] = $this->dashboardModel->getDoctorsWithMedicalAreas();
+        $data['doctors'] = $this->dashboardModel->getDoctorsWithMedicalAreas($isDoctor, $doctorId);
 
         // Obtener citas
         $data['appointments'] = $this->dashboardModel->getAllAppointments();

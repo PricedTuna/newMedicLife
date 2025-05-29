@@ -19,16 +19,35 @@ $medical_areas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Obtener doctores
 $doctors = null;
-$stmt = $pdo->prepare("SELECT 
+
+// Determinar si el usuario es un doctor
+$isDoctor = isset($_SESSION['role']) && $_SESSION['role'] === 'D';
+$doctorId = $isDoctor && isset($_SESSION['doctorId']) ? $_SESSION['doctorId'] : null;
+
+$query = "SELECT
         d.id AS doctor_id,
         d.names AS doctor_name,
         ma.id AS medical_area_id,
         ma.name AS medical_area_name
     FROM doctors d
     INNER JOIN doctor_assignments da ON d.id = da.id_doctor
-    INNER JOIN medical_areas ma ON ma.id = da.id_medical_area");
-$stmt->execute();
+    INNER JOIN medical_areas ma ON ma.id = da.id_medical_area
+    WHERE d.status != 'I'";
+
+$params = [];
+
+// Si el usuario es un doctor, solo mostrar ese doctor
+if ($isDoctor && $doctorId) {
+    $query .= " AND d.id = :doctorId";
+    $params[':doctorId'] = $doctorId;
+}
+
+$stmt = $pdo->prepare($query);
+$stmt->execute($params);
 $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Pasar la información de si es doctor a la plantilla
+$smarty->assign('isDoctor', $isDoctor);
 
 // Obtener horarios
 $schedules = null;

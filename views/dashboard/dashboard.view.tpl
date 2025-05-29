@@ -48,9 +48,11 @@
                 <div class="doctor-select-container" style="margin-top: 1rem;">
                     <label for="doctor-select">Selecciona un doctor:</label>
                     <select id="doctor-select">
-                        <option value="">-- Todos los doctores --</option>
+                        {if !$isDoctor}
+                            <option value="">-- Todos los doctores --</option>
+                        {/if}
                         {foreach from=$doctors item=doctor}
-                            <option value="{$doctor.id}">{$doctor.names} {$doctor.last_name} {$doctor.last_name2}</option>
+                            <option value="{$doctor.id}" {if $isDoctor}selected{/if}>{$doctor.names} {$doctor.last_name} {$doctor.last_name2}</option>
                         {/foreach}
                     </select>
                 </div>

@@ -210,11 +210,16 @@ function filterDoctorsByArea(
   const filtered = doctors.filter((doc) => doc.medical_area_id == areaID);
   doctorSelect.innerHTML = ""; // limpia opciones
 
-  // Opción por defecto
-  const defaultOption = document.createElement("option");
-  defaultOption.text = "Selecciona un Doctor";
-  defaultOption.value = "";
-  doctorSelect.appendChild(defaultOption);
+  // Verificar si el usuario es un doctor (variable global pasada desde PHP)
+  const isUserDoctor = typeof isDoctor !== 'undefined' && isDoctor === true;
+
+  // Si no es doctor o hay más de una opción, mostrar la opción por defecto
+  if (!isUserDoctor || filtered.length > 1) {
+    const defaultOption = document.createElement("option");
+    defaultOption.text = "Selecciona un Doctor";
+    defaultOption.value = "";
+    doctorSelect.appendChild(defaultOption);
+  }
 
   // Agrega opciones filtradas
   filtered.forEach((doctor) => {
@@ -227,8 +232,16 @@ function filterDoctorsByArea(
   // Si hay un doctor seleccionado explícito, úsalo
   if (selectedDoctorId) {
     doctorSelect.value = selectedDoctorId;
-  } else {
-    // Por defecto no seleccionar ningún doctor (opción por defecto)
+  }
+  // Si el usuario es un doctor y solo hay una opción, seleccionarla automáticamente
+  else if (isUserDoctor && filtered.length === 1) {
+    doctorSelect.value = filtered[0].doctor_id;
+    // Disparar el evento change para actualizar los días disponibles
+    const event = new Event('change');
+    doctorSelect.dispatchEvent(event);
+  }
+  // En cualquier otro caso, no seleccionar ningún doctor
+  else {
     doctorSelect.value = "";
   }
 }

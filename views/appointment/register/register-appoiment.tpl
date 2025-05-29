@@ -18,6 +18,7 @@
         window.schedules = {$schedules|json_encode};
         window.allAppointments = {$allAppointments|json_encode};
         window.appointment = {$appointment|json_encode};
+        window.isDoctor = {$isDoctor|json_encode};
     </script>
     <script src="/views/appointment/register/register-appoiment.js"></script>
 

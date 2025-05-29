@@ -45,4 +45,17 @@ function getUserById($id) {
         return null;
     }
 }
+
+function getUserByEmail($email) {
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("SELECT id, name, email, role, id_doctor, status FROM users WHERE email = :email");
+        $stmt->execute([':email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        error_log("Error al obtener usuario por email: " . $e->getMessage());
+        return null;
+    }
+}
 ?>

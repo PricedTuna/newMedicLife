@@ -29,11 +29,14 @@ class Dashboard
 
     /**
      * Obtiene todos los doctores con sus áreas médicas asignadas
+     * Si el usuario es un doctor, solo devuelve ese doctor
+     * @param bool $isDoctor Indica si el usuario es un doctor
+     * @param int|null $doctorId ID del doctor si el usuario es un doctor
      * @return array Lista de doctores con sus áreas médicas
      */
-    public function getDoctorsWithMedicalAreas()
+    public function getDoctorsWithMedicalAreas($isDoctor = false, $doctorId = null)
     {
-        $stmt = $this->pdo->prepare("SELECT
+        $query = "SELECT
             d.id AS id,
             d.names AS names,
             d.last_name AS last_name,
@@ -42,8 +45,19 @@ class Dashboard
             ma.name AS medical_area_name
         FROM doctors d
         INNER JOIN doctor_assignments da ON d.id = da.id_doctor
-        INNER JOIN medical_areas ma ON ma.id = da.id_medical_area");
-        $stmt->execute();
+        INNER JOIN medical_areas ma ON ma.id = da.id_medical_area
+        WHERE d.status != 'I'";
+
+        $params = [];
+
+        // Si el usuario es un doctor, solo mostrar ese doctor
+        if ($isDoctor && $doctorId) {
+            $query .= " AND d.id = :doctorId";
+            $params[':doctorId'] = $doctorId;
+        }
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

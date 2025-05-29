@@ -17,6 +17,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['usuario'] = $email;
         $_SESSION['userId'] = $email;
         $_SESSION['role'] = $result['role'];
+
+        // If user is a doctor, get the doctor ID
+        if ($result['role'] === 'D') {
+            $user = getUserByEmail($email);
+            if ($user && isset($user['id_doctor'])) {
+                $_SESSION['doctorId'] = $user['id_doctor'];
+            }
+        }
+
         header('Location: /views/dashboard/dashboard.view.php');
 
         exit();

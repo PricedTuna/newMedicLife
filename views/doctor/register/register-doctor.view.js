@@ -74,17 +74,40 @@ function validateIdentificationInputs() {
 // ACTUALIZACIÓN DE SELECTS DE UBICACIÓN
 // ===========================
 
-// Las variables inyectadas desde Smarty (globalmente accesibles)
+
+
+
+
+
+// ===========================
+// ACTUALIZACIÓN DE SELECTS DE UBICACIÓN
+// ===========================
+
 const municipalities = window.municipalities;
 const localities = window.localities;
 const states = window.states;
+const preselected = window.preselectedDoctorData || {};
 
 const stateSelect = document.getElementById('state');
 const municipalitySelect = document.getElementById('municipality');
 const localitySelect = document.getElementById('locality');
 
 /**
- * Actualiza las opciones del select de municipios según el estado seleccionado.
+ * Llena el select de estados.
+ */
+const fillStates = () => {
+    stateSelect.innerHTML = '<option value="">Seleccione...</option>';
+    states.forEach(s => {
+        stateSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+    });
+
+    if (preselected.state) {
+        stateSelect.value = preselected.state;
+    }
+};
+
+/**
+ * Llena municipios según el estado seleccionado.
  */
 const updateMunicipalities = () => {
     const selectedState = stateSelect.value;
@@ -97,11 +120,15 @@ const updateMunicipalities = () => {
             .forEach(m => {
                 municipalitySelect.innerHTML += `<option value="${m.id}">${m.name}</option>`;
             });
+
+        if (preselected.municipality) {
+            municipalitySelect.value = preselected.municipality;
+        }
     }
 };
 
 /**
- * Actualiza las opciones del select de localidades según el municipio seleccionado.
+ * Llena localidades según el municipio seleccionado.
  */
 const updateLocalities = () => {
     const selectedState = stateSelect.value;
@@ -114,12 +141,61 @@ const updateLocalities = () => {
             .forEach(l => {
                 localitySelect.innerHTML += `<option value="${l.id}">${l.name}</option>`;
             });
+
+        if (preselected.locality) {
+            localitySelect.value = preselected.locality;
+        }
     }
 };
 
-// Asociar eventos de cambio a los selects.
-stateSelect.addEventListener('change', updateMunicipalities);
-municipalitySelect.addEventListener('change', updateLocalities);
+// Evento DOMContentLoaded para ejecutar todo en orden
+document.addEventListener("DOMContentLoaded", function () {
+    fillStates();            // Llenamos estados
+    updateMunicipalities();  // Llenamos municipios
+    updateLocalities();      // Llenamos localidades
+
+    // Asociar eventos luego de rellenar selects
+    stateSelect.addEventListener('change', () => {
+        preselected.municipality = null;
+        preselected.locality = null;
+        updateMunicipalities();
+    });
+
+    municipalitySelect.addEventListener('change', () => {
+        preselected.locality = null;
+        updateLocalities();
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ===========================
 // ACTUALIZACIÓN DE LA ETIQUETA DE FOTO

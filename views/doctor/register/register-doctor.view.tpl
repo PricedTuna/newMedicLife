@@ -4,10 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./register-doctor.styles.css">
-    <script src="./register-doctor.app.js" defer></script>
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <script src="/views/components/sidebar.app.js" defer></script>
     <script src="/views/components/sidebar.app.js" defer></script>
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/doctor/register/register-doctor.app.js" defer></script>
@@ -50,6 +47,14 @@
     </script>
 
     <script src="register-doctor.view.js" defer></script>
+    <script>
+        window.preselectedDoctorData = {
+            state: {$doctor.id_state|default:'null'},
+            municipality: {$doctor.id_municipality|default:'null'},
+            locality: {$doctor.id_locality|default:'null'}
+        };
+    </script>
+
 </head>
 
 <body>
@@ -57,6 +62,13 @@
     {include file=$sidebarPath} <!-- Aquí se incluye el sidebar, según la variable Smarty -->
 
     <main class="content">
+        <div id="doctor-data"
+            data-doctor="{$doctor|default:''}"
+            data-state="{$doctor.state|default:''}"
+            data-municipality="{$doctor.municipality|default:''}"
+            data-locality="{$doctor.locality|default:''}">
+        </div>
+
 
         <div class="center-container">
             <div class="form-container">

@@ -9,9 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    echo "Email recibido: " . htmlspecialchars($email) . "<br>";
-    echo "Contraseña recibida: " . htmlspecialchars($password) . "<br>";
-
     $result = validateUser($email, $password);
     if ($result['success']) {
         $_SESSION['usuario'] = $email;

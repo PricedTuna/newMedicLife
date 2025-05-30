@@ -22,7 +22,7 @@
     <main>
         <div class="main-content">
             <div class="table-header">
-                <h1>Lista de Citas</h1>
+                <h1>Lista de citas</h1>
                 <a href="/views/appointment/register/register-appoiment.php">
                     <button class="create-btn">Crear cita</button>
                 </a>

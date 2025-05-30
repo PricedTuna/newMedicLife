@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./list-users.styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./list-users.js" defer></script>
-    <title>Lista de Usuarios</title>
+    <title>Lista de usuarios</title>
 </head>
 
 <body>
@@ -19,7 +19,7 @@
     <main>
         <div class="main-content">
             <div class="table-header">
-                <h1>Lista de Usuarios</h1>
+                <h1>Lista de usuarios</h1>
                 <a href="/views/user/register/register-user.view.php">
                     <button class="create-btn">Agregar Usuario</button>
                 </a>

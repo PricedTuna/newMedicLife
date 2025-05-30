@@ -130,11 +130,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     if (e.ctrlKey && e.key === "m") {
       e.preventDefault();
-      window.location.href = "/views/doctor/list/list-doctors.view.php";
+      window.location.href = "/views/doctor/main/main-doctor.view.php";
     }
     if (e.ctrlKey && e.key === "p") {
       e.preventDefault();
-      window.location.href = "/views/patient/list/list-patients.view.php";
+      window.location.href = "/views/patient/main/main-patient.view.php";
     }
     if (e.ctrlKey && e.key === "u") {
       e.preventDefault();

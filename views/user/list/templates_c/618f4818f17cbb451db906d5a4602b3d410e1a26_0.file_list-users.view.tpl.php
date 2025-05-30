@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-30 07:52:08
+/* Smarty version 5.4.5, created on 2025-05-30 08:27:34
   from 'file:list-users.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683963a85e9277_01215400',
+  'unifunc' => 'content_68396bf65058a8_77774420',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '618f4818f17cbb451db906d5a4602b3d410e1a26' => 
     array (
       0 => 'list-users.view.tpl',
-      1 => 1748591142,
+      1 => 1748593652,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683963a85e9277_01215400 (\Smarty\Template $_smarty_tpl) {
+function content_68396bf65058a8_77774420 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/list';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -33,7 +33,7 @@ $_smarty_current_dir = '/var/www/html/views/user/list';
 >
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
-    <link rel="stylesheet" href="./list-users.styles.css">
+    <link rel="stylesheet" href="/views/user/list/list-users.styles.css">
     <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <?php echo '<script'; ?>
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>

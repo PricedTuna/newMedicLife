@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/views/components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <link rel="stylesheet" href="./user-profile.styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/views/user/profile/user-profile.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <title>Perfil de usuario | Medic Life</title>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

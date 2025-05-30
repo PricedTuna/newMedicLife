@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-30 08:05:52
+/* Smarty version 5.4.5, created on 2025-05-30 08:24:08
   from 'file:user-profile.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683966e0e3c3a0_33880505',
+  'unifunc' => 'content_68396b28beae85_97179926',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1b8c6a454747546148bd41526a6fdb208af262ce' => 
     array (
       0 => 'user-profile.view.tpl',
-      1 => 1748592255,
+      1 => 1748593440,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683966e0e3c3a0_33880505 (\Smarty\Template $_smarty_tpl) {
+function content_68396b28beae85_97179926 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/profile';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -29,15 +29,15 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php echo '<script'; ?>
+ src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <link rel="stylesheet" href="./user-profile.styles.css">
-    <?php echo '<script'; ?>
- src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
->
+    <link rel="stylesheet" href="/views/user/profile/user-profile.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <title>Perfil de usuario | Medic Life</title>
     <?php echo '<script'; ?>
 >

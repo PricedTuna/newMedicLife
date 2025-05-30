@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="../components/sidebar.styles.css">
     <script src="../components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="./dashboard.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <script src="./dashboard.app.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/scripts/form-validations.js"></script>
 
     <script>
         var doctors = {$doctors|json_encode};
@@ -48,9 +50,6 @@
                 <div class="doctor-select-container" style="margin-top: 1rem;">
                     <label for="doctor-select">Selecciona un doctor:</label>
                     <select id="doctor-select">
-                        {if !$isDoctor}
-                            <option value="">-- Todos los doctores --</option>
-                        {/if}
                         {foreach from=$doctors item=doctor}
                             <option value="{$doctor.id}" {if $isDoctor}selected{/if}>{$doctor.names} {$doctor.last_name}
                                 {$doctor.last_name2}</option>
@@ -65,7 +64,7 @@
                     </div>
                 {/if}
 
-               
+
             </header>
             {* <section class="stats">
                 <div class="card">

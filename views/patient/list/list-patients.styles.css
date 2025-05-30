@@ -81,6 +81,92 @@ tbody tr:hover {
   background-color: var(--ligth-clr);
 }
 
+/* Estilos para el contenedor de filtros */
+.filter-container {
+  display: flex;
+  gap: 10px;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: var(--hover-clr);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 95%;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-container input[type="text"] {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 15px;
+  border: 1px solid var(--line-clr);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text-clr);
+  transition: border-color 0.3s;
+}
+
+.filter-container input[type="text"]:focus {
+  border-color: var(--accent-clr);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(94, 99, 255, 0.2);
+}
+
+.filter-container select {
+  padding: 10px 15px;
+  border: 1px solid var(--line-clr);
+  border-radius: 8px;
+  background-color: var(--hover-clr);
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text-clr);
+  cursor: pointer;
+  transition: border-color 0.3s;
+  min-width: 150px;
+}
+
+.filter-container select:focus {
+  border-color: var(--accent-clr);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(94, 99, 255, 0.2);
+}
+
+.filter-container button {
+  padding: 10px 15px;
+  background-color: var(--accent-clr);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.filter-container button:hover {
+  background-color: #4a4dcc;
+  transform: translateY(-2px);
+}
+
+.filter-container button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-container input[type="text"],
+  .filter-container select,
+  .filter-container button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
 tbody td {
   padding: 0.4rem;
   color: var(--text-clr);
@@ -383,7 +469,7 @@ h1 {
     text-transform: none;
     text-align: left;
   }
-  
+
   /* Elimina el borde inferior de la última celda para cada fila */
   td:last-child {
     border-bottom: 0;

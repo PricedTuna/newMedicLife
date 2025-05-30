@@ -186,6 +186,26 @@ html {
     outline-offset: 2px;
 }
 
+/* Estilos para toast de atajos de teclado */
+.shortcut-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.shortcut-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* 🔽 Estilo responsivo para pantallas pequeñas */
 @media (max-width: 600px) {
     #voiceToggleBtn {

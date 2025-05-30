@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/register-patient.styles.css">
     <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <script src="/views/doctor/list/list-doctors.js" module defer></script>
     {* <link rel="stylesheet" href="../../../resset.css">  *}
     <script src="/views/components/sidebar.app.js" defer></script>
@@ -34,6 +35,17 @@
                     <button class="create-btn">Agregar médicos</button>
                 </a>
             </div>
+
+            <div class="filter-container">
+                <input type="text" id="searchInput" placeholder="Buscar por nombre, apellido o CURP...">
+                <select id="genderFilter">
+                    <option value="all">Todos los géneros</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                </select>
+                <button id="clearFilters">Limpiar filtros</button>
+            </div>
+
             <div class="table-container">
                 {if isset($error)}
                     <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">

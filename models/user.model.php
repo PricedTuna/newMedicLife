@@ -24,7 +24,7 @@ function getAllUsers() {
     global $pdo;
 
     try {
-        $stmt = $pdo->prepare("SELECT id, name, email, role, id_doctor, created_at, status FROM users WHERE status != 'IN' ORDER BY id ASC");
+        $stmt = $pdo->prepare("SELECT id, name, email, role, id_doctor, created_at, status FROM users ORDER BY id ASC");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {

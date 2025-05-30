@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-29 01:21:32
+/* Smarty version 5.4.5, created on 2025-05-30 07:52:03
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6837b69cda70b7_65422917',
+  'unifunc' => 'content_683963a38deb66_47616347',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8f0f5c04f0f9a75b79c6221ce635ba02f3b6741e' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1748481689,
+      1 => 1748590929,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_6837b69cda70b7_65422917 (\Smarty\Template $_smarty_tpl) {
+function content_683963a38deb66_47616347 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -46,17 +46,14 @@ $_smarty_current_dir = '/var/www/html/views/patient/list';
 >
     <link rel="stylesheet" href="/register-patient.styles.css">
     <link rel="stylesheet" href="/views/patient/list/list-patients.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
         <?php echo '<script'; ?>
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
 
-    <title>Pacientes</title>
+    <title>Lista de pacientes</title>
 </head>
 <body>
-    <?php echo '<script'; ?>
- src="/voiceAssistant.js"><?php echo '</script'; ?>
->
-
     <?php $_smarty_tpl->renderSubTemplate("file:../../components/sidebar.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
 ?>
 
@@ -68,6 +65,17 @@ $_smarty_current_dir = '/var/www/html/views/patient/list';
                     <button class="create-btn">Agregar Paciente</button>
                 </a>
             </div>
+
+            <div class="filter-container">
+                <input type="text" id="searchInput" placeholder="Buscar por nombre, apellido o CURP...">
+                <select id="genderFilter">
+                    <option value="all">Todos los géneros</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                </select>
+                <button id="clearFilters">Limpiar filtros</button>
+            </div>
+
             <div class="table-container">
                 <?php if ((true && ($_smarty_tpl->hasVariable('error') && null !== ($_smarty_tpl->getValue('error') ?? null)))) {?>
                     <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">

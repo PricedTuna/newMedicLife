@@ -2,6 +2,57 @@
 
 // Handle dropdown toggle for mobile
 document.addEventListener('DOMContentLoaded', function () {
+  // Filtros de búsqueda
+  const searchInput = document.getElementById('searchInput');
+  const roleFilter = document.getElementById('roleFilter');
+  const statusFilter = document.getElementById('statusFilter');
+  const clearFilters = document.getElementById('clearFilters');
+  const rows = document.querySelectorAll('tbody tr');
+
+  function applyFilters() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const roleValue = roleFilter.value;
+    const statusValue = statusFilter.value;
+
+    rows.forEach(row => {
+      // Solo procesar filas que tienen celdas (no mensajes de "no hay usuarios")
+      if (row.querySelector('[data-label="Nombre"]') && row.querySelector('[data-label="Rol"]')) {
+        const name = row.querySelector('[data-label="Nombre"]').textContent.toLowerCase();
+        const email = row.querySelector('[data-label="Correo"]').textContent.toLowerCase();
+
+        // Obtener el valor del rol (S, A, D) del texto mostrado
+        const roleTd = row.querySelector('[data-label="Rol"]');
+        let role = '';
+        if (roleTd.textContent.includes('Administración')) role = 'S';
+        else if (roleTd.textContent.includes('Administrador')) role = 'A';
+        else if (roleTd.textContent.includes('Doctor')) role = 'D';
+
+        // Obtener el estado (AC, IN) del texto mostrado
+        const statusTd = row.querySelector('[data-label="Estado"]');
+        let status = '';
+        if (statusTd.textContent.includes('Activo')) status = 'AC';
+        else status = statusTd.textContent.trim();
+
+        const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
+        const matchesRole = roleValue === 'all' || role === roleValue;
+        const matchesStatus = statusValue === 'all' || status === statusValue;
+
+        row.style.display = matchesSearch && matchesRole && matchesStatus ? '' : 'none';
+      }
+    });
+  }
+
+  if (searchInput && roleFilter && statusFilter && clearFilters) {
+    searchInput.addEventListener('input', applyFilters);
+    roleFilter.addEventListener('change', applyFilters);
+    statusFilter.addEventListener('change', applyFilters);
+    clearFilters.addEventListener('click', function() {
+      searchInput.value = '';
+      roleFilter.value = 'all';
+      statusFilter.value = 'all';
+      applyFilters();
+    });
+  }
   // Toggle dropdown on click for mobile devices
   const dropdownBtns = document.querySelectorAll('.dropdown-btn');
 
@@ -52,4 +103,3 @@ document.querySelectorAll('.delete-btn').forEach(button => {
     }
   });
 });
-

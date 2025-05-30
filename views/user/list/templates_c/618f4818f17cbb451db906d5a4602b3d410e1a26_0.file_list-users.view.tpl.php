@@ -1,27 +1,27 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-28 07:28:13
+/* Smarty version 5.4.5, created on 2025-05-30 07:52:08
   from 'file:list-users.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6836bb0d6f14e4_41237744',
+  'unifunc' => 'content_683963a85e9277_01215400',
   'has_nocache_code' => false,
-  'file_dependency' =>
+  'file_dependency' => 
   array (
-    '618f4818f17cbb451db906d5a4602b3d410e1a26' =>
+    '618f4818f17cbb451db906d5a4602b3d410e1a26' => 
     array (
       0 => 'list-users.view.tpl',
-      1 => 1748417292,
+      1 => 1748591142,
       2 => 'file',
     ),
   ),
-  'includes' =>
+  'includes' => 
   array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_6836bb0d6f14e4_41237744 (\Smarty\Template $_smarty_tpl) {
+function content_683963a85e9277_01215400 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/list';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -34,13 +34,14 @@ $_smarty_current_dir = '/var/www/html/views/user/list';
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="./list-users.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <?php echo '<script'; ?>
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
 >
     <?php echo '<script'; ?>
  src="./list-users.js" defer><?php echo '</script'; ?>
 >
-    <title>Lista de Usuarios</title>
+    <title>Lista de usuarios</title>
 </head>
 
 <body>
@@ -51,11 +52,28 @@ $_smarty_current_dir = '/var/www/html/views/user/list';
     <main>
         <div class="main-content">
             <div class="table-header">
-                <h1>Lista de Usuarios</h1>
+                <h1>Lista de usuarios</h1>
                 <a href="/views/user/register/register-user.view.php">
                     <button class="create-btn">Agregar Usuario</button>
                 </a>
             </div>
+
+            <div class="filter-container">
+                <input type="text" id="searchInput" placeholder="Buscar por nombre o correo...">
+                <select id="roleFilter">
+                    <option value="all">Todos los roles</option>
+                    <option value="S">Administración</option>
+                    <option value="A">Administrador</option>
+                    <option value="D">Doctor</option>
+                </select>
+                <select id="statusFilter">
+                    <option value="all">Todos los estados</option>
+                    <option value="AC">Activo</option>
+                    <option value="IN">Inactivo</option>
+                </select>
+                <button id="clearFilters">Limpiar filtros</button>
+            </div>
+
             <?php if ((true && ($_smarty_tpl->hasVariable('error') && null !== ($_smarty_tpl->getValue('error') ?? null)))) {?>
                 <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
                     <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('error'), ENT_QUOTES, 'UTF-8', true);?>

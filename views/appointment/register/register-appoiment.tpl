@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./register-appoiment.css">
     <link rel="stylesheet" href="/assets/css/flatpickr.min.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <script src="../../components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="../../components/sidebar.styles.css">
     <script src="/assets/js/flatpickr.min.js"></script>
     <script src="/assets/js/es.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/scripts/form-validations.js"></script>
     <title>Solicitar Cita</title>
 
     <script>

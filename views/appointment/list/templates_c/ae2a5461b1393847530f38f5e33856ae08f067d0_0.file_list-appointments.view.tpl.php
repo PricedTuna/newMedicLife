@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-29 07:12:44
+/* Smarty version 5.4.5, created on 2025-05-30 07:34:42
   from 'file:list-appointments.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683808ec365629_55107814',
+  'unifunc' => 'content_68395f924e7563_76866251',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ae2a5461b1393847530f38f5e33856ae08f067d0' => 
     array (
       0 => 'list-appointments.view.tpl',
-      1 => 1748502613,
+      1 => 1748590048,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683808ec365629_55107814 (\Smarty\Template $_smarty_tpl) {
+function content_68395f924e7563_76866251 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/appointment/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -33,7 +33,7 @@ $_smarty_current_dir = '/var/www/html/views/appointment/list';
  src="/views/doctor/list/views-handler.js" defer><?php echo '</script'; ?>
 >
     <?php echo '<script'; ?>
- src="/views/appointment/register/register-appointment.app.js" defer><?php echo '</script'; ?>
+ src="/views/appointment/register/register-appoiment.js" defer><?php echo '</script'; ?>
 >
     <?php echo '<script'; ?>
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
@@ -46,8 +46,12 @@ $_smarty_current_dir = '/var/www/html/views/appointment/list';
 >
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/appointment/list/list-appointments.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <?php echo '<script'; ?>
- src="./list-appointments.js" defer><?php echo '</script'; ?>
+ src="/scripts/form-validations.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="/views/appointment/list/list-appointments.js" defer><?php echo '</script'; ?>
 >
 </head>
 
@@ -58,10 +62,21 @@ $_smarty_current_dir = '/var/www/html/views/appointment/list';
     <main>
         <div class="main-content">
             <div class="table-header">
-                <h1>Lista de Citas</h1>
+                <h1>Lista de citas</h1>
                 <a href="/views/appointment/register/register-appoiment.php">
                     <button class="create-btn">Crear cita</button>
                 </a>
+            </div>
+
+            <div class="filter-container">
+                <input type="text" id="searchInput" placeholder="Buscar por paciente o médico...">
+                <select id="statusFilter">
+                    <option value="all">Todos los estados</option>
+                    <option value="A">Activas</option>
+                    <option value="T">Terminadas</option>
+                    <option value="F">Finalizadas</option>
+                </select>
+                <button id="clearFilters">Limpiar filtros</button>
             </div>
 
             <div class="table-container">
@@ -104,7 +119,7 @@ foreach ($_from ?? [] as $_smarty_tpl->getVariable('appointment')->value) {
 $foreach0DoElse = false;
 ?>
                                 <?php if ($_smarty_tpl->getValue('appointment')['status'] == 'A') {?>
-                                    <tr>
+                                    <tr data-status="A">
                                         <td data-label="ID"><?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
 </td>
                                         <td data-label="Paciente"><?php echo $_smarty_tpl->getValue('appointment')['patient_name'];?>
@@ -175,7 +190,7 @@ $foreach1DoElse = false;
 ?>
                                 <?php if ($_smarty_tpl->getValue('appointment')['status'] == 'T') {?>
                                     <?php $_smarty_tpl->assign('hasTerminated', true, false, NULL);?>
-                                    <tr>
+                                    <tr data-status="T">
                                         <td data-label="ID"><?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
 </td>
                                         <td data-label="Paciente"><?php echo $_smarty_tpl->getValue('appointment')['patient_name'];?>
@@ -238,7 +253,7 @@ $foreach2DoElse = false;
 ?>
                                 <?php if ($_smarty_tpl->getValue('appointment')['status'] == 'F') {?>
                                     <?php $_smarty_tpl->assign('hasFinalized', true, false, NULL);?>
-                                    <tr>
+                                    <tr data-status="F">
                                         <td data-label="ID"><?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
 </td>
                                         <td data-label="Paciente"><?php echo $_smarty_tpl->getValue('appointment')['patient_name'];?>

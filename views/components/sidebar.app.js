@@ -20,7 +20,7 @@ const VoiceAssistant = (() => {
     // Construye la ruta del audio
     const audioPath = `/audio/${name}.mp3`;
     console.log(audioPath);
-    
+
 
     return audioPath;
   }
@@ -71,12 +71,26 @@ const VoiceAssistant = (() => {
     }
   }
 
+  function showVoiceStatus(isActive) {
+    Swal.fire({
+      title: isActive ? 'Asistente de voz activado' : 'Asistente de voz desactivado',
+      text: isActive ? 'El asistente de voz te guiará por la aplicación' : 'Has desactivado el asistente de voz',
+      icon: isActive ? 'success' : 'info',
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
+
   function toggle() {
-    if (isActive()) {
+    const wasActive = isActive();
+    if (wasActive) {
       stop();
     } else {
       play();
     }
+    showVoiceStatus(!wasActive);
   }
 
   return {
@@ -122,28 +136,48 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Función para mostrar toast de atajos de teclado
+  function showShortcutToast(text) {
+    const toast = document.createElement('div');
+    toast.className = 'shortcut-toast';
+    toast.textContent = text;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 2000);
+    }, 10);
+  }
+
   //  ========= keyboard shortcuts
   document.addEventListener("keydown", function (e) {
     if (e.ctrlKey && e.key === "d") {
       e.preventDefault();
-      window.location.href = "/views/dashboard/dashboard.view.php";
+      showShortcutToast('Navegando al Dashboard...');
+      setTimeout(() => window.location.href = "/views/dashboard/dashboard.view.php", 500);
     }
     if (e.ctrlKey && e.key === "m") {
       e.preventDefault();
-      window.location.href = "/views/doctor/main/main-doctor.view.php";
+      showShortcutToast('Navegando a Médicos...');
+      setTimeout(() => window.location.href = "/views/doctor/main/main-doctor.view.php", 500);
     }
     if (e.ctrlKey && e.key === "p") {
       e.preventDefault();
-      window.location.href = "/views/patient/main/main-patient.view.php";
+      showShortcutToast('Navegando a Pacientes...');
+      setTimeout(() => window.location.href = "/views/patient/main/main-patient.view.php", 500);
     }
     if (e.ctrlKey && e.key === "u") {
       e.preventDefault();
-      window.location.href = "/views/user/list/list-users.view.php";
+      showShortcutToast('Navegando a Usuarios...');
+      setTimeout(() => window.location.href = "/views/user/list/list-users.view.php", 500);
     }
     if (e.ctrlKey && e.key === "c") {
       e.preventDefault();
-      window.location.href =
-        "/views/appointment/list/list-appointments.view.php";
+      showShortcutToast('Navegando a Citas...');
+      setTimeout(() => window.location.href = "/views/appointment/list/list-appointments.view.php", 500);
     }
   });
 

@@ -13,6 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/appointment/list/list-appointments.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
+    <script src="/scripts/form-validations.js"></script>
     <script src="/views/appointment/list/list-appointments.js" defer></script>
 </head>
 
@@ -26,6 +28,17 @@
                 <a href="/views/appointment/register/register-appoiment.php">
                     <button class="create-btn">Crear cita</button>
                 </a>
+            </div>
+
+            <div class="filter-container">
+                <input type="text" id="searchInput" placeholder="Buscar por paciente o médico...">
+                <select id="statusFilter">
+                    <option value="all">Todos los estados</option>
+                    <option value="A">Activas</option>
+                    <option value="T">Terminadas</option>
+                    <option value="F">Finalizadas</option>
+                </select>
+                <button id="clearFilters">Limpiar filtros</button>
             </div>
 
             <div class="table-container">
@@ -61,7 +74,7 @@
                         {if isset($appointments) && count($appointments) > 0}
                             {foreach from=$appointments item=appointment}
                                 {if $appointment.status == 'A'}
-                                    <tr>
+                                    <tr data-status="A">
                                         <td data-label="ID">{$appointment.cita}</td>
                                         <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
                                             {$appointment.last_name2}</td>
@@ -114,7 +127,7 @@
                             {foreach from=$appointments item=appointment}
                                 {if $appointment.status == 'T'}
                                     {assign var="hasTerminated" value=true}
-                                    <tr>
+                                    <tr data-status="T">
                                         <td data-label="ID">{$appointment.cita}</td>
                                         <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
                                             {$appointment.last_name2}</td>
@@ -162,7 +175,7 @@
                             {foreach from=$appointments item=appointment}
                                 {if $appointment.status == 'F'}
                                     {assign var="hasFinalized" value=true}
-                                    <tr>
+                                    <tr data-status="F">
                                         <td data-label="ID">{$appointment.cita}</td>
                                         <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
                                             {$appointment.last_name2}</td>

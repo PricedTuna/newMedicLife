@@ -2,8 +2,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const now = new Date();
 
-  // FILTRO POR DOCTOR
+  // Seleccionar automáticamente el primer doctor si no hay ninguno seleccionado
   const doctorSelect = document.getElementById("doctor-select");
+  if (doctorSelect && doctorSelect.value === "" && doctorSelect.options.length > 0) {
+    // Seleccionar el primer doctor real (no la opción "Todos los doctores")
+    if (doctorSelect.options[0].value === "") {
+      if (doctorSelect.options.length > 1) {
+        doctorSelect.selectedIndex = 1; // Seleccionar el primer doctor real
+      }
+    } else {
+      doctorSelect.selectedIndex = 0; // La primera opción ya es un doctor
+    }
+
+    // Disparar el evento change para actualizar la vista
+    const event = new Event('change');
+    doctorSelect.dispatchEvent(event);
+  }
+
+  // FILTRO POR DOCTOR
   const tableRows = document.querySelectorAll(".chart-placeholder tbody tr");
 
   generateCalendar(now.getFullYear(), now.getMonth(), doctorSelect.value);
@@ -22,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   doctorSelect.addEventListener("change", () => {
+    const calendarElement = document.getElementById('calendar');
+
     const selectedDoctorId = doctorSelect.value;
 
     // Mostrar/ocultar filas por doctor
@@ -192,6 +210,20 @@ function generateCalendar(year, month) {
 
     if (hasAppointment) {
       dayElement.classList.add("has-appointment"); // Clase para poner fondo amarillo
+
+      // Agregar tooltip con información de citas
+      const appointmentsForDay = appointments.filter(appt => {
+        const apptDateStr = new Date(appt.appointment_date).toISOString().split("T")[0];
+        return apptDateStr === dayStr && appt.status === "A" && appt.id_doctor == selectedDoctorId;
+      });
+
+      const tooltipContent = appointmentsForDay.map(appt => {
+        const time = new Date(appt.appointment_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        return `${time} - ${appt.patient_names || 'Paciente'}`;
+      }).join('<br>');
+
+      dayElement.setAttribute('data-tooltip', tooltipContent);
+      dayElement.classList.add('has-tooltip');
     }
 
     dayElement.onclick = () => {

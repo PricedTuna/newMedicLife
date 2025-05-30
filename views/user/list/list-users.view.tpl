@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="./list-users.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./list-users.js" defer></script>
     <title>Lista de usuarios</title>
@@ -24,6 +25,23 @@
                     <button class="create-btn">Agregar Usuario</button>
                 </a>
             </div>
+
+            <div class="filter-container">
+                <input type="text" id="searchInput" placeholder="Buscar por nombre o correo...">
+                <select id="roleFilter">
+                    <option value="all">Todos los roles</option>
+                    <option value="S">Administración</option>
+                    <option value="A">Administrador</option>
+                    <option value="D">Doctor</option>
+                </select>
+                <select id="statusFilter">
+                    <option value="all">Todos los estados</option>
+                    <option value="AC">Activo</option>
+                    <option value="IN">Inactivo</option>
+                </select>
+                <button id="clearFilters">Limpiar filtros</button>
+            </div>
+
             {if isset($error)}
                 <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
                     {$error|escape}

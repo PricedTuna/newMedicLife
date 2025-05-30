@@ -10,8 +10,25 @@ document.addEventListener("DOMContentLoaded", function () {
   const medicalArea = document.getElementById("speciality");
   const doctorForm = document.getElementById("doctor");
 
+  // Funciones para mostrar/ocultar indicador de carga
+  function showLoading() {
+    const loadingDiv = document.createElement("div");
+    loadingDiv.id = "loadingIndicator";
+    loadingDiv.innerHTML = `
+      <div class="loading-spinner"></div>
+      <p>Cargando...</p>
+    `;
+    document.body.appendChild(loadingDiv);
+  }
+
+  function hideLoading() {
+    const loadingDiv = document.getElementById("loadingIndicator");
+    if (loadingDiv) loadingDiv.remove();
+  }
+
   // Validación y búsqueda paciente por CURP --------------------------------------------------------------------------------------
   curpInput.addEventListener("change", function () {
+    showLoading();
     const entrada = curpInput.value.trim().toUpperCase();
     const curp = entrada.split(" - ")[0];
 
@@ -39,6 +56,32 @@ document.addEventListener("DOMContentLoaded", function () {
       patientName.value = "";
       curpError.textContent = "Formato de CURP inválido.";
       curpError.style.display = "block";
+    }
+    hideLoading();
+  });
+
+  // Validación onBlur para CURP
+  curpInput.addEventListener("blur", function() {
+    const entrada = curpInput.value.trim().toUpperCase();
+    const curp = entrada.split(" - ")[0];
+
+    if (!curp) {
+      curpError.textContent = "El campo CURP es obligatorio.";
+      curpError.style.display = "block";
+      return;
+    }
+
+    if (!isValidCURP(curp)) {
+      curpError.textContent = "Formato de CURP inválido.";
+      curpError.style.display = "block";
+    } else {
+      const patient = patients.find((p) => p.CURP === curp);
+      if (!patient) {
+        curpError.textContent = "No se encontró un paciente con esa CURP.";
+        curpError.style.display = "block";
+      } else {
+        curpError.style.display = "none";
+      }
     }
   });
   //--------------------------------------------------------------------------------------------------------------------------------
@@ -174,14 +217,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
   filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
 
+  // Validación onBlur para especialidad
+  medicalArea.addEventListener("blur", function() {
+    if (!medicalArea.value) {
+      const errorSpan = document.createElement("span");
+      errorSpan.id = "specialityError";
+      errorSpan.style.color = "red";
+      errorSpan.textContent = "Debe seleccionar una especialidad.";
+
+      // Eliminar mensaje de error anterior si existe
+      const existingError = document.getElementById("specialityError");
+      if (existingError) existingError.remove();
+
+      medicalArea.parentNode.appendChild(errorSpan);
+    } else {
+      const existingError = document.getElementById("specialityError");
+      if (existingError) existingError.remove();
+    }
+  });
+
+  // Validación onBlur para doctor
+  doctorForm.addEventListener("blur", function() {
+    if (!doctorForm.value) {
+      const errorSpan = document.createElement("span");
+      errorSpan.id = "doctorError";
+      errorSpan.style.color = "red";
+      errorSpan.textContent = "Debe seleccionar un doctor.";
+
+      // Eliminar mensaje de error anterior si existe
+      const existingError = document.getElementById("doctorError");
+      if (existingError) existingError.remove();
+
+      doctorForm.parentNode.appendChild(errorSpan);
+    } else {
+      const existingError = document.getElementById("doctorError");
+      if (existingError) existingError.remove();
+    }
+  });
+
   medicalArea.addEventListener("change", function () {
+    showLoading();
     medicalAreaID = getParamsMedical(medicalArea);
     doctorSelect.innerHTML = '<option value="">Selecciona un Doctor</option>';
     filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
+    hideLoading();
   });
 
   doctorForm.addEventListener("change", function () {
+    showLoading();
     updateEnabledDays();
+    hideLoading();
   });
 
   if (typeof appointment !== "undefined" && appointment.id_doctor) {
@@ -195,6 +280,33 @@ document.addEventListener("DOMContentLoaded", function () {
     console.warn("No se encontró uno de los selects en el DOM.");
     return;
   }
+
+  // Confirmación al registrar cita
+  document.getElementById("solicitarCita").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    // Verificar si todos los campos están correctos
+    if (this.checkValidity()) {
+      Swal.fire({
+        title: '¿Confirmar cita?',
+        text: `Paciente: ${patientName.value}\nDoctor: ${doctorForm.options[doctorForm.selectedIndex].text}\nFecha: ${appointmentDate.value}`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Confirmar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.submit();
+        }
+      });
+    } else {
+      Swal.fire({
+        title: 'Error',
+        text: 'Por favor, complete todos los campos correctamente.',
+        icon: 'error'
+      });
+    }
+  });
 });
 
 function getParamsMedical(medicalArea) {

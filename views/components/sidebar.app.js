@@ -117,15 +117,20 @@ document.addEventListener("DOMContentLoaded", function () {
     VoiceAssistant.play(); // Reproduce en la nueva ruta automáticamente
   }
 
-  function actualizarTextoBoton() {
-    if (VoiceAssistant.isActive()) {
-      btn.textContent = "🔈Activado";
-    } else {
-      btn.textContent = "🔇Desactivado";
+  // Actualiza el texto del botón solo si existe
+  if (btn) {
+    function actualizarTextoBoton() {
+      if (VoiceAssistant.isActive()) {
+        btn.textContent = "🔈Activado";
+      } else {
+        btn.textContent = "🔇Desactivado";
+      }
     }
+
+    actualizarTextoBoton();
   }
 
-  actualizarTextoBoton();
+  // Siempre actualiza la navegación activa, independientemente del botón
   menuItems.forEach((item) => {
     const itemPath = item.getAttribute("href").split("/").pop();
 
@@ -181,8 +186,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  btn.addEventListener("click", () => {
-    VoiceAssistant.toggle();
-    actualizarTextoBoton();
-  });
+  // Solo agrega el event listener si el botón existe
+  if (btn) {
+    btn.addEventListener("click", () => {
+      VoiceAssistant.toggle();
+      actualizarTextoBoton();
+    });
+  }
 });

@@ -9,7 +9,6 @@
     <script src="../components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="./dashboard.styles.css">
     <link rel="stylesheet" href="/assets/css/usability-improvements.css">
-    <script src="./dashboard.app.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/scripts/form-validations.js"></script>
 
@@ -17,7 +16,7 @@
         var doctors = {$doctors|json_encode};
         var appointments = {$appointments|json_encode};
     </script>
-    <script src="/views/dashboard/dashboard.app.js"></script>
+    <script src="./dashboard.app.js" defer></script>
 
 </head>
 

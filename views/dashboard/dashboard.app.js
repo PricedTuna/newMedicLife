@@ -2,42 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const now = new Date();
 
-  // Seleccionar automáticamente el primer doctor si no hay ninguno seleccionado
-  const doctorSelect = document.getElementById("doctor-select");
-  if (doctorSelect && doctorSelect.value === "" && doctorSelect.options.length > 0) {
-    // Seleccionar el primer doctor real (no la opción "Todos los doctores")
-    if (doctorSelect.options[0].value === "") {
-      if (doctorSelect.options.length > 1) {
-        doctorSelect.selectedIndex = 1; // Seleccionar el primer doctor real
-      }
-    } else {
-      doctorSelect.selectedIndex = 0; // La primera opción ya es un doctor
-    }
-
-    // Disparar el evento change para actualizar la vista
-    const event = new Event('change');
-    doctorSelect.dispatchEvent(event);
-  }
-
   // FILTRO POR DOCTOR
   const tableRows = document.querySelectorAll(".chart-placeholder tbody tr");
+  const doctorSelect = document.getElementById("doctor-select");
 
-  generateCalendar(now.getFullYear(), now.getMonth(), doctorSelect.value);
-
-  doctorSelect.addEventListener("change", () => {
-    const selectedDoctorId = doctorSelect.value;
-
-    tableRows.forEach((row) => {
-      // Mostrar todas si no hay doctor seleccionado
-      if (!selectedDoctorId || row.dataset.doctorId === selectedDoctorId) {
-        row.style.display = "";
-      } else {
-        row.style.display = "none";
-      }
-    });
-  });
-
-  doctorSelect.addEventListener("change", () => {
+  // Función para actualizar la UI basada en el doctor seleccionado
+  const updateDoctorUI = () => {
     const selectedDoctorId = doctorSelect.value;
 
     // Mostrar/ocultar filas por doctor
@@ -53,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Buscar datos del doctor
     const doctor = doctors.find((doctor) => ''+doctor.id === selectedDoctorId);
-    console.log({doctors, selectedDoctorId, doctor})
+    console.log({doctors, selectedDoctorId, doctor});
 
     if (doctor) {
       const now = new Date();
@@ -61,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
       generateCalendar(now.getFullYear(), now.getMonth(), selectedDoctorId);
+
       // Filtrar citas futuras
       const upcomingAppointments = appointments
         .filter(
@@ -114,17 +85,48 @@ document.addEventListener("DOMContentLoaded", () => {
       monthAppointmentsContainer.innerHTML = ""; // Limpiar contenido anterior
 
       if (monthAppointments.length > 0) {
+        const ul = document.createElement("ul");
+        ul.className = "appointments-list";
+
         monthAppointments.forEach((appt) => {
           const apptDate = new Date(appt.appointment_date).toLocaleString();
           const item = document.createElement("li");
           item.textContent = `Cita: ${appt.cita} - Fecha: ${apptDate}`;
-          monthAppointmentsContainer.appendChild(item);
+          ul.appendChild(item);
         });
+
+        monthAppointmentsContainer.appendChild(ul);
       } else {
-        monthAppointmentsContainer.innerHTML = "<li>Sin citas este mes</li>";
+        monthAppointmentsContainer.innerHTML = "<ul class='appointments-list'><li>Sin citas este mes</li></ul>";
       }
     }
-  });
+  };
+
+  // Inicializar el calendario
+  generateCalendar(now.getFullYear(), now.getMonth(), doctorSelect?.value || "");
+
+  // Agregar el event listener para el cambio de doctor
+  if (doctorSelect) {
+    doctorSelect.addEventListener("change", updateDoctorUI);
+
+    // Seleccionar automáticamente el primer doctor si no hay ninguno seleccionado
+    if (doctorSelect.value === "" && doctorSelect.options.length > 0) {
+      // Seleccionar el primer doctor real (no la opción "Todos los doctores")
+      if (doctorSelect.options[0].value === "") {
+        if (doctorSelect.options.length > 1) {
+          doctorSelect.selectedIndex = 1; // Seleccionar el primer doctor real
+        }
+      } else {
+        doctorSelect.selectedIndex = 0; // La primera opción ya es un doctor
+      }
+
+      // Disparar el evento change para actualizar la vista
+      updateDoctorUI();
+    } else {
+      // Si ya hay un doctor seleccionado, actualizar la UI
+      updateDoctorUI();
+    }
+  }
 });
 
 function generateCalendar(year, month) {

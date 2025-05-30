@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-30 07:38:08
+/* Smarty version 5.4.5, created on 2025-05-30 08:05:52
   from 'file:/var/www/html/views/user/profile/../../components/sidebar.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683960604dbee0_36505072',
+  'unifunc' => 'content_683966e0e3f100_95428145',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '346004d225fe4f715273590df6505ffeb45f97ef' => 
     array (
       0 => '/var/www/html/views/user/profile/../../components/sidebar.tpl',
-      1 => 1748590640,
+      1 => 1748592268,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_683960604dbee0_36505072 (\Smarty\Template $_smarty_tpl) {
+function content_683966e0e3f100_95428145 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/components';
 ?><nav id="sidebar">
     <ul>
@@ -144,9 +144,6 @@ $_smarty_current_dir = '/var/www/html/views/components';
                 </svg>
                 <span>Cerrar Sesión</span>
             </a>
-             <button id="voiceToggleBtn" aria-label="Asistente de voz" title="Asistente de voz">
-                    🔈
-                </button>
         </li>
     </ul>
 </nav>

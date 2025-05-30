@@ -1,27 +1,27 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-28 07:25:03
+/* Smarty version 5.4.5, created on 2025-05-30 08:05:52
   from 'file:user-profile.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6836ba4fd73aa2_25345279',
+  'unifunc' => 'content_683966e0e3c3a0_33880505',
   'has_nocache_code' => false,
-  'file_dependency' =>
+  'file_dependency' => 
   array (
-    '1b8c6a454747546148bd41526a6fdb208af262ce' =>
+    '1b8c6a454747546148bd41526a6fdb208af262ce' => 
     array (
       0 => 'user-profile.view.tpl',
-      1 => 1748417102,
+      1 => 1748592255,
       2 => 'file',
     ),
   ),
-  'includes' =>
+  'includes' => 
   array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_6836ba4fd73aa2_25345279 (\Smarty\Template $_smarty_tpl) {
+function content_683966e0e3c3a0_33880505 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/profile';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -38,7 +38,7 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
 >
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
-    <title>Perfil de Usuario | Medic Life</title>
+    <title>Perfil de usuario | Medic Life</title>
     <?php echo '<script'; ?>
 >
         document.addEventListener('DOMContentLoaded', function() {
@@ -76,7 +76,7 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
     <main>
         <div class="main-content">
             <div class="profile-header">
-                <h1>Perfil de Usuario</h1>
+                <h1>Perfil de usuario</h1>
             </div>
 
             <?php if ((true && ($_smarty_tpl->hasVariable('error') && null !== ($_smarty_tpl->getValue('error') ?? null)))) {?>
@@ -269,6 +269,19 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                     <?php }?>
                 </div>
             <?php }?>
+
+            <!-- Nueva sección de Configuraciones -->
+            <div class="profile-section settings-section">
+                <h2>Configuraciones</h2>
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <span class="setting-label">Asistente de voz:</span>
+                        <button id="voiceToggleBtn" aria-label="Asistente de voz" title="Asistente de voz" class="voice-toggle-btn">
+                            🔈
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 </body>

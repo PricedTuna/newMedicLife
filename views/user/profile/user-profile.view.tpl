@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./user-profile.styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
-    <title>Perfil de Usuario | Medic Life</title>
+    <title>Perfil de usuario | Medic Life</title>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const fileInput = document.getElementById('doctor-photo-profile');
@@ -44,7 +44,7 @@
     <main>
         <div class="main-content">
             <div class="profile-header">
-                <h1>Perfil de Usuario</h1>
+                <h1>Perfil de usuario</h1>
             </div>
 
             {if isset($error)}
@@ -201,6 +201,19 @@
                     {/if}
                 </div>
             {/if}
+
+            <!-- Nueva sección de Configuraciones -->
+            <div class="profile-section settings-section">
+                <h2>Configuraciones</h2>
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <span class="setting-label">Asistente de voz:</span>
+                        <button id="voiceToggleBtn" aria-label="Asistente de voz" title="Asistente de voz" class="voice-toggle-btn">
+                            🔈
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 </body>

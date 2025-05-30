@@ -38,8 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   doctorSelect.addEventListener("change", () => {
-    const calendarElement = document.getElementById('calendar');
-
     const selectedDoctorId = doctorSelect.value;
 
     // Mostrar/ocultar filas por doctor

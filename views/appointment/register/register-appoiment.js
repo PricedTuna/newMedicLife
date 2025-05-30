@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedDoctorId = parseInt(doctorSelect.value);
 
     if (!selectedDoctorId) {
-      fp.set("disable", [(date) => true]);
+      fp.set("disable", [() => true]);
       return;
     }
 

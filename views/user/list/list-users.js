@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Obtener el estado (AC, IN) del texto mostrado
         const statusTd = row.querySelector('[data-label="Estado"]');
-        let status = '';
+        let status;
         if (statusTd.textContent.includes('Activo')) status = 'AC';
         else status = statusTd.textContent.trim();
 

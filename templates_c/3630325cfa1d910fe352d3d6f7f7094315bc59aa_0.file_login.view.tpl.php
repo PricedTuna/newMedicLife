@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 01:58:21
+/* Smarty version 5.4.5, created on 2025-05-30 04:50:59
   from 'file:login.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833cabd9e77d7_91189210',
+  'unifunc' => 'content_683939333e84b1_32951186',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '3630325cfa1d910fe352d3d6f7f7094315bc59aa' => 
     array (
       0 => 'login.view.tpl',
-      1 => 1748223206,
+      1 => 1748580658,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833cabd9e77d7_91189210 (\Smarty\Template $_smarty_tpl) {
+function content_683939333e84b1_32951186 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/login';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -28,6 +28,9 @@ $_smarty_current_dir = '/var/www/html/views/login';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión</title>
+    <?php echo '<script'; ?>
+ src="/views/login/login.app.js" defer><?php echo '</script'; ?>
+>
     <link rel="stylesheet" href="login.styles.css"> <!-- Ajusta la ruta si tienes un CSS -->
 </head>
 <body >
@@ -42,6 +45,7 @@ $_smarty_current_dir = '/var/www/html/views/login';
             </div>
         <?php }?>
 
+        <div id="form-error" style="display: none; color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;"></div>
         <form id="loginForm" action="controllers/auth/login.controller.php" method="POST">
             <div class="form-group">
                 <label for="email">Correo electrónico</label>
@@ -49,7 +53,15 @@ $_smarty_current_dir = '/var/www/html/views/login';
             </div>
             <div class="form-group">
                 <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Contraseña" required autocomplete="off">
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Contraseña" required autocomplete="off">
+                    <button type="button" id="togglePassword" class="toggle-password">
+                        <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                          <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+                          <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
             <button type="submit" name="login">Ingresar</button>
         </form>

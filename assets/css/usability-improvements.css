@@ -61,7 +61,7 @@
 }
 
 /* Botones con feedback */
-button {
+button:not(#toggle-btn) {
   position: relative;
   overflow: hidden;
   transition: background-color 0.3s;

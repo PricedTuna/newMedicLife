@@ -46,6 +46,10 @@ try {
         $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id");
         $stmt->execute([':id' => $_GET['id']]);
         $patient = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $stmt = $pdo->prepare("SELECT * FROM emergency_contacts WHERE id = :id_emergency_contact");
+        $stmt->execute(['id_emergency_contact' => $patient['id_emergency_contact']]);
+        $emergencyContacts = $stmt->fetch((PDO::FETCH_ASSOC));
     }
 } catch (\Throwable $th) {
     print_r($th);
@@ -53,6 +57,8 @@ try {
 } catch (PDOException $e) {
     die("Error al obtener tablas: " . $e->getMessage());
 }
+
+
 
 // Inicializar Smarty
 $smarty = new Smarty();
@@ -64,6 +70,7 @@ $smarty->assign('patient', $patient);
 $smarty->assign('municipalities', $municipalities);
 $smarty->assign('localities', $localities);
 $smarty->assign('states', $states);
+$smarty->assign('emergencyContacts', $emergencyContacts);
 $smarty->assign('success', $_GET['success'] ?? null);
 
 // Mostrar la plantilla

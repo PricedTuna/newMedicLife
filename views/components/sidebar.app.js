@@ -12,22 +12,25 @@ const VoiceAssistant = (() => {
     // Normaliza el título para usarlo en la ruta del archivo de audio
     const name = title
       .toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Quita acentos
-      .replace(/\s+/g, "-")  // Reemplaza espacios por guiones
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // Quita acentos
+      .replace(/\s+/g, "-") // Reemplaza espacios por guiones
       .replace(/[^\w-]/g, ""); // Quita caracteres no alfanuméricos excepto guiones
 
     // Construye la ruta del audio
     const audioPath = `/audio/${name}.mp3`;
+    console.log(audioPath);
+    
 
     return audioPath;
   }
 
   function isActive() {
-    return localStorage.getItem('voiceAssistantActive') === 'true';
+    return localStorage.getItem("voiceAssistantActive") === "true";
   }
 
   function setActive(value) {
-    localStorage.setItem('voiceAssistantActive', value ? 'true' : 'false');
+    localStorage.setItem("voiceAssistantActive", value ? "true" : "false");
   }
 
   async function play() {
@@ -36,14 +39,16 @@ const VoiceAssistant = (() => {
     const audioFile = getAudioForPath();
 
     try {
-      const response = await fetch(audioFile, { method: 'HEAD' });
+      const response = await fetch(audioFile, { method: "HEAD" });
       if (!response.ok) {
-        console.error(`Audio no encontrado para el título: "${document.title}" (ruta: "${audioFile}")`);
+        console.error(
+          `Audio no encontrado para el título: "${document.title}" (ruta: "${audioFile}")`
+        );
         setActive(false);
         return;
       }
     } catch (error) {
-      console.error('Error al verificar archivo de audio:', error);
+      console.error("Error al verificar archivo de audio:", error);
       setActive(false);
       return;
     }
@@ -78,7 +83,7 @@ const VoiceAssistant = (() => {
     play,
     stop,
     toggle,
-    isActive
+    isActive,
   };
 })();
 

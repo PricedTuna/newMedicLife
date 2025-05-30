@@ -30,19 +30,19 @@
 
                 <h1>Dashboard</h1>
 
-                                {if isset($smarty.get.success)}
-                                    <div
-                                        style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
-                                        {$smarty.get.success|escape}
-                                    </div>
-                                {/if}
+                {if isset($smarty.get.success)}
+                    <div
+                        style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                        {$smarty.get.success|escape}
+                    </div>
+                {/if}
 
-                                {if isset($error)}
-                                    <div
-                                        style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
-                                        {$error|escape}
-                                    </div>
-                                {/if}
+                {if isset($error)}
+                    <div
+                        style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                        {$error|escape}
+                    </div>
+                {/if}
 
 
                 <div class="doctor-select-container" style="margin-top: 1rem;">
@@ -52,7 +52,8 @@
                             <option value="">-- Todos los doctores --</option>
                         {/if}
                         {foreach from=$doctors item=doctor}
-                            <option value="{$doctor.id}" {if $isDoctor}selected{/if}>{$doctor.names} {$doctor.last_name} {$doctor.last_name2}</option>
+                            <option value="{$doctor.id}" {if $isDoctor}selected{/if}>{$doctor.names} {$doctor.last_name}
+                                {$doctor.last_name2}</option>
                         {/foreach}
                     </select>
                 </div>
@@ -63,6 +64,8 @@
                         {$success|escape}
                     </div>
                 {/if}
+
+               
             </header>
             {* <section class="stats">
                 <div class="card">

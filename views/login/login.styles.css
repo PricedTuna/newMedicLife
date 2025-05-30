@@ -60,6 +60,7 @@ input:not(#password) {
 input:not(#password):focus {
     border-color: var(--accent-clr);
     box-shadow: 0 0 5px rgba(94, 99, 255, 0.5);
+    outline: none;
 }
 
 button {
@@ -136,4 +137,3 @@ button:hover {
     /*padding: 0;*/
     margin: 0;
 }
-

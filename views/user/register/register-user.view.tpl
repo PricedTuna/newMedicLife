@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/views/components/sidebar.app.js" defer></script>
-    <link rel="stylesheet" href="./register-user.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="./register-user.styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Registro de Usuarios</title>
 </head>
@@ -15,6 +15,7 @@
 
     {include file=$sidebarPath} <!-- Aquí se incluye el sidebar, según la variable Smarty -->
 
+    {* <div style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;"> *}
     <main class="content">
 
         <div class="center-container">
@@ -203,6 +204,7 @@
 
         </div>
     </main>
+    {* </div> *}
 
     <script>
         function validatePassword() {

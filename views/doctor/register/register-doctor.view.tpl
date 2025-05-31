@@ -19,6 +19,9 @@
         window.municipalities = {$municipalities|json_encode};
         window.localities = {$localities|json_encode};
         window.states = {$states|json_encode};
+        window.medical_schedules = {$medical_schedules|json_encode};
+        window.doctorAssignments = {$doctorAssignments|json_encode};
+        window.schedules = {$schedules|json_encode};
 
         document.addEventListener('DOMContentLoaded', function() {
             const fileInput = document.getElementById('photo');

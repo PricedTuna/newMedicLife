@@ -24,7 +24,7 @@
         <select name="medical_area" id="speciality" required>
             {foreach from=$medical_areas item=medical_area}
                 <option value="{$medical_area.id}"
-                    {if isset($doctor.id_medical_area) && $doctor.id_medical_area == $medical_area.id}selected{/if}>
+                    {if isset($doctorAssignments.id_medical_area) && $doctorAssignments.id_medical_area == $medical_area.id}selected{/if}>
                     {$medical_area.area_name}
                 </option>
             {/foreach}
@@ -39,24 +39,28 @@
         {foreach from=$days key=key item=label}
             <div class="schedule-row">
                 <label class="day-label">
-                    <input type="checkbox" name="schedule[{$key}][active]" id="{$key}_active"
-                        {if isset($schedules[$key])}checked{/if}>
+                    <input type="checkbox" class="day-active-checkbox" name="schedule[{$key}][active]" id="{$key}_active"
+                        data-day="{$key}" {if isset($schedules[$key])}checked{/if}>
                     {$label}
                 </label>
                 <div class="schedule-time-inputs">
                     <div class="time-field">
                         <label for="{$key}_start">Inicio</label>
-                        <input type="time" name="schedule[{$key}][start_time]" id="{$key}_start"
-                            value="{if isset($schedules[$key])}{$schedules[$key].start_time}{/if}">
+                        <input type="time" class="start-time" name="schedule[{$key}][start_time]" id="{$key}_start"
+                            data-day="{$key}" value="{if isset($schedules[$key])}{$schedules[$key].start_time}{/if}">
                     </div>
                     <div class="time-field">
                         <label for="{$key}_end">Fin</label>
-                        <input type="time" name="schedule[{$key}][end_time]" id="{$key}_end"
-                            value="{if isset($schedules[$key])}{$schedules[$key].end_time}{/if}">
+                        <input type="time" class="end-time" name="schedule[{$key}][end_time]" id="{$key}_end"
+                            data-day="{$key}" value="{if isset($schedules[$key])}{$schedules[$key].end_time}{/if}">
                     </div>
                 </div>
+                <div class="error-message" id="error_{$key}" style="color: red; font-size: 0.9em; display: none;"></div>
             </div>
         {/foreach}
+        <div id="schedule-error-message" style="color: red; font-size: 0.95em; margin-top: 10px; display: none;">
+            Debe ingresar al menos un horario con hora de inicio y fin válida.
+        </div>
     </div>
 
 

@@ -59,10 +59,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Instanciación del modelo de Doctor y validación de datos
         $doctorModel = new DoctorModel($pdo);
         $doctorModel->validateData($data, $doctorId);
+        $assignmentModel = new DoctorAssignmentModel($pdo);
 
         if ($doctorId) {
             // Actualización del doctor
+            // Actualización del doctor
             $doctorModel->updateDoctor($doctorId, $data, $photoData);
+            $assignmentModel->assignMedicalArea($doctorId, $data['medical_area'], 'update');
+
+            // Guardar horarios (si se envían)
+            if (!empty($_POST['schedule']) && is_array($_POST['schedule'])) {
+                $scheduleModel = new MedicalScheduleModel($pdo);
+                $validDays = []; // Aquí se almacenan los días válidos que se conservarán
+
+                foreach ($_POST['schedule'] as $day => $times) {
+                    $startTime = $times['start_time'] ?? null;
+                    $endTime = $times['end_time'] ?? null;
+                    $isActive = isset($times['active']); // Verifica si el checkbox fue marcado
+
+                    if ($isActive && !empty($startTime) && !empty($endTime)) {
+                        $scheduleModel->saveOrUpdateSchedule($doctorId, $day, $startTime, $endTime);
+                        $validDays[] = $day;
+                    } else {
+                        // Si no es válido, no lo añadimos a $validDays
+                        // Pero no borramos aquí todavía
+                    }
+                }
+
+                // Borrar horarios que ya no están activos
+                $scheduleModel->deleteMissingSchedules($doctorId, $validDays);
+            }
+
+            header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor actualizado con éxito"));
+        } else {
+            // Creación de un nuevo doctor
+            $newDoctorId = $doctorModel->createDoctor($data, $photoData);
+
+            // Asignación del doctor al área médica
+            $assignmentModel = new DoctorAssignmentModel($pdo);
+            $assignmentModel->assignMedicalArea($newDoctorId, $data['medical_area'], 'create');
 
             // Guardar horarios (si se envían)
             if (!empty($_POST['schedule']) && is_array($_POST['schedule'])) {
@@ -74,39 +109,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     if (empty($startTime) || empty($endTime)) {
                         // Opcional: borrar horario si los campos están vacíos
-                        $scheduleModel->deleteSchedule($doctorId, $day);
+                        $scheduleModel->deleteSchedule($newDoctorId, $day);
                         continue;
                     }
 
                     // Guardar o actualizar horario
-                    $scheduleModel->saveOrUpdateSchedule($doctorId, $day, $startTime, $endTime);
-                }
-            }
-            header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor actualizado con éxito"));
-        } else {
-            // Creación de un nuevo doctor
-            $newDoctorId = $doctorModel->createDoctor($data, $photoData);
-
-            // Asignación del doctor al área médica
-            $assignmentModel = new DoctorAssignmentModel($pdo);
-            $assignmentModel->assignMedicalArea($newDoctorId, $data['medical_area']);
-
-            // Guardar horarios (si se envían)
-            if (!empty($_POST['schedules']) && is_array($_POST['schedules'])) {
-                $scheduleModel = new MedicalScheduleModel($pdo);
-
-                foreach ($_POST['schedules'] as $day => $times) {
-                    $startTime = $times['start'] ?? null;
-                    $endTime = $times['end'] ?? null;
-
-                    if (empty($startTime) || empty($endTime)) {
-                        // Opcional: borrar horario si los campos están vacíos
-                        $scheduleModel->deleteSchedule($currentDoctorId, $day);
-                        continue;
-                    }
-
-                    // Guardar o actualizar horario
-                    $scheduleModel->saveOrUpdateSchedule($currentDoctorId, $day, $startTime, $endTime);
+                    $scheduleModel->saveOrUpdateSchedule($newDoctorId, $day, $startTime, $endTime);
                 }
             }
             header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito"));

@@ -1,17 +1,4 @@
-body {
-    min-height: 100vh;
-    min-height: 100dvh;
-    background-color: var(--base-clr);
-    color: var(--text-clr);
-    display: grid;
-    grid-template-columns: auto 1fr;
-}
-
-/* Ajustes específicos para el main con clase content */
-main.content {
-    margin-top: 0;
-    padding: 0;
-}
+center-container
 
 .center-container {
     display: flex;

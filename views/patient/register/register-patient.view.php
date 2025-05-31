@@ -10,6 +10,7 @@ use Smarty\Smarty;
 
 // Cargar el autoloader de Composer
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+$emergencyContacts = null;
 
 try {
     // Conexión a la base de datos y consultas

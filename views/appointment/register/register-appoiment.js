@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Validación onBlur para CURP
-  curpInput.addEventListener("blur", function() {
+  curpInput.addEventListener("blur", function () {
     const entrada = curpInput.value.trim().toUpperCase();
     const curp = entrada.split(" - ")[0];
 
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const dayOfWeek = selectedDate
-      .toLocaleDateString("en-US", { weekday: "long" })
+      .toLocaleDateString("es-MX", { weekday: "long" })
       .toLowerCase();
     const hourMinutes = selectedDate.toTimeString().slice(0, 5);
 
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
   filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
 
   // Validación onBlur para especialidad
-  medicalArea.addEventListener("blur", function() {
+  medicalArea.addEventListener("blur", function () {
     if (!medicalArea.value) {
       const errorSpan = document.createElement("span");
       errorSpan.id = "specialityError";
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Validación onBlur para doctor
-  doctorForm.addEventListener("blur", function() {
+  doctorForm.addEventListener("blur", function () {
     if (!doctorForm.value) {
       const errorSpan = document.createElement("span");
       errorSpan.id = "doctorError";
@@ -282,31 +282,35 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Confirmación al registrar cita
-  document.getElementById("solicitarCita").addEventListener("submit", function(event) {
-    event.preventDefault();
+  document
+    .getElementById("solicitarCita")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
 
-    // Verificar si todos los campos están correctos
-    if (this.checkValidity()) {
-      Swal.fire({
-        title: '¿Confirmar cita?',
-        text: `Paciente: ${patientName.value}\nDoctor: ${doctorForm.options[doctorForm.selectedIndex].text}\nFecha: ${appointmentDate.value}`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Confirmar',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.submit();
-        }
-      });
-    } else {
-      Swal.fire({
-        title: 'Error',
-        text: 'Por favor, complete todos los campos correctamente.',
-        icon: 'error'
-      });
-    }
-  });
+      // Verificar si todos los campos están correctos
+      if (this.checkValidity()) {
+        Swal.fire({
+          title: "¿Confirmar cita?",
+          text: `Paciente: ${patientName.value}\nDoctor: ${
+            doctorForm.options[doctorForm.selectedIndex].text
+          }\nFecha: ${appointmentDate.value}`,
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonText: "Confirmar",
+          cancelButtonText: "Cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "Por favor, complete todos los campos correctamente.",
+          icon: "error",
+        });
+      }
+    });
 });
 
 function getParamsMedical(medicalArea) {
@@ -323,7 +327,7 @@ function filterDoctorsByArea(
   doctorSelect.innerHTML = ""; // limpia opciones
 
   // Verificar si el usuario es un doctor (variable global pasada desde PHP)
-  const isUserDoctor = typeof isDoctor !== 'undefined' && isDoctor === true;
+  const isUserDoctor = typeof isDoctor !== "undefined" && isDoctor === true;
 
   // Si no es doctor o hay más de una opción, mostrar la opción por defecto
   if (!isUserDoctor || filtered.length > 1) {
@@ -349,7 +353,7 @@ function filterDoctorsByArea(
   else if (isUserDoctor && filtered.length === 1) {
     doctorSelect.value = filtered[0].doctor_id;
     // Disparar el evento change para actualizar los días disponibles
-    const event = new Event('change');
+    const event = new Event("change");
     doctorSelect.dispatchEvent(event);
   }
   // En cualquier otro caso, no seleccionar ningún doctor

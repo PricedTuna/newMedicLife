@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="./register-appoiment.css">
     <link rel="stylesheet" href="/assets/css/flatpickr.min.css">
     <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <script src="../../components/sidebar.app.js" defer></script>
-    <link rel="stylesheet" href="../../components/sidebar.styles.css">
     <script src="/assets/js/flatpickr.min.js"></script>
     <script src="/assets/js/es.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -31,6 +31,7 @@
 
     {include file=$sidebarPath}
 
+    <main class="content">
     <div class="center-container">
         <div class="form-container">
             <h2>Solicitar Citas</h2>
@@ -80,7 +81,8 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+
+                <div class="form-group" id="appointmentDateContainer" style="display: none;">
                     <label for="appointmentDate">Hora y Fecha</label>
                     <input type="text" id="appointmentDate" name="appointment_date"
                         value="{$appointment.appointment_date|default:''}" required>
@@ -88,11 +90,21 @@
                         doctor</span>
                 </div>
 
+
+                <div class="form-group" id="horariosDisponiblesContainer" style="display: none;">
+                    <label>Horarios disponibles del médico:</label>
+                    <ul id="horariosDisponibles">
+                        {* Este bloque se llenará dinámicamente con JavaScript *}
+                    </ul>
+                </div>
+
+
                 <button type="submit" class="submit-btn">Registrar Datos</button>
             </form>
         </div>
-    </div>
-
+        </div>
+    </main>
+    <script src="/views/appointment/register/schedules.js"></script>
 </body>
 
 </html>

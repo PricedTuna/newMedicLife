@@ -22,20 +22,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $existingDoctor = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($existingDoctor) {
-                // Cambiar el estado a 'inactivo' (puedes usar otro valor si tu DB usa boolean o enum)
-                $stmt = $pdo->prepare("UPDATE doctors SET status = 'I' WHERE id = :doctor_id");
-                $stmt->execute([':doctor_id' => $doctor_id]);
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM appointments WHERE id_doctor = :id_doctor AND status = :status");
+                $stmt->execute(['id_doctor' => $doctor_id,
+                                'status' => 'A']);
+                $citasPendientes = $stmt->fetchColumn();
 
-                header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor desactivado con éxito"));
+                if ($citasPendientes == 0) {
+                    // No tiene citas activas, se puede desactivar
+                    $stmt = $pdo->prepare("UPDATE doctors SET status = 'I' WHERE id = :doctor_id");
+                    $stmt->execute([':doctor_id' => $doctor_id]);
+
+                    header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor desactivado con éxito"));
+                } else {
+                    // Tiene citas activas, no se puede eliminar
+                    header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("El Doctor cuenta con citas, No se puede eliminar"));
+                }
             } else {
                 header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("Doctor no encontrado"));
             }
-
         } catch (Exception $e) {
             header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("Algo salió mal. Intente más tarde."));
             exit;
         }
-
     } else {
         header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("Algo sucedió mal, inténtelo de nuevo en unos minutos o contacte a soporte"));
         exit;
@@ -43,4 +51,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(["success" => false, "message" => "Método no permitido."]);
 }
-?>

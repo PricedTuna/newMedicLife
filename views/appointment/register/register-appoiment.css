@@ -21,6 +21,7 @@ body {
 
 /* Ajustes específicos para el main con clase content */
 main.content {
+    margin-bottom: 2.5rem;
     padding: 2rem;
     margin-top: 0;
 }

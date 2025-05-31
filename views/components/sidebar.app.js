@@ -159,9 +159,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //  ========= keyboard shortcuts
   document.addEventListener("keydown", function (e) {
-    if (e.ctrlKey && e.key === "d") {
+    if (e.ctrlKey && e.key === "i") {
       e.preventDefault();
-      showShortcutToast('Navegando al Dashboard...');
+      showShortcutToast('Navegando al panel principal...');
       setTimeout(() => window.location.href = "/views/dashboard/dashboard.view.php", 500);
     }
     if (e.ctrlKey && e.key === "m") {

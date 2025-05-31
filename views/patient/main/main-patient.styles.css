@@ -15,6 +15,7 @@
 
 /* Ajustar el contenido principal para que no se solape con el header */
 main.content {
+    margin-bottom: 2.5rem;
     margin-top: 0; /* Ajusta este valor según la altura del header */
     padding: 0;
     margin-left: 0;

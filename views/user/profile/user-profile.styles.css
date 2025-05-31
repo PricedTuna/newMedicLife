@@ -361,7 +361,8 @@ main {
   box-sizing: border-box;
 }
 
-.save-photo-btn, .cancel-btn {
+.save-photo-btn,
+.cancel-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -467,7 +468,8 @@ main {
 }
 
 /* Error and Success Messages */
-.error-message, .success-message {
+.error-message,
+.success-message {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -515,7 +517,8 @@ main {
 
   .info-item {
     flex: 1 1 calc(50% - 1.5rem);
-    min-width: 200px; /* Reduced min-width for better fit */
+    min-width: 200px;
+    /* Reduced min-width for better fit */
   }
 
   /* Adjust doctor photo container for better alignment */
@@ -536,7 +539,8 @@ main {
     justify-content: center;
   }
 
-  .save-photo-btn, .cancel-btn {
+  .save-photo-btn,
+  .cancel-btn {
     flex: 1 1 auto;
     min-width: 120px;
     margin-bottom: 0.5rem;
@@ -571,7 +575,8 @@ main {
     padding: 1.5rem;
   }
 
-  .doctor-photo-profile img, .no-photo {
+  .doctor-photo-profile img,
+  .no-photo {
     width: 150px;
     height: 150px;
   }
@@ -596,6 +601,15 @@ main {
   .update-photo-btn {
     width: auto;
     min-width: 120px;
+  }
+
+  body {
+    display: flex;
+    grid-template-columns: auto;
+  }
+
+  main {
+    width: 100%;
   }
 }
 
@@ -623,12 +637,14 @@ main {
 
   .info-item {
     padding: 0.8rem;
-    min-width: 100%; /* Ensure full width on very small screens */
+    min-width: 100%;
+    /* Ensure full width on very small screens */
     margin-bottom: 0.5rem;
   }
 
   /* Further adjust photo and form elements for very small screens */
-  .doctor-photo-profile img, .no-photo {
+  .doctor-photo-profile img,
+  .no-photo {
     width: 120px;
     height: 120px;
   }
@@ -659,7 +675,8 @@ main {
     gap: 0.5rem;
   }
 
-  .save-photo-btn, .cancel-btn {
+  .save-photo-btn,
+  .cancel-btn {
     width: 100%;
   }
 

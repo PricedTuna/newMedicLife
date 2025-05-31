@@ -9,6 +9,7 @@ body {
 
 /* Ajustes específicos para el main con clase content */
 main.content {
+    margin-bottom: 2.5rem;
     margin-top: 0;
     padding: 0;
     flex: 1;
@@ -121,6 +122,10 @@ main.content {
     body {
         display: flex;
         grid-template-columns: auto;
+    }
+
+    main {
+        width: 100%;
     }
 }
 

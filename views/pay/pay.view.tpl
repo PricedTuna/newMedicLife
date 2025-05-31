@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="pay.view.css">
     <script src="/views/doctor/list/views-handler.js" defer></script>
-    <script src="/views/appointment/register/register-appointment.app.js" defer></script>
+    <script src="/views/appointment/register/register-appoiment.js" defer></script>
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <script src="/views/components/sidebar.app.js" defer></script>

@@ -3,7 +3,7 @@
         <h2>Citas</h2>
         <div class="button-container">
             <a id="listar-btn" href="/views/appointment/list/list-appointments.view.php" >Listar</a>
-            <a id="crear-btn" href="/views/appointment/register/register-appointment.php" >Crear</a>
+            <a id="crear-btn" href="/views/appointment/register/register-appoiment.php" >Crear</a>
         </div>
     </div>
     <div class="search-container">

@@ -76,8 +76,9 @@ class DoctorModel {
      * @param int $doctorId ID del doctor.
      * @param array $data Datos a actualizar.
      * @param string|null $photoData Datos binarios de la foto.
+     * @param bool $updatePhoto Indica si se debe actualizar la foto.
      */
-    public function updateDoctor($doctorId, $data, $photoData) {
+    public function updateDoctor($doctorId, $data, $photoData, $updatePhoto = false) {
         // Verifica que el doctor exista
         $stmt = $this->pdo->prepare("SELECT id FROM doctors WHERE id = :doctor_id");
         $stmt->execute([':doctor_id' => $doctorId]);
@@ -85,15 +86,25 @@ class DoctorModel {
             throw new Exception("El doctor con ID $doctorId no existe.");
         }
 
-        $stmt = $this->pdo->prepare("UPDATE doctors SET
+        // Build the SQL query based on whether we're updating the photo or not
+        $sql = "UPDATE doctors SET
             names = :names, last_name = :last_name, last_name2 = :last_name2,
             id_state = :id_state, id_municipality = :id_municipality, id_locality = :id_locality,
             CP = :CP, street = :street, external_number = :external_number, internal_number = :internal_number,
             neighborhood = :neighborhood, insurance_number = :insurance_number, professional_id = :professional_id,
             birth_date = :birth_date, CURP = :CURP, RFC = :RFC, phone = :phone, gender = :gender,
-            email = :email, photo = :photo, status = :status
-            WHERE id = :doctor_id");
-        $stmt->execute([
+            email = :email, ";
+
+        // Only include the photo field if we're updating it
+        if ($updatePhoto) {
+            $sql .= "photo = :photo, ";
+        }
+
+        $sql .= "status = :status WHERE id = :doctor_id";
+
+        $stmt = $this->pdo->prepare($sql);
+        // Build the parameters array
+        $params = [
             ':names'             => $data['names'],
             ':last_name'         => $data['last_name'],
             ':last_name2'        => $data['last_name2'],
@@ -113,10 +124,16 @@ class DoctorModel {
             ':phone'             => $data['phone'],
             ':gender'            => $data['gender'],
             ':email'             => $data['email'],
-            ':photo'             => $photoData,
             ':status'            => 'A',
             ':doctor_id'         => $doctorId
-        ]);
+        ];
+
+        // Only include the photo parameter if we're updating it
+        if ($updatePhoto) {
+            $params[':photo'] = $photoData;
+        }
+
+        $stmt->execute($params);
     }
 
     /**

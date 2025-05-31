@@ -1,14 +1,15 @@
 {
-    "require": {
-        "smarty/smarty": "^5.4",
-        "mailgun/mailgun-php": "^4.3",
-        "nyholm/psr7": "^1.8",
-        "guzzlehttp/guzzle": "^7.9",
-        "php-http/guzzle7-adapter": "^1.1"
-    },
-    "config": {
-        "allow-plugins": {
-            "php-http/discovery": true
+    "name": "predator/new-medic-life",
+    "autoload": {
+        "psr-4": {
+            "Predator\\NewMedicLife\\": "src/"
         }
-    }
+    },
+    "authors": [
+        {
+            "name": "YewdielMartinez",
+            "email": "yewdiel211@gmail.com"
+        }
+    ],
+    "require": {}
 }

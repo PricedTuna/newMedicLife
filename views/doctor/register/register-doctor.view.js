@@ -33,19 +33,27 @@ function validateIdentificationInputs() {
     // Ejemplo: Se verifica que exista, sea una imagen y pese menos de 2MB.
     const photoInput = document.getElementById('photo');
     const photoFile = photoInput.files[0];
-    if (!photoFile) {
+    const hiddenIdInput = document.querySelector('input[name="id"]');
+    const isUpdateMode = hiddenIdInput && hiddenIdInput.value.trim() !== '';
+
+    // Solo requerir foto si es un nuevo doctor (no en modo actualización)
+    if (!isUpdateMode && !photoFile) {
         showErrorMessage(photoInput, 'Debes seleccionar una imagen.');
         valid = false;
-    } else if (!photoFile.type.startsWith('image/')) {
-        showErrorMessage(photoInput, 'El archivo debe ser una imagen.');
-        valid = false;
-    } else if (photoFile.size > 2 * 1024 * 1024) { // 2MB
-        showErrorMessage(photoInput, 'La imagen no debe pesar más de 2MB.');
-        valid = false;
+    } else if (photoFile) {
+        // Si hay un archivo seleccionado (sea nuevo doctor o actualización), validar el archivo
+        if (!photoFile.type.startsWith('image/')) {
+            showErrorMessage(photoInput, 'El archivo debe ser una imagen.');
+            valid = false;
+        } else if (photoFile.size > 2 * 1024 * 1024) { // 2MB
+            showErrorMessage(photoInput, 'La imagen no debe pesar más de 2MB.');
+            valid = false;
+        } else {
+            clearErrorMessage(photoInput);
+        }
     } else {
         clearErrorMessage(photoInput);
     }
-    doctor
     // Patrón alfanumérico para campos opcionales
     const alphanumericPattern = /^[A-Za-z0-9]+$/;
 
@@ -265,6 +273,107 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+});
+
+// ===========================
+// MANEJO DE HORARIOS
+// ===========================
+document.addEventListener('DOMContentLoaded', () => {
+    // Obtener todos los días de la semana
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    // Para cada día, añadir event listeners a los inputs de horario
+    days.forEach(day => {
+        const startTimeInput = document.getElementById(`${day}_start`);
+        const endTimeInput = document.getElementById(`${day}_end`);
+        const activeCheckbox = document.getElementById(`${day}_active`);
+
+        if (startTimeInput && endTimeInput && activeCheckbox) {
+            // Función para manejar cambios en los horarios
+            const handleScheduleChange = () => {
+                // Solo ofrecer copiar si el día está activo y tiene horarios completos
+                if (activeCheckbox.checked && startTimeInput.value && endTimeInput.value) {
+                    // Verificar si este es el primer cambio o si ya se han copiado horarios antes
+                    let anyOtherDayHasSchedule = false;
+                    days.forEach(otherDay => {
+                        if (otherDay !== day) {
+                            const otherStartInput = document.getElementById(`${otherDay}_start`);
+                            const otherEndInput = document.getElementById(`${otherDay}_end`);
+                            const otherActiveCheckbox = document.getElementById(`${otherDay}_active`);
+
+                            if (otherActiveCheckbox && otherActiveCheckbox.checked && 
+                                otherStartInput && otherStartInput.value && 
+                                otherEndInput && otherEndInput.value) {
+                                anyOtherDayHasSchedule = true;
+                            }
+                        }
+                    });
+
+                    // Solo mostrar confirmación si no hay otros días con horario configurado
+                    // o si los horarios son diferentes
+                    let shouldPrompt = !anyOtherDayHasSchedule;
+
+                    if (!shouldPrompt) {
+                        // Verificar si hay algún día con horario diferente
+                        days.forEach(otherDay => {
+                            if (otherDay !== day) {
+                                const otherStartInput = document.getElementById(`${otherDay}_start`);
+                                const otherEndInput = document.getElementById(`${otherDay}_end`);
+                                const otherActiveCheckbox = document.getElementById(`${otherDay}_active`);
+
+                                if (otherActiveCheckbox && otherActiveCheckbox.checked &&
+                                    ((otherStartInput && otherStartInput.value !== startTimeInput.value) ||
+                                     (otherEndInput && otherEndInput.value !== endTimeInput.value))) {
+                                    shouldPrompt = true;
+                                }
+                            }
+                        });
+                    }
+
+                    if (shouldPrompt) {
+                        Swal.fire({
+                            title: '¿Copiar horario?',
+                            text: `¿Desea aplicar este horario (${startTimeInput.value} - ${endTimeInput.value}) a todos los demás días?`,
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Sí, aplicar',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Aplicar el mismo horario a todos los demás días
+                                days.forEach(otherDay => {
+                                    if (otherDay !== day) {
+                                        const otherStartInput = document.getElementById(`${otherDay}_start`);
+                                        const otherEndInput = document.getElementById(`${otherDay}_end`);
+                                        const otherActiveCheckbox = document.getElementById(`${otherDay}_active`);
+
+                                        if (otherStartInput && otherEndInput && otherActiveCheckbox) {
+                                            otherActiveCheckbox.checked = true;
+                                            otherStartInput.value = startTimeInput.value;
+                                            otherEndInput.value = endTimeInput.value;
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            };
+
+            // Añadir event listeners para detectar cambios
+            startTimeInput.addEventListener('change', handleScheduleChange);
+            endTimeInput.addEventListener('change', handleScheduleChange);
+            // También detectar cuando se activa un día
+            activeCheckbox.addEventListener('change', () => {
+                // Si se activa el checkbox y ya hay horarios configurados, ofrecer copiar
+                if (activeCheckbox.checked && startTimeInput.value && endTimeInput.value) {
+                    handleScheduleChange();
+                }
+            });
+        }
+    });
 });
 
 // ===========================

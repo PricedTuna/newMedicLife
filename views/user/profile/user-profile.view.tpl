@@ -202,18 +202,6 @@
                 </div>
             {/if}
 
-            <!-- Nueva sección de Configuraciones -->
-            <div class="profile-section settings-section">
-                <h2>Configuraciones</h2>
-                <div class="settings-container">
-                    <div class="setting-item">
-                        <span class="setting-label">Asistente de voz:</span>
-                        <button id="voiceToggleBtn" aria-label="Asistente de voz" title="Asistente de voz" class="voice-toggle-btn">
-                            🔈
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
 </body>

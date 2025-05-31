@@ -16,7 +16,7 @@ checkUserRole(['A', 'S']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recopilación centralizada de datos del formulario
-    $doctorId = isset($_POST['doctor_id']) && is_numeric($_POST['doctor_id']) ? $_POST['doctor_id'] : null;
+    $doctorId = isset($_POST['id']) && is_numeric($_POST['id']) ? $_POST['id'] : null;
     $data = [
         'names'             => $_POST['name'] ?? '',
         'last_name'         => $_POST['fatherLastName'] ?? '',
@@ -42,6 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Manejo y validación de la foto
     $photoData = null;
+    $updatePhoto = false; // Flag to indicate if we should update the photo
+
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
         $photoTmp = $_FILES['photo']['tmp_name'];
         $photoMime = mime_content_type($photoTmp);
@@ -50,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
         $photoData = file_get_contents($photoTmp);
+        $updatePhoto = true; // New photo uploaded, we should update it
     } elseif (!$doctorId) { // En creación, la foto es obligatoria
         header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode("Debes subir una foto.") . '&id=' . ($doctorId ?? ''));
         exit;
@@ -62,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($doctorId) {
             // Actualización del doctor
-            $doctorModel->updateDoctor($doctorId, $data, $photoData);
+            $doctorModel->updateDoctor($doctorId, $data, $photoData, $updatePhoto);
 
             // Guardar horarios (si se envían)
             if (!empty($_POST['schedule']) && is_array($_POST['schedule'])) {
@@ -92,21 +95,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $assignmentModel->assignMedicalArea($newDoctorId, $data['medical_area']);
 
             // Guardar horarios (si se envían)
-            if (!empty($_POST['schedules']) && is_array($_POST['schedules'])) {
+            if (!empty($_POST['schedule']) && is_array($_POST['schedule'])) {
                 $scheduleModel = new MedicalScheduleModel($pdo);
 
-                foreach ($_POST['schedules'] as $day => $times) {
-                    $startTime = $times['start'] ?? null;
-                    $endTime = $times['end'] ?? null;
+                foreach ($_POST['schedule'] as $day => $times) {
+                    $startTime = $times['start_time'] ?? null;
+                    $endTime = $times['end_time'] ?? null;
 
                     if (empty($startTime) || empty($endTime)) {
                         // Opcional: borrar horario si los campos están vacíos
-                        $scheduleModel->deleteSchedule($currentDoctorId, $day);
+                        $scheduleModel->deleteSchedule($newDoctorId, $day);
                         continue;
                     }
 
                     // Guardar o actualizar horario
-                    $scheduleModel->saveOrUpdateSchedule($currentDoctorId, $day, $startTime, $endTime);
+                    $scheduleModel->saveOrUpdateSchedule($newDoctorId, $day, $startTime, $endTime);
                 }
             }
             header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito"));

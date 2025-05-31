@@ -37,29 +37,41 @@ const VoiceAssistant = (() => {
     setActive(true);
 
     const audioFile = getAudioForPath();
+    let audioToPlay = audioFile;
 
     try {
+      // Verificar si el archivo de audio existe
       const response = await fetch(audioFile, { method: "HEAD" });
       if (!response.ok) {
-        console.error(
-          `Audio no encontrado para el título: "${document.title}" (ruta: "${audioFile}")`
+        console.warn(
+          `Audio no encontrado para el título: "${document.title}" (ruta: "${audioFile}"). Intentando usar audio por defecto.`
         );
-        setActive(false);
-        return;
+
+        // Intentar usar un audio por defecto (dashboard.mp3)
+        const defaultAudio = "/audio/dashboard.mp3";
+        const defaultResponse = await fetch(defaultAudio, { method: "HEAD" });
+
+        if (defaultResponse.ok) {
+          console.log("Usando audio por defecto:", defaultAudio);
+          audioToPlay = defaultAudio;
+        } else {
+          console.error("No se encontró el audio por defecto.");
+          return; // No reproducir nada si no hay audio por defecto
+        }
       }
+
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      }
+
+      currentAudio = new Audio(audioToPlay);
+      currentAudio.play();
     } catch (error) {
       console.error("Error al verificar archivo de audio:", error);
-      setActive(false);
-      return;
+      // No desactivamos el asistente si hay un error
+      // Solo continuamos sin reproducir audio
     }
-
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio.currentTime = 0;
-    }
-
-    currentAudio = new Audio(audioFile);
-    currentAudio.play();
   }
 
   function stop() {
@@ -159,6 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //  ========= keyboard shortcuts
   document.addEventListener("keydown", function (e) {
+    // Navegación principal
     if (e.ctrlKey && e.key === "d") {
       e.preventDefault();
       showShortcutToast('Navegando al Dashboard...');
@@ -183,6 +196,41 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       showShortcutToast('Navegando a Citas...');
       setTimeout(() => window.location.href = "/views/appointment/list/list-appointments.view.php", 500);
+    }
+
+    // Acceso directo a formularios de registro
+    if (e.ctrlKey && e.shiftKey && e.key === "M") {
+      e.preventDefault();
+      showShortcutToast('Accediendo al formulario de registro de médicos...');
+      setTimeout(() => window.location.href = "/views/doctor/register/register-doctor.view.php", 500);
+    }
+    if (e.ctrlKey && e.shiftKey && e.key === "P") {
+      e.preventDefault();
+      showShortcutToast('Accediendo al formulario de registro de pacientes...');
+      setTimeout(() => window.location.href = "/views/patient/register/register-patient.view.php", 500);
+    }
+    if (e.ctrlKey && e.shiftKey && e.key === "C") {
+      e.preventDefault();
+      showShortcutToast('Accediendo al formulario de registro de citas...');
+      setTimeout(() => window.location.href = "/views/appointment/register/register-appoiment.php", 500);
+    }
+    if (e.ctrlKey && e.shiftKey && e.key === "U") {
+      e.preventDefault();
+      showShortcutToast('Accediendo al formulario de registro de usuarios...');
+      setTimeout(() => window.location.href = "/views/user/register/register-user.view.php", 500);
+    }
+    if (e.ctrlKey && e.key === "k") {
+      e.preventDefault();
+      showShortcutToast('Mostrando atajos de teclado...');
+      const shortcutsSection = document.querySelector('.shortcuts-info-section');
+      if (shortcutsSection) {
+        shortcutsSection.scrollIntoView({ behavior: 'smooth' });
+        shortcutsSection.classList.add('highlight');
+        setTimeout(() => shortcutsSection.classList.remove('highlight'), 2000);
+      } else {
+        // If shortcuts section is not found, navigate to the settings page
+        setTimeout(() => window.location.href = "/views/settings/settings.view.php", 500);
+      }
     }
   });
 

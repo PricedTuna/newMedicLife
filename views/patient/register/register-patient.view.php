@@ -70,6 +70,10 @@ $smarty->assign('patient', $patient);
 $smarty->assign('municipalities', $municipalities);
 $smarty->assign('localities', $localities);
 $smarty->assign('states', $states);
+// Ensure emergencyContacts is defined before assigning it
+if (!isset($emergencyContacts)) {
+    $emergencyContacts = null;
+}
 $smarty->assign('emergencyContacts', $emergencyContacts);
 $smarty->assign('success', $_GET['success'] ?? null);
 

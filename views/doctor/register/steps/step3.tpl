@@ -66,8 +66,8 @@
         </label>
         <input type="file" id="photo" name="photo" accept="image/*" {if !$doctor}required{/if}>
         <div id="doctor-image-preview-container" class="image-preview-container">
-            <img id="doctor-image-preview" class="image-preview" src="" alt="Vista previa" style="display: none;">
-            <div id="doctor-preview-placeholder" class="preview-placeholder">
+            <img id="doctor-image-preview" class="image-preview" src="{if $doctor}/controllers/doctor/mostrar_foto.php?id={$doctor.id}{/if}" alt="Vista previa" style="display: {if $doctor}block{else}none{/if};">
+            <div id="doctor-preview-placeholder" class="preview-placeholder" style="display: {if $doctor}none{else}flex{/if};">
                 <i class="bi bi-image"></i>
                 <span>Vista previa de la imagen</span>
             </div>

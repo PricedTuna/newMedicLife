@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 05:34:56
+/* Smarty version 5.4.5, created on 2025-06-01 11:02:23
   from 'file:user-profile.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683be680088f75_62758879',
+  'unifunc' => 'content_683c333f36d734_16110628',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1b8c6a454747546148bd41526a6fdb208af262ce' => 
     array (
       0 => 'user-profile.view.tpl',
-      1 => 1748755867,
+      1 => 1748775657,
       2 => 'file',
     ),
   ),
@@ -21,14 +21,13 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683be680088f75_62758879 (\Smarty\Template $_smarty_tpl) {
+function content_683c333f36d734_16110628 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/profile';
 ?><!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <?php echo '<script'; ?>
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
 >
@@ -499,6 +498,42 @@ $foreach0DoElse = false;
 }
 $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                                             </ul>
+                                        </span>
+                                    </div>
+                                <?php }?>
+
+                                <?php if ((true && (true && null !== ($_smarty_tpl->getValue('doctorData')['schedules'] ?? null))) && $_smarty_tpl->getSmarty()->getModifierCallback('count')($_smarty_tpl->getValue('doctorData')['schedules']) > 0) {?>
+                                    <div class="info-item">
+                                        <span class="label">Horarios:</span>
+                                        <span class="value">
+                                            <table class="schedule-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Día</th>
+                                                        <th>Hora de inicio</th>
+                                                        <th>Hora de fin</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+$_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('doctorData')['schedules'], 'schedule');
+$foreach1DoElse = true;
+foreach ($_from ?? [] as $_smarty_tpl->getVariable('schedule')->value) {
+$foreach1DoElse = false;
+?>
+                                                        <tr>
+                                                            <td><?php echo $_smarty_tpl->getValue('schedule')['day'];?>
+</td>
+                                                            <td><?php echo $_smarty_tpl->getValue('schedule')['start_time'];?>
+</td>
+                                                            <td><?php echo $_smarty_tpl->getValue('schedule')['end_time'];?>
+</td>
+                                                        </tr>
+                                                    <?php
+}
+$_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
+                                                </tbody>
+                                            </table>
                                         </span>
                                     </div>
                                 <?php }?>

@@ -91,31 +91,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Get preview elements
-    const imagePreview = document.getElementById('image-preview');
-    const previewPlaceholder = document.getElementById('preview-placeholder');
-
-    // Add event listener for photo change
-    photoInput.addEventListener('change', event => {
-        // Update label with file name
-        const fileName = event.target.files[0] ? event.target.files[0].name : 'Subir Foto';
-        document.getElementById('photo-label').textContent = fileName;
-
-        // Update preview image
-        if (event.target.files && event.target.files[0]) {
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
-                previewPlaceholder.style.display = 'none';
-            }
-
-            reader.readAsDataURL(event.target.files[0]);
-        } else {
-            // Do nothing if no file is selected - keep the existing photo
-        }
-    });
+    document.getElementById('photo').addEventListener('change', event => {
+    const fileName = event.target.files[0] ? event.target.files[0].name : 'Subir Foto';
+    document.getElementById('photo-label').textContent = fileName;
+});
 });
 
 // This function is now defined in register-patient.app.js

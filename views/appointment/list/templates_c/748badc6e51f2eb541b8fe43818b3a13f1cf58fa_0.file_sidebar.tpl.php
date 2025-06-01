@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 05:34:58
+/* Smarty version 5.4.5, created on 2025-06-01 11:02:20
   from 'file:/var/www/html/views/appointment/list/../../components/sidebar.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683be6828e7cf6_10257241',
+  'unifunc' => 'content_683c333c806219_16677215',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '748badc6e51f2eb541b8fe43818b3a13f1cf58fa' => 
     array (
       0 => '/var/www/html/views/appointment/list/../../components/sidebar.tpl',
-      1 => 1748755867,
+      1 => 1748775657,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_683be6828e7cf6_10257241 (\Smarty\Template $_smarty_tpl) {
+function content_683c333c806219_16677215 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/components';
 ?><nav id="sidebar">
     <ul>
@@ -102,6 +102,9 @@ $_smarty_current_dir = '/var/www/html/views/components';
             </a>
         </li>
 
+        <?php echo '<?php'; ?>
+ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'D'): <?php echo '?>'; ?>
+
         <li>
             <a href="/views/doctor/main/main-doctor.view.php">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000">
@@ -111,6 +114,9 @@ $_smarty_current_dir = '/var/www/html/views/components';
                 <span>Médicos</span>
             </a>
         </li>
+        <?php echo '<?php'; ?>
+ endif; <?php echo '?>'; ?>
+
         <?php echo '<?php'; ?>
  if (isset($_SESSION['role']) && $_SESSION['role'] === 'A'): <?php echo '?>'; ?>
 

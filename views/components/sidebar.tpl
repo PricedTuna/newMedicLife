@@ -78,6 +78,7 @@
             </a>
         </li>
 
+        <?php if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'D'): ?>
         <li>
             <a href="/views/doctor/main/main-doctor.view.php">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000">
@@ -87,6 +88,7 @@
                 <span>Médicos</span>
             </a>
         </li>
+        <?php endif; ?>
         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'A'): ?>
         <li>
             <a href="/views/user/list/list-users.view.php">

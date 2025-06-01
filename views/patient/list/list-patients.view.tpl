@@ -30,6 +30,7 @@
                 <h1>Lista de pacientes</h1>
                 <a href="/views/patient/register/register-patient.view.php">
                     <button class="create-btn">Agregar Paciente</button>
+                    <button class="icon-btn table-add-btn">+</button>
                 </a>
             </div>
 
@@ -55,10 +56,6 @@
                         {$success|escape}
                     </div>
                 {/if}
-
-                <a href="/views/patient/register/register-patient.view.php" aria-label="Agregar paciente">
-                    <button class="icon-btn table-add-btn">+</button>
-                </a>
 
                 <table>
                     <thead>

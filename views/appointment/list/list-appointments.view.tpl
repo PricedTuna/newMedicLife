@@ -26,6 +26,7 @@
                 <h1>Lista de citas</h1>
                 <a href="/views/appointment/register/register-appoiment.php">
                     <button class="create-btn">Crear cita</button>
+                    <button class="icon-btn table-add-btn">+</button>
                 </a>
             </div>
 
@@ -53,9 +54,6 @@
                     </div>
                 {/if}
 
-                <a href="/views/appointment/register/register-appoiment.php" aria-label="Crear cita">
-                    <button class="icon-btn table-add-btn">+</button>
-                </a>
 
                 <h2>Citas Activas</h2>
                 <table>

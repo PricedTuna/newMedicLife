@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 09:31:52
+/* Smarty version 5.4.5, created on 2025-06-01 10:15:47
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683c1e08bf55c9_30515860',
+  'unifunc' => 'content_683c28530f6eb2_45727317',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8f0f5c04f0f9a75b79c6221ce635ba02f3b6741e' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1748769680,
+      1 => 1748772864,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683c1e08bf55c9_30515860 (\Smarty\Template $_smarty_tpl) {
+function content_683c28530f6eb2_45727317 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -61,6 +61,7 @@ $_smarty_current_dir = '/var/www/html/views/patient/list';
                 <h1>Lista de pacientes</h1>
                 <a href="/views/patient/register/register-patient.view.php">
                     <button class="create-btn">Agregar Paciente</button>
+                    <button class="icon-btn table-add-btn">+</button>
                 </a>
             </div>
 
@@ -88,10 +89,6 @@ $_smarty_current_dir = '/var/www/html/views/patient/list';
 
                     </div>
                 <?php }?>
-
-                <a href="/views/patient/register/register-patient.view.php" aria-label="Agregar paciente">
-                    <button class="icon-btn table-add-btn">+</button>
-                </a>
 
                 <table>
                     <thead>

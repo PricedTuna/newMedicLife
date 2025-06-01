@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 09:31:58
+/* Smarty version 5.4.5, created on 2025-06-01 10:19:46
   from 'file:list-appointments.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683c1e0ed50248_70784566',
+  'unifunc' => 'content_683c29428c87b3_21727116',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ae2a5461b1393847530f38f5e33856ae08f067d0' => 
     array (
       0 => 'list-appointments.view.tpl',
-      1 => 1748769729,
+      1 => 1748773101,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683c1e0ed50248_70784566 (\Smarty\Template $_smarty_tpl) {
+function content_683c29428c87b3_21727116 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/appointment/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -64,6 +64,7 @@ $_smarty_current_dir = '/var/www/html/views/appointment/list';
                 <h1>Lista de citas</h1>
                 <a href="/views/appointment/register/register-appoiment.php">
                     <button class="create-btn">Crear cita</button>
+                    <button class="icon-btn table-add-btn">+</button>
                 </a>
             </div>
 
@@ -93,9 +94,6 @@ $_smarty_current_dir = '/var/www/html/views/appointment/list';
                     </div>
                 <?php }?>
 
-                <a href="/views/appointment/register/register-appoiment.php" aria-label="Crear cita">
-                    <button class="icon-btn table-add-btn">+</button>
-                </a>
 
                 <h2>Citas Activas</h2>
                 <table>

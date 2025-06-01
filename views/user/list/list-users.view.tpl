@@ -24,6 +24,7 @@
                 <h1>Lista de usuarios</h1>
                 <a href="/views/user/register/register-user.view.php">
                     <button class="create-btn">Agregar Usuario</button>
+                    <button class="icon-btn table-add-btn">+</button>
                 </a>
             </div>
 
@@ -55,10 +56,6 @@
                 </div>
             {/if}
             <div class="table-container">
-
-                <a href="/views/user/register/register-user.view.php" aria-label="Agregar usuario">
-                    <button class="icon-btn table-add-btn">+</button>
-                </a>
 
                 <table>
                     <thead>

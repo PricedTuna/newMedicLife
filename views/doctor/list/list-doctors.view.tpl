@@ -31,6 +31,7 @@
                 <h1>Lista de médicos    </h1>
                 <a href="/views/doctor/register/register-doctor.view.php">
                     <button class="create-btn">Agregar médicos</button>
+                    <button class="icon-btn table-add-btn">+</button>
                 </a>
             </div>
 
@@ -57,9 +58,6 @@
                     </div>
                 {/if}
 
-                <a href="/views/doctor/register/register-doctor.view.php" aria-label="Agregar doctor">
-                    <button class="icon-btn table-add-btn">+</button>
-                </a>
 
                 <table>
                     <thead>

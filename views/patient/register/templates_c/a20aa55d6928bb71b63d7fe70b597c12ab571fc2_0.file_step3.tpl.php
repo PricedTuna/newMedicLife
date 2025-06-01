@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 04:07:58
+/* Smarty version 5.4.5, created on 2025-06-01 05:31:22
   from 'file:steps/step3.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833e91ea2c390_35437167',
+  'unifunc' => 'content_683be5aab6d501_26996037',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'a20aa55d6928bb71b63d7fe70b597c12ab571fc2' => 
     array (
       0 => 'steps/step3.tpl',
-      1 => 1748223206,
+      1 => 1748755867,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833e91ea2c390_35437167 (\Smarty\Template $_smarty_tpl) {
+function content_683be5aab6d501_26996037 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
 ?><div class="form-step" id="step-3" style="display: none;">
     <div class="form-group">
@@ -41,12 +41,14 @@ $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
         <label for="maritalStatus">Estado Civil</label>
         <select id="maritalStatus" name="marital_status" required>
             <option value="">Seleccione...</option>
-            <option>Soltero(a)</option>
-            <option>Casado(a)</option>
-            <option>Viudo(a)</option>
-            <option>Unión libre</option>
+            <option value="Soltero(a)" <?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['marital_status'] == "Soltero(a)") {?>selected<?php }?>>Soltero(a)</option>
+            <option value="Casado(a)" <?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['marital_status'] == "Casado(a)") {?>selected<?php }?>>Casado(a)</option>
+            <option value="Viudo(a)" <?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['marital_status'] == "Viudo(a)") {?>selected<?php }?>>Viudo(a)</option>
+            <option value="Unión libre" <?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['marital_status'] == "Unión libre") {?>selected<?php }?>>Unión libre</option>
         </select>
     </div>
+
+
     <div class="form-group">
         <label for="weight">Peso (kg)</label>
         <input type="number" id="weight" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['weight'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
@@ -69,5 +71,6 @@ $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
     </div>
     <button type="button" class="prev-btn" onclick="prevStep(2)">Atrás</button>
     <button type="button" class="next-btn" onclick="nextStep(4)">Siguiente</button>
-</div><?php }
+</div>
+<?php }
 }

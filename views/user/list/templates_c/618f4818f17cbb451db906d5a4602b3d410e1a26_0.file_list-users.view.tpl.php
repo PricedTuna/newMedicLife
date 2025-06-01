@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-30 08:51:35
+/* Smarty version 5.4.5, created on 2025-06-01 05:34:56
   from 'file:list-users.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68397197879968_79277018',
+  'unifunc' => 'content_683be680abadf6_59477654',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '618f4818f17cbb451db906d5a4602b3d410e1a26' => 
     array (
       0 => 'list-users.view.tpl',
-      1 => 1748595078,
+      1 => 1748755867,
       2 => 'file',
     ),
   ),
@@ -21,13 +21,14 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_68397197879968_79277018 (\Smarty\Template $_smarty_tpl) {
+function content_683be680abadf6_59477654 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/list';
 ?><!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <?php echo '<script'; ?>
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >

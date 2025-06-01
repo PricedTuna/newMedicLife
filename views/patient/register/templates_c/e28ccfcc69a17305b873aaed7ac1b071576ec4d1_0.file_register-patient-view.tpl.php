@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 04:07:58
+/* Smarty version 5.4.5, created on 2025-06-01 05:31:22
   from 'file:register-patient-view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833e91ea18490_77656938',
+  'unifunc' => 'content_683be5aab58228_26391468',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'e28ccfcc69a17305b873aaed7ac1b071576ec4d1' => 
     array (
       0 => 'register-patient-view.tpl',
-      1 => 1748223206,
+      1 => 1748755867,
       2 => 'file',
     ),
   ),
@@ -25,7 +25,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:steps/step4.tpl' => 1,
   ),
 ))) {
-function content_6833e91ea18490_77656938 (\Smarty\Template $_smarty_tpl) {
+function content_683be5aab58228_26391468 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -33,8 +33,12 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <link rel="stylesheet" href="./register-patient.styles.css">
     <link rel="stylesheet" href="../../components/sidebar.styles.css">
+    <?php echo '<script'; ?>
+ src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
+>
     <?php echo '<script'; ?>
  src="../../components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
@@ -53,6 +57,16 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
 ;
         window.states = <?php echo json_encode($_smarty_tpl->getValue('states'));?>
 ;
+
+        // Datos preseleccionados para actualización
+        window.preselectedPatientData = {
+            state: <?php echo (($tmp = $_smarty_tpl->getValue('patient')['id_state'] ?? null)===null||$tmp==='' ? 'null' ?? null : $tmp);?>
+,
+            municipality: <?php echo (($tmp = $_smarty_tpl->getValue('patient')['id_municipality'] ?? null)===null||$tmp==='' ? 'null' ?? null : $tmp);?>
+,
+            locality: <?php echo (($tmp = $_smarty_tpl->getValue('patient')['id_locality'] ?? null)===null||$tmp==='' ? 'null' ?? null : $tmp);?>
+
+        };
     <?php echo '</script'; ?>
 >
     <?php echo '<script'; ?>
@@ -113,5 +127,6 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
 
 </body>
 
-</html><?php }
+</html>
+<?php }
 }

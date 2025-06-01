@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-30 04:50:59
+/* Smarty version 5.4.5, created on 2025-06-01 05:31:45
   from 'file:login.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683939333e84b1_32951186',
+  'unifunc' => 'content_683be5c1694cd3_02931454',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '3630325cfa1d910fe352d3d6f7f7094315bc59aa' => 
     array (
       0 => 'login.view.tpl',
-      1 => 1748580658,
+      1 => 1748755867,
       2 => 'file',
     ),
   ),
@@ -20,13 +20,14 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_683939333e84b1_32951186 (\Smarty\Template $_smarty_tpl) {
+function content_683be5c1694cd3_02931454 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/login';
 ?><!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <title>Iniciar sesión</title>
     <?php echo '<script'; ?>
  src="/views/login/login.app.js" defer><?php echo '</script'; ?>

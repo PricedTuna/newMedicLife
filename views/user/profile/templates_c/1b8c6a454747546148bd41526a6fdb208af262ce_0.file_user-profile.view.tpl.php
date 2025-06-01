@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-30 08:24:08
+/* Smarty version 5.4.5, created on 2025-06-01 05:34:56
   from 'file:user-profile.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68396b28beae85_97179926',
+  'unifunc' => 'content_683be680088f75_62758879',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1b8c6a454747546148bd41526a6fdb208af262ce' => 
     array (
       0 => 'user-profile.view.tpl',
-      1 => 1748593440,
+      1 => 1748755867,
       2 => 'file',
     ),
   ),
@@ -21,13 +21,14 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_68396b28beae85_97179926 (\Smarty\Template $_smarty_tpl) {
+function content_683be680088f75_62758879 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/profile';
 ?><!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <?php echo '<script'; ?>
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
 >
@@ -42,6 +43,37 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
     <?php echo '<script'; ?>
 >
         document.addEventListener('DOMContentLoaded', function() {
+            // Helper functions for form validation
+            function showInputError(input, message) {
+                // Remove any existing error message
+                clearInputError(input);
+
+                // Add error class to input
+                input.classList.add('input-error');
+
+                // Create and append error message
+                const errorElement = document.createElement('div');
+                errorElement.className = 'error-message';
+                errorElement.textContent = message;
+                input.parentNode.appendChild(errorElement);
+            }
+
+            function clearInputError(input) {
+                // Remove error class from input
+                input.classList.remove('input-error');
+
+                // Remove any existing error message
+                const errorElement = input.parentNode.querySelector('.error-message');
+                if (errorElement) {
+                    errorElement.remove();
+                }
+            }
+
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            // Photo preview functionality
             const fileInput = document.getElementById('doctor-photo-profile');
             const imagePreview = document.getElementById('image-preview');
             const previewPlaceholder = document.getElementById('preview-placeholder');
@@ -61,6 +93,139 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
                     } else {
                         imagePreview.style.display = 'none';
                         previewPlaceholder.style.display = 'flex';
+                    }
+                });
+            }
+
+            // Profile edit functionality
+            const editProfileBtn = document.getElementById('edit-profile-btn');
+            const cancelEditBtn = document.getElementById('cancel-edit-btn');
+            const profileInfoView = document.getElementById('profile-info-view');
+            const profileEditForm = document.getElementById('profile-edit-form');
+
+            if (editProfileBtn && cancelEditBtn && profileInfoView && profileEditForm) {
+                // Toggle to edit mode
+                editProfileBtn.addEventListener('click', function() {
+                    profileInfoView.style.display = 'none';
+                    profileEditForm.style.display = 'block';
+                    editProfileBtn.style.display = 'none';
+                });
+
+                // Toggle back to view mode
+                cancelEditBtn.addEventListener('click', function() {
+                    profileInfoView.style.display = 'flex';
+                    profileEditForm.style.display = 'none';
+                    editProfileBtn.style.display = 'inline-block';
+                });
+
+                // Form validation
+                const profileForm = profileEditForm.querySelector('form');
+                profileForm.addEventListener('submit', function(event) {
+                    const nameInput = document.getElementById('name');
+                    const emailInput = document.getElementById('email');
+                    let isValid = true;
+
+                    // Validate name
+                    if (!nameInput.value.trim()) {
+                        showInputError(nameInput, 'El nombre es obligatorio');
+                        isValid = false;
+                    } else {
+                        clearInputError(nameInput);
+                    }
+
+                    // Validate email
+                    if (!emailInput.value.trim()) {
+                        showInputError(emailInput, 'El correo electrónico es obligatorio');
+                        isValid = false;
+                    } else if (!isValidEmail(emailInput.value.trim())) {
+                        showInputError(emailInput, 'El correo electrónico no es válido');
+                        isValid = false;
+                    } else {
+                        clearInputError(emailInput);
+                    }
+
+                    if (!isValid) {
+                        event.preventDefault();
+                    }
+                });
+            }
+
+            // Password change functionality
+            const changePasswordBtn = document.getElementById('change-password-btn');
+            const cancelPasswordBtn = document.getElementById('cancel-password-btn');
+            const passwordChangeForm = document.getElementById('password-change-form');
+
+            if (changePasswordBtn && cancelPasswordBtn && passwordChangeForm) {
+                // Toggle to password change mode
+                changePasswordBtn.addEventListener('click', function() {
+                    passwordChangeForm.style.display = 'block';
+                    changePasswordBtn.style.display = 'none';
+                });
+
+                // Toggle back to view mode
+                cancelPasswordBtn.addEventListener('click', function() {
+                    passwordChangeForm.style.display = 'none';
+                    changePasswordBtn.style.display = 'inline-block';
+
+                    // Clear form fields
+                    const passwordForm = passwordChangeForm.querySelector('form');
+                    if (passwordForm) {
+                        passwordForm.reset();
+                    }
+
+                    // Clear any error messages
+                    const errorMessages = passwordChangeForm.querySelectorAll('.error-message');
+                    errorMessages.forEach(function(errorMessage) {
+                        errorMessage.remove();
+                    });
+
+                    // Remove error classes from inputs
+                    const inputs = passwordChangeForm.querySelectorAll('input');
+                    inputs.forEach(function(input) {
+                        input.classList.remove('input-error');
+                    });
+                });
+
+                // Form validation
+                const passwordForm = passwordChangeForm.querySelector('form');
+                passwordForm.addEventListener('submit', function(event) {
+                    const currentPasswordInput = document.getElementById('current_password');
+                    const newPasswordInput = document.getElementById('new_password');
+                    const confirmPasswordInput = document.getElementById('confirm_password');
+                    let isValid = true;
+
+                    // Validate current password
+                    if (!currentPasswordInput.value.trim()) {
+                        showInputError(currentPasswordInput, 'La contraseña actual es obligatoria');
+                        isValid = false;
+                    } else {
+                        clearInputError(currentPasswordInput);
+                    }
+
+                    // Validate new password
+                    if (!newPasswordInput.value.trim()) {
+                        showInputError(newPasswordInput, 'La nueva contraseña es obligatoria');
+                        isValid = false;
+                    } else if (newPasswordInput.value.length < 8) {
+                        showInputError(newPasswordInput, 'La nueva contraseña debe tener al menos 8 caracteres');
+                        isValid = false;
+                    } else {
+                        clearInputError(newPasswordInput);
+                    }
+
+                    // Validate confirm password
+                    if (!confirmPasswordInput.value.trim()) {
+                        showInputError(confirmPasswordInput, 'Debe confirmar la nueva contraseña');
+                        isValid = false;
+                    } else if (confirmPasswordInput.value !== newPasswordInput.value) {
+                        showInputError(confirmPasswordInput, 'Las contraseñas no coinciden');
+                        isValid = false;
+                    } else {
+                        clearInputError(confirmPasswordInput);
+                    }
+
+                    if (!isValid) {
+                        event.preventDefault();
                     }
                 });
             }
@@ -97,7 +262,14 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
                 <div class="profile-container">
                     <div class="profile-section">
                         <h2>Información del Usuario</h2>
-                        <div class="profile-info">
+                        <div class="profile-actions">
+                            <button type="button" id="edit-profile-btn" class="edit-profile-btn">
+                                <i class="bi bi-pencil"></i> Editar Perfil
+                            </button>
+                        </div>
+
+                        <!-- Vista de información (modo predeterminado) -->
+                        <div id="profile-info-view" class="profile-info">
                             <div class="info-item">
                                 <span class="label">ID:</span>
                                 <span class="value"><?php echo $_smarty_tpl->getValue('user')['id'];?>
@@ -140,6 +312,72 @@ echo $_smarty_tpl->getValue('user')['status'];?>
                                     <?php }?>
                                 </span>
                             </div>
+                        </div>
+
+                        <!-- Formulario de edición (oculto por defecto) -->
+                        <div id="profile-edit-form" class="profile-edit-form" style="display: none;">
+                            <form action="/controllers/user/update-profile.controller.php" method="POST">
+                                <input type="hidden" name="user_id" value="<?php echo $_smarty_tpl->getValue('user')['id'];?>
+">
+
+                                <div class="form-group">
+                                    <label for="name">Nombre:</label>
+                                    <input type="text" id="name" name="name" value="<?php echo $_smarty_tpl->getValue('user')['name'];?>
+" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Correo Electrónico:</label>
+                                    <input type="email" id="email" name="email" value="<?php echo $_smarty_tpl->getValue('user')['email'];?>
+" required>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="save-btn">Guardar Cambios</button>
+                                    <button type="button" id="cancel-edit-btn" class="cancel-btn">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Sección de Cambio de Contraseña -->
+                    <div class="profile-section password-section">
+                        <h2>Cambiar Contraseña</h2>
+                        <div class="profile-actions">
+                            <button type="button" id="change-password-btn" class="edit-profile-btn">
+                                <i class="bi bi-key"></i> Cambiar Contraseña
+                            </button>
+                        </div>
+
+                        <!-- Formulario de cambio de contraseña (oculto por defecto) -->
+                        <div id="password-change-form" class="profile-edit-form" style="display: none;">
+                            <form action="/controllers/user/change-password.controller.php" method="POST">
+                                <input type="hidden" name="user_id" value="<?php echo $_smarty_tpl->getValue('user')['id'];?>
+">
+
+                                <div class="form-group">
+                                    <label for="current_password">Contraseña Actual:</label>
+                                    <input type="password" id="current_password" name="current_password" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="new_password">Nueva Contraseña:</label>
+                                    <input type="password" id="new_password" name="new_password" required>
+                                    <div class="password-requirements">
+                                        <small>La contraseña debe tener al menos 8 caracteres</small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="confirm_password">Confirmar Contraseña:</label>
+                                    <input type="password" id="confirm_password" name="confirm_password" required>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="save-btn">Guardar Cambios</button>
+                                    <button type="button" id="cancel-password-btn" class="cancel-btn">Cancelar</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
@@ -270,18 +508,6 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                 </div>
             <?php }?>
 
-            <!-- Nueva sección de Configuraciones -->
-            <div class="profile-section settings-section">
-                <h2>Configuraciones</h2>
-                <div class="settings-container">
-                    <div class="setting-item">
-                        <span class="setting-label">Asistente de voz:</span>
-                        <button id="voiceToggleBtn" aria-label="Asistente de voz" title="Asistente de voz" class="voice-toggle-btn">
-                            🔈
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
 </body>

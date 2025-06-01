@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 04:07:58
+/* Smarty version 5.4.5, created on 2025-06-01 05:31:22
   from 'file:/var/www/html/views/patient/register/../../components/sidebar.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833e91ea1a318_88467727',
+  'unifunc' => 'content_683be5aab5a610_13226027',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '6ebc968acad58088d99acc4c521963970196ad4b' => 
     array (
       0 => '/var/www/html/views/patient/register/../../components/sidebar.tpl',
-      1 => 1748229875,
+      1 => 1748755867,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833e91ea1a318_88467727 (\Smarty\Template $_smarty_tpl) {
+function content_683be5aab5a610_13226027 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/components';
 ?><nav id="sidebar">
     <ul>
@@ -111,6 +111,9 @@ $_smarty_current_dir = '/var/www/html/views/components';
                 <span>Médicos</span>
             </a>
         </li>
+        <?php echo '<?php'; ?>
+ if (isset($_SESSION['role']) && $_SESSION['role'] === 'A'): <?php echo '?>'; ?>
+
         <li>
             <a href="/views/user/list/list-users.view.php">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -119,6 +122,27 @@ $_smarty_current_dir = '/var/www/html/views/components';
                         d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Zm80 0h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
                 </svg>
                 <span>Usuarios</span>
+            </a>
+        </li>
+        <?php echo '<?php'; ?>
+ endif; <?php echo '?>'; ?>
+
+        <li>
+            <a href="/views/user/profile/user-profile.view.php">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000">
+                    <path
+                        d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z" />
+                </svg>
+                <span>Mi Perfil</span>
+            </a>
+        </li>
+        <li>
+            <a href="/views/settings/settings.view.php">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000">
+                    <path
+                        d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm112-260q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                </svg>
+                <span>Configuraciones</span>
             </a>
         </li>
         <li>

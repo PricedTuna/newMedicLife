@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 04:07:58
+/* Smarty version 5.4.5, created on 2025-06-01 05:31:22
   from 'file:steps/step2.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833e91ea266f5_14802391',
+  'unifunc' => 'content_683be5aab65806_16253769',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '637a83c9f6f368fa6182ec0c821c4249a0a8bcaa' => 
     array (
       0 => 'steps/step2.tpl',
-      1 => 1748223206,
+      1 => 1748755867,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833e91ea266f5_14802391 (\Smarty\Template $_smarty_tpl) {
+function content_683be5aab65806_16253769 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
 ?><div class="form-step" id="step-2" style="display: none;">
     <div class="form-group">
@@ -45,8 +45,8 @@ $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
     </div>
     <div class="form-group">
         <label for="intNumber">Número Interior</label>
-        <input type="text" id="extNumber" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['internal_number'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
-" name="intNumber" required>
+        <input type="text" id="intNumber" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['internal_number'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
+" name="intNumber">
     </div>
     <div class="form-group">
         <label for="state">Estado</label>

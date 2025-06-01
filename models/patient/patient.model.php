@@ -244,4 +244,21 @@ class PatientModel
             return [];
         }
     }
+
+    /**
+     * Busca un paciente por su CURP
+     * @param string $curp CURP del paciente a buscar
+     * @return array|null Datos del paciente o null si no se encuentra
+     */
+    public function getPatientByCURP($curp)
+    {
+        try {
+            $stmt = $this->pdo->prepare("SELECT * FROM patients WHERE CURP = :curp AND status != 'I'");
+            $stmt->execute([':curp' => $curp]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al buscar paciente por CURP: " . $e->getMessage());
+            return null;
+        }
+    }
 }

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-30 07:52:03
+/* Smarty version 5.4.5, created on 2025-06-01 05:34:58
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683963a38deb66_47616347',
+  'unifunc' => 'content_683be6820e29a7_38344946',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8f0f5c04f0f9a75b79c6221ce635ba02f3b6741e' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1748590929,
+      1 => 1748755867,
       2 => 'file',
     ),
   ),
@@ -21,12 +21,13 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683963a38deb66_47616347 (\Smarty\Template $_smarty_tpl) {
+function content_683be6820e29a7_38344946 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/list';
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     
     <?php echo '<script'; ?>
  src="/views/patient/list/views-handler.js" defer><?php echo '</script'; ?>

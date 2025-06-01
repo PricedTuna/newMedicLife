@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 04:07:58
+/* Smarty version 5.4.5, created on 2025-06-01 05:31:22
   from 'file:steps/step1.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833e91ea21d06_59607248',
+  'unifunc' => 'content_683be5aab61981_61504126',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '22926d3b69cd42512c9a671fef3a2a1e5d918d6d' => 
     array (
       0 => 'steps/step1.tpl',
-      1 => 1748223206,
+      1 => 1748755867,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833e91ea21d06_59607248 (\Smarty\Template $_smarty_tpl) {
+function content_683be5aab61981_61504126 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
 ?><input type="hidden" name="patient_id" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
 ">
@@ -77,6 +77,13 @@ $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
     <div class="form-group">
         <label for="photo" class="file-label" id="photo-label">Subir Foto</label>
         <input type="file" id="photo" name="photo" accept="image/*" <?php if (!$_smarty_tpl->getValue('patient')) {?>required<?php }?>>
+        <div id="image-preview-container" class="image-preview-container">
+            <img id="image-preview" class="image-preview" src="<?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['photo']) {?>/controllers/patient/mostrar_foto.php?id=<?php echo $_smarty_tpl->getValue('patient')['id'];
+}?>" alt="Vista previa" style="<?php if (!(true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) || !$_smarty_tpl->getValue('patient')['photo']) {?>display: none;<?php } else { ?>display: block;<?php }?>">
+            <div id="preview-placeholder" class="preview-placeholder" style="<?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['photo']) {?>display: none;<?php } else { ?>display: flex;<?php }?>">
+                <span>Vista previa de la imagen</span>
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <label for="affiliationNumber">Número de Afiliación</label>

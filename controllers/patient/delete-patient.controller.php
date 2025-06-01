@@ -2,6 +2,7 @@
 
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/utils.php';
 
 // Only administrators and secretaries can delete patients
 checkUserRole(['A', 'S']);
@@ -9,7 +10,7 @@ checkUserRole(['A', 'S']);
 header('Content-Type: application/json'); // Indicamos que la respuesta es JSON
 
 // 📌 Registra la solicitud en un log temporal
-file_put_contents("debug.log", json_encode($_POST) . PHP_EOL, FILE_APPEND);
+file_put_contents("debug.log", json_encode(utf8ize($_POST)) . PHP_EOL, FILE_APPEND);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['patient_id']) && is_numeric($_POST['patient_id'])) {
@@ -30,5 +31,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 } else {
-    echo json_encode(["success" => false, "message" => "Método no permitido."]);
+    echo json_encode(utf8ize(["success" => false, "message" => "Método no permitido."]));
 }

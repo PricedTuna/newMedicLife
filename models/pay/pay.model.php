@@ -1,4 +1,6 @@
  <?php
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/utils.php';
+
     class PaymentModel
     {
         private $clientId;
@@ -77,7 +79,7 @@
                 "Content-Type: application/json",
                 "Authorization: Bearer $accessToken"
             ]);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($paymentData));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(utf8ize($paymentData)));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
             $response = curl_exec($ch);
@@ -120,7 +122,7 @@
             $paypal_order_id = $result->id ?? null;
             $paypal_payer_id = $result->payer->payer_id ?? $payerId; // Fallback al parámetro recibido
             $status = $result->status ?? 'UNKNOWN';
-            $response_json = json_encode($result);
+            $response_json = json_encode(utf8ize($result));
 
             session_start();
             $id_user = $_SESSION['id_user'] ?? null;

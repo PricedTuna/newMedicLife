@@ -3,6 +3,7 @@
 require_once $_SERVER["DOCUMENT_ROOT"] . "/config/database.config.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/models/patient/patient.model.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/models/email/email.model.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/utils/utils.php";
 
 /**
  * Controlador para la historia médica de pacientes
@@ -110,16 +111,6 @@ class MedicalStoryController {
     }
 }
 
-function utf8ize($data) {
-    if (is_array($data)) {
-        foreach ($data as $key => $value) {
-            $data[$key] = utf8ize($value);
-        }
-    } elseif (is_string($data)) {
-        return mb_convert_encoding($data, 'UTF-8', 'UTF-8');
-    }
-    return $data;
-}
 
 // Procesar solicitudes AJAX
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {

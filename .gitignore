@@ -9,3 +9,8 @@
 /dataSources.local.xml
 /vendor/
 **/templates_c/
+# Ignorar archivos de entorno
+**.env
+**.env.*
+.env
+.env.*

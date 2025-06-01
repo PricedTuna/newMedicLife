@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 19:27:05
+/* Smarty version 5.4.5, created on 2025-06-01 22:17:16
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683ca98992d4c0_57755110',
+  'unifunc' => 'content_683cd16cd4e3c2_29462119',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8f0f5c04f0f9a75b79c6221ce635ba02f3b6741e' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1748805968,
+      1 => 1748815854,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683ca98992d4c0_57755110 (\Smarty\Template $_smarty_tpl) {
+function content_683cd16cd4e3c2_29462119 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -146,6 +146,10 @@ echo htmlspecialchars((string)$_smarty_tpl->getValue('patient')['gender'], ENT_Q
                                         <a href="/views/patient/register/register-patient.view.php?id=<?php echo $_smarty_tpl->getValue('patient')['id'];?>
 " class="action-wrapper">
                                             <button class="update-btn">Actualizar</button>
+                                        </a>
+                                        <a href="/views/patient/profile/patient-profile.view.php?id=<?php echo $_smarty_tpl->getValue('patient')['id'];?>
+" class="action-wrapper">
+                                            <button class="view-btn">Ver Perfil</button>
                                         </a>
                                     </td>
                                 </tr>

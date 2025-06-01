@@ -99,6 +99,9 @@
                                         <a href="/views/doctor/register/register-doctor.view.php?id={$doctor.id}" class="action-wrapper">
                                             <button class="update-btn">Actualizar</button>
                                         </a>
+                                        <a href="/views/doctor/profile/doctor-profile.view.php?id={$doctor.id}" class="action-wrapper">
+                                            <button class="view-btn">Ver Perfil</button>
+                                        </a>
                                     </td>
                                 </tr>
                             {/foreach}

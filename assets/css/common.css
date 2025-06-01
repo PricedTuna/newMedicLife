@@ -23,6 +23,8 @@
   --finish-btn-clr: #4edd85;
   --password-btn-clr: #27ae60;
   --password-btn-hover-clr: #219653;
+  --view-btn-clr: #9b59b6;
+  --view-btn-hover-clr: #8e44ad;
 }
 
 /* Base styles */
@@ -94,7 +96,8 @@ button {
 .create-btn,
 .finish-btn,
 .back-btn,
-.password-btn {
+.password-btn,
+.view-btn {
   flex: 1;
   width: 100%;
   padding: 0.8rem;
@@ -156,6 +159,15 @@ button {
 
 .password-btn:hover {
   background-color: var(--password-btn-hover-clr);
+  transform: scale(1.05);
+}
+
+.view-btn {
+  background-color: var(--view-btn-clr);
+}
+
+.view-btn:hover {
+  background-color: var(--view-btn-hover-clr);
   transform: scale(1.05);
 }
 

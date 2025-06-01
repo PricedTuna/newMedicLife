@@ -98,6 +98,9 @@
                                         <a href="/views/patient/register/register-patient.view.php?id={$patient.id}" class="action-wrapper">
                                             <button class="update-btn">Actualizar</button>
                                         </a>
+                                        <a href="/views/patient/profile/patient-profile.view.php?id={$patient.id}" class="action-wrapper">
+                                            <button class="view-btn">Ver Perfil</button>
+                                        </a>
                                     </td>
                                 </tr>
                             {/foreach}

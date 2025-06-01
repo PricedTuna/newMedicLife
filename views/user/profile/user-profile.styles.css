@@ -587,6 +587,118 @@ main {
   }
 }
 
+/* Emergency Contacts Table */
+.emergency-contacts-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.emergency-contacts-table thead {
+  background-color: #e74c3c; /* Red color for emergency */
+  color: white;
+}
+
+.emergency-contacts-table th {
+  padding: 0.8rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.emergency-contacts-table td {
+  padding: 0.8rem;
+  border-bottom: 1px solid var(--line-clr);
+}
+
+.emergency-contacts-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.emergency-contacts-table tbody tr:hover {
+  background-color: #fde3e3; /* Light red on hover */
+}
+
+.emergency-contact-card {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-top: 1rem;
+  border-left: 4px solid #e74c3c;
+}
+
+.emergency-contact-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.emergency-contact-header i {
+  color: #e74c3c;
+  font-size: 1.5rem;
+  margin-right: 0.8rem;
+}
+
+.emergency-contact-header h3 {
+  color: #e74c3c;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.emergency-contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.emergency-contact-detail {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.emergency-contact-label {
+  font-size: 0.9rem;
+  color: var(--secondary-text-clr);
+  margin-bottom: 0.3rem;
+}
+
+.emergency-contact-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.emergency-phone {
+  display: flex;
+  align-items: center;
+}
+
+.emergency-phone i {
+  color: #e74c3c;
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .emergency-contacts-table {
+    font-size: 0.9rem;
+  }
+
+  .emergency-contacts-table th,
+  .emergency-contacts-table td {
+    padding: 0.6rem;
+  }
+
+  .emergency-contact-card {
+    padding: 1rem;
+  }
+}
+
 /* Settings Section */
 .settings-section {
   background-color: var(--base-clr);

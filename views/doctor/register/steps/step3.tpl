@@ -1,4 +1,3 @@
-<!-- Paso 3 -->
 <div class="form-step" id="step-3" style="display: none;">
     <div class="form-group">
         <label for="curp">CURP</label>

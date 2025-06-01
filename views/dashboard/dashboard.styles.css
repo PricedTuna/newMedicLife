@@ -22,16 +22,15 @@ html {
 
 main {
     display: flex;
-    gap: 10px; /* Reducir espacio entre elementos */
+    gap: 10px;
     align-items: flex-start;
     margin-left: 20px;
 }
 
-/* Contenido principal ocupa el espacio restante */
 .main-content {
     flex-grow: 1;
     background-color: var(--hover-clr);
-    padding: 10px; /* Reducir padding */
+    padding: 10px;
     border-radius: 5px;
 }
 
@@ -137,7 +136,6 @@ header h1 {
 
 .doctor-info {
     width: 300px;
-    /* Ancho fijo */
     background-color: var(--hover-clr);
     padding: 20px;
     border-radius: 0.5em;
@@ -262,17 +260,12 @@ header h1 {
 
 @media (max-width: 810px) {
 
-    /* 1) Cambiamos sólo la disposición interna de <main>, no tocamos el sidebar */
     main {
         display: flex;
         flex-direction: column;
-        /* pone doctor-info debajo de main-content */
         gap: 10px;
-        /* mismo gap que antes */
         margin-left: 20px;
-        /* conserva el gutter respecto al sidebar */
         margin-right: 20px;
-        /* conserva el gutter respecto al sidebar */
     }
 
     .main-content,
@@ -292,35 +285,26 @@ header h1 {
 
 @media (max-width: 800px) {
 
-    /* 1) Desactiva la grid del body */
     body {
         display: block;
-        /* ya no habrá dos columnas */
         grid-template-columns: unset;
-        /* o: grid-template-columns: none; */
         margin: 0;
         padding: 0;
     }
 
-    /* 2) Main con gutters fijos (izq y derecha iguales) */
     main {
         display: flex;
         flex-direction: column;
         gap: 10px;
         max-width: 1000px;
-        /* o el ancho que quieras */
         margin: 0 auto;
-        /* centra en la pantalla */
         padding-top: 1.5em;
         padding-bottom: 60px;
         padding-left: 20px;
-        /* gutter fijo */
         padding-right: 20px;
-        /* gutter fijo */
         box-sizing: border-box;
     }
 
-    /* 3) Paneles al 100% del ancho interno de main */
     .main-content,
     .doctor-info,
     .upcoming-appointments,
@@ -408,7 +392,6 @@ header h1 {
     color: #0052aa;
 }
 
-/* Responsive para móviles */
 @media screen and (max-width: 768px) {
 
     .chart-placeholder table,
@@ -444,7 +427,6 @@ header h1 {
         display: inline-block;
         font-weight: 600;
         min-width: 90px;
-        /* reducido */
         color: #003366;
         margin-right: 0.5rem;
         white-space: nowrap;
@@ -524,7 +506,6 @@ header h1 {
   cursor: pointer;
 }
 
-/* Estilos para tooltips en días con citas */
 .has-tooltip {
   position: relative;
 }
@@ -544,7 +525,6 @@ header h1 {
   font-size: 12px;
 }
 
-/* Estilos para el indicador de carga */
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -572,7 +552,6 @@ header h1 {
   to { transform: rotate(360deg); }
 }
 
-/* boton para buscar doctor */
 .doctor-select-container {
     margin-top: 1rem;
     max-width: 320px;
@@ -583,33 +562,32 @@ header h1 {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #1e3a8a; /* Azul oscuro */
+    color: #1e3a8a;
   }
 
   #doctor-select {
     width: 100%;
     padding: 0.5rem 0.75rem;
     font-size: 1rem;
-    border: 2px solid #3b82f6; /* Azul */
+    border: 2px solid #3b82f6;
     border-radius: 6px;
-    background-color: #e0e7ff; /* Azul claro */
+    background-color: #e0e7ff;
     color: #1e3a8a;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
   }
 
   #doctor-select:hover {
-    border-color: #2563eb; /* Azul más intenso */
+    border-color: #2563eb;
   }
 
   #doctor-select:focus {
     outline: none;
-    border-color: #1d4ed8; /* Azul enfocado */
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Sombra azul */
-    background-color: #c7d2fe; /* Azul muy claro */
+    border-color: #1d4ed8;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    background-color: #c7d2fe;
   }
 
-  /* Opcional: estilo para el placeholder opción */
   #doctor-select option[value=""] {
     color: #2563eb;
     font-style: italic;

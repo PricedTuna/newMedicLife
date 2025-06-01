@@ -14,7 +14,7 @@
 
 <body>
 
-    {include file=$sidebarPath} <!-- Aquí se incluye el sidebar, según la variable Smarty -->
+    {include file=$sidebarPath}
 
     <main class="content">
 
@@ -36,7 +36,6 @@
                     </h2>
                 </div>
 
-                <!-- Si hay un error, lo mostramos aquí -->
                 {if isset($error)}
                     <div
                         style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
@@ -44,7 +43,6 @@
                     </div>
                 {/if}
 
-                <!-- Si hay un mensaje de éxito, lo mostramos aquí -->
                 {if isset($success)}
                     <div
                         style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
@@ -52,7 +50,6 @@
                     </div>
                 {/if}
 
-                <!-- Formulario para registrar o actualizar usuario -->
                 <form action="/controllers/auth/register.controller.php" method="POST" id="user-form">
                     {if $editMode}
                         <input type="hidden" name="user_id" value="{$userData.id}">
@@ -129,7 +126,6 @@
                             const nameInput = document.getElementById('name');
                             const emailInput = document.getElementById('email');
 
-                            // Función para mostrar/ocultar el selector de doctores
                             function toggleDoctorSelect() {
                                 if (roleSelect.value === 'D') {
                                     doctorSelectContainer.style.display = 'flex';
@@ -141,17 +137,13 @@
                                 }
                             }
 
-                            // Inicializar el estado
                             toggleDoctorSelect();
 
-                            // Si estamos en modo edición, deshabilitar el selector de rol para todos los usuarios
                             const editMode = document.querySelector('input[name="edit_mode"]');
                             if (editMode) {
-                                // Deshabilitar el selector de rol para todos los usuarios en modo edición
                                 roleSelect.disabled = true;
                                 roleSelect.classList.add('input-disabled');
 
-                                // Si además es un doctor y hay un doctor seleccionado, deshabilitar también el selector de doctor
                                 if (roleSelect.value === 'D' && doctorSelect.value) {
                                     const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
                                     const doctorInfo = selectedOption.text.split(' - ');
@@ -161,17 +153,14 @@
                                         nameInput.classList.add('input-disabled');
                                         emailInput.classList.add('input-disabled');
 
-                                        // Deshabilitar el selector de doctor cuando se edita un usuario doctor
                                         doctorSelect.disabled = true;
                                         doctorSelect.classList.add('input-disabled');
                                     }
                                 }
                             }
 
-                            // Escuchar cambios en el selector de rol
                             roleSelect.addEventListener('change', toggleDoctorSelect);
 
-                            // Cuando se selecciona un doctor, autocompletar nombre y email
                             doctorSelect.addEventListener('change', function() {
                                 if (this.value && roleSelect.value === 'D') {
                                     const selectedOption = this.options[this.selectedIndex];
@@ -212,16 +201,13 @@
             const isEditMode = document.querySelector('input[name="edit_mode"]') !== null;
             const isPasswordChangeMode = document.querySelector('input[name="password_change_mode"]') !== null;
 
-            // Clear previous error
             passwordError.style.display = 'none';
             passwordError.textContent = '';
 
-            // Skip validation if password is empty and we're in edit mode (not password change mode)
             if (passwordInput.value === '' && isEditMode && !isPasswordChangeMode) {
                 return true;
             }
 
-            // Validate password length
             if (passwordInput.value.length < 8) {
                 passwordError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
                 passwordError.style.display = 'block';
@@ -238,16 +224,13 @@
             const isEditMode = document.querySelector('input[name="edit_mode"]') !== null;
             const isPasswordChangeMode = document.querySelector('input[name="password_change_mode"]') !== null;
 
-            // Clear previous error
             confirmPasswordError.style.display = 'none';
             confirmPasswordError.textContent = '';
 
-            // Skip validation if both passwords are empty and we're in edit mode (not password change mode)
             if (passwordInput.value === '' && confirmPasswordInput.value === '' && isEditMode && !isPasswordChangeMode) {
                 return true;
             }
 
-            // Validate password match
             if (passwordInput.value !== confirmPasswordInput.value) {
                 confirmPasswordError.textContent = 'Las contraseñas no coinciden.';
                 confirmPasswordError.style.display = 'block';
@@ -261,19 +244,15 @@
             const userForm = document.getElementById('user-form');
 
             userForm.addEventListener('submit', function(event) {
-                // Prevent the default form submission
                 event.preventDefault();
 
-                // Validate password fields before submission
                 const isPasswordValid = validatePassword();
                 const isPasswordMatchValid = validatePasswordMatch();
 
-                // If validation fails, stop form submission
                 if (!isPasswordValid || !isPasswordMatchValid) {
                     return;
                 }
 
-                // Determine the action based on form mode
                 let title, confirmButtonText;
                 const isEditMode = document.querySelector('input[name="edit_mode"]') !== null;
                 const isPasswordChangeMode = document.querySelector('input[name="password_change_mode"]') !== null;
@@ -289,7 +268,6 @@
                     confirmButtonText = "Registrar";
                 }
 
-                // Show SweetAlert confirmation
                 Swal.fire({
                     title: title,
                     text: "",
@@ -299,7 +277,6 @@
                     cancelButtonText: "Cancelar"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // If confirmed, submit the form
                         userForm.submit();
                     }
                 });

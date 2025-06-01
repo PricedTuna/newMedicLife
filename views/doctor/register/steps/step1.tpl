@@ -1,4 +1,3 @@
-<!-- Paso 1 -->
 <input type="hidden" name="doctor_id" value="{$doctor.id|default:''}">
 
 <div class="form-step" id="step-1">

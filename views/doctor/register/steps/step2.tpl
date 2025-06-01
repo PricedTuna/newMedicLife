@@ -1,4 +1,3 @@
-<!-- Paso 2 -->
 <div class="form-step" id="step-2" style="display: none;">
     <div class="form-group">
         <label for="street">Calle</label>

@@ -16,7 +16,6 @@
     <title>Registro de Médicos</title>
 
     <script>
-        // Asegúrate de que las variables de Smarty se inyecten correctamente en JavaScript
         window.municipalities = {$municipalities|json_encode};
         window.localities = {$localities|json_encode};
         window.states = {$states|json_encode};
@@ -60,7 +59,7 @@
 
 <body>
 
-    {include file=$sidebarPath} <!-- Aquí se incluye el sidebar, según la variable Smarty -->
+    {include file=$sidebarPath}
 
     <main class="content">
         <div id="doctor-data"
@@ -87,14 +86,12 @@
                     </h2>
                 </div>
 
-                <!-- Indicadores de los pasos -->
                 <div class="steps">
                     <div class="step step-active" data-step="1">Paso 1</div>
                     <div class="step" data-step="2">Paso 2</div>
                     <div class="step" data-step="3">Paso 3</div>
                 </div>
 
-                <!-- Si hay un error, lo mostramos aquí -->
                 {if isset($error)}
                     <div
                         style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
@@ -102,11 +99,10 @@
                     </div>
                 {/if}
 
-                <!-- Formulario para registrar o actualizar al doctor -->
                 <form action="/controllers/doctor/register-doctor.controller.php" method="POST" id="doctor-form" enctype="multipart/form-data">
-                    {include file='steps/step1.tpl'} <!-- Paso 1 -->
-                    {include file='steps/step2.tpl'} <!-- Paso 2 -->
-                    {include file='steps/step3.tpl'} <!-- Paso 3 -->
+                    {include file='steps/step1.tpl'}
+                    {include file='steps/step2.tpl'}
+                    {include file='steps/step3.tpl'}
                 </form>
             </div>
         </div>

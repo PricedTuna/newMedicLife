@@ -15,14 +15,11 @@
     <script src="./register-patient.app.js" defer></script>
     <title>Registro de Paciente</title>
 
-    <!-- Inyectar las variables PHP en JavaScript -->
     <script>
-        // Asegúrate de que las variables de Smarty se inyecten correctamente en JavaScript
         window.municipalities = {$municipalities|json_encode};
         window.localities = {$localities|json_encode};
         window.states = {$states|json_encode};
 
-        // Datos preseleccionados para actualización
         window.preselectedPatientData = {
             state: {$patient.id_state|default:'null'},
             municipality: {$patient.id_municipality|default:'null'},
@@ -53,7 +50,6 @@
                     </h2>
                 </div>
             {if isset($success)}
-                <!-- Mostrar mensaje de éxito -->
                 <div
                     style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
                     {$success|escape}
@@ -67,7 +63,6 @@
                 <div class="step" data-step="4">Paso 4</div>
             </div>
 
-            <!-- Si hay un error, lo mostramos aquí -->
             {if isset($error)}
                 <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
                     {$error|escape}

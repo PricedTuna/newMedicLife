@@ -63,10 +63,7 @@ a {
 }
 
 main {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-  margin-left: 20px;
+  margin: 2rem;
 }
 
 /* Common headings */

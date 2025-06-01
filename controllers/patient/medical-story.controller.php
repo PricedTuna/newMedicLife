@@ -2,7 +2,7 @@
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/config/database.config.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/models/patient/patient.model.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/controllers/email/email.controller.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/models/email/email.model.php";
 
 /**
  * Controlador para la historia médica de pacientes
@@ -11,10 +11,12 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/controllers/email/email.controller.ph
 class MedicalStoryController {
     private $patientModel;
     private $pdo;
+    private $emailModel;
 
     public function __construct($pdo) {
         $this->pdo = $pdo;
         $this->patientModel = new PatientModel($pdo);
+        $this->emailModel = new EmailModel();
     }
 
     /**
@@ -34,12 +36,17 @@ class MedicalStoryController {
             return $result;
         }
 
+        // Log the search attempt
+        error_log("Buscando paciente con CURP: $curp");
+
         $patient = $this->patientModel->getPatientByCURP($curp);
 
         if ($patient) {
+            error_log("Paciente encontrado: ID " . $patient['id']);
             $result['success'] = true;
             $result['patient'] = $patient;
         } else {
+            error_log("No se encontró ningún paciente con el CURP: $curp");
             $result['message'] = 'No se encontró ningún paciente con el CURP proporcionado';
         }
 
@@ -70,12 +77,21 @@ class MedicalStoryController {
             }
 
             // Enviar correo electrónico
-            $emailController = new EmailController();
             $to = $patient['email'];
             $subject = "Historial médico";
             $text = "Esto es un historial médico!!";
 
-            $emailResult = $emailController->sendEmail($to, $subject, $text);
+            // Log the email parameters for debugging
+            error_log("Sending email - To: $to, Subject: $subject, Text: $text");
+
+            // Validate email parameters before sending
+            if (empty($to)) {
+                $result['message'] = 'El paciente no tiene un correo electrónico registrado';
+                $result['success'] = true; // Still consider it a success for the medical story
+                return $result;
+            }
+
+            $this->emailModel->sendEmail($to, $subject, $text);
 
             if (strpos($emailResult, "Correo enviado correctamente") === 0) {
                 $result['emailSent'] = true;
@@ -94,34 +110,54 @@ class MedicalStoryController {
     }
 }
 
+function utf8ize($data) {
+    if (is_array($data)) {
+        foreach ($data as $key => $value) {
+            $data[$key] = utf8ize($value);
+        }
+    } elseif (is_string($data)) {
+        return mb_convert_encoding($data, 'UTF-8', 'UTF-8');
+    }
+    return $data;
+}
+
 // Procesar solicitudes AJAX
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    error_log("Procesando solicitud AJAX: " . $_POST['action']);
+
     $controller = new MedicalStoryController($pdo);
     $response = ['success' => false, 'message' => ''];
 
     switch ($_POST['action']) {
         case 'search':
             if (isset($_POST['curp'])) {
+                error_log("Buscando paciente con CURP desde AJAX: " . $_POST['curp']);
                 $response = $controller->searchPatientByCURP($_POST['curp']);
+                error_log("Respuesta de búsqueda: " . ($response['success'] ? 'Éxito' : 'Fallo') . " - " . $response['message']);
             } else {
+                error_log("Error: Parámetros incompletos para búsqueda");
                 $response['message'] = 'Parámetros incompletos';
             }
             break;
 
         case 'confirm':
             if (isset($_POST['patientId'])) {
+                error_log("Confirmando identidad del paciente: " . $_POST['patientId']);
                 $response = $controller->confirmIdentity($_POST['patientId']);
+                error_log("Respuesta de confirmación: " . ($response['success'] ? 'Éxito' : 'Fallo') . " - " . $response['message']);
             } else {
+                error_log("Error: Parámetros incompletos para confirmación");
                 $response['message'] = 'Parámetros incompletos';
             }
             break;
 
         default:
+            error_log("Error: Acción no válida - " . $_POST['action']);
             $response['message'] = 'Acción no válida';
             break;
     }
 
     header('Content-Type: application/json');
-    echo json_encode($response);
+    echo json_encode(utf8ize($response));
     exit;
 }

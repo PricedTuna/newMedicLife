@@ -255,7 +255,15 @@ class PatientModel
         try {
             $stmt = $this->pdo->prepare("SELECT * FROM patients WHERE CURP = :curp AND status != 'I'");
             $stmt->execute([':curp' => $curp]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $patient = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($patient) {
+                error_log("Modelo: Paciente encontrado con CURP: $curp, ID: " . $patient['id']);
+            } else {
+                error_log("Modelo: No se encontró ningún paciente con CURP: $curp");
+            }
+
+            return $patient;
         } catch (PDOException $e) {
             error_log("Error al buscar paciente por CURP: " . $e->getMessage());
             return null;

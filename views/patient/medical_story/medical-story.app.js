@@ -31,12 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/controllers/patient/medical-story.controller.php', {
             method: 'POST',
             body: formData
-        })
-        .then(response => {
-            console.log({response})
-            console.log(JSON.stringify(response))
-            return response.json()
-        })
+        }).then(response => response.json())
         .then(data => {
             if (data.success) {
                 // Mostrar detalles del paciente para confirmación

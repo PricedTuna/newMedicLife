@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 10:19:46
+/* Smarty version 5.4.5, created on 2025-06-01 10:47:15
   from 'file:list-appointments.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683c29428c87b3_21727116',
+  'unifunc' => 'content_683c2fb31769c6_81015365',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ae2a5461b1393847530f38f5e33856ae08f067d0' => 
     array (
       0 => 'list-appointments.view.tpl',
-      1 => 1748773101,
+      1 => 1748774733,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683c29428c87b3_21727116 (\Smarty\Template $_smarty_tpl) {
+function content_683c2fb31769c6_81015365 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/appointment/list';
 ?><!DOCTYPE html>
 <html lang="en">

@@ -51,9 +51,11 @@ a {
 
 /* Common layout elements */
 .main-content {
-  padding: 20px;
+  flex-grow: 1;
   background-color: var(--hover-clr);
-  border-radius: 5px;
+  padding: 2rem; /* Reducir padding */
+  border-radius: 0.5rem;
+  margin: 2rem;
 }
 
 .content {
@@ -63,7 +65,10 @@ a {
 }
 
 main {
-  margin: 2rem;
+  display: flex;
+  gap: 10px; /* Reducir espacio entre elementos */
+  align-items: flex-start;
+  margin-left: 20px;
 }
 
 /* Common headings */

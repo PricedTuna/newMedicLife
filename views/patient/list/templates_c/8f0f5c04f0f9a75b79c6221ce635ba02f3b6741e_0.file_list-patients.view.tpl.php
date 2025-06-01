@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 10:15:47
+/* Smarty version 5.4.5, created on 2025-06-01 10:47:13
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683c28530f6eb2_45727317',
+  'unifunc' => 'content_683c2fb19fc279_44745458',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8f0f5c04f0f9a75b79c6221ce635ba02f3b6741e' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1748772864,
+      1 => 1748774777,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683c28530f6eb2_45727317 (\Smarty\Template $_smarty_tpl) {
+function content_683c2fb19fc279_44745458 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/list';
 ?><!DOCTYPE html>
 <html lang="en">

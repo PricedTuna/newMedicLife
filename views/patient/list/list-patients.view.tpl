@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="/assets/css/lists.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/assets/css/usability-improvements.css">
-    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/views/patient/list/views-handler.js" defer></script>
     <script src="/views/patient/register/register-patient.app.js" defer></script>

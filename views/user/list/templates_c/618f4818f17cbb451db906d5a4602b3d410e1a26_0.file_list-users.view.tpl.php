@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 10:16:10
+/* Smarty version 5.4.5, created on 2025-06-01 10:47:12
   from 'file:list-users.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683c286ab6cd17_79219286',
+  'unifunc' => 'content_683c2fb03762d2_38341131',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '618f4818f17cbb451db906d5a4602b3d410e1a26' => 
     array (
       0 => 'list-users.view.tpl',
-      1 => 1748772845,
+      1 => 1748774729,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683c286ab6cd17_79219286 (\Smarty\Template $_smarty_tpl) {
+function content_683c2fb03762d2_38341131 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/list';
 ?><!DOCTYPE html>
 <html lang="es">

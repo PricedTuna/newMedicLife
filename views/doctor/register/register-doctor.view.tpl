@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Registro de Médicos</title>
+    <title>Registro de Médicos | Medic Life</title>
 
     <script>
         // Asegúrate de que las variables de Smarty se inyecten correctamente en JavaScript

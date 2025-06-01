@@ -14,7 +14,7 @@
     <script src="/assets/js/es.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/scripts/form-validations.js"></script>
-    <title>Solicitar Cita</title>
+    <title>Solicitar Cita | Medic Life</title>
 
     <script>
         window.doctors = {$doctors|json_encode};

@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../components/sidebar.app.js" defer></script>
     <script src="./register-patient.app.js" defer></script>
-    <title>Registro de Paciente</title>
+    <title>Registro de Paciente | Medic Life</title>
 
     <!-- Inyectar las variables PHP en JavaScript -->
     <script>

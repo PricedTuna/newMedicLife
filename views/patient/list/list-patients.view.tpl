@@ -22,7 +22,7 @@
     {* <link rel="stylesheet" href="../../../resset.css">  *}
     <script src="/views/components/sidebar.app.js" defer></script>
 
-    <title>Lista de pacientes</title>
+    <title>Lista de pacientes | Medic Life</title>
 </head>
 <body>
     {include file="../../components/sidebar.tpl"}

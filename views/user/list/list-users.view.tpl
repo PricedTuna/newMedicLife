@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./list-users.js" defer></script>
-    <title>Lista de usuarios</title>
+    <title>Lista de usuarios | Medic Life</title>
 </head>
 
 <body>

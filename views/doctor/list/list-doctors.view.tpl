@@ -21,7 +21,7 @@
     {* <link rel="stylesheet" href="../../../resset.css">  *}
     <script src="/views/components/sidebar.app.js" defer></script>
 
-    <title>Lista de médicos</title>
+    <title>Lista de médicos | Medic Life</title>
 </head>
 <body>
 

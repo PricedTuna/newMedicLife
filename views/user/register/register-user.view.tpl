@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./register-user.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Registro de Usuarios</title>
+    <title>Registro de Usuarios | Medic Life</title>
 </head>
 
 <body>

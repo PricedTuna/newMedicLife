@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const statusTd = row.querySelector('[data-label="Estado"]');
         let status;
         if (statusTd.textContent.includes('Activo')) status = 'AC';
+        else if (statusTd.textContent.includes('Inactivo')) status = 'IN';
         else status = statusTd.textContent.trim();
 
         const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);

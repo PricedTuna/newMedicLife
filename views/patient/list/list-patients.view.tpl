@@ -84,7 +84,12 @@
                                     <td data-label="Apellidos">{$patient.last_name|escape} {$patient.last_name2|escape}</td>
                                     <td data-label="CURP">{$patient.CURP|escape}</td>
                                     <td data-label="Teléfono">{$patient.phone|escape}</td>
-                                    <td data-label="Sexo">{$patient.gender|escape}</td>
+                                    <td data-label="Sexo">
+                                        {if $patient.gender == 'M'}Masculino
+                                        {elseif $patient.gender == 'F'}Femenino
+                                        {else}{$patient.gender|escape}
+                                        {/if}
+                                    </td>
                                     <td class="actions-td">
                                         <form action="/controllers/patient/delete-patient.controller.php" method="POST" class="action-wrapper">
                                             <input type="hidden" name="patient_id" value="{$patient.id}">

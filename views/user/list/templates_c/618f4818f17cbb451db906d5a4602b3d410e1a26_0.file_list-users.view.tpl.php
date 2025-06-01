@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 11:02:16
+/* Smarty version 5.4.5, created on 2025-06-01 19:27:11
   from 'file:list-users.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683c3338e6e0f9_66009743',
+  'unifunc' => 'content_683ca98f2b68a0_85499591',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '618f4818f17cbb451db906d5a4602b3d410e1a26' => 
     array (
       0 => 'list-users.view.tpl',
-      1 => 1748775657,
+      1 => 1748805952,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683c3338e6e0f9_66009743 (\Smarty\Template $_smarty_tpl) {
+function content_683ca98f2b68a0_85499591 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/list';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -133,6 +133,7 @@ echo $_smarty_tpl->getValue('user')['role'];?>
 </td>
                                     <td data-label="Estado">
                                         <?php if ($_smarty_tpl->getValue('user')['status'] == 'AC') {?>Activo
+                                        <?php } elseif ($_smarty_tpl->getValue('user')['status'] == 'IN') {?>Inactivo
                                         <?php } else {
 echo $_smarty_tpl->getValue('user')['status'];?>
 

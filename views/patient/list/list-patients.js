@@ -20,7 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const matchesSearch = name.includes(searchTerm) ||
                              lastName.includes(searchTerm) ||
                              curp.includes(searchTerm);
-        const matchesGender = genderValue === 'all' || gender === genderValue;
+        const matchesGender = genderValue === 'all' ||
+                             (genderValue === 'M' && gender === 'Masculino') ||
+                             (genderValue === 'F' && gender === 'Femenino');
 
         row.style.display = matchesSearch && matchesGender ? '' : 'none';
       }

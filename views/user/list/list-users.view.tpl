@@ -87,6 +87,7 @@
                                     <td data-label="Fecha de Creación">{$user.created_at}</td>
                                     <td data-label="Estado">
                                         {if $user.status == 'AC'}Activo
+                                        {elseif $user.status == 'IN'}Inactivo
                                         {else}{$user.status}
                                         {/if}
                                     </td>

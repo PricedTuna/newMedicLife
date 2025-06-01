@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 11:02:12
+/* Smarty version 5.4.5, created on 2025-06-01 19:27:05
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683c33342ea781_48321911',
+  'unifunc' => 'content_683ca98992d4c0_57755110',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8f0f5c04f0f9a75b79c6221ce635ba02f3b6741e' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1748775657,
+      1 => 1748805968,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683c33342ea781_48321911 (\Smarty\Template $_smarty_tpl) {
+function content_683ca98992d4c0_57755110 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -128,8 +128,14 @@ $foreach0DoElse = false;
 </td>
                                     <td data-label="Teléfono"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('patient')['phone'], ENT_QUOTES, 'UTF-8', true);?>
 </td>
-                                    <td data-label="Sexo"><?php echo htmlspecialchars((string)$_smarty_tpl->getValue('patient')['gender'], ENT_QUOTES, 'UTF-8', true);?>
-</td>
+                                    <td data-label="Sexo">
+                                        <?php if ($_smarty_tpl->getValue('patient')['gender'] == 'M') {?>Masculino
+                                        <?php } elseif ($_smarty_tpl->getValue('patient')['gender'] == 'F') {?>Femenino
+                                        <?php } else {
+echo htmlspecialchars((string)$_smarty_tpl->getValue('patient')['gender'], ENT_QUOTES, 'UTF-8', true);?>
+
+                                        <?php }?>
+                                    </td>
                                     <td class="actions-td">
                                         <form action="/controllers/patient/delete-patient.controller.php" method="POST" class="action-wrapper">
                                             <input type="hidden" name="patient_id" value="<?php echo $_smarty_tpl->getValue('patient')['id'];?>

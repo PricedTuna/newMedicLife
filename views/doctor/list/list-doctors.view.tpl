@@ -85,7 +85,12 @@
                                     <td data-label="Apellidos">{$doctor.last_name|escape} {$doctor.last_name2|escape}</td>
                                     <td data-label="CURP">{$doctor.CURP|escape}</td>
                                     <td data-label="Teléfono">{$doctor.phone|escape}</td>
-                                    <td data-label="Sexo">{$doctor.gender|escape}</td>
+                                    <td data-label="Sexo">
+                                        {if $doctor.gender == 'M'}Masculino
+                                        {elseif $doctor.gender == 'F'}Femenino
+                                        {else}{$doctor.gender|escape}
+                                        {/if}
+                                    </td>
                                     <td class="actions-td">
                                         <form action="/controllers/doctor/delete-doctor.controller.php" method="POST" class="action-wrapper">
                                             <input type="hidden" name="doctor_id" value="{$doctor.id}">

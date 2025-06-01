@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <link rel="stylesheet" href="./register-patient.styles.css">
     <link rel="stylesheet" href="../../components/sidebar.styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../../components/sidebar.app.js" defer></script>
     <script src="./register-patient.app.js" defer></script>
     <title>Registro de Paciente</title>
@@ -16,6 +18,13 @@
         window.municipalities = {$municipalities|json_encode};
         window.localities = {$localities|json_encode};
         window.states = {$states|json_encode};
+
+        // Datos preseleccionados para actualización
+        window.preselectedPatientData = {
+            state: {$patient.id_state|default:'null'},
+            municipality: {$patient.id_municipality|default:'null'},
+            locality: {$patient.id_locality|default:'null'}
+        };
     </script>
     <script src="form_steps.js" defer></script>
 </head>

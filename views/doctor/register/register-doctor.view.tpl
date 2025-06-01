@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <script src="/views/components/sidebar.app.js" defer></script>
     <script src="/views/doctor/list/views-handler.js" defer></script>

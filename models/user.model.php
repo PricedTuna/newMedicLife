@@ -58,4 +58,57 @@ function getUserByEmail($email) {
         return null;
     }
 }
+
+function updateUserProfile($userId, $data) {
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("UPDATE users SET name = :name, email = :email WHERE id = :id");
+        $stmt->execute([
+            ':id' => $userId,
+            ':name' => $data['name'],
+            ':email' => $data['email']
+        ]);
+
+        return ['success' => true, 'message' => 'Perfil actualizado correctamente'];
+    } catch (PDOException $e) {
+        error_log("Error al actualizar perfil de usuario: " . $e->getMessage());
+        return ['success' => false, 'message' => 'Error al actualizar el perfil: ' . $e->getMessage()];
+    }
+}
+
+function changeUserPassword($userId, $currentPassword, $newPassword) {
+    global $pdo;
+
+    try {
+        // First, verify the current password
+        $stmt = $pdo->prepare("SELECT password FROM users WHERE id = :id");
+        $stmt->execute([':id' => $userId]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            return ['success' => false, 'message' => 'Usuario no encontrado'];
+        }
+
+        // Verify that the current password is correct
+        if (!password_verify($currentPassword, $user['password'])) {
+            return ['success' => false, 'message' => 'La contraseña actual es incorrecta'];
+        }
+
+        // Hash the new password
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        // Update the password in the database
+        $stmt = $pdo->prepare("UPDATE users SET password = :password WHERE id = :id");
+        $stmt->execute([
+            ':id' => $userId,
+            ':password' => $hashedPassword
+        ]);
+
+        return ['success' => true, 'message' => 'Contraseña actualizada correctamente'];
+    } catch (PDOException $e) {
+        error_log("Error al cambiar contraseña: " . $e->getMessage());
+        return ['success' => false, 'message' => 'Error al cambiar la contraseña: ' . $e->getMessage()];
+    }
+}
 ?>

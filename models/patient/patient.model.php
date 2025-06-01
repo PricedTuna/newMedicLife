@@ -104,11 +104,12 @@ class PatientModel
 
     /**
      * Actualiza un paciente existente.
-     * @param int $doctorId ID del paciente.
+     * @param int $patientId ID del paciente.
      * @param array $data Datos a actualizar.
      * @param string|null $photoData Datos binarios de la foto.
+     * @param bool $updatePhoto Indica si se debe actualizar la foto.
      */
-    public function updatePatient($patientId, $data, $photoData)
+    public function updatePatient($patientId, $data, $photoData, $updatePhoto = false)
     {
         // Verifica que el paciente exista
         $stmt = $this->pdo->prepare("SELECT id FROM patients WHERE id = :patient_id");
@@ -117,17 +118,28 @@ class PatientModel
             throw new Exception("El paciente con ID $patientId no existe.");
         }
 
-        $stmt = $this->pdo->prepare("UPDATE patients SET
+        // Build the SQL query based on whether we're updating the photo or not
+        $sql = "UPDATE patients SET
             names = :names, last_name = :last_name, last_name2 = :last_name2,
             id_state = :id_state, id_municipality = :id_municipality, id_locality = :id_locality,
             CP = :CP, street = :street, external_number = :external_number, internal_number = :internal_number,
             neighborhood = :neighborhood, insurance_number = :insurance_number,
-            birth_date = :birth_date, CURP = :CURP, RFC = :RFC, phone = :phone,photo = :photo,
-            email = :email, gender = :gender, weight = :weight, height = :height, blood_type = :blood_type,
+            birth_date = :birth_date, CURP = :CURP, RFC = :RFC, phone = :phone,";
+
+        // Only include the photo field if we're updating it
+        if ($updatePhoto) {
+            $sql .= "photo = :photo,";
+        }
+
+        $sql .= "email = :email, gender = :gender, weight = :weight, height = :height, blood_type = :blood_type,
             id_emergency_contact = :id_emergency_contact, marital_status = :marital_status, ethnic_group = :ethnic_group, religion = :religion,
             status = :status
-            WHERE id = :patient_id");
-        $stmt->execute([
+            WHERE id = :patient_id";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        // Build the parameters array
+        $params = [
             ':names'             => $data['names'],
             ':last_name'         => $data['last_name'],
             ':last_name2'        => $data['last_name2'],
@@ -144,7 +156,6 @@ class PatientModel
             ':CURP'              => $data['CURP'],
             ':RFC'               => $data['RFC'],
             ':phone'             => $data['phone'],
-            ':photo'             => $photoData,
             ':email'             => $data['email'],
             ':gender'            => $data['gender'],
             ':weight'            => $data['weight'],
@@ -156,7 +167,14 @@ class PatientModel
             ':religion'          => $data['religion'],
             ':status'            => 'A',
             ':patient_id'         => $patientId
-        ]);
+        ];
+
+        // Only include the photo parameter if we're updating it
+        if ($updatePhoto) {
+            $params[':photo'] = $photoData;
+        }
+
+        $stmt->execute($params);
     }
 
     /**

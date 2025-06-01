@@ -2,7 +2,18 @@ document.addEventListener('DOMContentLoaded', function () {
     // Validar si las variables de JavaScript tienen datos
     if (!window.municipalities || !window.localities || !window.states) {
         console.error('Error: Las variables no se han cargado correctamente.');
-        alert('Error: Las variables necesarias no se han cargado correctamente. Por favor, intente recargar la página.');
+        Swal.fire({
+            title: 'Error de carga',
+            text: 'Las variables necesarias no se han cargado correctamente. Por favor, intente recargar la página.',
+            icon: 'error',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Recargar',
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.reload();
+            }
+        });
         return; // Detener la ejecución si las variables no se cargaron correctamente
     }
 
@@ -10,10 +21,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const stateSelect = document.getElementById('state');
     const municipalitySelect = document.getElementById('municipality');
     const localitySelect = document.getElementById('locality');
+    const preselected = window.preselectedPatientData || {};
 
-    stateSelect.addEventListener('change', () => {
+    // Función para llenar el select de municipios según el estado seleccionado
+    function updateMunicipalities() {
         const selectedState = stateSelect.value;
-
         municipalitySelect.innerHTML = '<option value="">Seleccione...</option>';
         localitySelect.innerHTML = '<option value="">Seleccione un municipio primero...</option>';
 
@@ -22,13 +34,20 @@ document.addEventListener('DOMContentLoaded', function () {
             filteredMunicipalities.forEach(m => {
                 municipalitySelect.innerHTML += `<option value="${m.id}">${m.name}</option>`;
             });
-        }
-    });
 
-    municipalitySelect.addEventListener('change', () => {
+            // Si hay un municipio preseleccionado y estamos en el estado correcto, seleccionarlo
+            if (preselected.municipality && preselected.state == selectedState) {
+                municipalitySelect.value = preselected.municipality;
+                // Actualizar localidades después de seleccionar el municipio
+                updateLocalities();
+            }
+        }
+    }
+
+    // Función para llenar el select de localidades según el municipio seleccionado
+    function updateLocalities() {
         const selectedState = stateSelect.value;
         const selectedMunicipality = municipalitySelect.value;
-
         localitySelect.innerHTML = '<option value="">Seleccione...</option>';
 
         if (selectedMunicipality) {
@@ -38,8 +57,23 @@ document.addEventListener('DOMContentLoaded', function () {
             filteredLocalities.forEach(l => {
                 localitySelect.innerHTML += `<option value="${l.id}">${l.name}</option>`;
             });
+
+            // Si hay una localidad preseleccionada y estamos en el municipio correcto, seleccionarla
+            if (preselected.locality && preselected.municipality == selectedMunicipality) {
+                localitySelect.value = preselected.locality;
+            }
         }
-    });
+    }
+
+    // Inicializar los selects
+    if (preselected.state) {
+        stateSelect.value = preselected.state;
+        updateMunicipalities();
+    }
+
+    // Configurar event listeners
+    stateSelect.addEventListener('change', updateMunicipalities);
+    municipalitySelect.addEventListener('change', updateLocalities);
 
     const photoInput = document.getElementById('photo');
     if (photoInput) {
@@ -57,16 +91,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    document.getElementById('photo').addEventListener('change', event => {
-    const fileName = event.target.files[0] ? event.target.files[0].name : 'Subir Foto';
-    document.getElementById('photo-label').textContent = fileName;
-});
+    // Get preview elements
+    const imagePreview = document.getElementById('image-preview');
+    const previewPlaceholder = document.getElementById('preview-placeholder');
+
+    // Add event listener for photo change
+    photoInput.addEventListener('change', event => {
+        // Update label with file name
+        const fileName = event.target.files[0] ? event.target.files[0].name : 'Subir Foto';
+        document.getElementById('photo-label').textContent = fileName;
+
+        // Update preview image
+        if (event.target.files && event.target.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+                previewPlaceholder.style.display = 'none';
+            }
+
+            reader.readAsDataURL(event.target.files[0]);
+        } else {
+            // Do nothing if no file is selected - keep the existing photo
+        }
+    });
 });
 
-function clearErrorMessage(input) {
-    let errorElement = input.nextElementSibling;
-    if (errorElement && errorElement.classList.contains('error-message')) {
-        errorElement.remove();
-    }
-    input.style.border = '2px solid var(--line-clr)';
-}
+// This function is now defined in register-patient.app.js

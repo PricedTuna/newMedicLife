@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
         <label for="intNumber">Número Interior</label>
-        <input type="text" id="extNumber" value="{$patient.internal_number|default: ''}" name="intNumber" required>
+        <input type="text" id="intNumber" value="{$patient.internal_number|default: ''}" name="intNumber">
     </div>
     <div class="form-group">
         <label for="state">Estado</label>

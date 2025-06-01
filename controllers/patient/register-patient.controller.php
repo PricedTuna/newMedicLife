@@ -59,16 +59,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Manejo y validación de la foto
 
     $photoData = null;
+    $updatePhoto = false; // Flag to indicate if we should update the photo
+
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
         $photoTmp = $_FILES['photo']['tmp_name'];
         $photoMime = mime_content_type($photoTmp);
         if (!in_array($photoMime, ['image/jpeg', 'image/png', 'image/gif'])) {
-            header('Location: /views/patient/register/register-patient.view.php?error=' . urlencode("El archivo debe ser una imagen JPG, PNG o GIF.") . '&id=' . ($doctorId ?? ''));
+            header('Location: /views/patient/register/register-patient.view.php?error=' . urlencode("El archivo debe ser una imagen JPG, PNG o GIF.") . '&id=' . ($patientId ?? ''));
             exit;
         }
         $photoData = file_get_contents($photoTmp);
+        $updatePhoto = true; // New photo uploaded, we should update it
     } elseif (!$patientId) { // En creación, la foto es obligatoria
-        header('Location: /views/doctor/patient/register-patient.view.php?error=' . urlencode("Debes subir una foto.") . '&id=' . ($doctorId ?? ''));
+        header('Location: /views/patient/register/register-patient.view.php?error=' . urlencode("Debes subir una foto.") . '&id=' . ($patientId ?? ''));
         exit;
     }
 
@@ -88,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $data['id_emergency_contact'] = $emergencyContactsId;
 
-            $patientModel->updatePatient($patientId, $data,$photoData);
+            $patientModel->updatePatient($patientId, $data, $photoData, $updatePhoto);
 
             header('Location: /views/patient/list/list-patients.view.php?success=' . urlencode("Paciente actualizado con éxito"));
         } else {

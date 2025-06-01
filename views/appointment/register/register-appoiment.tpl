@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./register-appoiment.css">
     <link rel="stylesheet" href="/assets/css/flatpickr.min.css">
     <link rel="stylesheet" href="/assets/css/usability-improvements.css">
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <script src="../../components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="../../components/sidebar.styles.css">
     <script src="/assets/js/flatpickr.min.js"></script>

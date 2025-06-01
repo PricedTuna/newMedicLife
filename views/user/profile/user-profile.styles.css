@@ -108,13 +108,145 @@ main {
 .profile-section h2 {
   color: var(--accent-clr);
   margin-top: 0;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   padding-bottom: 0.8rem;
   border-bottom: 1px solid var(--line-clr);
   font-size: 1.8rem;
   text-align: center;
   position: relative;
   z-index: 5;
+}
+
+/* Profile Actions */
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.edit-profile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--accent-clr);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.edit-profile-btn:hover {
+  background-color: #4a54e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.edit-profile-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Edit Form */
+.profile-edit-form {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background-color: var(--base-clr);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-edit-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.profile-edit-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--secondary-text-clr);
+}
+
+.profile-edit-form input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--line-clr);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.profile-edit-form input:focus {
+  border-color: var(--accent-clr);
+  outline: none;
+}
+
+.profile-edit-form input.input-error {
+  border-color: #e74c3c;
+}
+
+.profile-edit-form .error-message {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+/* Password Requirements */
+.password-requirements {
+  margin-top: 0.5rem;
+  color: var(--secondary-text-clr);
+  font-size: 0.85rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid var(--accent-clr);
+}
+
+/* Password Section */
+.password-section {
+  margin-top: 2rem;
+  background-color: var(--base-clr);
+}
+
+.profile-edit-form .form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.profile-edit-form .save-btn,
+.profile-edit-form .cancel-btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.profile-edit-form .save-btn {
+  background-color: var(--accent-clr);
+  color: white;
+  border: none;
+}
+
+.profile-edit-form .save-btn:hover {
+  background-color: #4a54e1;
+  transform: translateY(-2px);
+}
+
+.profile-edit-form .cancel-btn {
+  background-color: #f1f1f1;
+  color: var(--text-clr);
+  border: 1px solid #ddd;
+}
+
+.profile-edit-form .cancel-btn:hover {
+  background-color: #e5e5e5;
 }
 
 /* Profile Info Flex Container */
@@ -684,6 +816,28 @@ main {
   .shortcut-keys {
     margin-bottom: 0.3rem;
   }
+
+  /* Responsive styles for profile edit form */
+  .profile-actions {
+    justify-content: center;
+    margin-bottom: 1.2rem;
+  }
+
+  .profile-edit-form {
+    padding: 1.2rem;
+  }
+
+  .profile-edit-form .form-actions {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .profile-edit-form .save-btn,
+  .profile-edit-form .cancel-btn {
+    width: 100%;
+    padding: 0.8rem;
+    text-align: center;
+  }
 }
 
 @media (max-width: 576px) {
@@ -753,6 +907,49 @@ main {
   /* Ensure profile section hover doesn't cause layout shifts */
   .profile-section:hover {
     transform: none;
+  }
+
+  /* Additional responsive styles for profile edit form on very small screens */
+  .profile-actions {
+    margin-bottom: 1rem;
+  }
+
+  .edit-profile-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .profile-edit-form {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .profile-edit-form .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .profile-edit-form label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .profile-edit-form input {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .profile-edit-form .error-message {
+    font-size: 0.8rem;
+  }
+
+  .profile-edit-form .form-actions {
+    margin-top: 1.5rem;
+  }
+
+  .profile-edit-form .save-btn,
+  .profile-edit-form .cancel-btn {
+    padding: 0.6rem;
+    font-size: 0.9rem;
   }
 
   /* Additional responsive styles for shortcuts section on very small screens */

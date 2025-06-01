@@ -36,7 +36,17 @@ try {
 // Verificar si las variables contienen datos
 if (empty($municipalities) || empty($localities) || empty($states)) {
     // Si alguna de las variables está vacía, mostramos un mensaje de advertencia en el navegador
-    echo "<script>alert('Advertencia: Algunos datos no se han cargado correctamente.');</script>";
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Advertencia',
+                text: 'Algunos datos no se han cargado correctamente. Algunas funcionalidades podrían no estar disponibles.',
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Entendido'
+            });
+        });
+    </script>";
 }
 
 try {

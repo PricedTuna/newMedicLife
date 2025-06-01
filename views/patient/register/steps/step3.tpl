@@ -17,10 +17,10 @@
         <label for="maritalStatus">Estado Civil</label>
         <select id="maritalStatus" name="marital_status" required>
             <option value="">Seleccione...</option>
-            <option value="Soltero(a)" {if $patient.marital_status == "Soltero(a)"}selected{/if}>Soltero(a)</option>
-            <option value="Casado(a)" {if $patient.marital_status == "Casado(a)"}selected{/if}>Casado(a)</option>
-            <option value="Viudo(a)" {if $patient.marital_status == "Viudo(a)"}selected{/if}>Viudo(a)</option>
-            <option value="Unión libre" {if $patient.marital_status == "Unión libre"}selected{/if}>Unión libre</option>
+            <option value="Soltero(a)" {if isset($patient) && $patient.marital_status == "Soltero(a)"}selected{/if}>Soltero(a)</option>
+            <option value="Casado(a)" {if isset($patient) && $patient.marital_status == "Casado(a)"}selected{/if}>Casado(a)</option>
+            <option value="Viudo(a)" {if isset($patient) && $patient.marital_status == "Viudo(a)"}selected{/if}>Viudo(a)</option>
+            <option value="Unión libre" {if isset($patient) && $patient.marital_status == "Unión libre"}selected{/if}>Unión libre</option>
         </select>
     </div>
 

@@ -239,6 +239,29 @@ button {
     display: none;
 }
 
+.image-preview {
+    max-width: 200px;
+    max-height: 200px;
+    margin-top: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+}
+
+.preview-placeholder {
+    width: 200px;
+    height: 200px;
+    margin-top: 10px;
+    border: 2px dashed var(--line-clr);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-text-clr);
+    font-size: 14px;
+    background-color: var(--base-clr);
+}
+
 .file-name::before {
     content: "Archivo seleccionado: ";
     font-weight: 600;
@@ -302,6 +325,12 @@ button {
     .step:nth-child(3) {
         margin-left: auto;
     }
-    
-    
+
+
+}
+
+.formSubtitle {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    text-align: start !important;
 }

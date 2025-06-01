@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 05:31:22
+/* Smarty version 5.4.5, created on 2025-06-01 23:51:41
   from 'file:steps/step1.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683be5aab61981_61504126',
+  'unifunc' => 'content_683ce78d7b1574_07040320',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '22926d3b69cd42512c9a671fef3a2a1e5d918d6d' => 
     array (
       0 => 'steps/step1.tpl',
-      1 => 1748755867,
+      1 => 1748821864,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_683be5aab61981_61504126 (\Smarty\Template $_smarty_tpl) {
+function content_683ce78d7b1574_07040320 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
 ?><input type="hidden" name="patient_id" value="<?php echo (($tmp = $_smarty_tpl->getValue('patient')['id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
 ">
@@ -75,12 +75,15 @@ $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
 " name="rfc" required>
     </div>
     <div class="form-group">
-        <label for="photo" class="file-label" id="photo-label">Subir Foto</label>
-        <input type="file" id="photo" name="photo" accept="image/*" <?php if (!$_smarty_tpl->getValue('patient')) {?>required<?php }?>>
-        <div id="image-preview-container" class="image-preview-container">
-            <img id="image-preview" class="image-preview" src="<?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['photo']) {?>/controllers/patient/mostrar_foto.php?id=<?php echo $_smarty_tpl->getValue('patient')['id'];
-}?>" alt="Vista previa" style="<?php if (!(true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) || !$_smarty_tpl->getValue('patient')['photo']) {?>display: none;<?php } else { ?>display: block;<?php }?>">
-            <div id="preview-placeholder" class="preview-placeholder" style="<?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['photo']) {?>display: none;<?php } else { ?>display: flex;<?php }?>">
+        <label for="photo" class="file-label" id="photo-label">
+            <i class="bi bi-cloud-arrow-up"></i> Subir Foto
+        </label>
+        <input type="file" id="photo" name="photo" accept="image/*" <?php if (!$_smarty_tpl->getValue('patient')) {?>required<?php }?> style="display: none;">
+        <div id="patient-image-preview-container" class="image-preview-container">
+            <img id="patient-image-preview" class="image-preview" src="<?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['id']) {?>/controllers/patient/mostrar_foto.php?id=<?php echo $_smarty_tpl->getValue('patient')['id'];
+}?>" alt="Vista previa" style="<?php if (!(true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) || !$_smarty_tpl->getValue('patient')['id']) {?>display: none;<?php } else { ?>display: block;<?php }?>">
+            <div id="patient-preview-placeholder" class="preview-placeholder" style="<?php if ((true && ($_smarty_tpl->hasVariable('patient') && null !== ($_smarty_tpl->getValue('patient') ?? null))) && $_smarty_tpl->getValue('patient')['id']) {?>display: none;<?php } else { ?>display: flex;<?php }?>">
+                <i class="bi bi-image"></i>
                 <span>Vista previa de la imagen</span>
             </div>
         </div>

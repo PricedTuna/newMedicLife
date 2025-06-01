@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 11:02:23
+/* Smarty version 5.4.5, created on 2025-06-01 23:52:22
   from 'file:user-profile.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683c333f36d734_16110628',
+  'unifunc' => 'content_683ce7b6754ba0_85044271',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1b8c6a454747546148bd41526a6fdb208af262ce' => 
     array (
       0 => 'user-profile.view.tpl',
-      1 => 1748775657,
+      1 => 1748821433,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683c333f36d734_16110628 (\Smarty\Template $_smarty_tpl) {
+function content_683ce7b6754ba0_85044271 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/profile';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -403,11 +403,11 @@ echo $_smarty_tpl->getValue('user')['status'];?>
                                         <input type="hidden" name="doctor_id" value="<?php echo $_smarty_tpl->getValue('doctorData')['id'];?>
 ">
                                         <div class="form-group">
-                                            <label for="doctor-photo-profile" class="custom-file-upload">
-                                                <i class="bi bi-cloud-arrow-up"></i> Seleccionar nueva foto
+                                            <label for="doctor-photo-profile" class="file-label" id="photo-label">
+                                                <i class="bi bi-cloud-arrow-up"></i> Subir Foto
                                             </label>
-                                            <input type="file" id="doctor-photo-profile" name="doctor_photo" accept="image/*" required>
-                                            <div id="image-preview-container" class="image-preview-container">
+                                            <input type="file" id="doctor-photo-profile" name="doctor_photo" accept="image/*" required style="display: none;">
+                                            <div id="doctor-image-preview-container" class="image-preview-container">
                                                 <img id="image-preview" class="image-preview" src="" alt="Vista previa" style="display: none;">
                                                 <div id="preview-placeholder" class="preview-placeholder">
                                                     <i class="bi bi-image"></i>

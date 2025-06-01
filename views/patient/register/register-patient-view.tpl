@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/assets/css/common.css">
     <link rel="stylesheet" href="/assets/css/forms.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/views/components/sidebar.app.js" defer></script>
     <script src="./register-patient.app.js" defer></script>

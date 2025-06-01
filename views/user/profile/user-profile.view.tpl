@@ -355,11 +355,11 @@
                                     <form action="/controllers/doctor/update_photo.php" method="POST" enctype="multipart/form-data">
                                         <input type="hidden" name="doctor_id" value="{$doctorData.id}">
                                         <div class="form-group">
-                                            <label for="doctor-photo-profile" class="custom-file-upload">
-                                                <i class="bi bi-cloud-arrow-up"></i> Seleccionar nueva foto
+                                            <label for="doctor-photo-profile" class="file-label" id="photo-label">
+                                                <i class="bi bi-cloud-arrow-up"></i> Subir Foto
                                             </label>
-                                            <input type="file" id="doctor-photo-profile" name="doctor_photo" accept="image/*" required>
-                                            <div id="image-preview-container" class="image-preview-container">
+                                            <input type="file" id="doctor-photo-profile" name="doctor_photo" accept="image/*" required style="display: none;">
+                                            <div id="doctor-image-preview-container" class="image-preview-container">
                                                 <img id="image-preview" class="image-preview" src="" alt="Vista previa" style="display: none;">
                                                 <div id="preview-placeholder" class="preview-placeholder">
                                                     <i class="bi bi-image"></i>

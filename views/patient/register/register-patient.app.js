@@ -52,6 +52,13 @@ function validateStep(step) {
         }
     });
 
+    // Validar el campo de foto en el paso 1
+    if (step === 1 && typeof validatePhotoField === 'function') {
+        if (!validatePhotoField()) {
+            valid = false;
+        }
+    }
+
     return valid;
 }
 
@@ -74,7 +81,7 @@ function validateField(input) {
         let fieldTitle = getFieldTitle(input.id);
         showErrorMessage(input, `El campo ${fieldTitle} es obligatorio`);
         return false;
-    } 
+    }
     // Validar que los campos de nombre no contengan números
     else if (['firstName', 'lastName', 'motherLastName', 'contactFirstName', 'contactLastName', 'contactMotherLastName'].includes(input.id) && /\d/.test(input.value)) {
         let fieldTitle = getFieldTitle(input.id);

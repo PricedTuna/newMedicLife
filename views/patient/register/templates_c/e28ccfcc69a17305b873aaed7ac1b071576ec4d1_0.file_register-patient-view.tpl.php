@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 09:54:25
+/* Smarty version 5.4.5, created on 2025-06-01 23:51:41
   from 'file:register-patient-view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683c235156dc99_87341814',
+  'unifunc' => 'content_683ce78d794537_24934941',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'e28ccfcc69a17305b873aaed7ac1b071576ec4d1' => 
     array (
       0 => 'register-patient-view.tpl',
-      1 => 1748771470,
+      1 => 1748821804,
       2 => 'file',
     ),
   ),
@@ -25,7 +25,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:steps/step4.tpl' => 1,
   ),
 ))) {
-function content_683c235156dc99_87341814 (\Smarty\Template $_smarty_tpl) {
+function content_683ce78d794537_24934941 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -33,10 +33,13 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./register-patient.styles.css">
+    <link rel="stylesheet" href="../../components/sidebar.styles.css">
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <link rel="stylesheet" href="/assets/css/common.css">
     <link rel="stylesheet" href="/assets/css/forms.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <?php echo '<script'; ?>
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
 >
@@ -48,10 +51,8 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
 >
     <title>Registro de Paciente</title>
 
-    <!-- Inyectar las variables PHP en JavaScript -->
     <?php echo '<script'; ?>
 >
-        // Asegúrate de que las variables de Smarty se inyecten correctamente en JavaScript
         window.municipalities = <?php echo json_encode($_smarty_tpl->getValue('municipalities'));?>
 ;
         window.localities = <?php echo json_encode($_smarty_tpl->getValue('localities'));?>
@@ -59,7 +60,6 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
         window.states = <?php echo json_encode($_smarty_tpl->getValue('states'));?>
 ;
 
-        // Datos preseleccionados para actualización
         window.preselectedPatientData = {
             state: <?php echo (($tmp = $_smarty_tpl->getValue('patient')['id_state'] ?? null)===null||$tmp==='' ? 'null' ?? null : $tmp);?>
 ,
@@ -97,7 +97,6 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
                     </h2>
                 </div>
             <?php if ((true && ($_smarty_tpl->hasVariable('success') && null !== ($_smarty_tpl->getValue('success') ?? null)))) {?>
-                <!-- Mostrar mensaje de éxito -->
                 <div
                     style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
                     <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('success'), ENT_QUOTES, 'UTF-8', true);?>
@@ -112,7 +111,6 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
                 <div class="step" data-step="4">Paso 4</div>
             </div>
 
-            <!-- Si hay un error, lo mostramos aquí -->
             <?php if ((true && ($_smarty_tpl->hasVariable('error') && null !== ($_smarty_tpl->getValue('error') ?? null)))) {?>
                 <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
                     <?php echo htmlspecialchars((string)$_smarty_tpl->getValue('error'), ENT_QUOTES, 'UTF-8', true);?>

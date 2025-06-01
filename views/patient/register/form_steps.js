@@ -1,3 +1,63 @@
+// Función para validar el campo de foto
+function validatePhotoField() {
+    const photoInput = document.getElementById('photo');
+    let valid = true;
+
+    if (photoInput) {
+        if (photoInput.hasAttribute('required') && photoInput.files.length === 0) {
+            showErrorMessage(photoInput, 'Debe seleccionar una foto.');
+            valid = false;
+        } else if (photoInput.files.length > 0) {
+            const file = photoInput.files[0];
+            if (!file.type.startsWith('image/')) {
+                showErrorMessage(photoInput, 'El archivo debe ser una imagen.');
+                valid = false;
+            } else {
+                clearErrorMessage(photoInput);
+            }
+        }
+    }
+
+    return valid;
+}
+
+// Función para mostrar mensaje de error
+function showErrorMessage(input, message) {
+    input.style.border = '2px solid red';
+
+    // Crear o actualizar mensaje de error
+    let errorElement = input.nextElementSibling;
+    while (errorElement && !errorElement.classList.contains('error-message')) {
+        errorElement = errorElement.nextElementSibling;
+    }
+
+    if (!errorElement) {
+        errorElement = document.createElement('span');
+        errorElement.classList.add('error-message');
+        errorElement.style.color = 'red';
+        errorElement.style.display = 'block';
+        errorElement.style.marginTop = '5px';
+        input.parentNode.appendChild(errorElement);
+    }
+
+    errorElement.textContent = message;
+}
+
+// Función para limpiar mensaje de error
+function clearErrorMessage(input) {
+    input.style.border = '2px solid var(--line-clr)';
+
+    // Eliminar mensaje de error si existe
+    let errorElement = input.nextElementSibling;
+    while (errorElement) {
+        if (errorElement.classList.contains('error-message')) {
+            errorElement.remove();
+            break;
+        }
+        errorElement = errorElement.nextElementSibling;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     // Validar si las variables de JavaScript tienen datos
     if (!window.municipalities || !window.localities || !window.states) {
@@ -77,24 +137,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const photoInput = document.getElementById('photo');
     if (photoInput) {
-        if (photoInput.hasAttribute('required') && photoInput.files.length === 0) {
-            showErrorMessage(photoInput, 'Debe seleccionar una foto.');
-            valid = false;
-        } else if (photoInput.files.length > 0) {
-            const file = photoInput.files[0];
-            if (!file.type.startsWith('image/')) {
-                showErrorMessage(photoInput, 'El archivo debe ser una imagen.');
-                valid = false;
+        photoInput.addEventListener('change', event => {
+            const file = event.target.files[0];
+            const imagePreview = document.getElementById('patient-image-preview');
+            const previewPlaceholder = document.getElementById('patient-preview-placeholder');
+
+            if (file) {
+                // Validar que sea una imagen
+                if (file.type.startsWith('image/')) {
+                    // Mostrar vista previa
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                        previewPlaceholder.style.display = 'none';
+                    };
+                    reader.readAsDataURL(file);
+                    clearErrorMessage(photoInput);
+                } else {
+                    showErrorMessage(photoInput, 'El archivo debe ser una imagen.');
+                    imagePreview.style.display = 'none';
+                    previewPlaceholder.style.display = 'flex';
+                }
             } else {
-                clearErrorMessage(photoInput);
+                // No hay archivo seleccionado
+                imagePreview.style.display = 'none';
+                previewPlaceholder.style.display = 'flex';
+
+                if (photoInput.hasAttribute('required')) {
+                    showErrorMessage(photoInput, 'Debe seleccionar una foto.');
+                }
             }
-        }
+        });
     }
-
-    document.getElementById('photo').addEventListener('change', event => {
-    const fileName = event.target.files[0] ? event.target.files[0].name : 'Subir Foto';
-    document.getElementById('photo-label').textContent = fileName;
 });
-});
-
-// This function is now defined in register-patient.app.js

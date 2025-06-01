@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 09:49:04
+/* Smarty version 5.4.5, created on 2025-06-01 22:55:09
   from 'file:register-user.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683c221087a0f4_61272912',
+  'unifunc' => 'content_683cda4df38514_34040509',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ff45b765cac8e23bd34839b63b171fe16697ac7f' => 
     array (
       0 => 'register-user.view.tpl',
-      1 => 1748770952,
+      1 => 1748776858,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_683c221087a0f4_61272912 (\Smarty\Template $_smarty_tpl) {
+function content_683cda4df38514_34040509 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -37,13 +37,13 @@ $_smarty_current_dir = '/var/www/html/views/user/register';
     <?php echo '<script'; ?>
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
 >
-    <title>Registro de Usuarios</title>
+    <title>Registro de Usuarios | Medic Life</title>
 </head>
 
 <body>
 
     <?php $_smarty_tpl->renderSubTemplate($_smarty_tpl->getValue('sidebarPath'), $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
-?> <!-- Aquí se incluye el sidebar, según la variable Smarty -->
+?>
 
     <main class="content">
 
@@ -65,7 +65,6 @@ $_smarty_current_dir = '/var/www/html/views/user/register';
                     </h2>
                 </div>
 
-                <!-- Si hay un error, lo mostramos aquí -->
                 <?php if ((true && ($_smarty_tpl->hasVariable('error') && null !== ($_smarty_tpl->getValue('error') ?? null)))) {?>
                     <div
                         style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
@@ -74,7 +73,6 @@ $_smarty_current_dir = '/var/www/html/views/user/register';
                     </div>
                 <?php }?>
 
-                <!-- Si hay un mensaje de éxito, lo mostramos aquí -->
                 <?php if ((true && ($_smarty_tpl->hasVariable('success') && null !== ($_smarty_tpl->getValue('success') ?? null)))) {?>
                     <div
                         style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
@@ -83,7 +81,6 @@ $_smarty_current_dir = '/var/www/html/views/user/register';
                     </div>
                 <?php }?>
 
-                <!-- Formulario para registrar o actualizar usuario -->
                 <form action="/controllers/auth/register.controller.php" method="POST" id="user-form">
                     <?php if ($_smarty_tpl->getValue('editMode')) {?>
                         <input type="hidden" name="user_id" value="<?php echo $_smarty_tpl->getValue('userData')['id'];?>
@@ -184,7 +181,6 @@ echo $_smarty_tpl->getValue('userData')['email'];
                             const nameInput = document.getElementById('name');
                             const emailInput = document.getElementById('email');
 
-                            // Función para mostrar/ocultar el selector de doctores
                             function toggleDoctorSelect() {
                                 if (roleSelect.value === 'D') {
                                     doctorSelectContainer.style.display = 'flex';
@@ -196,17 +192,13 @@ echo $_smarty_tpl->getValue('userData')['email'];
                                 }
                             }
 
-                            // Inicializar el estado
                             toggleDoctorSelect();
 
-                            // Si estamos en modo edición, deshabilitar el selector de rol para todos los usuarios
                             const editMode = document.querySelector('input[name="edit_mode"]');
                             if (editMode) {
-                                // Deshabilitar el selector de rol para todos los usuarios en modo edición
                                 roleSelect.disabled = true;
                                 roleSelect.classList.add('input-disabled');
 
-                                // Si además es un doctor y hay un doctor seleccionado, deshabilitar también el selector de doctor
                                 if (roleSelect.value === 'D' && doctorSelect.value) {
                                     const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
                                     const doctorInfo = selectedOption.text.split(' - ');
@@ -216,17 +208,14 @@ echo $_smarty_tpl->getValue('userData')['email'];
                                         nameInput.classList.add('input-disabled');
                                         emailInput.classList.add('input-disabled');
 
-                                        // Deshabilitar el selector de doctor cuando se edita un usuario doctor
                                         doctorSelect.disabled = true;
                                         doctorSelect.classList.add('input-disabled');
                                     }
                                 }
                             }
 
-                            // Escuchar cambios en el selector de rol
                             roleSelect.addEventListener('change', toggleDoctorSelect);
 
-                            // Cuando se selecciona un doctor, autocompletar nombre y email
                             doctorSelect.addEventListener('change', function() {
                                 if (this.value && roleSelect.value === 'D') {
                                     const selectedOption = this.options[this.selectedIndex];
@@ -269,16 +258,13 @@ echo $_smarty_tpl->getValue('userData')['email'];
             const isEditMode = document.querySelector('input[name="edit_mode"]') !== null;
             const isPasswordChangeMode = document.querySelector('input[name="password_change_mode"]') !== null;
 
-            // Clear previous error
             passwordError.style.display = 'none';
             passwordError.textContent = '';
 
-            // Skip validation if password is empty and we're in edit mode (not password change mode)
             if (passwordInput.value === '' && isEditMode && !isPasswordChangeMode) {
                 return true;
             }
 
-            // Validate password length
             if (passwordInput.value.length < 8) {
                 passwordError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
                 passwordError.style.display = 'block';
@@ -295,16 +281,13 @@ echo $_smarty_tpl->getValue('userData')['email'];
             const isEditMode = document.querySelector('input[name="edit_mode"]') !== null;
             const isPasswordChangeMode = document.querySelector('input[name="password_change_mode"]') !== null;
 
-            // Clear previous error
             confirmPasswordError.style.display = 'none';
             confirmPasswordError.textContent = '';
 
-            // Skip validation if both passwords are empty and we're in edit mode (not password change mode)
             if (passwordInput.value === '' && confirmPasswordInput.value === '' && isEditMode && !isPasswordChangeMode) {
                 return true;
             }
 
-            // Validate password match
             if (passwordInput.value !== confirmPasswordInput.value) {
                 confirmPasswordError.textContent = 'Las contraseñas no coinciden.';
                 confirmPasswordError.style.display = 'block';
@@ -318,19 +301,15 @@ echo $_smarty_tpl->getValue('userData')['email'];
             const userForm = document.getElementById('user-form');
 
             userForm.addEventListener('submit', function(event) {
-                // Prevent the default form submission
                 event.preventDefault();
 
-                // Validate password fields before submission
                 const isPasswordValid = validatePassword();
                 const isPasswordMatchValid = validatePasswordMatch();
 
-                // If validation fails, stop form submission
                 if (!isPasswordValid || !isPasswordMatchValid) {
                     return;
                 }
 
-                // Determine the action based on form mode
                 let title, confirmButtonText;
                 const isEditMode = document.querySelector('input[name="edit_mode"]') !== null;
                 const isPasswordChangeMode = document.querySelector('input[name="password_change_mode"]') !== null;
@@ -346,7 +325,6 @@ echo $_smarty_tpl->getValue('userData')['email'];
                     confirmButtonText = "Registrar";
                 }
 
-                // Show SweetAlert confirmation
                 Swal.fire({
                     title: title,
                     text: "",
@@ -356,7 +334,6 @@ echo $_smarty_tpl->getValue('userData')['email'];
                     cancelButtonText: "Cancelar"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // If confirmed, submit the form
                         userForm.submit();
                     }
                 });

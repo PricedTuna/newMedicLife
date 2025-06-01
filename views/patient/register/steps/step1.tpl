@@ -42,8 +42,17 @@
         <input type="text" id="rfc" value="{$patient.RFC|default: ''}" name="rfc" required>
     </div>
     <div class="form-group">
-        <label for="photo" class="file-label" id="photo-label">Subir Foto</label>
-        <input type="file" id="photo" name="photo" accept="image/*" {if !$patient}required{/if}>
+        <label for="photo" class="file-label" id="photo-label">
+            <i class="bi bi-cloud-arrow-up"></i> Subir Foto
+        </label>
+        <input type="file" id="photo" name="photo" accept="image/*" {if !$patient}required{/if} style="display: none;">
+        <div id="patient-image-preview-container" class="image-preview-container">
+            <img id="patient-image-preview" class="image-preview" src="{if isset($patient) && $patient.id}/controllers/patient/mostrar_foto.php?id={$patient.id}{/if}" alt="Vista previa" style="{if !isset($patient) || !$patient.id}display: none;{else}display: block;{/if}">
+            <div id="patient-preview-placeholder" class="preview-placeholder" style="{if isset($patient) && $patient.id}display: none;{else}display: flex;{/if}">
+                <i class="bi bi-image"></i>
+                <span>Vista previa de la imagen</span>
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <label for="affiliationNumber">Número de Afiliación</label>

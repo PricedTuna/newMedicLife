@@ -185,7 +185,12 @@ button {
   }
 
   main {
-    padding: 2em 1em 60px 1em;
+    padding: 0;
+    margin: 0;
+  }
+
+  .content {
+    padding: 0;
   }
 
   h1 {

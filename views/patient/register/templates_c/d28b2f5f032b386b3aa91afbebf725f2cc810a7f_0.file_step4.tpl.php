@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-26 04:07:58
+/* Smarty version 5.4.5, created on 2025-06-01 23:46:16
   from 'file:steps/step4.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_6833e91ea30ff2_28534017',
+  'unifunc' => 'content_683ce6482e81b1_83646311',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd28b2f5f032b386b3aa91afbebf725f2cc810a7f' => 
     array (
       0 => 'steps/step4.tpl',
-      1 => 1748223206,
+      1 => 1748820898,
       2 => 'file',
     ),
   ),
@@ -20,12 +20,13 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_6833e91ea30ff2_28534017 (\Smarty\Template $_smarty_tpl) {
+function content_683ce6482e81b1_83646311 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
 ?><input type="hidden" name="emergency_contacts_id" value="<?php echo (($tmp = $_smarty_tpl->getValue('emergencyContacts')['id'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
 ">
 
 <div class="form-step" id="step-4">
+    <h2 class="formSubtitle">Contacto de emergencía</h1>
     <div class="form-group">
         <label for="contactFirstName">Nombre del Contacto</label>
         <input type="text" id="contactFirstName"  value="<?php echo (($tmp = $_smarty_tpl->getValue('emergencyContacts')['names'] ?? null)===null||$tmp==='' ? '' ?? null : $tmp);?>
@@ -54,5 +55,5 @@ $_smarty_current_dir = '/var/www/html/views/patient/register/steps';
     <button type="button" class="prev-btn" onclick="prevStep(3)">Atrás</button>
     <button type="submit" class="submit-btn">Registrar</button>
 </div>
-    <?php }
+<?php }
 }

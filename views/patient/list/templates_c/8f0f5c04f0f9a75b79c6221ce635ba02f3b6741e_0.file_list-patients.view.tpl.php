@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 05:34:58
+/* Smarty version 5.4.5, created on 2025-06-01 09:31:52
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683be6820e29a7_38344946',
+  'unifunc' => 'content_683c1e08bf55c9_30515860',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8f0f5c04f0f9a75b79c6221ce635ba02f3b6741e' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1748755867,
+      1 => 1748769680,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683be6820e29a7_38344946 (\Smarty\Template $_smarty_tpl) {
+function content_683c1e08bf55c9_30515860 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -29,25 +29,22 @@ $_smarty_current_dir = '/var/www/html/views/patient/list';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/lists.css">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
+    <?php echo '<script'; ?>
+ src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
+>
     <?php echo '<script'; ?>
  src="/views/patient/list/views-handler.js" defer><?php echo '</script'; ?>
 >
     <?php echo '<script'; ?>
  src="/views/patient/register/register-patient.app.js" defer><?php echo '</script'; ?>
 >
-    <link rel="stylesheet" href="/views/patient/main/main-patient.styles.css">
-    <link rel="stylesheet" href="/views/patient/register/register-patient.styles.css">
-    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
-    <?php echo '<script'; ?>
- src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
->
-    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <?php echo '<script'; ?>
  src="/views/patient/list/list-patients.js" defer><?php echo '</script'; ?>
 >
-    <link rel="stylesheet" href="/register-patient.styles.css">
-    <link rel="stylesheet" href="/views/patient/list/list-patients.styles.css">
-    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
         <?php echo '<script'; ?>
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >

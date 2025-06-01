@@ -1,26 +1,26 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-28 02:28:42
+/* Smarty version 5.4.5, created on 2025-06-01 09:49:04
   from 'file:register-user.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683674dae88df7_25991536',
+  'unifunc' => 'content_683c221087a0f4_61272912',
   'has_nocache_code' => false,
-  'file_dependency' =>
+  'file_dependency' => 
   array (
-    'ff45b765cac8e23bd34839b63b171fe16697ac7f' =>
+    'ff45b765cac8e23bd34839b63b171fe16697ac7f' => 
     array (
       0 => 'register-user.view.tpl',
-      1 => 1748398180,
+      1 => 1748770952,
       2 => 'file',
     ),
   ),
-  'includes' =>
+  'includes' => 
   array (
   ),
 ))) {
-function content_683674dae88df7_25991536 (\Smarty\Template $_smarty_tpl) {
+function content_683c221087a0f4_61272912 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -28,11 +28,12 @@ $_smarty_current_dir = '/var/www/html/views/user/register';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/forms.css">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <?php echo '<script'; ?>
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
-    <link rel="stylesheet" href="./register-user.styles.css">
-    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <?php echo '<script'; ?>
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
 >

@@ -4,16 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de citas</title>
 
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/lists.css">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/appointment/register/register-appoiment.js" defer></script>
     <script src="/views/components/sidebar.app.js" defer></script>
-    <link rel="stylesheet" href="/views/appointment/main/main-appointment.styles.css">
-    <link rel="stylesheet" href="/views/appointment/register/register-appoiment.css">
-    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <link rel="stylesheet" href="/views/appointment/list/list-appointments.styles.css">
-    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <script src="/scripts/form-validations.js"></script>
     <script src="/views/appointment/list/list-appointments.js" defer></script>

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 05:34:58
+/* Smarty version 5.4.5, created on 2025-06-01 09:31:58
   from 'file:list-appointments.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683be6828e54f0_94378918',
+  'unifunc' => 'content_683c1e0ed50248_70784566',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ae2a5461b1393847530f38f5e33856ae08f067d0' => 
     array (
       0 => 'list-appointments.view.tpl',
-      1 => 1748755867,
+      1 => 1748769729,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683be6828e54f0_94378918 (\Smarty\Template $_smarty_tpl) {
+function content_683c1e0ed50248_70784566 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/appointment/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -29,6 +29,13 @@ $_smarty_current_dir = '/var/www/html/views/appointment/list';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de citas</title>
 
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/lists.css">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
+    <?php echo '<script'; ?>
+ src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
+>
     <?php echo '<script'; ?>
  src="/views/doctor/list/views-handler.js" defer><?php echo '</script'; ?>
 >
@@ -38,15 +45,6 @@ $_smarty_current_dir = '/var/www/html/views/appointment/list';
     <?php echo '<script'; ?>
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
-    <link rel="stylesheet" href="/views/appointment/main/main-appointment.styles.css">
-    <link rel="stylesheet" href="/views/appointment/register/register-appoiment.css">
-    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
-    <?php echo '<script'; ?>
- src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
->
-    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <link rel="stylesheet" href="/views/appointment/list/list-appointments.styles.css">
-    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <?php echo '<script'; ?>
  src="/scripts/form-validations.js"><?php echo '</script'; ?>

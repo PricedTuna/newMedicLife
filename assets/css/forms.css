@@ -1,0 +1,326 @@
+/* Standardized styles for form views */
+@import url("common.css");
+
+/* Form container */
+.form-container {
+  background: var(--hover-clr);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.center-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+/* Form header */
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  position: relative;
+  margin-bottom: 3rem;
+  margin-top: 1rem;
+}
+
+.form-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.form-back-btn {
+  position: absolute;
+  left: 0;
+}
+
+/* Multi-step form */
+.steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.step {
+  flex: 1;
+  padding: 0.5rem;
+  text-align: center;
+  background-color: var(--line-clr);
+  border-radius: 8px;
+  font-weight: 500;
+  margin: 0 5px;
+}
+
+.step-active {
+  background-color: var(--accent-clr);
+  color: var(--hover-clr);
+}
+
+.step-completed {
+  background-color: var(--accent-clr);
+  color: var(--line-clr);
+}
+
+/* Form groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--secondary-text-clr);
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.75rem;
+  border: 2px solid var(--line-clr);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent-clr);
+  box-shadow: 0 0 8px rgba(94, 99, 255, 0.5);
+}
+
+/* Form step navigation buttons */
+.next-btn {
+  background-color: var(--accent-clr);
+  color: var(--hover-clr);
+}
+
+.next-btn:hover {
+  background-color: #4a54e1;
+}
+
+.prev-btn {
+  background-color: var(--secondary-text-clr);
+  color: var(--hover-clr);
+}
+
+.prev-btn:hover {
+  background-color: #414b56;
+}
+
+.submit-btn {
+  background-color: var(--accent-clr);
+  color: var(--hover-clr);
+}
+
+.submit-btn:hover {
+  background-color: #4a54e1;
+}
+
+/* File upload */
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background-color: var(--accent-clr);
+  color: white !important;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  margin-bottom: 1rem;
+}
+
+.file-label:hover {
+  background-color: #4a54e1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.file-label:active {
+  background-color: var(--secondary-text-clr);
+  transform: translateY(0);
+}
+
+.file-input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.file-name::before {
+  content: "Archivo seleccionado: ";
+  font-weight: 600;
+  color: var(--text-clr);
+  margin: 0;
+}
+
+.input-file-container {
+  border: 2px solid var(--line-clr);
+  background-color: var(--base-clr);
+  padding: 16px;
+  border-radius: 1em;
+  margin-bottom: 12px;
+}
+
+/* Image preview */
+.image-preview-container {
+  width: 100%;
+  height: 200px;
+  border: 2px dashed var(--line-clr);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--base-clr);
+}
+
+.image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.preview-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--secondary-text-clr);
+  gap: 0.5rem;
+}
+
+.preview-placeholder i {
+  font-size: 2.5rem;
+  opacity: 0.7;
+}
+
+.preview-placeholder span {
+  font-size: 0.9rem;
+}
+
+/* Back button icon for mobile */
+.back-btn-icon {
+  display: none;
+}
+
+/* Responsive styles */
+@media (max-width: 800px) {
+  .steps {
+    display: flex;
+  }
+
+  .step {
+    flex: 0 0 20%;
+    max-width: 20%;
+    padding: 1vmin 2vmin;
+    font-size: 3vmin;
+    margin: 0 2vw;
+  }
+
+  .back-btn {
+    display: none;
+  }
+
+  .form-back-btn .back-btn {
+    display: none;
+  }
+
+  /* Small back arrow for mobile */
+  .form-back-btn .back-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: var(--accent-clr);
+    color: var(--hover-clr);
+    border-radius: 4px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    padding: 0;
+  }
+}
+
+/* Schedule styles */
+.section-title {
+  font-size: 1.25rem;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.schedule-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.schedule-row {
+  background-color: #f1f5f9;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.day-label {
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.schedule-time-inputs {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.time-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.time-field label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+.time-field input[type="time"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}

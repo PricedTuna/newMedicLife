@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./register-appoiment.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/forms.css">
     <link rel="stylesheet" href="/assets/css/flatpickr.min.css">
     <link rel="stylesheet" href="/assets/css/usability-improvements.css">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
-    <script src="../../components/sidebar.app.js" defer></script>
-    <link rel="stylesheet" href="../../components/sidebar.styles.css">
+    <script src="/views/components/sidebar.app.js" defer></script>
     <script src="/assets/js/flatpickr.min.js"></script>
     <script src="/assets/js/es.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -32,10 +33,17 @@
 
     {include file=$sidebarPath}
 
-    <div class="center-container">
-        <div class="form-container">
-            <h2>Solicitar Citas</h2>
-            <form id="solicitarCita" method="POST" action="/controllers/appoiment/register-appoiment.controller.php">
+    <main class="content">
+        <div class="center-container">
+            <div class="form-container">
+                <div class="form-header">
+                    <a href="/views/appointment/list/list-appointments.view.php" class="form-back-btn">
+                        <button class="back-btn">Volver</button>
+                        <span class="back-btn-icon">&#8617;</span>
+                    </a>
+                    <h2 class="form-title">Solicitar Citas</h2>
+                </div>
+                <form id="solicitarCita" method="POST" action="/controllers/appoiment/register-appoiment.controller.php">
                 <input type="hidden" name="appointment_id" value="{$appointment.id|default: ''}"></input>
                 <input type="hidden" id="appointmentId" name="appointment_id" value="{$appointment.id|default: ''}">
                 <div class="form-group">
@@ -91,8 +99,9 @@
 
                 <button type="submit" class="submit-btn">Registrar Datos</button>
             </form>
+            </div>
         </div>
-    </div>
+    </main>
 
 </body>
 

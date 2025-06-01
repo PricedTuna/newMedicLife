@@ -8,17 +8,14 @@
     <script src="../../components/sidebar.app.js" defer></script>
     <script src="../../patient/register/register-patient.app.js" defer></script> *}
 
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/lists.css">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/views/patient/list/views-handler.js" defer></script>
     <script src="/views/patient/register/register-patient.app.js" defer></script>
-    <link rel="stylesheet" href="/views/patient/main/main-patient.styles.css">
-    <link rel="stylesheet" href="/views/patient/register/register-patient.styles.css">
-    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <script src="/views/patient/list/list-patients.js" defer></script>
-    <link rel="stylesheet" href="/register-patient.styles.css">
-    <link rel="stylesheet" href="/views/patient/list/list-patients.styles.css">
-    <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     {* <link rel="stylesheet" href="../../../resset.css">  *}
     <script src="/views/components/sidebar.app.js" defer></script>
 

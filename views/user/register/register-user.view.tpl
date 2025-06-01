@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/views/components/sidebar.app.js" defer></script>
-    <link rel="stylesheet" href="./register-user.styles.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/forms.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <script src="/views/components/sidebar.app.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Registro de Usuarios</title>
 </head>

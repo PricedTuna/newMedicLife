@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
-    <link rel="stylesheet" href="./register-patient.styles.css">
-    <link rel="stylesheet" href="../../components/sidebar.styles.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/forms.css">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../../components/sidebar.app.js" defer></script>
+    <script src="/views/components/sidebar.app.js" defer></script>
     <script src="./register-patient.app.js" defer></script>
     <title>Registro de Paciente</title>
 
@@ -31,17 +32,24 @@
 
 <body>
 
-    <div class="registerPatientWrapper">
-        {include file="../../components/sidebar.tpl"}
+    {include file="../../components/sidebar.tpl"}
 
-        <div class="form-container">
-            <h2 class="form-title">
-                {if $patient}
-                    Actualizar Paciente
-                {else}
-                    Registrar Paciente
-                {/if}
-            </h2>
+    <main class="content">
+        <div class="center-container">
+            <div class="form-container">
+                <div class="form-header">
+                    <a href="/views/patient/list/list-patients.view.php" class="form-back-btn">
+                        <button class="back-btn">Volver</button>
+                        <span class="back-btn-icon">&#8617;</span>
+                    </a>
+                    <h2 class="form-title">
+                        {if $patient}
+                            Actualizar Paciente
+                        {else}
+                            Registrar Paciente
+                        {/if}
+                    </h2>
+                </div>
             {if isset($success)}
                 <!-- Mostrar mensaje de éxito -->
                 <div
@@ -72,6 +80,7 @@
             </form>
         </div>
     </div>
+</main>
 
 </body>
 

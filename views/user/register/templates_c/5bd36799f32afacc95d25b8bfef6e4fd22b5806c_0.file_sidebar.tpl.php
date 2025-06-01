@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-05-28 03:37:38
+/* Smarty version 5.4.5, created on 2025-06-01 09:49:04
   from 'file:/var/www/html/views/components/sidebar.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_68368502791006_80108132',
+  'unifunc' => 'content_683c221087cc91_58593351',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '5bd36799f32afacc95d25b8bfef6e4fd22b5806c' => 
     array (
       0 => '/var/www/html/views/components/sidebar.tpl',
-      1 => 1748401924,
+      1 => 1748755867,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_68368502791006_80108132 (\Smarty\Template $_smarty_tpl) {
+function content_683c221087cc91_58593351 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/components';
 ?><nav id="sidebar">
     <ul>
@@ -134,6 +134,15 @@ $_smarty_current_dir = '/var/www/html/views/components';
                         d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z" />
                 </svg>
                 <span>Mi Perfil</span>
+            </a>
+        </li>
+        <li>
+            <a href="/views/settings/settings.view.php">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000">
+                    <path
+                        d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm112-260q58 0 99-41t41-99q0-58-41-99t-99-41q-58 0-99 41t-41 99q0 58 41 99t99 41Z"/>
+                </svg>
+                <span>Configuraciones</span>
             </a>
         </li>
         <li>

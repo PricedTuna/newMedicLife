@@ -10,12 +10,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/doctor/register/register-doctor.app.js" defer></script>
-    <link rel="stylesheet" href="/views/doctor/main/main-doctor.styles.css">
-    <link rel="stylesheet" href="/views/doctor/register/register-doctor.styles.css">
-    <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/lists.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <link rel="stylesheet" href="/register-patient.styles.css">
-    <link rel="stylesheet" href="/views/doctor/list/list-doctors.styles.css">
     <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <script src="/views/doctor/list/list-doctors.js" module defer></script>
     {* <link rel="stylesheet" href="../../../resset.css">  *}

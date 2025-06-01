@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 05:31:22
+/* Smarty version 5.4.5, created on 2025-06-01 09:54:25
   from 'file:register-patient-view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683be5aab58228_26391468',
+  'unifunc' => 'content_683c235156dc99_87341814',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'e28ccfcc69a17305b873aaed7ac1b071576ec4d1' => 
     array (
       0 => 'register-patient-view.tpl',
-      1 => 1748755867,
+      1 => 1748771470,
       2 => 'file',
     ),
   ),
@@ -25,7 +25,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:steps/step4.tpl' => 1,
   ),
 ))) {
-function content_683be5aab58228_26391468 (\Smarty\Template $_smarty_tpl) {
+function content_683c235156dc99_87341814 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/register';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -34,13 +34,14 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
-    <link rel="stylesheet" href="./register-patient.styles.css">
-    <link rel="stylesheet" href="../../components/sidebar.styles.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/forms.css">
+    <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <?php echo '<script'; ?>
  src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><?php echo '</script'; ?>
 >
     <?php echo '<script'; ?>
- src="../../components/sidebar.app.js" defer><?php echo '</script'; ?>
+ src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
     <?php echo '<script'; ?>
  src="./register-patient.app.js" defer><?php echo '</script'; ?>
@@ -76,18 +77,25 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
 
 <body>
 
-    <div class="registerPatientWrapper">
-        <?php $_smarty_tpl->renderSubTemplate("file:../../components/sidebar.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
+    <?php $_smarty_tpl->renderSubTemplate("file:../../components/sidebar.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
 ?>
 
-        <div class="form-container">
-            <h2 class="form-title">
-                <?php if ($_smarty_tpl->getValue('patient')) {?>
-                    Actualizar Paciente
-                <?php } else { ?>
-                    Registrar Paciente
-                <?php }?>
-            </h2>
+    <main class="content">
+        <div class="center-container">
+            <div class="form-container">
+                <div class="form-header">
+                    <a href="/views/patient/list/list-patients.view.php" class="form-back-btn">
+                        <button class="back-btn">Volver</button>
+                        <span class="back-btn-icon">&#8617;</span>
+                    </a>
+                    <h2 class="form-title">
+                        <?php if ($_smarty_tpl->getValue('patient')) {?>
+                            Actualizar Paciente
+                        <?php } else { ?>
+                            Registrar Paciente
+                        <?php }?>
+                    </h2>
+                </div>
             <?php if ((true && ($_smarty_tpl->hasVariable('success') && null !== ($_smarty_tpl->getValue('success') ?? null)))) {?>
                 <!-- Mostrar mensaje de éxito -->
                 <div
@@ -124,6 +132,7 @@ $_smarty_current_dir = '/var/www/html/views/patient/register';
             </form>
         </div>
     </div>
+</main>
 
 </body>
 

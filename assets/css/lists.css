@@ -1,0 +1,286 @@
+/* Standardized styles for list views */
+@import url("common.css");
+
+/* Table container */
+.table-container {
+  background-color: var(--hover-clr);
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  max-width: 95%;
+  margin: 3rem auto;
+  overflow-x: auto;
+  position: relative;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: var(--accent-clr);
+  color: var(--hover-clr);
+  width: 100%;
+}
+
+thead th {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+tbody tr {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line-clr);
+  transition: background-color 0.3s;
+}
+
+tbody tr:hover {
+  background-color: var(--light-clr);
+}
+
+tbody td {
+  padding: 0.4rem;
+  color: var(--text-clr);
+  font-size: 1rem;
+}
+
+td {
+  flex-grow: 1;
+}
+
+/* Status indicators for appointments */
+tr[data-status="A"] {
+  border-left: 4px solid green;
+}
+
+tr[data-status="T"] {
+  border-left: 4px solid orange;
+}
+
+tr[data-status="F"] {
+  border-left: 4px solid gray;
+}
+
+/* Filter container */
+.filter-container {
+  display: flex;
+  gap: 10px;
+  margin: 20px auto;
+  padding: 15px;
+  background-color: var(--hover-clr);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 95%;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-container input[type="text"] {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 15px;
+  border: 1px solid var(--line-clr);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text-clr);
+  transition: border-color 0.3s;
+}
+
+.filter-container input[type="text"]:focus {
+  border-color: var(--accent-clr);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(94, 99, 255, 0.2);
+}
+
+.filter-container select {
+  padding: 10px 15px;
+  border: 1px solid var(--line-clr);
+  border-radius: 8px;
+  background-color: var(--hover-clr);
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text-clr);
+  cursor: pointer;
+  transition: border-color 0.3s;
+  min-width: 150px;
+}
+
+.filter-container select:focus {
+  border-color: var(--accent-clr);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(94, 99, 255, 0.2);
+}
+
+.filter-container button {
+  padding: 10px 15px;
+  background-color: var(--accent-clr);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.filter-container button:hover {
+  background-color: #4a4dcc;
+  transform: translateY(-2px);
+}
+
+.filter-container button:active {
+  transform: translateY(0);
+}
+
+/* Table header */
+.table-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Actions column */
+.actions-td {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+}
+
+/* Photo column */
+.photo-column {
+  padding-left: 0.8rem;
+}
+
+/* Mobile add button */
+.icon-btn {
+  display: none;
+}
+
+.table-add-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--accent-clr);
+  color: white;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .filter-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-container input[type="text"],
+  .filter-container select,
+  .filter-container button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 810px) {
+  .create-btn {
+    width: auto;
+    margin-top: 10px;
+    justify-content: flex-start;
+  }
+
+  .back-btn {
+    margin-top: 2rem;
+  }
+
+  .table-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Mobile add button */
+  .icon-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--accent-clr);
+    cursor: pointer;
+    width: 2em;
+    height: 2em;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+
+  .icon-btn:active {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+
+  .table-add-btn {
+    display: flex;
+  }
+
+  .create-btn {
+    display: none;
+  }
+
+  /* Responsive tables */
+  table thead {
+    display: none;
+  }
+
+  table, tbody, tr, td {
+    display: block;
+    width: 100%;
+  }
+
+  tbody tr {
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 0.5rem;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--line-clr);
+    text-align: right;
+  }
+
+  td:before {
+    content: attr(data-label);
+    display: inline-block;
+    font-weight: bold;
+    width: 35%;
+    margin-right: 2rem;
+    text-align: left;
+  }
+
+  td:last-child {
+    border-bottom: 0;
+  }
+
+  .actions-td::before {
+    content: "";
+    display: none;
+  }
+}

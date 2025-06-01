@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/views/components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -427,6 +426,32 @@
                                                     <li>{$area}</li>
                                                 {/foreach}
                                             </ul>
+                                        </span>
+                                    </div>
+                                {/if}
+
+                                {if isset($doctorData.schedules) && $doctorData.schedules|@count > 0}
+                                    <div class="info-item">
+                                        <span class="label">Horarios:</span>
+                                        <span class="value">
+                                            <table class="schedule-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Día</th>
+                                                        <th>Hora de inicio</th>
+                                                        <th>Hora de fin</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {foreach from=$doctorData.schedules item=schedule}
+                                                        <tr>
+                                                            <td>{$schedule.day}</td>
+                                                            <td>{$schedule.start_time}</td>
+                                                            <td>{$schedule.end_time}</td>
+                                                        </tr>
+                                                    {/foreach}
+                                                </tbody>
+                                            </table>
                                         </span>
                                     </div>
                                 {/if}

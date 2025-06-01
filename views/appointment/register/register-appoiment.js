@@ -121,18 +121,53 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const workingDays = schedules
-      .filter((s) => s.id_doctor === selectedDoctorId)
+    const doctorSchedules = schedules.filter((s) => s.id_doctor === selectedDoctorId);
+    const workingDays = doctorSchedules
       .map((s) => s.day.toLowerCase())
       .map((day) => dayNameToNumber[day])
       .filter((v, i, a) => a.indexOf(v) === i);
 
     fp.set("disable", [(date) => !workingDays.includes(date.getDay())]);
 
+    // Clear the date if it's not in the doctor's schedule
     if (appointmentDate.value) {
       const selectedDate = new Date(appointmentDate.value);
       if (!workingDays.includes(selectedDate.getDay())) {
         fp.clear();
+      }
+    }
+
+    // If no date is selected, automatically select the first available time slot
+    if (!appointmentDate.value) {
+      // Find the next available working day
+      const today = new Date();
+      let nextAvailableDate = new Date(today);
+
+      // Try the next 14 days to find a working day
+      for (let i = 0; i < 14; i++) {
+        if (workingDays.includes(nextAvailableDate.getDay())) {
+          break;
+        }
+        nextAvailableDate.setDate(nextAvailableDate.getDate() + 1);
+      }
+
+      // Get the day name for the available date
+      const dayName = Object.keys(dayNameToNumber).find(
+        key => dayNameToNumber[key] === nextAvailableDate.getDay()
+      );
+
+      // Find the schedule for this day
+      const daySchedule = doctorSchedules.find(
+        s => s.day.toLowerCase() === dayName
+      );
+
+      if (daySchedule) {
+        // Set the time to the start time of the doctor's schedule
+        const [hours, minutes] = daySchedule.start_time.split(':').map(Number);
+        nextAvailableDate.setHours(hours, minutes, 0, 0);
+
+        // Set the date in the flatpickr
+        fp.setDate(nextAvailableDate);
       }
     }
   }
@@ -325,36 +360,44 @@ function filterDoctorsByArea(
   // Verificar si el usuario es un doctor (variable global pasada desde PHP)
   const isUserDoctor = typeof isDoctor !== 'undefined' && isDoctor === true;
 
-  // Si no es doctor o hay más de una opción, mostrar la opción por defecto
-  if (!isUserDoctor || filtered.length > 1) {
+  // Si el usuario es un doctor, solo mostrar ese doctor
+  if (isUserDoctor) {
+    // Si hay doctores filtrados, solo agregar el doctor actual
+    if (filtered.length > 0) {
+      // Agregar solo el primer doctor (que debería ser el doctor actual según la consulta SQL)
+      const option = document.createElement("option");
+      option.value = filtered[0].doctor_id;
+      option.text = filtered[0].doctor_name;
+      doctorSelect.appendChild(option);
+
+      // Seleccionar automáticamente
+      doctorSelect.value = filtered[0].doctor_id;
+
+      // Disparar el evento change para actualizar los días disponibles
+      const event = new Event('change');
+      doctorSelect.dispatchEvent(event);
+    }
+  } else {
+    // Para usuarios no doctores, mostrar la opción por defecto
     const defaultOption = document.createElement("option");
     defaultOption.text = "Selecciona un Doctor";
     defaultOption.value = "";
     doctorSelect.appendChild(defaultOption);
-  }
 
-  // Agrega opciones filtradas
-  filtered.forEach((doctor) => {
-    const option = document.createElement("option");
-    option.value = doctor.doctor_id;
-    option.text = doctor.doctor_name;
-    doctorSelect.appendChild(option);
-  });
+    // Agrega todas las opciones filtradas
+    filtered.forEach((doctor) => {
+      const option = document.createElement("option");
+      option.value = doctor.doctor_id;
+      option.text = doctor.doctor_name;
+      doctorSelect.appendChild(option);
+    });
 
-  // Si hay un doctor seleccionado explícito, úsalo
-  if (selectedDoctorId) {
-    doctorSelect.value = selectedDoctorId;
-  }
-  // Si el usuario es un doctor y solo hay una opción, seleccionarla automáticamente
-  else if (isUserDoctor && filtered.length === 1) {
-    doctorSelect.value = filtered[0].doctor_id;
-    // Disparar el evento change para actualizar los días disponibles
-    const event = new Event('change');
-    doctorSelect.dispatchEvent(event);
-  }
-  // En cualquier otro caso, no seleccionar ningún doctor
-  else {
-    doctorSelect.value = "";
+    // Si hay un doctor seleccionado explícito, úsalo
+    if (selectedDoctorId) {
+      doctorSelect.value = selectedDoctorId;
+    } else {
+      doctorSelect.value = "";
+    }
   }
 }
 

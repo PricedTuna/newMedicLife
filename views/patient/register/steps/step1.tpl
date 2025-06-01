@@ -44,12 +44,6 @@
     <div class="form-group">
         <label for="photo" class="file-label" id="photo-label">Subir Foto</label>
         <input type="file" id="photo" name="photo" accept="image/*" {if !$patient}required{/if}>
-        <div id="image-preview-container" class="image-preview-container">
-            <img id="image-preview" class="image-preview" src="{if isset($patient) && $patient.photo}/controllers/patient/mostrar_foto.php?id={$patient.id}{/if}" alt="Vista previa" style="{if !isset($patient) || !$patient.photo}display: none;{else}display: block;{/if}">
-            <div id="preview-placeholder" class="preview-placeholder" style="{if isset($patient) && $patient.photo}display: none;{else}display: flex;{/if}">
-                <span>Vista previa de la imagen</span>
-            </div>
-        </div>
     </div>
     <div class="form-group">
         <label for="affiliationNumber">Número de Afiliación</label>

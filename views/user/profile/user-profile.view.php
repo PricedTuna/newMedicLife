@@ -11,6 +11,9 @@ require $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/session.controller.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/models/user.model.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 
+// Ensure $pdo is available
+global $pdo;
+
 // Include Smarty
 use Smarty\Smarty;
 
@@ -51,8 +54,27 @@ try {
         $stmt->execute([':id_doctor' => $user['id_doctor']]);
         $medicalAreas = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
+        // Get doctor schedules
+        $stmt = $pdo->prepare("
+            SELECT id, day, start_time, end_time
+            FROM medical_schedules
+            WHERE id_doctor = :id_doctor
+            ORDER BY CASE 
+                WHEN day = 'Monday' THEN 1
+                WHEN day = 'Tuesday' THEN 2
+                WHEN day = 'Wednesday' THEN 3
+                WHEN day = 'Thursday' THEN 4
+                WHEN day = 'Friday' THEN 5
+                WHEN day = 'Saturday' THEN 6
+                WHEN day = 'Sunday' THEN 7
+            END
+        ");
+        $stmt->execute([':id_doctor' => $user['id_doctor']]);
+        $doctorSchedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         if ($doctorData) {
             $doctorData['medical_areas'] = $medicalAreas;
+            $doctorData['schedules'] = $doctorSchedules;
         }
     }
 

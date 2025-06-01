@@ -68,31 +68,7 @@ header {
 
 header h1 {
     font-size: 1.5em;
-    color: var(--accent-clr);
-    position: relative;
-    display: inline-block;
-    padding-bottom: 5px;
-    transition: all 0.3s ease;
-}
-
-header h1::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 3px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--accent-clr);
-    transition: width 0.5s ease;
-}
-
-header h1:hover {
-    transform: translateY(-2px);
-    text-shadow: 0 2px 4px rgba(94, 99, 255, 0.3);
-}
-
-header h1:hover::after {
-    width: 100%;
+    color: var(--text-clr);
 }
 
 .search-container input {
@@ -138,37 +114,11 @@ header h1:hover::after {
     border-radius: 0.5em;
     border: 1px solid var(--line-clr);
     margin-bottom: 20px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.chart:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .chart h3 {
-    color: var(--accent-clr);
-    margin-bottom: 15px;
-    position: relative;
-    display: inline-block;
-    padding-bottom: 5px;
-    transition: all 0.3s ease;
-}
-
-.chart h3::after {
-    content: '';
-    position: absolute;
-    width: 30%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--accent-clr);
-    transition: width 0.4s ease;
-}
-
-.chart:hover h3::after {
-    width: 100%;
+    color: var(--text-clr);
+    margin-bottom: 10px;
 }
 
 .chart-placeholder {
@@ -183,13 +133,6 @@ header h1:hover::after {
     padding: 20px;
     border-radius: 0.5em;
     border: 1px solid var(--line-clr);
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.patient-data:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .doctor-info {
@@ -202,13 +145,6 @@ header h1:hover::after {
     position: sticky;
     margin-left: 10px;
     margin-right: 20px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.doctor-info:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .doctor-card {
@@ -217,13 +153,6 @@ header h1:hover::after {
     padding: 20px;
     border-radius: 0.5em;
     border: 1px solid var(--line-clr);
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.doctor-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .doctor-photo {
@@ -235,18 +164,12 @@ header h1:hover::after {
     align-items: center;
     justify-content: center;
     color: var(--text-clr);
-    border: 3px solid var(--accent-clr);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
-    overflow: hidden;
 }
 
-.doctor-photo:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+.doctor-card h3 {
+    color: var(--text-clr);
+    margin-bottom: 10px;
 }
-
-/* Doctor card h3 styling is now handled with other section headings */
 
 .doctor-stats {
     display: flex;
@@ -265,47 +188,12 @@ header h1:hover::after {
     border-radius: 0.5em;
     border: 1px solid var(--line-clr);
     margin-top: 20px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.upcoming-appointments:hover,
-.upcoming-appointments-month:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .upcoming-appointments h3,
-.upcoming-appointments-month h3,
-.patient-data h3,
-.doctor-card h3 {
-    color: var(--accent-clr);
-    margin-bottom: 15px;
-    position: relative;
-    display: inline-block;
-    padding-bottom: 5px;
-    transition: all 0.3s ease;
-}
-
-.upcoming-appointments h3::after,
-.upcoming-appointments-month h3::after,
-.patient-data h3::after,
-.doctor-card h3::after {
-    content: '';
-    position: absolute;
-    width: 30%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--accent-clr);
-    transition: width 0.4s ease;
-}
-
-.upcoming-appointments:hover h3::after,
-.upcoming-appointments-month:hover h3::after,
-.patient-data:hover h3::after,
-.doctor-card:hover h3::after {
-    width: 100%;
+.upcoming-appointments-month h3 {
+    color: var(--text-clr);
+    margin-bottom: 10px;
 }
 
 .upcoming-appointments p,
@@ -359,13 +247,11 @@ header h1:hover::after {
     border-radius: 8px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 82, 155, 0.1);
-    transition: all 0.3s ease;
+    transition: background-color 0.2s;
 }
 
 .day:hover {
     background-color: #dbefff;
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 5px 10px rgba(0, 82, 155, 0.2);
 }
 
 .day.empty {
@@ -508,15 +394,10 @@ header h1:hover::after {
 
 .chart-placeholder tbody tr {
     border-bottom: 1px solid #ddd;
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 
 .chart-placeholder tbody tr:hover {
     background-color: #e6f0ff;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 82, 155, 0.1);
-    z-index: 1;
-    position: relative;
 }
 
 /* Ocultar labels en modo escritorio */
@@ -596,27 +477,8 @@ header h1:hover::after {
     border: none;
     color: #fff;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s, transform 0.2s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.delete-btn::before,
-.update-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    transition: all 0.4s ease;
-}
-
-.delete-btn:hover::before,
-.update-btn:hover::before {
-    left: 100%;
 }
 
 .delete-btn {
@@ -625,8 +487,7 @@ header h1:hover::after {
 
 .delete-btn:hover {
     background-color: #c0392b;
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
 }
 
 .update-btn {
@@ -635,36 +496,19 @@ header h1:hover::after {
 
 .update-btn:hover {
     background-color: #2980b9;
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
 }
 
 .day-appointments {
     margin-top: 20px;
-    padding: 15px;
+    padding: 10px;
     border-top: 1px solid #ccc;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.day-appointments:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .day-appointments h4 {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     font-size: 1.1em;
-    color: #0052aa;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #e0e7ff;
-    transition: color 0.3s;
-}
-
-.day-appointments:hover h4 {
-    color: var(--accent-clr);
+    color: #333;
 }
 
 .day-appointments ul {
@@ -673,42 +517,11 @@ header h1:hover::after {
 }
 
 .day-appointments li {
-    margin-bottom: 8px;
-    padding: 5px;
-    transition: transform 0.2s, background-color 0.2s;
-    border-radius: 4px;
-}
-
-.day-appointments li:hover {
-    background-color: #e0e7ff;
-    transform: translateX(5px);
+    margin-bottom: 5px;
 }
 .day.has-appointment {
-  background-color: #ffeb3b;
+  background-color: yellow;
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 3px 8px rgba(255, 193, 7, 0.3);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 5px rgba(255, 193, 7, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
-  }
-}
-
-.day.has-appointment:hover {
-  background-color: #ffd600;
-  transform: translateY(-3px) scale(1.08);
-  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
-  z-index: 2;
 }
 
 /* Estilos para tooltips en días con citas */
@@ -724,37 +537,11 @@ header h1:hover::after {
   transform: translateX(-50%);
   background: rgba(0,0,0,0.8);
   color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 5px;
+  border-radius: 4px;
   white-space: nowrap;
   z-index: 10;
   font-size: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  opacity: 0;
-  animation: fadeIn 0.3s ease forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 10px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
-.has-tooltip:hover::before {
-  content: '';
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-top-color: rgba(0,0,0,0.8);
-  z-index: 11;
-  animation: fadeIn 0.3s ease forwards;
 }
 
 /* Estilos para el indicador de carga */
@@ -777,25 +564,12 @@ header h1:hover::after {
   height: 40px;
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
-  border-top-color: var(--accent-clr);
-  border-left-color: var(--accent-clr);
-  animation: enhanced-spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-  box-shadow: 0 0 10px rgba(94, 99, 255, 0.3);
+  border-top-color: #3498db;
+  animation: spin 1s ease-in-out infinite;
 }
 
-@keyframes enhanced-spin {
-  0% { 
-    transform: rotate(0deg) scale(1);
-    box-shadow: 0 0 5px rgba(94, 99, 255, 0.3);
-  }
-  50% {
-    transform: rotate(180deg) scale(1.1);
-    box-shadow: 0 0 15px rgba(94, 99, 255, 0.5);
-  }
-  100% { 
-    transform: rotate(360deg) scale(1);
-    box-shadow: 0 0 5px rgba(94, 99, 255, 0.3);
-  }
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* boton para buscar doctor */
@@ -820,15 +594,12 @@ header h1:hover::after {
     border-radius: 6px;
     background-color: #e0e7ff; /* Azul claro */
     color: #1e3a8a;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   #doctor-select:hover {
     border-color: #2563eb; /* Azul más intenso */
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
 
   #doctor-select:focus {
@@ -836,7 +607,6 @@ header h1:hover::after {
     border-color: #1d4ed8; /* Azul enfocado */
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Sombra azul */
     background-color: #c7d2fe; /* Azul muy claro */
-    transform: translateY(-2px);
   }
 
   /* Opcional: estilo para el placeholder opción */

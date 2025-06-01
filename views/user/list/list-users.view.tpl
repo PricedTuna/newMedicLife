@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <script src="/views/components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
@@ -11,7 +10,7 @@
     <link rel="stylesheet" href="/assets/css/usability-improvements.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./list-users.js" defer></script>
-    <title>Lista de usuarios | Medic Life</title>
+    <title>Lista de usuarios</title>
 </head>
 
 <body>

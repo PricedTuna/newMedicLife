@@ -541,6 +541,52 @@ main {
   padding: 0.2rem 0;
 }
 
+/* Doctor Schedule Table */
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-table thead {
+  background-color: var(--accent-clr);
+  color: white;
+}
+
+.schedule-table th {
+  padding: 0.8rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.schedule-table td {
+  padding: 0.8rem;
+  border-bottom: 1px solid var(--line-clr);
+}
+
+.schedule-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.schedule-table tbody tr:hover {
+  background-color: var(--light-clr);
+}
+
+@media (max-width: 768px) {
+  .schedule-table {
+    font-size: 0.9rem;
+  }
+
+  .schedule-table th,
+  .schedule-table td {
+    padding: 0.6rem;
+  }
+}
+
 /* Settings Section */
 .settings-section {
   background-color: var(--base-clr);

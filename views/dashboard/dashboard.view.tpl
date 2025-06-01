@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
-    <title>Dashboard  | Medic Life </title>
+    <title>Dashboard </title>
     <link rel="stylesheet" href="../components/sidebar.styles.css">
     <script src="../components/sidebar.app.js" defer></script>
     <link rel="stylesheet" href="./dashboard.styles.css">

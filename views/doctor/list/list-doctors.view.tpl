@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     {* <link rel="stylesheet" href="./register-patient.styles.css">
     <link rel="stylesheet" href="../../components/sidebar.styles.css">
     <script src="../../components/sidebar.app.js" defer></script>
@@ -21,7 +20,7 @@
     {* <link rel="stylesheet" href="../../../resset.css">  *}
     <script src="/views/components/sidebar.app.js" defer></script>
 
-    <title>Lista de médicos | Medic Life</title>
+    <title>Lista de médicos</title>
 </head>
 <body>
 

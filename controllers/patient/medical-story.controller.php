@@ -81,6 +81,7 @@ class MedicalStoryController {
             $to = $patient['email'];
             $subject = "Historial médico";
             $text = "Esto es un historial médico!!";
+            $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
 
             // Log the email parameters for debugging
             error_log("Sending email - To: $to, Subject: $subject, Text: $text");
@@ -92,7 +93,7 @@ class MedicalStoryController {
                 return $result;
             }
 
-            $this->emailModel->sendEmail($to, $subject, $text);
+            $this->emailModel->sendEmail($to, $subject, $text, $from);
 
             if (strpos($emailResult, "Correo enviado correctamente") === 0) {
                 $result['emailSent'] = true;

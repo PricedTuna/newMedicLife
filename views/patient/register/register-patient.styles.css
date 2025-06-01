@@ -239,15 +239,6 @@ button {
     display: none;
 }
 
-.image-preview {
-    max-width: 200px;
-    max-height: 200px;
-    margin-top: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    object-fit: cover;
-}
-
 .preview-placeholder {
     width: 200px;
     height: 200px;

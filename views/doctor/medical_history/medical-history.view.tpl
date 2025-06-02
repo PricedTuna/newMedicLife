@@ -95,6 +95,43 @@
                     </div>
                 </div>
 
+                <!-- Doctor selection outside of forms -->
+                <div class="doctor-selection" style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                    <h3>Selección de Médico</h3>
+                    <p class="help-text">Seleccione un médico para el historial o documento PDF</p>
+                    <div class="form-group">
+                        <label for="medical-area">Especialidad:</label>
+                        <select id="medical-area" name="medical-area">
+                            <option value="">Seleccione una especialidad (opcional)</option>
+                            {if isset($medical_areas) && $medical_areas|@count > 0}
+                                {foreach from=$medical_areas item=area}
+                                    <option value="{$area.id}">
+                                        {$area.name|escape}
+                                    </option>
+                                {/foreach}
+                            {/if}
+                        </select>
+                        <span class="error-message" id="medical-area-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doctor-id">Médico: <span class="required">*</span></label>
+                        <select id="doctor-id" name="doctor-id">
+                            <option value="">Seleccione un médico</option>
+                            {if isset($doctors) && $doctors|@count > 0}
+                                {foreach from=$doctors item=doctor}
+                                    <option value="{$doctor.doctor_id}">
+                                        {$doctor.doctor_name|escape} {$doctor.last_name|escape} {$doctor.last_name2|escape}
+                                        {if isset($doctor.specialty) && $doctor.specialty} - {$doctor.specialty|escape}{/if}
+                                        {if isset($doctor.medical_area_name) && $doctor.medical_area_name} ({$doctor.medical_area_name|escape}){/if}
+                                    </option>
+                                {/foreach}
+                            {/if}
+                        </select>
+                        <span class="error-message" id="doctor-id-error"></span>
+                    </div>
+                </div>
+
                 <div class="history-actions">
                     <button id="new-record-btn" class="action-btn">Crear Historial</button>
                     <button id="view-history-btn" class="action-btn">Ver Historial</button>
@@ -264,38 +301,9 @@
                     <h2>Nueva Entrada de Historial Médico</h2>
                     <form id="record-form">
                         <input type="hidden" id="patient-id" name="patient-id" value="{if isset($patient)}{$patient.id}{/if}">
-
-                        <div class="form-group">
-                            <label for="medical-area">Especialidad:</label>
-                            <select id="medical-area" name="medical-area">
-                                <option value="">Seleccione una especialidad (opcional)</option>
-                                {if isset($medical_areas) && $medical_areas|@count > 0}
-                                    {foreach from=$medical_areas item=area}
-                                        <option value="{$area.id}">
-                                            {$area.name|escape}
-                                        </option>
-                                    {/foreach}
-                                {/if}
-                            </select>
-                            <span class="error-message" id="medical-area-error"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="doctor-id">Médico: <span class="required">*</span></label>
-                            <select id="doctor-id" name="doctor-id">
-                                <option value="">Seleccione un médico</option>
-                                {if isset($doctors) && $doctors|@count > 0}
-                                    {foreach from=$doctors item=doctor}
-                                        <option value="{$doctor.doctor_id}">
-                                            {$doctor.doctor_name|escape} {$doctor.last_name|escape} {$doctor.last_name2|escape}
-                                            {if isset($doctor.specialty) && $doctor.specialty} - {$doctor.specialty|escape}{/if}
-                                            {if isset($doctor.medical_area_name) && $doctor.medical_area_name} ({$doctor.medical_area_name|escape}){/if}
-                                        </option>
-                                    {/foreach}
-                                {/if}
-                            </select>
-                            <span class="error-message" id="doctor-id-error"></span>
-                        </div>
+                        <!-- Hidden inputs to store the selected values from the outside selects -->
+                        <input type="hidden" id="form-medical-area" name="medical-area" value="">
+                        <input type="hidden" id="form-doctor-id" name="doctor-id" value="">
 
                         <div class="form-group">
                             <label for="record-date">Fecha: <span class="required">*</span></label>
@@ -427,6 +435,8 @@
                     <h2>Subir Documento PDF</h2>
                     <form id="upload-form" enctype="multipart/form-data">
                         <input type="hidden" id="upload-patient-id" name="patient-id" value="{if isset($patient)}{$patient.id}{/if}">
+                        <!-- Hidden input to store the selected doctor ID from the outside select -->
+                        <input type="hidden" id="upload-doctor-id" name="doctor-id" value="">
 
                         <div class="form-group">
                             <label for="pdf-file">Seleccionar Archivo PDF:</label>

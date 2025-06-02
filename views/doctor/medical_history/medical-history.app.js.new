@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded event triggered');
-
+    
     // Check if window.doctors is defined
     if (typeof window.doctors !== 'undefined') {
         console.log('window.doctors:', window.doctors);
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('window.doctors is not defined');
     }
-
+    
     // Check if window.medical_areas is defined
     if (typeof window.medical_areas !== 'undefined') {
         console.log('window.medical_areas:', window.medical_areas);
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('window.medical_areas is not defined');
     }
-
+    
     // Check if window.isDoctor is defined
     if (typeof window.isDoctor !== 'undefined') {
         console.log('window.isDoctor:', window.isDoctor);
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
     const searchForm = document.getElementById('searchPatientForm');
     console.log('searchForm:', searchForm);
-
+    
     // Check if searchForm exists
     if (!searchForm) {
         console.error('searchForm not found in the DOM');
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const newRecordBtn = document.getElementById('new-record-btn');
     console.log('newRecordBtn:', newRecordBtn);
-
+    
     // Check if newRecordBtn exists
     if (!newRecordBtn) {
         console.error('newRecordBtn not found in the DOM');
@@ -633,13 +633,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to filter doctors by medical area
     function filterDoctorsByArea(areaId) {
         console.log('filterDoctorsByArea called with areaId:', areaId);
-
+        
         // Check if window.doctors is defined
         if (typeof window.doctors === 'undefined') {
             console.error('window.doctors is not defined');
             return;
         }
-
+        
         console.log('window.doctors:', window.doctors);
 
         // Check if doctors data is available
@@ -656,6 +656,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Clear current options
         doctorIdSelect.innerHTML = '<option value="">Seleccione un médico</option>';
+
+        console.log('Showing all doctors regardless of specialty');
+        console.log('Total doctors available:', window.doctors.length);
 
         // Check if window.isDoctor is defined
         if (typeof window.isDoctor === 'undefined') {
@@ -689,31 +692,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 doctorIdSelect.dispatchEvent(event);
             }
         } else {
-            // For non-doctor users, filter doctors by medical area if an area is selected
-            let doctorsToShow = window.doctors;
-
-            if (areaId) {
-                console.log('Filtering doctors by medical_area_id:', areaId);
-                doctorsToShow = window.doctors.filter(doctor => {
-                    // Check for different possible property names for medical area
-                    console.log('Checking doctor:', doctor);
-                    const doctorAreaId = doctor.medical_area_id || doctor.id_medical_area || doctor.area_id || doctor.id_area || doctor.medical_area;
-                    console.log('Doctor area ID:', doctorAreaId, 'Comparing with:', areaId);
-
-                    // If doctor has medical_area_name property, log it
-                    if (doctor.medical_area_name) {
-                        console.log('Doctor medical area name:', doctor.medical_area_name);
-                    }
-
-                    return doctorAreaId == areaId;
-                });
-                console.log('Filtered doctors:', doctorsToShow);
-            } else {
-                console.log('No area selected, showing all doctors');
-            }
-
-            // Add the filtered doctors to the dropdown
-            doctorsToShow.forEach(doctor => {
+            // For non-doctor users, show ALL doctors without filtering by specialty
+            window.doctors.forEach(doctor => {
                 const option = document.createElement('option');
                 option.value = doctor.doctor_id;
 
@@ -742,7 +722,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener for medical area change
     if (medicalAreaSelect) {
         console.log('medicalAreaSelect found:', medicalAreaSelect);
-
+        
         try {
             console.log('medicalAreaSelect ID:', medicalAreaSelect.id);
             console.log('medicalAreaSelect name:', medicalAreaSelect.name);
@@ -759,55 +739,23 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error accessing medicalAreaSelect properties:', error);
         }
 
-        // When medical area changes, we need to update the doctor dropdown
+        // We no longer need to filter doctors by medical area
+        // The doctor dropdown is now pre-populated with all doctors
+        // This event listener is kept for backward compatibility
         medicalAreaSelect.addEventListener('change', function() {
             console.log('medicalAreaSelect change event triggered');
             const selectedAreaId = this.value;
             console.log('selectedAreaId:', selectedAreaId);
             console.log('Selected option text:', this.options[this.selectedIndex].text);
 
-            // Call filterDoctorsByArea to update the doctor dropdown
-            filterDoctorsByArea(selectedAreaId);
-
-            // Update the hidden input in the record form
-            const formMedicalArea = document.getElementById('form-medical-area');
-            if (formMedicalArea) {
-                formMedicalArea.value = selectedAreaId;
-                console.log('Updated form-medical-area value:', formMedicalArea.value);
-            }
+            // No need to filter doctors or clear the dropdown
+            // The doctor selection is now independent of the medical area
 
             // Validate doctor selection
             validateDoctor();
         });
     } else {
         console.error('medicalAreaSelect not found');
-    }
-
-    // Add event listener for doctor change
-    if (doctorIdSelect) {
-        doctorIdSelect.addEventListener('change', function() {
-            console.log('doctorIdSelect change event triggered');
-            const selectedDoctorId = this.value;
-            console.log('selectedDoctorId:', selectedDoctorId);
-
-            // Update the hidden inputs in both forms
-            const formDoctorId = document.getElementById('form-doctor-id');
-            if (formDoctorId) {
-                formDoctorId.value = selectedDoctorId;
-                console.log('Updated form-doctor-id value:', formDoctorId.value);
-            }
-
-            const uploadDoctorId = document.getElementById('upload-doctor-id');
-            if (uploadDoctorId) {
-                uploadDoctorId.value = selectedDoctorId;
-                console.log('Updated upload-doctor-id value:', uploadDoctorId.value);
-            }
-
-            // Validate doctor selection
-            validateDoctor();
-        });
-    } else {
-        console.error('doctorIdSelect not found');
     }
 
     // New record button click
@@ -844,22 +792,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Patient ID set:', currentPatientId);
             } else {
                 console.log('No currentPatientId available');
-            }
-
-            // Copy the current values from the outside selects to the hidden inputs
-            const medicalAreaValue = medicalAreaSelect ? medicalAreaSelect.value : '';
-            const doctorIdValue = doctorIdSelect ? doctorIdSelect.value : '';
-
-            const formMedicalArea = document.getElementById('form-medical-area');
-            if (formMedicalArea) {
-                formMedicalArea.value = medicalAreaValue;
-                console.log('Set form-medical-area value:', formMedicalArea.value);
-            }
-
-            const formDoctorId = document.getElementById('form-doctor-id');
-            if (formDoctorId) {
-                formDoctorId.value = doctorIdValue;
-                console.log('Set form-doctor-id value:', formDoctorId.value);
             }
 
             // If there's only one medical area, select it automatically
@@ -944,7 +876,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('doctorId not found in the DOM');
             return false;
         }
-
+        
         if (!doctorId.value) {
             doctorId.classList.add('invalid');
             const errorElement = document.getElementById('doctor-id-error');
@@ -973,7 +905,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('recordDate not found in the DOM');
             return false;
         }
-
+        
         if (!recordDate.value) {
             recordDate.classList.add('invalid');
             const errorElement = document.getElementById('record-date-error');
@@ -1003,37 +935,37 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('chiefComplaint or diagnosis not found in the DOM');
             return false;
         }
-
+        
         if (!chiefComplaint.value && !diagnosis.value) {
             chiefComplaint.classList.add('invalid');
             diagnosis.classList.add('invalid');
             const chiefComplaintError = document.getElementById('chief-complaint-error');
             const diagnosisError = document.getElementById('diagnosis-error');
-
+            
             if (chiefComplaintError) {
                 chiefComplaintError.textContent = 'Debe completar al menos uno de estos campos';
             }
-
+            
             if (diagnosisError) {
                 diagnosisError.textContent = 'Debe completar al menos uno de estos campos';
             }
-
+            
             return false;
         } else {
             chiefComplaint.classList.remove('invalid');
             diagnosis.classList.remove('invalid');
-
+            
             const chiefComplaintError = document.getElementById('chief-complaint-error');
             const diagnosisError = document.getElementById('diagnosis-error');
-
+            
             if (chiefComplaintError) {
                 chiefComplaintError.textContent = '';
             }
-
+            
             if (diagnosisError) {
                 diagnosisError.textContent = '';
             }
-
+            
             return true;
         }
     }
@@ -1366,15 +1298,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Copy the current doctor ID from the outside select to the hidden input
-            const doctorIdValue = doctorIdSelect ? doctorIdSelect.value : '';
-            const uploadDoctorId = document.getElementById('upload-doctor-id');
-
-            if (uploadDoctorId) {
-                uploadDoctorId.value = doctorIdValue;
-                console.log('Set upload-doctor-id value:', uploadDoctorId.value);
-            }
-
             // Show modal
             if (uploadModal) {
                 uploadModal.style.display = 'flex';
@@ -1419,25 +1342,6 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
 
             const formData = new FormData(uploadForm);
-
-            // Check if doctor ID is set
-            if (!formData.get('doctor-id')) {
-                // Try to get it from the outside select
-                const doctorIdValue = doctorIdSelect ? doctorIdSelect.value : '';
-                if (doctorIdValue) {
-                    formData.set('doctor-id', doctorIdValue);
-                    console.log('Added doctor-id to form data:', doctorIdValue);
-                } else {
-                    showAlert('Debe seleccionar un médico para el documento', 'error');
-                    return;
-                }
-            }
-
-            // Log all form data for debugging
-            console.log('Form data being submitted:');
-            for (let pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
 
             // AJAX request to upload PDF
             fetch('/controllers/doctor/medical_history/upload-pdf.controller.php', {
@@ -1484,7 +1388,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(message);
             return;
         }
-
+        
         Swal.fire({
             text: message,
             icon: type,

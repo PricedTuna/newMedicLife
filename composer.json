@@ -12,6 +12,10 @@
         }
     ],
     "require": {
-        "smarty/smarty": "^5.5"
+        "smarty/smarty": "^5.5",
+        "tecnickcom/tcpdf": "^6.10",
+        "mailgun/mailgun-php": "^3.5",
+        "symfony/http-client": "^6.0",
+        "nyholm/psr7": "^1.5"
     }
 }

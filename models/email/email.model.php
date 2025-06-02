@@ -14,7 +14,15 @@ class EmailModel
     {
         $apiKey = getenv('MAILGUN_API_KEY') ?: 'key-yourmailgunapikey';
         $this->domain = getenv('MAILGUN_DOMAIN') ?: 'yourdomain.com';
-        $this->mg = Mailgun::create($apiKey);
+
+        // Check if Mailgun class exists
+        if (!class_exists('Mailgun\Mailgun')) {
+            error_log("Mailgun class not found. Make sure to run 'composer update' to install dependencies.");
+            // Set mg to null to indicate Mailgun is not available
+            $this->mg = null;
+        } else {
+            $this->mg = Mailgun::create($apiKey);
+        }
     }
 
     /**
@@ -28,6 +36,14 @@ class EmailModel
     public function sendEmail(string $to, string $subject, string $text, string $from = null)
     {
         $from = $from ?: 'Tu Nombre <no-reply@tudominio.com>';
+
+        // Check if Mailgun is available
+        if ($this->mg === null) {
+            error_log("Mailgun is not available. Email not sent to: $to, Subject: $subject");
+
+            // Return a message indicating that email functionality is disabled
+            return "Email service is currently unavailable. Please run 'composer update' to install the required dependencies. Message to $to was not sent.";
+        }
 
         try {
             $response = $this->mg->messages()->send($this->domain, [

@@ -298,7 +298,7 @@ try {
                     ' . (!empty($record['observations']) ? '<p><strong>Observaciones:</strong> ' . nl2br(htmlspecialchars($record['observations'])) . '</p>' : '') . '
                     ' . (!empty($record['next_appointment']) ? '<p><strong>Próxima Cita:</strong> ' . htmlspecialchars($record['next_appointment']) . '</p>' : '') . '
 
-                    ' . (isset($record['vital_signs_data']) && !empty($record['vital_signs_data']) ? $this->renderVitalSigns($record['vital_signs_data'][0]) : '') . '
+                    ' . (isset($record['vital_signs_data']) && !empty($record['vital_signs_data']) ? renderVitalSigns($record['vital_signs_data'][0]) : '') . '
                 </div>
             </div>';
         }

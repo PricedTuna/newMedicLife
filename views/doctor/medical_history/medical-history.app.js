@@ -1,6 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOMContentLoaded event triggered');
+    console.log('window.doctors:', window.doctors);
+    if (window.doctors && window.doctors.length > 0) {
+        console.log('First doctor:', window.doctors[0]);
+    } else {
+        console.error('No doctors found in window.doctors');
+    }
+    console.log('window.medical_areas:', window.medical_areas);
+    if (window.medical_areas && window.medical_areas.length > 0) {
+        console.log('First medical area:', window.medical_areas[0]);
+    } else {
+        console.error('No medical areas found in window.medical_areas');
+    }
+    console.log('window.isDoctor:', window.isDoctor);
+
     // DOM Elements
     const searchForm = document.getElementById('searchPatientForm');
+    console.log('searchForm:', searchForm);
+
     const searchTerm = document.getElementById('search-term');
     const patientResults = document.getElementById('patient-results');
     const patientsList = document.getElementById('patients-list');
@@ -9,22 +26,43 @@ document.addEventListener('DOMContentLoaded', function() {
     const patientCurp = document.getElementById('patient-curp');
     const patientBirthDate = document.getElementById('patient-birth-date');
     const patientEmail = document.getElementById('patient-email');
+
     const newRecordBtn = document.getElementById('new-record-btn');
+    console.log('newRecordBtn:', newRecordBtn);
+
+    const viewHistoryBtn = document.getElementById('view-history-btn');
     const downloadPdfBtn = document.getElementById('download-pdf-btn');
     const uploadPdfBtn = document.getElementById('upload-pdf-btn');
     const historyList = document.getElementById('history-list');
     const noRecordsMessage = document.getElementById('no-records-message');
+
     const recordModal = document.getElementById('record-modal');
+    console.log('recordModal:', recordModal);
+
     const closeModal = document.querySelector('.close-modal');
+
     const recordForm = document.getElementById('record-form');
+    console.log('recordForm:', recordForm);
+
     const patientId = document.getElementById('patient-id');
+
+    // This element might not exist in the template
     const appointmentSelect = document.getElementById('appointment-select');
+    console.log('appointmentSelect:', appointmentSelect);
+
     const cancelRecord = document.getElementById('cancel-record');
     const uploadModal = document.getElementById('upload-modal');
     const closeUploadModal = document.querySelector('.close-upload-modal');
     const uploadForm = document.getElementById('upload-form');
     const uploadPatientId = document.getElementById('upload-patient-id');
     const cancelUpload = document.getElementById('cancel-upload');
+
+    // Doctor selection elements
+    const medicalAreaSelect = document.getElementById('medical-area');
+    console.log('medicalAreaSelect:', medicalAreaSelect);
+
+    const doctorIdSelect = document.getElementById('doctor-id');
+    console.log('doctorIdSelect:', doctorIdSelect);
 
     let currentPatientId = null;
 
@@ -121,36 +159,212 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // AJAX request to get patient details and history
         fetch(`/controllers/doctor/medical_history/get-patient-history.controller.php?patient_id=${id}`)
-        .then(response => response.json())
+        .then(response => {
+            // Check if response is ok (status in the range 200-299)
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // Check if response has content
+            if (response.headers.get('content-length') === '0') {
+                console.error('Empty response from server (content-length: 0)');
+                // Return a default response instead of throwing an error
+                return {
+                    success: false,
+                    message: 'Empty response from server',
+                    patient: {
+                        names: 'Unknown',
+                        last_name: 'Patient',
+                        last_name2: '',
+                        CURP: 'Not available',
+                        birth_date: null,
+                        email: 'Not available'
+                    },
+                    history: [],
+                    appointments: []
+                };
+            }
+
+            // Try to parse the response as JSON
+            return response.text().then(text => {
+                console.log("Response text:", text);
+
+                if (!text) {
+                    console.error('Empty response from server');
+                    // Return a default response instead of throwing an error
+                    return {
+                        success: false,
+                        message: 'Empty response from server',
+                        patient: {
+                            names: 'Unknown',
+                            last_name: 'Patient',
+                            last_name2: '',
+                            CURP: 'Not available',
+                            birth_date: null,
+                            email: 'Not available'
+                        },
+                        history: [],
+                        appointments: []
+                    };
+                }
+
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    console.error('Response text:', text);
+
+                    // Return a default response instead of throwing an error
+                    return {
+                        success: false,
+                        message: 'Invalid JSON response from server',
+                        patient: {
+                            names: 'Unknown',
+                            last_name: 'Patient',
+                            last_name2: '',
+                            CURP: 'Not available',
+                            birth_date: null,
+                            email: 'Not available'
+                        },
+                        history: [],
+                        appointments: []
+                    };
+                }
+            });
+        })
         .then(data => {
             if (data.success) {
                 displayPatientHistory(data.patient, data.history, data.appointments);
             } else {
-                showAlert(data.message || 'No se pudo cargar el historial del paciente', 'error');
+                // Handle specific error types
+                if (data.table_error) {
+                    // Show error message with option to create tables
+                    Swal.fire({
+                        title: 'Error de base de datos',
+                        text: data.message || 'Las tablas necesarias no existen en la base de datos.',
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonText: 'Crear Tablas',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Open the create tables script in a new tab
+                            window.open('/create-medical-history-tables.php', '_blank');
+                        }
+                    });
+                } else {
+                    showAlert(data.message || 'No se pudo cargar el historial del paciente', 'error');
+                }
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            showAlert('Ocurrió un error al cargar el historial del paciente', 'error');
+
+            // Log more detailed error information
+            console.error('Error details:', {
+                message: error.message,
+                stack: error.stack
+            });
+
+            // Show a more user-friendly error message
+            showAlert('Ocurrió un error al cargar el historial del paciente. Por favor, intente nuevamente.', 'error');
+
+            // Show patient history section with error message
+            patientResults.style.display = 'none';
+            patientHistory.style.display = 'block';
+
+            // Display default patient info
+            patientName.textContent = 'Paciente';
+            patientCurp.textContent = 'No disponible';
+            patientBirthDate.textContent = 'No disponible';
+            patientEmail.textContent = 'No disponible';
+
+            // Make sure patient info is visible with a background color
+            document.querySelector('.patient-details').style.backgroundColor = '#e6f7ff';
+
+            // Clear any existing content
+            const recordsContainer = document.querySelector('.records-container');
+            recordsContainer.innerHTML = '';
+            recordsContainer.appendChild(noRecordsMessage);
         });
     }
 
     // Display patient history
     function displayPatientHistory(patient, history, appointments) {
-        // Set patient details
-        patientName.textContent = `${patient.names} ${patient.last_name} ${patient.last_name2}`;
-        patientCurp.textContent = patient.curp;
-        patientBirthDate.textContent = formatDate(patient.birth_date);
-        patientEmail.textContent = patient.email || 'No disponible';
+        console.log("Patient data received:", patient);
 
-        // Populate appointments dropdown
-        appointmentSelect.innerHTML = '<option value="">Seleccione una cita</option>';
-        appointments.forEach(appointment => {
-            const option = document.createElement('option');
-            option.value = appointment.id;
-            option.textContent = `${formatDate(appointment.appointment_date)} - ${appointment.medical_area}`;
-            appointmentSelect.appendChild(option);
-        });
+        // Ensure patient object exists
+        if (!patient) {
+            console.error("No patient data received");
+            patient = {
+                names: 'Unknown',
+                last_name: 'Patient',
+                last_name2: '',
+                CURP: 'Not available',
+                birth_date: null,
+                email: 'Not available'
+            };
+        }
+
+        // Ensure history array exists
+        if (!history) {
+            console.error("No history data received");
+            history = [];
+        }
+
+        // Ensure appointments array exists
+        if (!appointments) {
+            console.error("No appointments data received");
+            appointments = [];
+        }
+
+        // Set patient details
+        patientName.textContent = `${patient.names || ''} ${patient.last_name || ''} ${patient.last_name2 || ''}`;
+
+        // Make sure patient info is visible with a background color
+        document.querySelector('.patient-details').style.backgroundColor = '#e6f7ff';
+
+        // Set CURP with fallback - check both lowercase and uppercase property names
+        if (patient.CURP) {
+            patientCurp.textContent = patient.CURP;
+        } else if (patient.curp) {
+            patientCurp.textContent = patient.curp;
+        } else {
+            patientCurp.textContent = 'No disponible';
+            patientCurp.style.color = 'red';
+        }
+
+        // Set birth date with fallback
+        if (patient.birth_date) {
+            patientBirthDate.textContent = formatDate(patient.birth_date);
+        } else {
+            patientBirthDate.textContent = 'No disponible';
+            patientBirthDate.style.color = 'red';
+        }
+
+        // Set email with fallback
+        patientEmail.textContent = patient.email || 'No disponible';
+        if (!patient.email) {
+            patientEmail.style.color = 'red';
+        }
+
+        // Log the patient data for debugging
+        console.log("CURP:", patient.CURP || patient.curp || 'Not found');
+        console.log("Email:", patient.email || 'Not found');
+        console.log("Birth date:", patient.birth_date || 'Not found');
+
+        // Populate appointments dropdown if it exists
+        if (appointmentSelect) {
+            appointmentSelect.innerHTML = '<option value="">Seleccione una cita</option>';
+            console.log("Appointments data:", appointments); // Debug log
+            appointments.forEach(appointment => {
+                const option = document.createElement('option');
+                // Use appointment.cita (the ID field) or fallback to appointment.id
+                option.value = appointment.cita || appointment.id;
+                option.textContent = `${formatDate(appointment.appointment_date)} - ${appointment.medical_area || 'Consulta general'}`;
+                appointmentSelect.appendChild(option);
+            });
+        }
 
         // Display history records
         const recordsContainer = document.querySelector('.records-container');
@@ -168,6 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show patient history section
         patientResults.style.display = 'none';
         patientHistory.style.display = 'block';
+        historyList.style.display = 'block'; // Show history list by default
 
         // Set patient ID for forms
         patientId.value = patient.id;
@@ -381,17 +596,257 @@ document.addEventListener('DOMContentLoaded', function() {
         return card;
     }
 
+    // Function to filter doctors by medical area
+    function filterDoctorsByArea(areaId) {
+        console.log('filterDoctorsByArea called with areaId:', areaId);
+        console.log('window.doctors:', window.doctors);
+
+        // Check if doctors data is available
+        if (!window.doctors) {
+            console.error('Doctors data not available');
+            return;
+        }
+
+        // Clear current options
+        doctorIdSelect.innerHTML = '<option value="">Seleccione un médico</option>';
+
+        console.log('Showing all doctors regardless of specialty');
+        console.log('Total doctors available:', window.doctors.length);
+
+        // Check if user is a doctor
+        const isUserDoctor = window.isDoctor === true;
+
+        // If user is a doctor, only show that doctor
+        if (isUserDoctor) {
+            // For doctor users, we'll show only their doctor profile
+            // This assumes the first doctor in the list is the current doctor
+            if (window.doctors.length > 0) {
+                const doctor = window.doctors[0];
+                // Add only the first doctor (should be the current doctor)
+                const option = document.createElement('option');
+                option.value = doctor.doctor_id;
+                option.textContent = doctor.doctor_name + ' ' + 
+                                    doctor.last_name + ' ' + 
+                                    (doctor.last_name2 || '');
+                doctorIdSelect.appendChild(option);
+
+                // Select automatically
+                doctorIdSelect.value = doctor.doctor_id;
+
+                // Trigger change event
+                const event = new Event('change');
+                doctorIdSelect.dispatchEvent(event);
+            }
+        } else {
+            // For non-doctor users, show ALL doctors without filtering by specialty
+            window.doctors.forEach(doctor => {
+                const option = document.createElement('option');
+                option.value = doctor.doctor_id;
+
+                let doctorText = doctor.doctor_name + ' ' + doctor.last_name + ' ' + (doctor.last_name2 || '');
+                if (doctor.specialty) {
+                    doctorText += ' - ' + doctor.specialty;
+                }
+                if (doctor.medical_area_name) {
+                    doctorText += ' (' + doctor.medical_area_name + ')';
+                }
+
+                option.textContent = doctorText;
+                doctorIdSelect.appendChild(option);
+            });
+        }
+
+        // Validate doctor selection
+        validateDoctor();
+    }
+
+    // Add event listener for medical area change
+    if (medicalAreaSelect) {
+        console.log('medicalAreaSelect found:', medicalAreaSelect);
+        console.log('medicalAreaSelect ID:', medicalAreaSelect.id);
+        console.log('medicalAreaSelect name:', medicalAreaSelect.name);
+        console.log('medicalAreaSelect options:', medicalAreaSelect.options.length);
+
+        // Log all options
+        for (let i = 0; i < medicalAreaSelect.options.length; i++) {
+            console.log(`Option ${i}:`, {
+                value: medicalAreaSelect.options[i].value,
+                text: medicalAreaSelect.options[i].text
+            });
+        }
+
+        // We no longer need to filter doctors by medical area
+        // The doctor dropdown is now pre-populated with all doctors
+        // This event listener is kept for backward compatibility
+        medicalAreaSelect.addEventListener('change', function() {
+            console.log('medicalAreaSelect change event triggered');
+            const selectedAreaId = this.value;
+            console.log('selectedAreaId:', selectedAreaId);
+            console.log('Selected option text:', this.options[this.selectedIndex].text);
+
+            // No need to filter doctors or clear the dropdown
+            // The doctor selection is now independent of the medical area
+
+            // Validate doctor selection
+            validateDoctor();
+        });
+    } else {
+        console.error('medicalAreaSelect not found');
+    }
+
     // New record button click
     newRecordBtn.addEventListener('click', function() {
+        console.log('newRecordBtn click event triggered');
+
         // Reset form
         recordForm.reset();
+        console.log('Form reset');
+
+        // Reset validation styles
+        const invalidInputs = recordForm.querySelectorAll('.invalid');
+        invalidInputs.forEach(input => input.classList.remove('invalid'));
+
+        const errorMessages = recordForm.querySelectorAll('.error-message');
+        errorMessages.forEach(msg => msg.textContent = '');
 
         // Set current date as default
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('record-date').value = today;
+        console.log('Default date set:', today);
+
+        // Set patient ID from currentPatientId
+        if (currentPatientId) {
+            document.getElementById('patient-id').value = currentPatientId;
+            console.log('Patient ID set:', currentPatientId);
+        } else {
+            console.log('No currentPatientId available');
+        }
+
+        // If there's only one medical area, select it automatically
+        console.log('window.medical_areas:', window.medical_areas);
+        console.log('medicalAreaSelect in newRecordBtn click:', medicalAreaSelect);
+
+        if (window.medical_areas && window.medical_areas.length === 1 && medicalAreaSelect) {
+            console.log('Only one medical area found, selecting it automatically');
+            console.log('Medical area to select:', window.medical_areas[0]);
+
+            // Check if the medical area has an id property
+            if (window.medical_areas[0].id) {
+                medicalAreaSelect.value = window.medical_areas[0].id;
+                console.log('Medical area selected by id:', window.medical_areas[0].id);
+            } else {
+                // Try to find the first property that might be the id
+                const possibleIdProps = Object.keys(window.medical_areas[0]);
+                console.log('Possible ID properties:', possibleIdProps);
+
+                if (possibleIdProps.length > 0) {
+                    const firstProp = possibleIdProps[0];
+                    medicalAreaSelect.value = window.medical_areas[0][firstProp];
+                    console.log(`Medical area selected by ${firstProp}:`, window.medical_areas[0][firstProp]);
+                }
+            }
+
+            // Log the current value of the select
+            console.log('medicalAreaSelect value after setting:', medicalAreaSelect.value);
+
+            // Trigger change event to populate doctors
+            const event = new Event('change');
+            medicalAreaSelect.dispatchEvent(event);
+            console.log('Change event dispatched to medicalAreaSelect');
+        } else if (window.medical_areas && window.medical_areas.length > 1) {
+            console.log('Multiple medical areas found:', window.medical_areas.length);
+
+            // Log all medical areas
+            window.medical_areas.forEach((area, index) => {
+                console.log(`Medical area ${index}:`, area);
+            });
+
+            // Log the current value of the select
+            console.log('medicalAreaSelect value:', medicalAreaSelect.value);
+        } else {
+            console.log('No medical areas found or medicalAreaSelect not available');
+        }
 
         // Show modal
         recordModal.style.display = 'flex';
+
+        // Hide history list
+        historyList.style.display = 'none';
+
+        // Validate the form initially to provide immediate feedback
+        validateDoctor();
+        validateDate();
+        validateComplaintAndDiagnosis();
+    });
+
+    // Add real-time validation to required fields
+    const recordDate = document.getElementById('record-date');
+    const chiefComplaint = document.getElementById('chief-complaint');
+    const diagnosis = document.getElementById('diagnosis');
+    const doctorId = document.getElementById('doctor-id');
+
+    // Validate doctor selection on input and change
+    function validateDoctor() {
+        if (!doctorId.value) {
+            doctorId.classList.add('invalid');
+            document.getElementById('doctor-id-error').textContent = 'Debe seleccionar un médico';
+            return false;
+        } else {
+            doctorId.classList.remove('invalid');
+            document.getElementById('doctor-id-error').textContent = '';
+            return true;
+        }
+    }
+
+    doctorId.addEventListener('change', validateDoctor);
+    doctorId.addEventListener('blur', validateDoctor);
+
+    // Validate date field on input and change
+    function validateDate() {
+        if (!recordDate.value) {
+            recordDate.classList.add('invalid');
+            document.getElementById('record-date-error').textContent = 'La fecha es obligatoria';
+            return false;
+        } else {
+            recordDate.classList.remove('invalid');
+            document.getElementById('record-date-error').textContent = '';
+            return true;
+        }
+    }
+
+    recordDate.addEventListener('input', validateDate);
+    recordDate.addEventListener('change', validateDate);
+    recordDate.addEventListener('blur', validateDate);
+
+    // Validate chief complaint and diagnosis fields on input
+    function validateComplaintAndDiagnosis() {
+        if (!chiefComplaint.value && !diagnosis.value) {
+            chiefComplaint.classList.add('invalid');
+            diagnosis.classList.add('invalid');
+            document.getElementById('chief-complaint-error').textContent = 'Debe completar al menos uno de estos campos';
+            document.getElementById('diagnosis-error').textContent = 'Debe completar al menos uno de estos campos';
+            return false;
+        } else {
+            chiefComplaint.classList.remove('invalid');
+            diagnosis.classList.remove('invalid');
+            document.getElementById('chief-complaint-error').textContent = '';
+            document.getElementById('diagnosis-error').textContent = '';
+            return true;
+        }
+    }
+
+    chiefComplaint.addEventListener('input', validateComplaintAndDiagnosis);
+    chiefComplaint.addEventListener('blur', validateComplaintAndDiagnosis);
+    diagnosis.addEventListener('input', validateComplaintAndDiagnosis);
+    diagnosis.addEventListener('blur', validateComplaintAndDiagnosis);
+
+    // View history button click
+    viewHistoryBtn.addEventListener('click', function() {
+        // Show history list
+        historyList.style.display = 'block';
+
+        // Hide modal if open
+        recordModal.style.display = 'none';
     });
 
     // Close record modal
@@ -404,19 +859,156 @@ document.addEventListener('DOMContentLoaded', function() {
         recordModal.style.display = 'none';
     });
 
+    // Validate form fields
+    function validateForm() {
+        let isValid = true;
+
+        // Validate patient ID (required)
+        const patientIdField = document.getElementById('patient-id');
+        if (!patientIdField.value) {
+            // If patient ID is missing, set it from currentPatientId
+            if (currentPatientId) {
+                console.log("Setting patient ID from currentPatientId:", currentPatientId);
+                patientIdField.value = currentPatientId;
+            } else {
+                console.error("No patient ID available");
+                showAlert('Error: No se ha seleccionado un paciente', 'error');
+                isValid = false;
+            }
+        } else {
+            console.log("Patient ID is already set:", patientIdField.value);
+        }
+
+        // Validate doctor ID (required)
+        const doctorValid = validateDoctor();
+        if (!doctorValid) {
+            isValid = false;
+        } else {
+            console.log("Doctor ID is set:", doctorId.value);
+        }
+
+        // Double-check that currentPatientId is set
+        if (!currentPatientId) {
+            console.warn("currentPatientId is not set, trying to get it from the form");
+            currentPatientId = patientIdField.value;
+
+            // If we have a window.currentPatientId (set from PHP), use that
+            if (window.currentPatientId) {
+                console.log("Using window.currentPatientId:", window.currentPatientId);
+                currentPatientId = window.currentPatientId;
+                patientIdField.value = currentPatientId;
+            }
+        }
+
+        // Validate date (required)
+        const dateValid = validateDate();
+        if (!dateValid) {
+            isValid = false;
+        }
+
+        // Validate chief complaint and diagnosis (at least one is required)
+        const complaintDiagnosisValid = validateComplaintAndDiagnosis();
+        if (!complaintDiagnosisValid) {
+            isValid = false;
+        }
+
+        // If validation fails, show a more specific error message
+        if (!isValid) {
+            showAlert('Por favor, complete los campos requeridos: Médico, Fecha y al menos uno de Motivo de Consulta o Diagnóstico', 'error');
+        }
+
+        return isValid;
+    }
+
     // Submit record form
+    let isSubmitting = false; // Flag to prevent multiple submissions
+
     recordForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
+        console.log("Form submission started"); // Debug log
+
+        // Prevent multiple submissions
+        if (isSubmitting) {
+            console.log("Form is already submitting, preventing duplicate submission");
+            return;
+        }
+
+        // Validate form before submission
+        if (!validateForm()) {
+            console.log("Form validation failed");
+            // Error message is now shown in validateForm function
+            return;
+        }
+
+        console.log("Form validation passed, proceeding with submission"); // Debug log
+
+        // Set submitting flag
+        isSubmitting = true;
+
+        // Disable submit button to prevent double submission
+        const submitBtn = recordForm.querySelector('.save-btn');
+        const originalBtnText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Guardando...';
+
         const formData = new FormData(recordForm);
 
+        // Debug form data being submitted
+        console.log("Form data being submitted:");
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        // Check if patient ID and doctor ID are set
+        if (!formData.get('patient-id')) {
+            console.error("Patient ID is missing!");
+        }
+        if (!formData.get('doctor-id')) {
+            console.error("Doctor ID is missing!");
+        }
+
         // AJAX request to save record
+        console.log("Sending AJAX request to save record"); // Debug log
         fetch('/controllers/doctor/medical_history/save-record.controller.php', {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            // Log the raw response for debugging
+            console.log("Response received. Status:", response.status);
+            console.log("Response headers:", response.headers);
+
+            return response.text().then(text => {
+                console.log("Raw response text:", text);
+
+                if (!text) {
+                    console.error("Empty response from server");
+                    throw new Error("Empty response from server");
+                }
+
+                try {
+                    const jsonData = JSON.parse(text);
+                    console.log("Parsed JSON response:", jsonData);
+                    return jsonData;
+                } catch (e) {
+                    console.error("Error parsing JSON response:", e);
+                    console.error("Response text that failed to parse:", text);
+                    throw new Error("Invalid JSON response from server: " + e.message);
+                }
+            });
+        })
         .then(data => {
+            console.log("Parsed response data:", data);
+
+            // Reset submitting flag
+            isSubmitting = false;
+
+            // Restore submit button
+            const submitBtn = recordForm.querySelector('.save-btn');
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+
             if (data.success) {
                 showAlert('Registro guardado correctamente', 'success');
                 recordModal.style.display = 'none';
@@ -424,12 +1016,67 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Reload patient history
                 loadPatientHistory(currentPatientId);
             } else {
-                showAlert(data.message || 'No se pudo guardar el registro', 'error');
+                // Handle specific error types
+                if (data.table_error) {
+                    // Show error message with option to create tables
+                    Swal.fire({
+                        title: 'Error de base de datos',
+                        text: data.message,
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonText: 'Crear Tablas',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Open the create tables script in a new tab
+                            window.open('/create-medical-history-tables.php', '_blank');
+                        }
+                    });
+                    return;
+                }
+
+                if (data.constraint_error) {
+                    // Show error message for foreign key constraint
+                    Swal.fire({
+                        title: 'Error de referencia',
+                        text: data.message,
+                        icon: 'error',
+                        confirmButtonText: 'Entendido'
+                    });
+                    return;
+                }
+
+                // Show more detailed error message for other errors
+                let errorMsg = data.message || 'No se pudo guardar el registro';
+                if (data.error) {
+                    errorMsg += ': ' + data.error;
+                }
+                showAlert(errorMsg, 'error');
+
+                // If there's a specific field error, highlight it
+                if (data.field) {
+                    const field = document.getElementById(data.field);
+                    if (field) {
+                        field.classList.add('invalid');
+                        const errorElement = document.getElementById(`${data.field}-error`);
+                        if (errorElement) {
+                            errorElement.textContent = data.message;
+                        }
+                    }
+                }
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            showAlert('Ocurrió un error al guardar el registro', 'error');
+            showAlert('Ocurrió un error al guardar el registro: ' + error.message, 'error');
+
+            // Reset submitting flag
+            isSubmitting = false;
+
+            // Restore submit button
+            const submitBtn = recordForm.querySelector('.save-btn');
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
         });
     });
 

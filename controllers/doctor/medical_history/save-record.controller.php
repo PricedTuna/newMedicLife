@@ -38,28 +38,41 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['patient-id']) || !is
 }
 
 try {
-    // Obtener ID del doctor actual
+    // Debug: Log all POST data
+    error_log("POST data: " . print_r($_POST, true));
+
+    // Obtener ID del doctor seleccionado en el formulario
     $doctorId = null;
 
-    if ($_SESSION['role'] === 'D') {
-        // Si es un doctor, usar su ID
-        $stmt = $pdo->prepare("SELECT id_doctor FROM users WHERE email = :email");
-        $stmt->execute([':email' => $_SESSION['usuario']]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$user || !$user['id_doctor']) {
-            throw new Exception('No se pudo determinar el ID del doctor');
-        }
-
-        $doctorId = $user['id_doctor'];
+    // Verificar si se especificó un doctor en el formulario
+    if (isset($_POST['doctor-id']) && is_numeric($_POST['doctor-id'])) {
+        $doctorId = (int)$_POST['doctor-id'];
+        error_log("Doctor ID from form: " . $doctorId);
     } else {
-        // Si es un administrador, verificar si se especificó un doctor
-        if (!isset($_POST['doctor-id']) || !is_numeric($_POST['doctor-id'])) {
+        // Si no se especificó un doctor en el formulario, intentar usar el ID del doctor actual (si es un doctor)
+        if ($_SESSION['role'] === 'D') {
+            $stmt = $pdo->prepare("SELECT id_doctor FROM users WHERE email = :email");
+            $stmt->execute([':email' => $_SESSION['usuario']]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Debug: Log user data
+            error_log("User data: " . print_r($user, true));
+
+            if (!$user || !$user['id_doctor']) {
+                error_log("Error: No se pudo determinar el ID del doctor para el usuario " . $_SESSION['usuario']);
+                throw new Exception('No se pudo determinar el ID del doctor. Por favor, contacte al administrador.');
+            }
+
+            $doctorId = $user['id_doctor'];
+        } else {
+            // Si es un administrador y no especificó un doctor, mostrar error
+            error_log("Error: No se especificó un doctor");
             throw new Exception('Debe especificar un doctor para el registro');
         }
-
-        $doctorId = (int)$_POST['doctor-id'];
     }
+
+    // Debug: Log doctor ID
+    error_log("Doctor ID: " . $doctorId);
 
     // Preparar datos para guardar
     $data = [
@@ -110,11 +123,61 @@ try {
     // Instanciar el modelo
     $medicalHistoryModel = new MedicalHistoryModel($pdo);
 
+    // Check if the medical_history table exists
+    $stmt = $pdo->prepare("
+        SELECT COUNT(*) as table_exists 
+        FROM information_schema.tables 
+        WHERE table_schema = DATABASE() 
+        AND table_name = 'medical_history'
+    ");
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($result['table_exists'] == 0) {
+        error_log("Medical history table does not exist. Attempting to create it...");
+
+        // Try to create the tables
+        $sqlFile = $_SERVER['DOCUMENT_ROOT'] . '/models/medical_history/medical-history-tables.sql';
+        if (file_exists($sqlFile)) {
+            $sql = file_get_contents($sqlFile);
+            $statements = explode(';', $sql);
+
+            foreach ($statements as $statement) {
+                $statement = trim($statement);
+                if (!empty($statement)) {
+                    try {
+                        $pdo->exec($statement);
+                        error_log("Executed SQL statement: " . substr($statement, 0, 50) . "...");
+                    } catch (PDOException $e) {
+                        error_log("Error creating table: " . $e->getMessage());
+                        throw new Exception('No se pudieron crear las tablas necesarias. Por favor, ejecute el script create-medical-history-tables.php primero.');
+                    }
+                }
+            }
+
+            error_log("Tables created successfully");
+        } else {
+            error_log("SQL file not found: " . $sqlFile);
+            throw new Exception('No se encontró el archivo SQL para crear las tablas. Por favor, contacte al administrador.');
+        }
+    }
+
     // Guardar el registro
     $recordId = $medicalHistoryModel->saveHistoryRecord($data);
 
     if (!$recordId) {
-        throw new Exception('No se pudo guardar el registro');
+        // Get the last error from the error log
+        $errorLogFile = ini_get('error_log');
+        $lastError = '';
+        if (file_exists($errorLogFile)) {
+            $errorLines = file($errorLogFile);
+            if (!empty($errorLines)) {
+                $lastError = end($errorLines);
+            }
+        }
+
+        error_log("Failed to save record. Last error: " . $lastError);
+        throw new Exception('No se pudo guardar el registro. Verifique que todas las tablas necesarias existan en la base de datos.');
     }
 
     // Devolver respuesta exitosa
@@ -123,6 +186,47 @@ try {
         'success' => true,
         'message' => 'Registro guardado correctamente',
         'record_id' => $recordId
+    ]);
+} catch (PDOException $e) {
+    // Registrar el error de base de datos
+    error_log('Error de base de datos al guardar registro médico: ' . $e->getMessage());
+    error_log('SQL state: ' . $e->getCode());
+
+    // Check if it's a table not found error
+    if (strpos($e->getMessage(), "Table") !== false && strpos($e->getMessage(), "doesn't exist") !== false) {
+        // Return a specific error for table not found
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Las tablas necesarias no existen en la base de datos.',
+            'error' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'table_error' => true
+        ]);
+        exit;
+    }
+
+    // Check if it's a foreign key constraint error
+    if (strpos($e->getMessage(), "foreign key constraint fails") !== false) {
+        // Return a specific error for foreign key constraint
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error de referencia: Asegúrese de que el paciente y el doctor existan en la base de datos.',
+            'error' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'constraint_error' => true
+        ]);
+        exit;
+    }
+
+    // Devolver mensaje de error detallado
+    header('Content-Type: application/json');
+    echo json_encode([
+        'success' => false,
+        'message' => 'Error de base de datos al guardar registro',
+        'error' => $e->getMessage(),
+        'code' => $e->getCode()
     ]);
 } catch (Exception $e) {
     // Registrar el error

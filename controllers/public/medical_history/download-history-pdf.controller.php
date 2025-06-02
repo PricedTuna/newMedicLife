@@ -165,16 +165,53 @@ try {
     // Configurar cabeceras para descargar como PDF
     $filename = 'Historial_Medico_' . $patient['CURP'] . '_' . date('Y-m-d') . '.pdf';
 
-    // Nota: En un entorno de producción, se debería usar una biblioteca como TCPDF o MPDF
-    // para generar un PDF real. Aquí estamos simplemente devolviendo HTML con cabeceras
-    // que sugieren que es un PDF para fines de demostración.
+    // Generar PDF con TCPDF
+    // Verificar si TCPDF está instalado
+    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/tecnickcom/tcpdf/tcpdf.php')) {
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/tecnickcom/tcpdf/tcpdf.php';
 
-    header('Content-Type: application/pdf');
-    header('Content-Disposition: attachment; filename="' . $filename . '"');
+        // Crear instancia de TCPDF
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-    // En un entorno real, aquí convertiríamos el HTML a PDF
-    // Por ahora, simplemente mostramos el HTML
-    echo $html;
+        // Configurar el PDF
+        $pdf->SetCreator('Medic Life');
+        $pdf->SetAuthor('Medic Life');
+        $pdf->SetTitle('Historial Médico - ' . $patient['names'] . ' ' . $patient['last_name'] . ' ' . $patient['last_name2']);
+        $pdf->SetSubject('Historial Médico');
+
+        // Eliminar cabecera y pie de página predeterminados
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+
+        // Establecer márgenes
+        $pdf->SetMargins(15, 15, 15);
+
+        // Establecer saltos de página automáticos
+        $pdf->SetAutoPageBreak(true, 15);
+
+        // Agregar una página
+        $pdf->AddPage();
+
+        // Escribir el HTML en el PDF
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Generar el PDF y enviarlo al navegador
+        $pdf->Output($filename, 'D');
+    } else {
+        // Si TCPDF no está instalado, mostrar mensaje y devolver HTML
+        error_log("TCPDF no está instalado. Por favor, ejecute: composer require tecnickcom/tcpdf");
+
+        header('Content-Type: text/html; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '.html"');
+
+        echo '<div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border: 1px solid #f5c6cb; border-radius: 5px;">
+            <h3>Aviso Importante</h3>
+            <p>Para generar PDFs, es necesario instalar la biblioteca TCPDF. Por favor, contacte al administrador del sistema.</p>
+            <p>Comando para instalar TCPDF: <code>composer require tecnickcom/tcpdf</code></p>
+        </div>';
+
+        echo $html;
+    }
 
 } catch (Exception $e) {
     // Registrar el error

@@ -6,6 +6,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/utils.php';
 // Inicializar conexión a la base de datos
 $pdo = getConnection();
 
+// Verificar si hay un error de conexión a la base de datos
+if ($pdo === null) {
+    header('Content-Type: text/html');
+    echo 'Hubo un problema al conectar con la base de datos. Por favor, inténtelo de nuevo más tarde.';
+    exit;
+}
+
 // Verificar que el usuario tenga permisos (debe ser doctor o administrador)
 session_start();
 if (!isset($_SESSION['usuario']) || ($_SESSION['role'] !== 'D' && $_SESSION['role'] !== 'A')) {

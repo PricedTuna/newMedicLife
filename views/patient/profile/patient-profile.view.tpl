@@ -24,6 +24,9 @@
                     <a href="/views/doctor/medical_history/medical-history.view.php?patient_id={$patientData.id}" class="action-btn">
                         <i class="bi bi-journal-medical"></i> Historial Médico
                     </a>
+                    <a href="/views/public/medical_history/view-history.view.php?curp={$patientData.CURP}" class="action-btn" style="background-color: #2ecc71;">
+                        <i class="bi bi-eye"></i> Ver Historial Público
+                    </a>
                 </div>
             </div>
 

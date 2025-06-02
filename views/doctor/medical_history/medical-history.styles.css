@@ -330,24 +330,65 @@ table tr:hover {
     background-color: #357abd;
 }
 
+/* Estilos para signos vitales */
+.vital-signs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.vital-sign-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.vital-sign-item label {
+    margin-bottom: 5px;
+    font-weight: normal;
+}
+
+.vital-sign-item input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.vital-signs table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+}
+
+.vital-signs table th,
+.vital-signs table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.vital-signs table th {
+    background-color: #f2f2f2;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .search-form {
         flex-direction: column;
     }
-    
+
     .form-group {
         width: 100%;
     }
-    
+
     .patient-details {
         flex-direction: column;
     }
-    
+
     .history-actions {
         flex-wrap: wrap;
     }
-    
+
     .modal-content {
         width: 95%;
         padding: 20px;

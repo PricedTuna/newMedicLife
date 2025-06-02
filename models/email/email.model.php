@@ -12,8 +12,8 @@ class EmailModel
 
     public function __construct()
     {
-        $apiKey = getenv('MAILGUN_API_KEY') ?: '';
-        $this->domain = getenv('MAILGUN_DOMAIN') ?: '';
+        $apiKey = getenv('MAILGUN_API_KEY') ?: 'key-yourmailgunapikey';
+        $this->domain = getenv('MAILGUN_DOMAIN') ?: 'yourdomain.com';
         $this->mg = Mailgun::create($apiKey);
     }
 

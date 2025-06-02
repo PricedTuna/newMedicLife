@@ -41,6 +41,9 @@
             </div>
             <button type="submit" name="login">Ingresar</button>
         </form>
+        <div class="public-links">
+            <a href="/views/public/medical_history/public-medical-history.view.php" class="public-link">Consultar Historial Médico</a>
+        </div>
     </div>
 
 </body>

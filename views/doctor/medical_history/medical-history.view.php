@@ -1,5 +1,5 @@
 <?php
-use Smarty\Smarty;
+
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -10,9 +10,21 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/patient/patient.model.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/medical_history/medical-history.model.php';
-
+use Smarty\Smarty;
 // Inicializar conexión a la base de datos
 $pdo = getConnection();
+
+// Verificar si hay un error de conexión a la base de datos
+if ($pdo === null || isset($_SESSION['db_error'])) {
+    $error = isset($_SESSION['db_error']) ? $_SESSION['db_error'] : "Hubo un problema al conectar con la base de datos. Por favor, inténtelo de nuevo más tarde.";
+
+    // Limpiar el mensaje de error para que no se muestre en futuras peticiones
+    unset($_SESSION['db_error']);
+
+    // Redirigir con mensaje de error
+    header('Location: /views/dashboard/dashboard.view.php?error=' . urlencode($error));
+    exit;
+}
 
 // Inicializar Smarty
 $smarty = new Smarty();

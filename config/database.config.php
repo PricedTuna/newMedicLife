@@ -4,7 +4,7 @@
 $host     = "localhost:3306";
 $dbname   = "medic_life";
 $username = "root";
-$password = "Root";
+$password = "root";
 
 // Variable global para la conexión
 $GLOBALS['pdo'] = null;
@@ -32,8 +32,11 @@ if (!function_exists('getConnection')) {
 
             return $pdo;
         } catch (PDOException $e) {
-            echo "Error de conexión: " . $e->getMessage();
-            exit;
+            // Log the error instead of displaying it directly
+            error_log("Error de conexión a la base de datos: " . $e->getMessage());
+
+            // Return null to indicate connection failure
+            return null;
         }
     }
 }
@@ -41,7 +44,20 @@ if (!function_exists('getConnection')) {
 // Para mantener compatibilidad con código existente
 try {
     $pdo = getConnection();
+
+    // Verificar si la conexión fue exitosa
+    if ($pdo === null) {
+        // Log the error
+        error_log("No se pudo establecer la conexión a la base de datos");
+
+        // Set a user-friendly error message
+        $_SESSION['db_error'] = "Hubo un problema al conectar con la base de datos. Por favor, inténtelo de nuevo más tarde.";
+    }
 } catch (PDOException $e) {
-    echo "Error de conexión: " . $e->getMessage();
+    // Log the error
+    error_log("Error de conexión: " . $e->getMessage());
+
+    // Set a user-friendly error message
+    $_SESSION['db_error'] = "Hubo un problema al conectar con la base de datos. Por favor, inténtelo de nuevo más tarde.";
 }
 ?>

@@ -95,35 +95,95 @@
                     <h2>Nueva Entrada de Historial Médico</h2>
                     <form id="record-form">
                         <input type="hidden" id="patient-id" name="patient-id">
-                        
-                        <div class="form-group">
-                            <label for="appointment-select">Cita Relacionada:</label>
-                            <select id="appointment-select" name="appointment-id">
-                                <option value="">Seleccione una cita</option>
-                                <!-- Las citas se cargarán dinámicamente -->
-                            </select>
-                        </div>
-                        
+
                         <div class="form-group">
                             <label for="record-date">Fecha:</label>
                             <input type="date" id="record-date" name="record-date" required>
                         </div>
-                        
+
+                        <div class="form-group">
+                            <label for="chief-complaint">Motivo de Consulta:</label>
+                            <textarea id="chief-complaint" name="chief-complaint" rows="2"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="current-illness">Enfermedad Actual:</label>
+                            <textarea id="current-illness" name="current-illness" rows="2"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="personal-history">Antecedentes Personales:</label>
+                            <textarea id="personal-history" name="personal-history" rows="2"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="family-history">Antecedentes Familiares:</label>
+                            <textarea id="family-history" name="family-history" rows="2"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="physical-examination">Examen Físico:</label>
+                            <textarea id="physical-examination" name="physical-examination" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Signos Vitales:</label>
+                            <div class="vital-signs-grid">
+                                <div class="vital-sign-item">
+                                    <label for="temperature">Temperatura (°C):</label>
+                                    <input type="number" id="temperature" name="temperature" step="0.1" min="30" max="45">
+                                </div>
+                                <div class="vital-sign-item">
+                                    <label for="blood-pressure">Presión Arterial (mmHg):</label>
+                                    <input type="text" id="blood-pressure" name="blood-pressure" placeholder="120/80">
+                                </div>
+                                <div class="vital-sign-item">
+                                    <label for="heart-rate">Frecuencia Cardíaca (lpm):</label>
+                                    <input type="number" id="heart-rate" name="heart-rate" min="30" max="250">
+                                </div>
+                                <div class="vital-sign-item">
+                                    <label for="respiratory-rate">Frecuencia Respiratoria (rpm):</label>
+                                    <input type="number" id="respiratory-rate" name="respiratory-rate" min="5" max="60">
+                                </div>
+                                <div class="vital-sign-item">
+                                    <label for="weight">Peso (kg):</label>
+                                    <input type="number" id="weight" name="weight" step="0.1" min="0" max="500">
+                                </div>
+                                <div class="vital-sign-item">
+                                    <label for="height">Altura (cm):</label>
+                                    <input type="number" id="height" name="height" min="0" max="300">
+                                </div>
+                                <div class="vital-sign-item">
+                                    <label for="oxygen-saturation">Saturación de Oxígeno (%):</label>
+                                    <input type="number" id="oxygen-saturation" name="oxygen-saturation" min="0" max="100">
+                                </div>
+                                <div class="vital-sign-item">
+                                    <label for="glucose-level">Nivel de Glucosa (mg/dL):</label>
+                                    <input type="number" id="glucose-level" name="glucose-level" min="0" max="1000">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="diagnosis">Diagnóstico:</label>
-                            <input type="text" id="diagnosis" name="diagnosis" required>
+                            <textarea id="diagnosis" name="diagnosis" rows="2"></textarea>
                         </div>
-                        
+
+                        <div class="form-group">
+                            <label for="treatment-plan">Plan de Tratamiento:</label>
+                            <textarea id="treatment-plan" name="treatment-plan" rows="3"></textarea>
+                        </div>
+
                         <div class="form-group">
                             <label for="observations">Observaciones:</label>
-                            <textarea id="observations" name="observations" rows="5" required></textarea>
+                            <textarea id="observations" name="observations" rows="3"></textarea>
                         </div>
-                        
+
                         <div class="form-group">
-                            <label for="treatment">Tratamiento:</label>
-                            <textarea id="treatment" name="treatment" rows="3" required></textarea>
+                            <label for="next-appointment">Próxima Cita:</label>
+                            <input type="date" id="next-appointment" name="next-appointment">
                         </div>
-                        
+
                         <div class="form-actions">
                             <button type="submit" class="save-btn">Guardar</button>
                             <button type="button" class="cancel-btn" id="cancel-record">Cancelar</button>
@@ -139,22 +199,22 @@
                     <h2>Subir Documento PDF</h2>
                     <form id="upload-form" enctype="multipart/form-data">
                         <input type="hidden" id="upload-patient-id" name="patient-id">
-                        
+
                         <div class="form-group">
                             <label for="pdf-file">Seleccionar Archivo PDF:</label>
                             <input type="file" id="pdf-file" name="pdf-file" accept=".pdf" required>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="document-title">Título del Documento:</label>
                             <input type="text" id="document-title" name="document-title" required>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="document-description">Descripción:</label>
                             <textarea id="document-description" name="document-description" rows="3"></textarea>
                         </div>
-                        
+
                         <div class="form-actions">
                             <button type="submit" class="save-btn">Subir</button>
                             <button type="button" class="cancel-btn" id="cancel-upload">Cancelar</button>

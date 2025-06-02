@@ -137,3 +137,27 @@ button:hover {
     /*padding: 0;*/
     margin: 0;
 }
+
+/* Estilos para los enlaces públicos */
+.public-links {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--line-clr);
+    text-align: center;
+}
+
+.public-link {
+    display: inline-block;
+    color: var(--accent-clr);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.public-link:hover {
+    color: #4b54d1;
+    background-color: rgba(94, 99, 255, 0.1);
+}

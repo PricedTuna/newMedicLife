@@ -11,5 +11,7 @@
             "email": "yewdiel211@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "smarty/smarty": "^5.5"
+    }
 }

@@ -6,6 +6,16 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/utils.php';
 // Inicializar conexión a la base de datos
 $pdo = getConnection();
 
+// Verificar si hay un error de conexión a la base de datos
+if ($pdo === null) {
+    header('Content-Type: application/json');
+    echo json_encode([
+        'success' => false,
+        'message' => 'Hubo un problema al conectar con la base de datos. Por favor, inténtelo de nuevo más tarde.'
+    ]);
+    exit;
+}
+
 // Verificar que el usuario tenga permisos (debe ser doctor o administrador)
 session_start();
 if (!isset($_SESSION['usuario']) || ($_SESSION['role'] !== 'D' && $_SESSION['role'] !== 'A')) {
@@ -55,28 +65,46 @@ try {
     $data = [
         'patient_id' => (int)$_POST['patient-id'],
         'doctor_id' => $doctorId,
-        'appointment_id' => isset($_POST['appointment-id']) && !empty($_POST['appointment-id']) ? (int)$_POST['appointment-id'] : null,
-        'record_date' => $_POST['record-date'],
-        'diagnosis' => $_POST['diagnosis'],
-        'observations' => $_POST['observations'],
-        'treatment' => $_POST['treatment']
+        'date_created' => $_POST['record-date'] . ' ' . date('H:i:s'),
+        'chief_complaint' => $_POST['chief-complaint'] ?? null,
+        'current_illness' => $_POST['current-illness'] ?? null,
+        'personal_history' => $_POST['personal-history'] ?? null,
+        'family_history' => $_POST['family-history'] ?? null,
+        'physical_examination' => $_POST['physical-examination'] ?? null,
+        'diagnosis' => $_POST['diagnosis'] ?? null,
+        'treatment_plan' => $_POST['treatment-plan'] ?? null,
+        'observations' => $_POST['observations'] ?? null,
+        'next_appointment' => !empty($_POST['next-appointment']) ? $_POST['next-appointment'] : null
     ];
 
-    // Validar datos
-    if (empty($data['record_date'])) {
+    // Preparar datos de signos vitales si se proporcionaron
+    if (isset($_POST['temperature']) || isset($_POST['blood-pressure']) || 
+        isset($_POST['heart-rate']) || isset($_POST['respiratory-rate']) || 
+        isset($_POST['weight']) || isset($_POST['height']) || 
+        isset($_POST['oxygen-saturation']) || isset($_POST['glucose-level'])) {
+
+        $data['vital_signs'] = [
+            'temperature' => $_POST['temperature'] ?? null,
+            'blood_pressure' => $_POST['blood-pressure'] ?? null,
+            'heart_rate' => $_POST['heart-rate'] ?? null,
+            'respiratory_rate' => $_POST['respiratory-rate'] ?? null,
+            'weight' => $_POST['weight'] ?? null,
+            'height' => $_POST['height'] ?? null,
+            'bmi' => isset($_POST['weight']) && isset($_POST['height']) && !empty($_POST['weight']) && !empty($_POST['height']) ? 
+                    round($_POST['weight'] / (($_POST['height']/100) * ($_POST['height']/100)), 2) : null,
+            'oxygen_saturation' => $_POST['oxygen-saturation'] ?? null,
+            'glucose_level' => $_POST['glucose-level'] ?? null,
+            'measured_at' => date('Y-m-d H:i:s')
+        ];
+    }
+
+    // Validar datos mínimos requeridos
+    if (empty($data['date_created'])) {
         throw new Exception('La fecha es obligatoria');
     }
 
-    if (empty($data['diagnosis'])) {
-        throw new Exception('El diagnóstico es obligatorio');
-    }
-
-    if (empty($data['observations'])) {
-        throw new Exception('Las observaciones son obligatorias');
-    }
-
-    if (empty($data['treatment'])) {
-        throw new Exception('El tratamiento es obligatorio');
+    if (empty($data['diagnosis']) && empty($data['chief_complaint'])) {
+        throw new Exception('El diagnóstico o la queja principal son obligatorios');
     }
 
     // Instanciar el modelo

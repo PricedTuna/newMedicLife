@@ -7,6 +7,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/utils.php';
 // Inicializar conexión a la base de datos
 $pdo = getConnection();
 
+// Verificar si hay un error de conexión a la base de datos
+if ($pdo === null) {
+    header('Content-Type: text/html');
+    echo 'Hubo un problema al conectar con la base de datos. Por favor, inténtelo de nuevo más tarde.';
+    exit;
+}
+
 // Verificar que el usuario tenga permisos (debe ser doctor o administrador)
 session_start();
 if (!isset($_SESSION['usuario']) || ($_SESSION['role'] !== 'D' && $_SESSION['role'] !== 'A')) {
@@ -15,33 +22,153 @@ if (!isset($_SESSION['usuario']) || ($_SESSION['role'] !== 'D' && $_SESSION['rol
     exit;
 }
 
-// Verificar que se haya enviado el ID del paciente
-if (!isset($_GET['patient_id']) || !is_numeric($_GET['patient_id'])) {
+// Verificar que se haya enviado el ID del paciente o el ID del registro
+if ((!isset($_GET['patient_id']) || !is_numeric($_GET['patient_id'])) && 
+    (!isset($_GET['record_id']) || !is_numeric($_GET['record_id']))) {
     header('Content-Type: text/html');
-    echo 'Debe proporcionar un ID de paciente válido';
+    echo 'Debe proporcionar un ID de paciente o un ID de registro válido';
     exit;
 }
 
-try {
-    $patientId = (int)$_GET['patient_id'];
+/**
+ * Renderiza los signos vitales en formato HTML
+ * @param array $vitalSigns Datos de los signos vitales
+ * @return string HTML con los signos vitales
+ */
+function renderVitalSigns($vitalSigns) {
+    if (empty($vitalSigns)) {
+        return '';
+    }
 
+    $html = '<div class="vital-signs">
+        <h3>Signos Vitales</h3>
+        <table>
+            <tr>
+                <th>Parámetro</th>
+                <th>Valor</th>
+            </tr>';
+
+    if (!empty($vitalSigns['temperature'])) {
+        $html .= '<tr>
+            <td>Temperatura</td>
+            <td>' . htmlspecialchars($vitalSigns['temperature']) . ' °C</td>
+        </tr>';
+    }
+
+    if (!empty($vitalSigns['blood_pressure'])) {
+        $html .= '<tr>
+            <td>Presión Arterial</td>
+            <td>' . htmlspecialchars($vitalSigns['blood_pressure']) . ' mmHg</td>
+        </tr>';
+    }
+
+    if (!empty($vitalSigns['heart_rate'])) {
+        $html .= '<tr>
+            <td>Frecuencia Cardíaca</td>
+            <td>' . htmlspecialchars($vitalSigns['heart_rate']) . ' lpm</td>
+        </tr>';
+    }
+
+    if (!empty($vitalSigns['respiratory_rate'])) {
+        $html .= '<tr>
+            <td>Frecuencia Respiratoria</td>
+            <td>' . htmlspecialchars($vitalSigns['respiratory_rate']) . ' rpm</td>
+        </tr>';
+    }
+
+    if (!empty($vitalSigns['weight'])) {
+        $html .= '<tr>
+            <td>Peso</td>
+            <td>' . htmlspecialchars($vitalSigns['weight']) . ' kg</td>
+        </tr>';
+    }
+
+    if (!empty($vitalSigns['height'])) {
+        $html .= '<tr>
+            <td>Altura</td>
+            <td>' . htmlspecialchars($vitalSigns['height']) . ' cm</td>
+        </tr>';
+    }
+
+    if (!empty($vitalSigns['bmi'])) {
+        $html .= '<tr>
+            <td>IMC</td>
+            <td>' . htmlspecialchars($vitalSigns['bmi']) . ' kg/m²</td>
+        </tr>';
+    }
+
+    if (!empty($vitalSigns['oxygen_saturation'])) {
+        $html .= '<tr>
+            <td>Saturación de Oxígeno</td>
+            <td>' . htmlspecialchars($vitalSigns['oxygen_saturation']) . ' %</td>
+        </tr>';
+    }
+
+    if (!empty($vitalSigns['glucose_level'])) {
+        $html .= '<tr>
+            <td>Nivel de Glucosa</td>
+            <td>' . htmlspecialchars($vitalSigns['glucose_level']) . ' mg/dL</td>
+        </tr>';
+    }
+
+    $html .= '</table>
+    </div>';
+
+    return $html;
+}
+
+try {
     // Instanciar los modelos
     $patientModel = new PatientModel($pdo);
     $medicalHistoryModel = new MedicalHistoryModel($pdo);
 
-    // Obtener datos del paciente
-    $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id AND status != 'I'");
-    $stmt->execute([':id' => $patientId]);
-    $patient = $stmt->fetch(PDO::FETCH_ASSOC);
+    $patient = null;
+    $history = [];
 
-    if (!$patient) {
-        header('Content-Type: text/html');
-        echo 'Paciente no encontrado o inactivo';
-        exit;
+    // Si se proporciona record_id, obtener un solo registro
+    if (isset($_GET['record_id']) && is_numeric($_GET['record_id'])) {
+        $recordId = (int)$_GET['record_id'];
+        $record = $medicalHistoryModel->getHistoryRecord($recordId);
+
+        if (!$record) {
+            header('Content-Type: text/html');
+            echo 'Registro no encontrado';
+            exit;
+        }
+
+        // Obtener datos del paciente
+        $patientId = $record['patient_id'];
+        $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id AND status != 'I'");
+        $stmt->execute([':id' => $patientId]);
+        $patient = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$patient) {
+            header('Content-Type: text/html');
+            echo 'Paciente no encontrado o inactivo';
+            exit;
+        }
+
+        // Usar solo este registro para el historial
+        $history = [$record];
+    } 
+    // Si se proporciona patient_id, obtener todo el historial
+    else if (isset($_GET['patient_id']) && is_numeric($_GET['patient_id'])) {
+        $patientId = (int)$_GET['patient_id'];
+
+        // Obtener datos del paciente
+        $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id AND status != 'I'");
+        $stmt->execute([':id' => $patientId]);
+        $patient = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$patient) {
+            header('Content-Type: text/html');
+            echo 'Paciente no encontrado o inactivo';
+            exit;
+        }
+
+        // Obtener historial médico del paciente
+        $history = $medicalHistoryModel->getPatientHistory($patientId);
     }
-
-    // Obtener historial médico del paciente
-    $history = $medicalHistoryModel->getPatientHistory($patientId);
 
     // Generar HTML para el PDF
     $html = '
@@ -138,7 +265,7 @@ try {
         <div class="patient-info">
             <h2>Información del Paciente</h2>
             <p><strong>Nombre:</strong> ' . htmlspecialchars($patient['names'] . ' ' . $patient['last_name'] . ' ' . $patient['last_name2']) . '</p>
-            <p><strong>CURP:</strong> ' . htmlspecialchars($patient['curp']) . '</p>
+            <p><strong>CURP:</strong> ' . htmlspecialchars($patient['CURP']) . '</p>
             <p><strong>Fecha de Nacimiento:</strong> ' . htmlspecialchars($patient['birth_date']) . '</p>
             <p><strong>Género:</strong> ' . htmlspecialchars($patient['gender'] == 'M' ? 'Masculino' : 'Femenino') . '</p>
             <p><strong>Tipo de Sangre:</strong> ' . htmlspecialchars($patient['blood_type']) . '</p>
@@ -160,8 +287,18 @@ try {
                 </div>
                 <div class="record-content">
                     <p><strong>Doctor:</strong> ' . htmlspecialchars($record['doctor_names'] . ' ' . $record['doctor_last_name'] . ' ' . $record['doctor_last_name2']) . '</p>
-                    <p><strong>Observaciones:</strong> ' . nl2br(htmlspecialchars($record['observations'])) . '</p>
-                    <p><strong>Tratamiento:</strong> ' . nl2br(htmlspecialchars($record['treatment'])) . '</p>
+
+                    ' . (!empty($record['chief_complaint']) ? '<p><strong>Motivo de Consulta:</strong> ' . nl2br(htmlspecialchars($record['chief_complaint'])) . '</p>' : '') . '
+                    ' . (!empty($record['current_illness']) ? '<p><strong>Enfermedad Actual:</strong> ' . nl2br(htmlspecialchars($record['current_illness'])) . '</p>' : '') . '
+                    ' . (!empty($record['personal_history']) ? '<p><strong>Antecedentes Personales:</strong> ' . nl2br(htmlspecialchars($record['personal_history'])) . '</p>' : '') . '
+                    ' . (!empty($record['family_history']) ? '<p><strong>Antecedentes Familiares:</strong> ' . nl2br(htmlspecialchars($record['family_history'])) . '</p>' : '') . '
+                    ' . (!empty($record['physical_examination']) ? '<p><strong>Examen Físico:</strong> ' . nl2br(htmlspecialchars($record['physical_examination'])) . '</p>' : '') . '
+                    ' . (!empty($record['diagnosis']) ? '<p><strong>Diagnóstico:</strong> ' . nl2br(htmlspecialchars($record['diagnosis'])) . '</p>' : '') . '
+                    ' . (!empty($record['treatment_plan']) ? '<p><strong>Plan de Tratamiento:</strong> ' . nl2br(htmlspecialchars($record['treatment_plan'])) . '</p>' : '') . '
+                    ' . (!empty($record['observations']) ? '<p><strong>Observaciones:</strong> ' . nl2br(htmlspecialchars($record['observations'])) . '</p>' : '') . '
+                    ' . (!empty($record['next_appointment']) ? '<p><strong>Próxima Cita:</strong> ' . htmlspecialchars($record['next_appointment']) . '</p>' : '') . '
+
+                    ' . (isset($record['vital_signs_data']) && !empty($record['vital_signs_data']) ? $this->renderVitalSigns($record['vital_signs_data'][0]) : '') . '
                 </div>
             </div>';
         }
@@ -175,18 +312,57 @@ try {
     </html>';
 
     // Configurar cabeceras para descargar como PDF
-    $filename = 'Historial_Medico_' . $patient['curp'] . '_' . date('Y-m-d') . '.pdf';
+    $filename = 'Historial_Medico_' . $patient['CURP'] . '_' . date('Y-m-d') . '.pdf';
 
-    // Nota: En un entorno de producción, se debería usar una biblioteca como TCPDF o MPDF
-    // para generar un PDF real. Aquí estamos simplemente devolviendo HTML con cabeceras
-    // que sugieren que es un PDF para fines de demostración.
+    // Generar PDF con TCPDF
+    // Nota: Es necesario instalar TCPDF con: composer require tecnickcom/tcpdf
 
-    header('Content-Type: application/pdf');
-    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    // Verificar si TCPDF está instalado
+    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/tecnickcom/tcpdf/tcpdf.php')) {
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/tecnickcom/tcpdf/tcpdf.php';
 
-    // En un entorno real, aquí convertiríamos el HTML a PDF
-    // Por ahora, simplemente mostramos el HTML
-    echo $html;
+        // Crear instancia de TCPDF
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        // Configurar el PDF
+        $pdf->SetCreator('Medic Life');
+        $pdf->SetAuthor('Medic Life');
+        $pdf->SetTitle('Historial Médico - ' . $patient['names'] . ' ' . $patient['last_name'] . ' ' . $patient['last_name2']);
+        $pdf->SetSubject('Historial Médico');
+
+        // Eliminar cabecera y pie de página predeterminados
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+
+        // Establecer márgenes
+        $pdf->SetMargins(15, 15, 15);
+
+        // Establecer saltos de página automáticos
+        $pdf->SetAutoPageBreak(true, 15);
+
+        // Agregar una página
+        $pdf->AddPage();
+
+        // Escribir el HTML en el PDF
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Generar el PDF y enviarlo al navegador
+        $pdf->Output($filename, 'D');
+    } else {
+        // Si TCPDF no está instalado, mostrar mensaje y devolver HTML
+        error_log("TCPDF no está instalado. Por favor, ejecute: composer require tecnickcom/tcpdf");
+
+        header('Content-Type: text/html; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '.html"');
+
+        echo '<div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border: 1px solid #f5c6cb; border-radius: 5px;">
+            <h3>Aviso Importante</h3>
+            <p>Para generar PDFs, es necesario instalar la biblioteca TCPDF. Por favor, contacte al administrador del sistema.</p>
+            <p>Comando para instalar TCPDF: <code>composer require tecnickcom/tcpdf</code></p>
+        </div>';
+
+        echo $html;
+    }
 
 } catch (Exception $e) {
     // Registrar el error

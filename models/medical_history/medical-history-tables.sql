@@ -1,36 +1,48 @@
--- Tabla para almacenar registros de historial médico
-CREATE TABLE IF NOT EXISTS `medical_history` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `patient_id` int(11) NOT NULL,
-  `doctor_id` int(11) NOT NULL,
-  `appointment_id` int(11) DEFAULT NULL,
-  `record_date` date NOT NULL,
-  `diagnosis` varchar(255) NOT NULL,
-  `observations` text NOT NULL,
-  `treatment` text NOT NULL,
-  `created_at` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `patient_id` (`patient_id`),
-  KEY `doctor_id` (`doctor_id`),
-  KEY `appointment_id` (`appointment_id`),
-  CONSTRAINT `medical_history_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`),
-  CONSTRAINT `medical_history_ibfk_2` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`),
-  CONSTRAINT `medical_history_ibfk_3` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE medical_history (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT NOT NULL,
+    date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    chief_complaint TEXT,
+    current_illness TEXT,
+    personal_history TEXT,
+    family_history TEXT,
+    physical_examination TEXT,
+    vital_signs JSON,
+    diagnosis TEXT,
+    treatment_plan TEXT,
+    observations TEXT,
+    next_appointment DATE,
+    doctor_id INT NOT NULL,
+    status ENUM('active', 'archived', 'deleted') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES patients(id),
+    FOREIGN KEY (doctor_id) REFERENCES doctors(id)
+);
 
--- Tabla para almacenar documentos PDF
-CREATE TABLE IF NOT EXISTS `medical_documents` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `patient_id` int(11) NOT NULL,
-  `doctor_id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text,
-  `file_content` mediumblob NOT NULL,
-  `file_type` varchar(100) NOT NULL,
-  `created_at` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `patient_id` (`patient_id`),
-  KEY `doctor_id` (`doctor_id`),
-  CONSTRAINT `medical_documents_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`),
-  CONSTRAINT `medical_documents_ibfk_2` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE vital_signs_history (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    medical_history_id INT NOT NULL,
+    temperature DECIMAL(3,1),
+    blood_pressure VARCHAR(20),
+    heart_rate INT,
+    respiratory_rate INT,
+    weight DECIMAL(5,2),
+    height DECIMAL(5,2),
+    bmi DECIMAL(4,2),
+    oxygen_saturation INT,
+    glucose_level INT,
+    measured_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (medical_history_id) REFERENCES medical_history(id)
+);
+
+CREATE TABLE medical_attachments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    medical_history_id INT NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    file_type VARCHAR(50),
+    file_size INT,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (medical_history_id) REFERENCES medical_history(id)
+);

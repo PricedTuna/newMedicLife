@@ -85,6 +85,9 @@
                                             <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST"
                                                 class="action-wrapper">
                                                 <input type="hidden" name="appointment_id" value="{$appointment.cita}">
+                                                <input type="hidden" name="patient_name" value="{$appointment.patient_name} {$appointment.last_name} {$appointment.last_name2}">
+                                                <input type="hidden" name="patient_email" value="{$appointment.patient_email}">
+                                                <input type="hidden" name="appointment_date" value="{$appointment.appointment_date}">
                                                 <button type="submit" class="delete-btn"
                                                     data-id="{$appointment.cita}">Eliminar</button>
                                             </form>

@@ -439,7 +439,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
+        
     });
+
+    
 
     // Inicializar formulario y validar al enviar
     const doctorForm = document.getElementById('doctor-form');

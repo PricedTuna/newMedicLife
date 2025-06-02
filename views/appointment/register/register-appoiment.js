@@ -7,9 +7,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const curpInput = document.getElementById("CURP");
   const datalist = document.getElementById("curpList");
   const patientName = document.getElementById("patientName");
+  const patientEmail = document.getElementById("patientEmail");
   const medicalArea = document.getElementById("speciality");
   const doctorForm = document.getElementById("doctor");
-
+  const nameMedicalArea = document.getElementById("name_medical_area");
   // Funciones para mostrar/ocultar indicador de carga
   function showLoading() {
     const loadingDiv = document.createElement("div");
@@ -44,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ] // paciente en su campo
           .filter(Boolean)
           .join(" ");
+        patientEmail.value = patient.email;
         curpError.style.display = "none";
       } else {
         patientIdInput.value = "";
@@ -61,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Validación onBlur para CURP
-  curpInput.addEventListener("blur", function() {
+  curpInput.addEventListener("blur", function () {
     const entrada = curpInput.value.trim().toUpperCase();
     const curp = entrada.split(" - ")[0];
 
@@ -121,7 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const doctorSchedules = schedules.filter((s) => s.id_doctor === selectedDoctorId);
+    const doctorSchedules = schedules.filter(
+      (s) => s.id_doctor === selectedDoctorId
+    );
     const workingDays = doctorSchedules
       .map((s) => s.day.toLowerCase())
       .map((day) => dayNameToNumber[day])
@@ -153,17 +157,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Get the day name for the available date
       const dayName = Object.keys(dayNameToNumber).find(
-        key => dayNameToNumber[key] === nextAvailableDate.getDay()
+        (key) => dayNameToNumber[key] === nextAvailableDate.getDay()
       );
 
       // Find the schedule for this day
       const daySchedule = doctorSchedules.find(
-        s => s.day.toLowerCase() === dayName
+        (s) => s.day.toLowerCase() === dayName
       );
 
       if (daySchedule) {
         // Set the time to the start time of the doctor's schedule
-        const [hours, minutes] = daySchedule.start_time.split(':').map(Number);
+        const [hours, minutes] = daySchedule.start_time.split(":").map(Number);
         nextAvailableDate.setHours(hours, minutes, 0, 0);
 
         // Set the date in the flatpickr
@@ -253,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
   filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
 
   // Validación onBlur para especialidad
-  medicalArea.addEventListener("blur", function() {
+  medicalArea.addEventListener("blur", function () {
     if (!medicalArea.value) {
       const errorSpan = document.createElement("span");
       errorSpan.id = "specialityError";
@@ -272,7 +276,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Validación onBlur para doctor
-  doctorForm.addEventListener("blur", function() {
+  doctorForm.addEventListener("blur", function () {
     if (!doctorForm.value) {
       const errorSpan = document.createElement("span");
       errorSpan.id = "doctorError";
@@ -292,15 +296,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
   medicalArea.addEventListener("change", function () {
     showLoading();
+
     medicalAreaID = getParamsMedical(medicalArea);
     doctorSelect.innerHTML = '<option value="">Selecciona un Doctor</option>';
     filterDoctorsByArea(medicalAreaID, doctors, doctorForm);
+
+    // Obtener el texto de la opción seleccionada
+    const selectedOptionText =
+      medicalArea.options[medicalArea.selectedIndex].text;
+    // Poner ese texto en el input oculto
+    const nameMedicalAreaInput = document.getElementById("name_medical_area");
+    if (nameMedicalAreaInput) {
+      nameMedicalAreaInput.value = selectedOptionText;
+    }
+
     hideLoading();
   });
 
   doctorForm.addEventListener("change", function () {
     showLoading();
+
+    // Actualizar días habilitados (ya existente)
     updateEnabledDays();
+
+    // Obtener el select del doctor y el input hidden
+    const doctorSelect = document.getElementById("doctor");
+    const nameDoctorInput = document.getElementById("name_doctor");
+
+    if (doctorSelect && nameDoctorInput) {
+      const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
+      const fullName = selectedOption.text || "";
+      nameDoctorInput.value = fullName.trim();
+    }
+
     hideLoading();
   });
 
@@ -317,31 +345,37 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Confirmación al registrar cita
-  document.getElementById("solicitarCita").addEventListener("submit", function(event) {
-    event.preventDefault();
+  document
+    .getElementById("solicitarCita")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
 
-    // Verificar si todos los campos están correctos
-    if (this.checkValidity()) {
-      Swal.fire({
-        title: '¿Confirmar cita?',
-        text: `Paciente: ${patientName.value}\nDoctor: ${doctorForm.options[doctorForm.selectedIndex].text}\nFecha: ${appointmentDate.value}`,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Confirmar',
-        cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.submit();
-        }
-      });
-    } else {
-      Swal.fire({
-        title: 'Error',
-        text: 'Por favor, complete todos los campos correctamente.',
-        icon: 'error'
-      });
-    }
-  });
+      // Verificar si todos los campos están correctos
+      if (this.checkValidity()) {
+        Swal.fire({
+          title: "¿Confirmar cita?",
+          text: `Paciente: ${patientName.value}\nDoctor: ${
+            doctorForm.options[doctorForm.selectedIndex].text
+          }\nFecha: ${appointmentDate.value}`,
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonText: "Confirmar",
+          cancelButtonText: "Cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "Por favor, complete todos los campos correctamente.",
+          icon: "error",
+        });
+      }
+    });
+
+  updateMedicalAreaName();
 });
 
 function getParamsMedical(medicalArea) {
@@ -358,7 +392,7 @@ function filterDoctorsByArea(
   doctorSelect.innerHTML = ""; // limpia opciones
 
   // Verificar si el usuario es un doctor (variable global pasada desde PHP)
-  const isUserDoctor = typeof isDoctor !== 'undefined' && isDoctor === true;
+  const isUserDoctor = typeof isDoctor !== "undefined" && isDoctor === true;
 
   // Si el usuario es un doctor, solo mostrar ese doctor
   if (isUserDoctor) {
@@ -374,7 +408,7 @@ function filterDoctorsByArea(
       doctorSelect.value = filtered[0].doctor_id;
 
       // Disparar el evento change para actualizar los días disponibles
-      const event = new Event('change');
+      const event = new Event("change");
       doctorSelect.dispatchEvent(event);
     }
   } else {
@@ -388,7 +422,7 @@ function filterDoctorsByArea(
     filtered.forEach((doctor) => {
       const option = document.createElement("option");
       option.value = doctor.doctor_id;
-      option.text = doctor.doctor_name;
+      option.text = doctor.doctor_name + " " + doctor.last_name + " " + doctor.last_name2;
       doctorSelect.appendChild(option);
     });
 
@@ -404,4 +438,9 @@ function filterDoctorsByArea(
 function isValidCURP(curp) {
   const regex = /^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/;
   return regex.test(curp);
+}
+
+function updateMedicalAreaName() {
+  const selectedOption = speciality.options[speciality.selectedIndex];
+  nameMedicalArea.value = selectedOption.text;
 }

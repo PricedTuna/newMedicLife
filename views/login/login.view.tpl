@@ -19,7 +19,10 @@
         {/if}
 
         <div id="form-error" style="display: none; color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;"></div>
-        <form id="loginForm" action="controllers/auth/login.controller.php" method="POST">
+        <form id="loginForm" action="/controllers/auth/login.controller.php" method="POST">
+            {if isset($smarty.get.redirect)}
+                <input type="hidden" name="redirect" value="{$smarty.get.redirect|escape}">
+            {/if}
             <div class="form-group">
                 <label for="email">Correo electrónico</label>
                 <input type="email" id="email" name="email" placeholder="Correo electrónico" required>

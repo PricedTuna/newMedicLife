@@ -23,8 +23,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        header('Location: /views/dashboard/dashboard.view.php');
+        // Check if there's a redirect URL
+        if (isset($_POST['redirect']) && !empty($_POST['redirect'])) {
+            $redirect = urldecode($_POST['redirect']);
+            // Make sure the redirect URL is within our site (security measure)
+            if (strpos($redirect, '/') === 0) {
+                header('Location: ' . $redirect);
+                exit();
+            }
+        }
 
+        // Default redirect to dashboard
+        header('Location: /views/dashboard/dashboard.view.php');
         exit();
     } else {
         header('Location: /index.php?error=' . urlencode("Credenciales incorrectas"));

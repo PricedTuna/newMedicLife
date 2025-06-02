@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <title>Perfil de Paciente | Medic Life</title>
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -19,6 +20,11 @@
         <div class="main-content">
             <div class="profile-header">
                 <h1>Perfil de Paciente</h1>
+                <div class="profile-actions">
+                    <a href="/views/doctor/medical_history/medical-history.view.php?patient_id={$patientData.id}" class="action-btn">
+                        <i class="bi bi-journal-medical"></i> Historial Médico
+                    </a>
+                </div>
             </div>
 
             {if isset($error)}

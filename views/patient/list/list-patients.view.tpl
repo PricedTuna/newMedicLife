@@ -18,7 +18,8 @@
     {* <link rel="stylesheet" href="../../../resset.css">  *}
     <script src="/views/components/sidebar.app.js" defer></script>
 
-    <title>Lista de pacientes</title>
+    <title>Lista de pacientes | Medic Life</title>
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
 </head>
 <body>
     {include file="../../components/sidebar.tpl"}

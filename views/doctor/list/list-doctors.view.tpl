@@ -94,6 +94,8 @@
                                     <td class="actions-td">
                                         <form action="/controllers/doctor/delete-doctor.controller.php" method="POST" class="action-wrapper">
                                             <input type="hidden" name="doctor_id" value="{$doctor.id}">
+                                            <input type="hidden" name="doctor_names" value="{$doctor.names} {$doctor.last_name} {$doctor.last_name2}">
+                                            <input type="hidden" name="doctor_email" value="{$doctor.email}">
                                             <button type="submit" class="delete-btn" data-id="{$doctor.id}">Eliminar</button>
                                         </form>
                                         <a href="/views/doctor/register/register-doctor.view.php?id={$doctor.id}" class="action-wrapper">

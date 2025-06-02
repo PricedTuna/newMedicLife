@@ -43,62 +43,76 @@
                     </a>
                     <h2 class="form-title">Solicitar Citas</h2>
                 </div>
-                <form id="solicitarCita" method="POST" action="/controllers/appoiment/register-appoiment.controller.php">
-                <input type="hidden" name="appointment_id" value="{$appointment.id|default: ''}"></input>
-                <input type="hidden" id="appointmentId" name="appointment_id" value="{$appointment.id|default: ''}">
-                <div class="form-group">
-                    <label>Busqueda de paciente: Ingrese el nombre o CURP</label>
-                    <input type="text" id="CURP" name="curp" list="curpList" autocomplete="off"
-                        value="{$appointment.curp|default:''} {$appointment.full_name|default:''}" required>
-                    <datalist id="curpList"></datalist>
-                    <small id="curpError" style="color: red; display: none;"></small>
-                </div>
+                <form id="solicitarCita" method="POST"
+                    action="/controllers/appoiment/register-appoiment.controller.php">
+                    <input type="hidden" name="appointment_id" value="{$appointment.id|default: ''}"></input>
+                    <input type="hidden" id="appointmentId" name="appointment_id" value="{$appointment.id|default: ''}">
 
-                <div class="form-group">
-                    <label for="patientId">Número de identificación del paciente</label>
-                    <input type="text" name="id_patient" id="patientId" value="{$appointment.id_patient|default:''}"
+                    {* Se realiza la busqueda del paciente por su curp o nombre *}
+                    <div class="form-group">
+                        <label>Busqueda de paciente: Ingrese el nombre o CURP</label>
+                        <input type="text" id="CURP" name="curp" list="curpList" autocomplete="off"
+                            value="{$appointment.curp|default:''} {$appointment.full_name|default:''}" required>
+                        <datalist id="curpList"></datalist>
+                        <small id="curpError" style="color: red; display: none;"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="patientId">Número de identificación del paciente</label>
+                        <input type="text" name="id_patient" id="patientId" value="{$appointment.id_patient|default:''}"
+                            required>
+                    </div>
+
+                    {* Aquí se envía el email del paciente para notificarlo por correo electrónico *}
+                    <div class="form-group">
+                        <input type="hidden" name="patient_email" id="patientEmail"
+                            value="{$appointment.patient_email|default:''}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Nombre del paciente</label>
+                        <input type="text" name="patientName" id="patientName" placeholder="Nombre completo"
+                            value="{$appointment.patient_name|default:''} {$appointment.last_name|default:''} {$appointment.last_name2|default:''}"
+                            required></input>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="speciality">Especialidad</label>
+                        <select name="id_medical_area" id="speciality" required>
+                            {foreach from=$medical_areas item=area}
+                                <option value="{$area.id}"
+                                    {if isset($appointment) && isset($appointment.id_medical_area) && $area.id == $appointment.id_medical_area}
+                                    selected {/if}>
+                                    {$area.name}
+                                </option>
+                            {/foreach}
+                        </select>
+                        <input type="hidden" name="name_medical_area" id="name_medical_area"
+                            value="{$appointment.name_medical_area|default:''}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="speciality">Médico</label>
+                        <select name="id_doctor" id="doctor" required>
+                            <option value="">Seleccione un médico</option>
+                        </select>
+                    </div>
+
+                    <input type="hidden" id="name_doctor" name="name_doctor"
+                        value="{$appointment.name_doctor|default:''} {$appointment.doctor_last_name|default:''} {$appointment.doctor_last_name2|default:''}"
                         required>
-                </div>
-
-                <div class="form-group">
-                    <label for="name">Nombre del paciente</label>
-                    <input type="text" id="patientName" placeholder="Nombre completo"
-                        value="{$appointment.patient_name|default:''} {$appointment.last_name|default:''} {$appointment.last_name2|default:''}"
-                        disabled></input>
-                </div>
-
-                <div class="form-group">
-                    <label for="speciality">Especialidad</label>
-                    <select name="id_medical_area" id="speciality" required>
-                        {foreach from=$medical_areas item=area}
-                            <option value="{$area.id}"
-                                {if isset($appointment) && isset($appointment.id_medical_area) && $area.id == $appointment.id_medical_area}
-                                selected {/if}>
-                                {$area.name}
-                            </option>
-                        {/foreach}
-                    </select>
-                </div>
 
 
+                    <div class="form-group">
+                        <label for="appointmentDate">Hora y Fecha</label>
+                        <input type="text" id="appointmentDate" name="appointment_date"
+                            value="{$appointment.appointment_date|default:''}" required>
+                        <span id="dateError" style="color:red; display:none;">La fecha/hora no está en el horario del
+                            doctor</span>
+                    </div>
 
-                <div class="form-group">
-                    <label for="speciality">Médico</label>
-                    <select name="id_doctor" id="doctor" required>
-                        <option value="">Seleccione un médico</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="appointmentDate">Hora y Fecha</label>
-                    <input type="text" id="appointmentDate" name="appointment_date"
-                        value="{$appointment.appointment_date|default:''}" required>
-                    <span id="dateError" style="color:red; display:none;">La fecha/hora no está en el horario del
-                        doctor</span>
-                </div>
-
-                <button type="submit" class="submit-btn">Registrar Datos</button>
-            </form>
+                    <button type="submit" class="submit-btn">Registrar Datos</button>
+                </form>
             </div>
         </div>
     </main>

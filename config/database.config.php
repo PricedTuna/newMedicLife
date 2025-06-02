@@ -2,9 +2,9 @@
 // config/database.php
 
 $host     = "localhost:3306";
-$dbname   = "new_medic_life";
+$dbname   = "medic_life";
 $username = "root";
-$password = "root";
+$password = "Root";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

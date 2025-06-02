@@ -1,4 +1,4 @@
-<?php 
+<?php
 // email.model.php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
@@ -43,7 +43,6 @@ class EmailModel
             } else {
                 return "Error: Respuesta inesperada de Mailgun → " . $response->getMessage();
             }
-
         } catch (HttpClientException $e) {
             return "Error HTTP al enviar correo: " . $e->getMessage();
         } catch (Exception $e) {

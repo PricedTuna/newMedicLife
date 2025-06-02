@@ -11,6 +11,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/patient/patient.model.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/emergency_contacts/emergency_contacts.model.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/email/email.controller.php';
 
 // Only administrators and secretaries can manage patients
 checkUserRole(['A', 'S']);
@@ -80,6 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $patientModel = new PatientModel($pdo);
         $patientModel->validateData($data, $patientId);
 
+        $emailController = new EmailController();
+
+        $name = $data['names'] . " " . $data['last_name'] . " " . $data['last_name2'];
+        $email = $data['email'];
 
 
         if ($patientId && $emergencyContactsId) {
@@ -88,16 +93,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $data['id_emergency_contact'] = $emergencyContactsId;
 
-            $patientModel->updatePatient($patientId, $data,$photoData);
+            $patientModel->updatePatient($patientId, $data, $photoData);
+
+            // Correo de confirmación para actualización
+            $subject = "Confirmación de Actualización de datos";
+            $message = "Hola $name,\n\nTu Actualización de datos en nuestro sistema de administración medica Medic Life a sido exitoso" . "\nGracias por tu preferencia.\n\nSaludos.";
+            $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
+
+            $result = $emailController->sendEmail($email, $subject, $message, $from);
 
             header('Location: /views/patient/list/list-patients.view.php?success=' . urlencode("Paciente actualizado con éxito"));
         } else {
             // Creación de un nuevo paciente
-            $newEmergencyContactsID= $emergencyContactsModel->createEmergencyContact($dataContact);
+            $newEmergencyContactsID = $emergencyContactsModel->createEmergencyContact($dataContact);
 
             $data['id_emergency_contact'] = $newEmergencyContactsID;
 
-            $newPatientId = $patientModel->createPatient($data,$photoData);
+            $newPatientId = $patientModel->createPatient($data, $photoData);
+            // Correo de confirmación para actualizacion
+            $subject = "Confirmación de Registro de datos";
+            $message = "Hola $name,\n\nTu Registro de datos en nuestro sistema de administración medica Medic Life a sido exitoso" . "\nGracias por tu preferencia.\n\nSaludos.";
+            $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
+
+            $result = $emailController->sendEmail($email, $subject, $message, $from);
 
             header('Location: /views/patient/list/list-patients.view.php?success=' . urlencode("Paciente creado con éxito"));
         }

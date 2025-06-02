@@ -93,7 +93,7 @@ class MedicalStoryController {
                 return $result;
             }
 
-            $this->emailModel->sendEmail($to, $subject, $text, $from);
+            $emailResult = $this->emailModel->sendEmail($to, $subject, $text, $from);
 
             if (strpos($emailResult, "Correo enviado correctamente") === 0) {
                 $result['emailSent'] = true;

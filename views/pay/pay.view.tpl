@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <script src="/views/components/sidebar.app.js" defer></script>
     <script src="pay.view.js" defer></script>
-    <title>Pago con PayPal | Medic Life</title>
+    <title>Pagos | Medic Life</title>
 </head>
 
 <body>

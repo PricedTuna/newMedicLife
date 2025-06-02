@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/views/user/profile/user-profile.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <title>Perfil de Doctor | Medic Life</title>
+    <title>Perfil de Doctor</title>
 </head>
 
 <body>

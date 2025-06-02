@@ -29,6 +29,8 @@ $doctorId = $isDoctor && isset($_SESSION['doctorId']) ? $_SESSION['doctorId'] : 
 $query = "SELECT
         d.id AS doctor_id,
         d.names AS doctor_name,
+        d.last_name AS last_name,
+        d.last_name2 AS last_name2,
         ma.id AS medical_area_id,
         ma.name AS medical_area_name
     FROM doctors d
@@ -59,7 +61,7 @@ $schedules = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
 // Obtener pacientes
 $patients = null;
-$stmt = $pdo->prepare("SELECT id, names, last_name, last_name2, CURP FROM patients");
+$stmt = $pdo->prepare("SELECT id, names, last_name, last_name2, CURP, email FROM patients");
 $stmt->execute();
 $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -77,10 +79,13 @@ if (isset($_GET['id'])) {
         ap.id_doctor as id_doctor,
         ap.id_medical_area AS id_medical_area,
         d.names as name_doctor,
+        d.last_name as doctor_last_name,
+        d.last_name2 as doctor_last_name2,
         p.names AS patient_name,
         p.last_name as last_name,
         p.last_name2 as last_name2,
         p.curp AS curp,
+        p.email AS patient_email,
         ma.name AS name_medical_area,
         ap.appointment_date
     FROM appointments ap

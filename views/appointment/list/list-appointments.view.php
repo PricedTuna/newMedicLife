@@ -29,6 +29,7 @@ $sql = "SELECT
     p.names AS patient_name,
     p.last_name AS last_name,
     p.last_name2 AS last_name2,
+    p.email AS patient_email,
     ma.name AS medical_area,
     d.names AS doctor_name,
     ap.appointment_date AS appointment_date,

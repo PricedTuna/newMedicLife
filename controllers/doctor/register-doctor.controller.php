@@ -10,6 +10,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/models/doctor/doctor.model.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/doctor/doctor-assignment.model.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/models/doctor/doctor-schedules.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/email/email.controller.php';
 
 // Only administrators and secretaries can manage doctors
 checkUserRole(['A', 'S']);
@@ -63,9 +64,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $doctorModel = new DoctorModel($pdo);
         $doctorModel->validateData($data, $doctorId);
 
+        $emailController = new EmailController();
+
+        $name = $data['names'] . " " . $data['last_name'] . " " . $data['last_name2'];
+        $email = $data['email'];
+
         if ($doctorId) {
             // Actualización del doctor
             $doctorModel->updateDoctor($doctorId, $data, $photoData, $updatePhoto);
+
+            // Correo de confirmación para actualización
+            $subject = "Confirmación de Actualización de datos";
+            $message = "Hola $name,\n\nTu Actualización de datos en nuestro sistema de administración medica Medic Life a sido exitoso" . "\nGracias por tu preferencia.\n\nSaludos.";
+            $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
+
+            $result = $emailController->sendEmail($email, $subject, $message, $from);
 
             // Guardar horarios (si se envían)
             if (!empty($_POST['schedule']) && is_array($_POST['schedule'])) {
@@ -93,6 +106,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Asignación del doctor al área médica
             $assignmentModel = new DoctorAssignmentModel($pdo);
             $assignmentModel->assignMedicalArea($newDoctorId, $data['medical_area']);
+
+            $subject = "Confirmación de Registro de datos";
+            $message = "Hola $name,\n\nTu Registro de datos en nuestro sistema de administración medica Medic Life a sido exitoso" . "\nGracias por tu preferencia.\n\nSaludos.";
+            $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
+
+            $result = $emailController->sendEmail($email, $subject, $message, $from);
 
             // Guardar horarios (si se envían)
             if (!empty($_POST['schedule']) && is_array($_POST['schedule'])) {

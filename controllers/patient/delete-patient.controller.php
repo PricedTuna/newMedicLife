@@ -21,18 +21,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $patient_name = $_POST['patient_names'];
         $email        = $_POST['patient_email'];
 
+
         try {
-            $stmt = $pdo->prepare("UPDATE patients SET status = 'I' WHERE id = :patient_id");
-            $stmt->execute([':patient_id' => $patient_id]);
 
-            $subject = "Aviso de desactivación Medic Life";
-            $message = "Hola $patient_name,\n\nTe informamos que tu estado en nuestro sistema Medic Life a sido desactivado, no podrás hacer uso de nuestros servicios" . "\nEn caso de ayuda favor de contactar a un miembro de nuestro equipo.\n\nSaludos.";
-            $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
+            // Comprobación de si el usuario cuenta con citas pendientes
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM appointments WHERE id_patient = :id_patient AND (status = 'A' OR status = 'T')");
+            $stmt->execute([
+                'id_patient' => $patient_id
+            ]);
+            $citasPendientes = $stmt->fetchColumn();
 
-            $result = $emailController->sendEmail($email, $subject, $message, $from);
+            if ($citasPendientes == 0) {
+                $stmt = $pdo->prepare("UPDATE patients SET status = 'I' WHERE id = :patient_id");
+                $stmt->execute([':patient_id' => $patient_id]);
+
+                $subject = "Aviso de desactivación Medic Life";
+                $message = "Hola $patient_name,\n\nTe informamos que tu estado en nuestro sistema Medic Life a sido desactivado, no podrás hacer uso de nuestros servicios" . "\nEn caso de ayuda favor de contactar a un miembro de nuestro equipo.\n\nSaludos.";
+                $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
+
+                $result = $emailController->sendEmail($email, $subject, $message, $from);
 
 
-            header('Location: /views/patient/list/list-patients.view.php?success=' . urlencode("Paciente eliminado con éxito"));
+                header('Location: /views/patient/list/list-patients.view.php?success=' . urlencode("Paciente eliminado con éxito"));
+            } else {
+                // Tiene citas activas, no se puede eliminar
+                header('Location: /views/patient/list/list-patients.view.php?error=' . urlencode("El Paciente cuenta con citas, No se puede eliminar"));
+            }
         } catch (Exception $e) {
             echo var_dump($e);
             exit;

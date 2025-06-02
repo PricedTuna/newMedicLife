@@ -72,3 +72,4 @@ Error al eliminar: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot 
 {"doctor_id":"10"}
 {"doctor_id":"13"}
 {"doctor_id":"21","doctor_names":"Hugo Aguilera L\u00f3pez","doctor_email":"angelvirgo2000@gmail.com"}
+{"doctor_id":"11","doctor_names":"Jorge L\u00f3pez  P\u00e9rez De La Madrid","doctor_email":"MAIL@MAIL.COM"}

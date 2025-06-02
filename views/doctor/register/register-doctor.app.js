@@ -15,34 +15,32 @@ let currentStep = 3; // Guarda el paso actual del formulario
  * @param {number} step - Número del paso a mostrar.
  */
 function showStep(step) {
+  const stepElement = document.getElementById(`step-${step}`);
+  if (!stepElement) {
+    console.error(`❌ Elemento con ID 'step-${step}' no encontrado.`);
+    return;
+  }
 
+  // Ocultar todos los pasos
+  document.querySelectorAll(".form-step").forEach((formStep) => {
+    formStep.style.display = "none";
+  });
 
-    const stepElement = document.getElementById(`step-${step}`);
-    if (!stepElement) {
-        console.error(`❌ Elemento con ID 'step-${step}' no encontrado.`);
-        return;
-    }
+  // Mostrar el paso actual
+  stepElement.style.display = "block";
 
-    // Ocultar todos los pasos
-    document.querySelectorAll('.form-step').forEach(formStep => {
-        formStep.style.display = 'none';
-    });
+  // Remover la clase activa de todos los indicadores
+  document
+    .querySelectorAll(".step")
+    .forEach((el) => el.classList.remove("step-active"));
 
-    // Mostrar el paso actual
-    stepElement.style.display = 'block';
-
-
-    // Remover la clase activa de todos los indicadores
-    document.querySelectorAll('.step').forEach(el => el.classList.remove('step-active'));
-
-    // Resaltar el indicador del paso actual
-    const activeIndicator = document.querySelector(`.step[data-step='${step}']`);
-    if (activeIndicator) {
-        activeIndicator.classList.add('step-active');
-
-    } else {
-        console.warn(`⚠️ No se encontró el paso con data-step='${step}'`);
-    }
+  // Resaltar el indicador del paso actual
+  const activeIndicator = document.querySelector(`.step[data-step='${step}']`);
+  if (activeIndicator) {
+    activeIndicator.classList.add("step-active");
+  } else {
+    console.warn(`⚠️ No se encontró el paso con data-step='${step}'`);
+  }
 }
 
 /**
@@ -51,8 +49,8 @@ function showStep(step) {
  * @param {number} step - Número del paso al que se desea regresar.
  */
 function prevStep(step) {
-    currentStep = step;
-    showStep(currentStep);
+  currentStep = step;
+  showStep(currentStep);
 }
 
 // ===========================
@@ -66,15 +64,15 @@ function prevStep(step) {
  * @param {string} message - Mensaje de error a mostrar.
  */
 function showErrorMessage(input, message) {
-    let errorElement = input.nextElementSibling;
-    if (!errorElement || !errorElement.classList.contains('error-message')) {
-        errorElement = document.createElement('span');
-        errorElement.classList.add('error-message');
-        errorElement.style.color = 'red';
-        input.parentNode.appendChild(errorElement);
-    }
-    errorElement.textContent = message;
-    input.style.border = '2px solid red';
+  let errorElement = input.nextElementSibling;
+  if (!errorElement || !errorElement.classList.contains("error-message")) {
+    errorElement = document.createElement("span");
+    errorElement.classList.add("error-message");
+    errorElement.style.color = "red";
+    input.parentNode.appendChild(errorElement);
+  }
+  errorElement.textContent = message;
+  input.style.border = "2px solid red";
 }
 
 /**
@@ -83,11 +81,11 @@ function showErrorMessage(input, message) {
  * @param {HTMLElement} input - Elemento input del cual se elimina el error.
  */
 function clearErrorMessage(input) {
-    let errorElement = input.nextElementSibling;
-    if (errorElement && errorElement.classList.contains('error-message')) {
-        errorElement.remove();
-    }
-    input.style.border = '2px solid var(--line-clr)';
+  let errorElement = input.nextElementSibling;
+  if (errorElement && errorElement.classList.contains("error-message")) {
+    errorElement.remove();
+  }
+  input.style.border = "2px solid var(--line-clr)";
 }
 
 // ===========================
@@ -103,21 +101,28 @@ function clearErrorMessage(input) {
  * @param {Function} [skipCondition] - Función opcional para determinar si se debe omitir la validación de un input.
  * @returns {boolean} Verdadero si todos los inputs son válidos.
  */
-function validateTextInputs(containerId, pattern, errorMsgCallback, skipCondition) {
-    let valid = true;
-    document.querySelectorAll(`#${containerId} input[type='text']`).forEach(input => {
-        if (skipCondition && skipCondition(input)) {
-            clearErrorMessage(input);
-            return;
-        }
-        if (!pattern.test(input.value.trim())) {
-            showErrorMessage(input, errorMsgCallback());
-            valid = false;
-        } else {
-            clearErrorMessage(input);
-        }
+function validateTextInputs(
+  containerId,
+  pattern,
+  errorMsgCallback,
+  skipCondition
+) {
+  let valid = true;
+  document
+    .querySelectorAll(`#${containerId} input[type='text']`)
+    .forEach((input) => {
+      if (skipCondition && skipCondition(input)) {
+        clearErrorMessage(input);
+        return;
+      }
+      if (!pattern.test(input.value.trim())) {
+        showErrorMessage(input, errorMsgCallback());
+        valid = false;
+      } else {
+        clearErrorMessage(input);
+      }
     });
-    return valid;
+  return valid;
 }
 
 // ===========================
@@ -130,57 +135,65 @@ function validateTextInputs(containerId, pattern, errorMsgCallback, skipConditio
  * @returns {boolean} Verdadero si la validación es exitosa.
  */
 function validateStep1() {
-    let valid = true;
+  let valid = true;
 
-    // Validar nombres y apellidos: solo letras y espacios.
-    const namePattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-    valid = validateTextInputs('step-1', namePattern, () => 'Solo se permiten letras y espacios.') && valid;
+  // Validar nombres y apellidos: solo letras y espacios.
+  const namePattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+  valid =
+    validateTextInputs(
+      "step-1",
+      namePattern,
+      () => "Solo se permiten letras y espacios."
+    ) && valid;
 
-    // Validar número telefónico: exactamente 10 dígitos.
-    const phoneInput = document.getElementById('phoneNumber');
-    if (!/^\d{10}$/.test(phoneInput.value.trim())) {
-        showErrorMessage(phoneInput, 'El número debe tener 10 dígitos.');
-        valid = false;
+  // Validar número telefónico: exactamente 10 dígitos.
+  const phoneInput = document.getElementById("phoneNumber");
+  if (!/^\d{10}$/.test(phoneInput.value.trim())) {
+    showErrorMessage(phoneInput, "El número debe tener 10 dígitos.");
+    valid = false;
+  } else {
+    clearErrorMessage(phoneInput);
+  }
+
+  // Validar correo electrónico.
+  const emailInput = document.getElementById("email");
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailPattern.test(emailInput.value.trim())) {
+    showErrorMessage(emailInput, "Correo electrónico no válido.");
+    valid = false;
+  } else {
+    clearErrorMessage(emailInput);
+  }
+
+  // Validar selección de género.
+  const genderSelect = document.getElementById("gender");
+  if (genderSelect.value === "") {
+    showErrorMessage(genderSelect, "Debe seleccionar un género.");
+    valid = false;
+  } else {
+    clearErrorMessage(genderSelect);
+  }
+
+  // Validar fecha de nacimiento: no vacía y debe ser en el pasado.
+  const birthDateInput = document.getElementById("birthDate");
+  if (!birthDateInput.value) {
+    showErrorMessage(
+      birthDateInput,
+      "Debe seleccionar una fecha de nacimiento."
+    );
+    valid = false;
+  } else {
+    const birthDate = new Date(birthDateInput.value);
+    const today = new Date();
+    if (birthDate >= today) {
+      showErrorMessage(birthDateInput, "Debe ser una fecha pasada.");
+      valid = false;
     } else {
-        clearErrorMessage(phoneInput);
+      clearErrorMessage(birthDateInput);
     }
+  }
 
-    // Validar correo electrónico.
-    const emailInput = document.getElementById('email');
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(emailInput.value.trim())) {
-        showErrorMessage(emailInput, 'Correo electrónico no válido.');
-        valid = false;
-    } else {
-        clearErrorMessage(emailInput);
-    }
-
-    // Validar selección de género.
-    const genderSelect = document.getElementById('gender');
-    if (genderSelect.value === '') {
-        showErrorMessage(genderSelect, 'Debe seleccionar un género.');
-        valid = false;
-    } else {
-        clearErrorMessage(genderSelect);
-    }
-
-    // Validar fecha de nacimiento: no vacía y debe ser en el pasado.
-    const birthDateInput = document.getElementById('birthDate');
-    if (!birthDateInput.value) {
-        showErrorMessage(birthDateInput, 'Debe seleccionar una fecha de nacimiento.');
-        valid = false;
-    } else {
-        const birthDate = new Date(birthDateInput.value);
-        const today = new Date();
-        if (birthDate >= today) {
-            showErrorMessage(birthDateInput, 'Debe ser una fecha pasada.');
-            valid = false;
-        } else {
-            clearErrorMessage(birthDateInput);
-        }
-    }
-
-    return valid;
+  return valid;
 }
 
 /**
@@ -189,27 +202,28 @@ function validateStep1() {
  * @returns {boolean} Verdadero si la validación es exitosa.
  */
 function validateStep2() {
-    let valid = true;
+  let valid = true;
 
-    // Validar campos de dirección: solo letras, números y espacios.
-    const pattern = /^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ\s]+$/;
-    valid = validateTextInputs(
-        'step-2',
-        pattern,
-        () => 'Solo se permiten letras, números y espacios.',
-        input => input.id === 'intNumber' && input.value.trim() === '' // Salta validación para "Número Interior" si está vacío
+  // Validar campos de dirección: solo letras, números y espacios.
+  const pattern = /^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ\s]+$/;
+  valid =
+    validateTextInputs(
+      "step-2",
+      pattern,
+      () => "Solo se permiten letras, números y espacios.",
+      (input) => input.id === "intNumber" && input.value.trim() === "" // Salta validación para "Número Interior" si está vacío
     ) && valid;
 
-    // Validar Código Postal: exactamente 5 dígitos numéricos.
-    const postalCodeInput = document.getElementById('postalCode');
-    if (!/^\d{5}$/.test(postalCodeInput.value.trim())) {
-        showErrorMessage(postalCodeInput, 'El código postal debe tener 5 dígitos.');
-        valid = false;
-    } else {
-        clearErrorMessage(postalCodeInput);
-    }
+  // Validar Código Postal: exactamente 5 dígitos numéricos.
+  const postalCodeInput = document.getElementById("postalCode");
+  if (!/^\d{5}$/.test(postalCodeInput.value.trim())) {
+    showErrorMessage(postalCodeInput, "El código postal debe tener 5 dígitos.");
+    valid = false;
+  } else {
+    clearErrorMessage(postalCodeInput);
+  }
 
-    return valid;
+  return valid;
 }
 
 /**
@@ -218,71 +232,88 @@ function validateStep2() {
  * @returns {boolean} Verdadero si la validación es exitosa.
  */
 function validateStep3() {
-    let valid = true;
+  let valid = true;
 
+  // Validar CURP: debe tener 18 caracteres y formato oficial.
+  const curpInput = document.getElementById("curp");
+  const curpPattern =
+    /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
+  const curp = curpInput.value.trim();
+  if (curp.length !== 18) {
+    showErrorMessage(
+      curpInput,
+      "La CURP debe tener exactamente 18 caracteres."
+    );
+    valid = false;
+  } else if (!curpPattern.test(curp)) {
+    showErrorMessage(curpInput, "CURP inválida. Revisa el formato.");
+    valid = false;
+  } else {
+    clearErrorMessage(curpInput);
+  }
 
-    // Validar CURP: debe tener 18 caracteres y formato oficial.
-    const curpInput = document.getElementById('curp');
-    const curpPattern = /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
-    const curp = curpInput.value.trim();
-    if (curp.length !== 18) {
-        showErrorMessage(curpInput, 'La CURP debe tener exactamente 18 caracteres.');
+  // Validar RFC: opcional, pero si se llena debe cumplir el formato.
+  const rfcInput = document.getElementById("rfc");
+  const rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
+  if (rfcInput.value.trim() !== "" && !rfcPattern.test(rfcInput.value.trim())) {
+    showErrorMessage(
+      rfcInput,
+      "RFC inválido. Debe tener entre 12 y 13 caracteres."
+    );
+    valid = false;
+  } else {
+    clearErrorMessage(rfcInput);
+  }
+
+  // Validar Número de Afiliación: opcional, solo alfanumérico.
+  const affiliationInput = document.getElementById("affiliationNumber");
+  const alphanumericPattern = /^[A-Za-z0-9]+$/;
+  if (
+    affiliationInput.value.trim() !== "" &&
+    !alphanumericPattern.test(affiliationInput.value.trim())
+  ) {
+    showErrorMessage(
+      affiliationInput,
+      "El número de afiliación solo puede contener letras y números."
+    );
+    valid = false;
+  } else {
+    clearErrorMessage(affiliationInput);
+  }
+
+  // Validar Cédula Profesional: opcional, solo alfanumérico.
+  const licenseInput = document.getElementById("professionalLicense");
+  if (
+    licenseInput.value.trim() !== "" &&
+    !alphanumericPattern.test(licenseInput.value.trim())
+  ) {
+    showErrorMessage(
+      licenseInput,
+      "La cédula profesional solo puede contener letras y números."
+    );
+    valid = false;
+  } else {
+    clearErrorMessage(licenseInput);
+  }
+
+  // Validar Foto: si es requerida, debe ser un archivo de imagen.
+  const photoInput = document.getElementById("photo");
+  if (photoInput) {
+    if (photoInput.hasAttribute("required") && photoInput.files.length === 0) {
+      showErrorMessage(photoInput, "Debe seleccionar una foto.");
+      valid = false;
+    } else if (photoInput.files.length > 0) {
+      const file = photoInput.files[0];
+      if (!file.type.startsWith("image/")) {
+        showErrorMessage(photoInput, "El archivo debe ser una imagen.");
         valid = false;
-    } else if (!curpPattern.test(curp)) {
-        showErrorMessage(curpInput, 'CURP inválida. Revisa el formato.');
-        valid = false;
-    } else {
-        clearErrorMessage(curpInput);
+      } else {
+        clearErrorMessage(photoInput);
+      }
     }
+  }
 
-    // Validar RFC: opcional, pero si se llena debe cumplir el formato.
-    const rfcInput = document.getElementById('rfc');
-    const rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
-    if (rfcInput.value.trim() !== '' && !rfcPattern.test(rfcInput.value.trim())) {
-        showErrorMessage(rfcInput, 'RFC inválido. Debe tener entre 12 y 13 caracteres.');
-        valid = false;
-    } else {
-        clearErrorMessage(rfcInput);
-    }
-
-    // Validar Número de Afiliación: opcional, solo alfanumérico.
-    const affiliationInput = document.getElementById('affiliationNumber');
-    const alphanumericPattern = /^[A-Za-z0-9]+$/;
-    if (affiliationInput.value.trim() !== '' && !alphanumericPattern.test(affiliationInput.value.trim())) {
-        showErrorMessage(affiliationInput, 'El número de afiliación solo puede contener letras y números.');
-        valid = false;
-    } else {
-        clearErrorMessage(affiliationInput);
-    }
-
-    // Validar Cédula Profesional: opcional, solo alfanumérico.
-    const licenseInput = document.getElementById('professionalLicense');
-    if (licenseInput.value.trim() !== '' && !alphanumericPattern.test(licenseInput.value.trim())) {
-        showErrorMessage(licenseInput, 'La cédula profesional solo puede contener letras y números.');
-        valid = false;
-    } else {
-        clearErrorMessage(licenseInput);
-    }
-
-    // Validar Foto: si es requerida, debe ser un archivo de imagen.
-    const photoInput = document.getElementById('photo');
-    if (photoInput) {
-        if (photoInput.hasAttribute('required') && photoInput.files.length === 0) {
-            showErrorMessage(photoInput, 'Debe seleccionar una foto.');
-            valid = false;
-        } else if (photoInput.files.length > 0) {
-            const file = photoInput.files[0];
-            if (!file.type.startsWith('image/')) {
-                showErrorMessage(photoInput, 'El archivo debe ser una imagen.');
-                valid = false;
-            } else {
-                clearErrorMessage(photoInput);
-            }
-        }
-    }
-
-
-    return valid;
+  return valid;
 }
 
 // ===========================
@@ -294,170 +325,184 @@ function validateStep3() {
  *
  * @param {number} step - Número del siguiente paso.
  */
-window.nextStep = function(step) {
+window.nextStep = function (step) {
+  // Validar el paso actual antes de avanzar
+  if (currentStep === 1 && !validateStep1()) {
+    alert("⚠️ Corrige los errores antes de continuar.");
+    return;
+  }
+  if (currentStep === 2 && !validateStep2()) {
+    alert("⚠️ Corrige los errores antes de continuar.");
+    return;
+  }
+  if (currentStep === 3 && !validateStep3()) {
+    alert("⚠️ Corrige los errores antes de continuar.");
+    return;
+  }
 
-
-    // Validar el paso actual antes de avanzar
-    if (currentStep === 1 && !validateStep1()) {
-        alert('⚠️ Corrige los errores antes de continuar.');
-        return;
-    }
-    if (currentStep === 2 && !validateStep2()) {
-        alert('⚠️ Corrige los errores antes de continuar.');
-        return;
-    }
-    if (currentStep === 3 && !validateStep3()) {
-        alert('⚠️ Corrige los errores antes de continuar.');
-        return;
-    }
-
-
-    currentStep = step;
-    showStep(currentStep);
+  currentStep = step;
+  showStep(currentStep);
 };
 
 // ===========================
 // Inicialización al Cargar el DOM
 // ===========================
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Capitaliza los nombres al perder el foco
-    ['firstName', 'lastName', 'motherLastName'].forEach(id => {
-        const input = document.getElementById(id);
-        if (input) {
-            input.addEventListener('blur', () => {
-                input.value = input.value
-                    .toLowerCase()
-                    .split(" ")
-                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ");
-            });
-        }
-    });
-
-    // Añadir validación onBlur para los campos del paso 1
-    document.querySelectorAll('#step-1 input, #step-1 select').forEach(input => {
-        input.addEventListener('blur', () => {
-            // Validar el campo específico que perdió el foco
-            if (input.id === 'phoneNumber') {
-                if (!/^\d{10}$/.test(input.value.trim())) {
-                    showErrorMessage(input, 'El número debe tener 10 dígitos.');
-                } else {
-                    clearErrorMessage(input);
-                }
-            } else if (input.id === 'email') {
-                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                if (!emailPattern.test(input.value.trim())) {
-                    showErrorMessage(input, 'Correo electrónico no válido.');
-                } else {
-                    clearErrorMessage(input);
-                }
-            } else if (input.id === 'gender') {
-                if (input.value === '') {
-                    showErrorMessage(input, 'Debe seleccionar un género.');
-                } else {
-                    clearErrorMessage(input);
-                }
-            } else if (input.id === 'birthDate') {
-                if (!input.value) {
-                    showErrorMessage(input, 'Debe seleccionar una fecha de nacimiento.');
-                } else {
-                    const birthDate = new Date(input.value);
-                    const today = new Date();
-                    if (birthDate >= today) {
-                        showErrorMessage(input, 'Debe ser una fecha pasada.');
-                    } else {
-                        clearErrorMessage(input);
-                    }
-                }
-            } else if (input.type === 'text') {
-                // Para otros campos de texto (nombres, etc.)
-                const namePattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-                if (!namePattern.test(input.value.trim())) {
-                    showErrorMessage(input, 'Solo se permiten letras y espacios.');
-                } else {
-                    clearErrorMessage(input);
-                }
-            }
-        });
-    });
-
-    // Añadir validación onBlur para los campos del paso 2
-    document.querySelectorAll('#step-2 input').forEach(input => {
-        input.addEventListener('blur', () => {
-            if (input.id === 'postalCode') {
-                if (!/^\d{5}$/.test(input.value.trim())) {
-                    showErrorMessage(input, 'El código postal debe tener 5 dígitos.');
-                } else {
-                    clearErrorMessage(input);
-                }
-            } else if (input.id !== 'intNumber' || input.value.trim() !== '') {
-                // Para otros campos de dirección, excepto número interior vacío
-                const pattern = /^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ\s]+$/;
-                if (!pattern.test(input.value.trim())) {
-                    showErrorMessage(input, 'Solo se permiten letras, números y espacios.');
-                } else {
-                    clearErrorMessage(input);
-                }
-            }
-        });
-    });
-
-    // Añadir validación onBlur para los campos del paso 3
-    document.querySelectorAll('#step-3 input').forEach(input => {
-        input.addEventListener('blur', () => {
-            if (input.id === 'curp') {
-                const curpPattern = /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
-                const curp = input.value.trim();
-                if (curp.length !== 18) {
-                    showErrorMessage(input, 'La CURP debe tener exactamente 18 caracteres.');
-                } else if (!curpPattern.test(curp)) {
-                    showErrorMessage(input, 'CURP inválida. Revisa el formato.');
-                } else {
-                    clearErrorMessage(input);
-                }
-            } else if (input.id === 'rfc' && input.value.trim() !== '') {
-                const rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
-                if (!rfcPattern.test(input.value.trim())) {
-                    showErrorMessage(input, 'RFC inválido. Debe tener entre 12 y 13 caracteres.');
-                } else {
-                    clearErrorMessage(input);
-                }
-            } else if ((input.id === 'affiliationNumber' || input.id === 'professionalLicense') && input.value.trim() !== '') {
-                const alphanumericPattern = /^[A-Za-z0-9]+$/;
-                if (!alphanumericPattern.test(input.value.trim())) {
-                    showErrorMessage(input, 'Solo puede contener letras y números.');
-                } else {
-                    clearErrorMessage(input);
-                }
-            } else if (input.id === 'photo' && input.files.length > 0) {
-                const file = input.files[0];
-                if (!file.type.startsWith('image/')) {
-                    showErrorMessage(input, 'El archivo debe ser una imagen.');
-                } else {
-                    clearErrorMessage(input);
-                }
-            }
-        });
-
-        
-    });
-
-    
-
-    // Inicializar formulario y validar al enviar
-    const doctorForm = document.getElementById('doctor-form');
-    if (doctorForm) {
-        showStep(currentStep);
-
-        doctorForm.addEventListener('submit', (event) => {
-
-            if (!validateStep1() || !validateStep2() || !validateStep3()) {
-                event.preventDefault();
-                alert('Por favor, completa todos los campos antes de enviar.');
-            }
-        });
-    } else {
-        console.error("Formulario 'doctor-form' no encontrado en el DOM.");
+document.addEventListener("DOMContentLoaded", () => {
+  // Capitaliza los nombres al perder el foco
+  ["firstName", "lastName", "motherLastName"].forEach((id) => {
+    const input = document.getElementById(id);
+    if (input) {
+      input.addEventListener("blur", () => {
+        input.value = input.value
+          .toLowerCase()
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+      });
     }
+  });
+
+  // Añadir validación onBlur para los campos del paso 1
+  document
+    .querySelectorAll("#step-1 input, #step-1 select")
+    .forEach((input) => {
+      input.addEventListener("blur", () => {
+        // Validar el campo específico que perdió el foco
+        if (input.id === "phoneNumber") {
+          if (!/^\d{10}$/.test(input.value.trim())) {
+            showErrorMessage(input, "El número debe tener 10 dígitos.");
+          } else {
+            clearErrorMessage(input);
+          }
+        } else if (input.id === "email") {
+          const emailPattern =
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+          if (!emailPattern.test(input.value.trim())) {
+            showErrorMessage(input, "Correo electrónico no válido.");
+          } else {
+            clearErrorMessage(input);
+          }
+        } else if (input.id === "gender") {
+          if (input.value === "") {
+            showErrorMessage(input, "Debe seleccionar un género.");
+          } else {
+            clearErrorMessage(input);
+          }
+        } else if (input.id === "birthDate") {
+          if (!input.value) {
+            showErrorMessage(
+              input,
+              "Debe seleccionar una fecha de nacimiento."
+            );
+          } else {
+            const birthDate = new Date(input.value);
+            const today = new Date();
+            if (birthDate >= today) {
+              showErrorMessage(input, "Debe ser una fecha pasada.");
+            } else {
+              clearErrorMessage(input);
+            }
+          }
+        } else if (input.type === "text") {
+          // Para otros campos de texto (nombres, etc.)
+          const namePattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+          if (!namePattern.test(input.value.trim())) {
+            showErrorMessage(input, "Solo se permiten letras y espacios.");
+          } else {
+            clearErrorMessage(input);
+          }
+        }
+      });
+    });
+
+  // Añadir validación onBlur para los campos del paso 2
+  document.querySelectorAll("#step-2 input").forEach((input) => {
+    input.addEventListener("blur", () => {
+      if (input.id === "postalCode") {
+        if (!/^\d{5}$/.test(input.value.trim())) {
+          showErrorMessage(input, "El código postal debe tener 5 dígitos.");
+        } else {
+          clearErrorMessage(input);
+        }
+      } else if (input.id !== "intNumber" || input.value.trim() !== "") {
+        // Para otros campos de dirección, excepto número interior vacío
+        const pattern = /^[A-Za-z0-9ÁÉÍÓÚáéíóúÑñ\s]+$/;
+        if (!pattern.test(input.value.trim())) {
+          showErrorMessage(
+            input,
+            "Solo se permiten letras, números y espacios."
+          );
+        } else {
+          clearErrorMessage(input);
+        }
+      }
+    });
+  });
+
+  // Añadir validación onBlur para los campos del paso 3
+  document.querySelectorAll("#step-3 input").forEach((input) => {
+    input.addEventListener("blur", () => {
+      if (input.id === "curp") {
+        const curpPattern =
+          /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
+        const curp = input.value.trim();
+        if (curp.length !== 18) {
+          showErrorMessage(
+            input,
+            "La CURP debe tener exactamente 18 caracteres."
+          );
+        } else if (!curpPattern.test(curp)) {
+          showErrorMessage(input, "CURP inválida. Revisa el formato.");
+        } else {
+          clearErrorMessage(input);
+        }
+      } else if (input.id === "rfc" && input.value.trim() !== "") {
+        const rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
+        if (!rfcPattern.test(input.value.trim())) {
+          showErrorMessage(
+            input,
+            "RFC inválido. Debe tener entre 12 y 13 caracteres."
+          );
+        } else {
+          clearErrorMessage(input);
+        }
+      } else if (
+        (input.id === "affiliationNumber" ||
+          input.id === "professionalLicense") &&
+        input.value.trim() !== ""
+      ) {
+        const alphanumericPattern = /^[A-Za-z0-9]+$/;
+        if (!alphanumericPattern.test(input.value.trim())) {
+          showErrorMessage(input, "Solo puede contener letras y números.");
+        } else {
+          clearErrorMessage(input);
+        }
+      } else if (input.id === "photo" && input.files.length > 0) {
+        const file = input.files[0];
+        if (!file.type.startsWith("image/")) {
+          showErrorMessage(input, "El archivo debe ser una imagen.");
+        } else {
+          clearErrorMessage(input);
+        }
+      }
+    });
+  });
+
+  
+
+  // Inicializar formulario y validar al enviar
+  const doctorForm = document.getElementById("doctor-form");
+  if (doctorForm) {
+    showStep(currentStep);
+
+    doctorForm.addEventListener("submit", (event) => {
+      if (!validateStep1() || !validateStep2() || !validateStep3()) {
+        event.preventDefault();
+        alert("Por favor, completa todos los campos antes de enviar.");
+      }
+    });
+  } else {
+    console.error("Formulario 'doctor-form' no encontrado en el DOM.");
+  }
 });

@@ -83,21 +83,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Guardar horarios (si se envían)
             if (!empty($_POST['schedule']) && is_array($_POST['schedule'])) {
                 $scheduleModel = new MedicalScheduleModel($pdo);
+                $validDays = []; // Aquí se almacenan los días válidos que se conservarán
 
                 foreach ($_POST['schedule'] as $day => $times) {
                     $startTime = $times['start_time'] ?? null;
                     $endTime = $times['end_time'] ?? null;
+                    $isActive = isset($times['active']); // Verifica si el checkbox fue marcado
 
-                    if (empty($startTime) || empty($endTime)) {
-                        // Opcional: borrar horario si los campos están vacíos
-                        $scheduleModel->deleteSchedule($doctorId, $day);
-                        continue;
+                    if ($isActive && !empty($startTime) && !empty($endTime)) {
+                        $scheduleModel->saveOrUpdateSchedule($doctorId, $day, $startTime, $endTime);
+                        $validDays[] = $day;
+                    } else {
+                        // Si no es válido, no lo añadimos a $validDays
+                        // Pero no borramos aquí todavía
                     }
-
-                    // Guardar o actualizar horario
-                    $scheduleModel->saveOrUpdateSchedule($doctorId, $day, $startTime, $endTime);
                 }
+
+                // Borrar horarios que ya no están activos
+                $scheduleModel->deleteMissingSchedules($doctorId, $validDays);
             }
+
             header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor actualizado con éxito"));
         } else {
             // Creación de un nuevo doctor

@@ -56,14 +56,6 @@
                     </select>
                 </div>
 
-                {if isset($success)}
-                    <div
-                        style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
-                        {$success|escape}
-                    </div>
-                {/if}
-
-
             </header>
             {* <section class="stats">
                 <div class="card">

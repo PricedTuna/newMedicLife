@@ -3,6 +3,7 @@
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/models/appointments/appointment.model.php';
 
 // Only administrators and secretaries can delete doctors
 checkUserRole(['A', 'S']);
@@ -17,6 +18,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $doctor_id = $_POST['doctor_id'];
 
         try {
+            global $pdo;
+
+            // Verificar si el doctor tiene citas pendientes
+            $appointmentModel = new AppointmentModel($pdo);
+            if ($appointmentModel->hasDoctorPendingAppointments($doctor_id)) {
+                header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("El doctor que intentaste eliminar tiene citas sin terminar asignadas, elimínalas o termínalas para poder eliminarlo"));
+                exit;
+            }
+
             // Verificar existencia del doctor
             $stmt = $pdo->prepare("SELECT id FROM doctors WHERE id = :doctor_id");
             $stmt->execute([':doctor_id' => $doctor_id]);

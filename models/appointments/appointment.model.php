@@ -59,4 +59,36 @@ class AppointmentModel
 
         return $this->pdo->lastInsertId();
     }
+
+    /**
+     * Verifica si un paciente tiene citas pendientes.
+     * @param int $patientId ID del paciente.
+     * @return bool True si el paciente tiene citas pendientes, false en caso contrario.
+     */
+    public function hasPatientPendingAppointments($patientId)
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM appointments 
+                                     WHERE id_patient = :patient_id 
+                                     AND status = 'A' 
+                                     AND appointment_date >= CURRENT_DATE()");
+        $stmt->execute([':patient_id' => $patientId]);
+
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Verifica si un doctor tiene citas pendientes.
+     * @param int $doctorId ID del doctor.
+     * @return bool True si el doctor tiene citas pendientes, false en caso contrario.
+     */
+    public function hasDoctorPendingAppointments($doctorId)
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM appointments 
+                                     WHERE id_doctor = :doctor_id 
+                                     AND status = 'A' 
+                                     AND appointment_date >= CURRENT_DATE()");
+        $stmt->execute([':doctor_id' => $doctorId]);
+
+        return $stmt->fetchColumn() > 0;
+    }
 }

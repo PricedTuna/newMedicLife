@@ -3,6 +3,7 @@
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/utils.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/models/appointments/appointment.model.php';
 
 // Only administrators and secretaries can delete patients
 checkUserRole(['A', 'S']);
@@ -17,6 +18,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $patient_id = $_POST['patient_id'];
 
         try {
+            // Verificar si el paciente tiene citas pendientes
+            global $pdo;
+            $appointmentModel = new AppointmentModel($pdo);
+            if ($appointmentModel->hasPatientPendingAppointments($patient_id)) {
+                header('Location: /views/patient/list/list-patients.view.php?error=' . urlencode("No se puede eliminar el paciente porque tiene citas pendientes. Cancele las citas primero."));
+                exit;
+            }
+
+            // Si no tiene citas pendientes, proceder con la eliminación
             $stmt = $pdo->prepare("UPDATE patients SET status = 'I' WHERE id = :patient_id");
             $stmt->execute([':patient_id' => $patient_id]);
 

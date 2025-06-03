@@ -124,6 +124,7 @@ try {
 
     $patient = null;
     $history = [];
+    $appointments = [];
 
     // Si se proporciona record_id, obtener un solo registro
     if (isset($_GET['record_id']) && is_numeric($_GET['record_id'])) {
@@ -150,6 +151,9 @@ try {
 
         // Usar solo este registro para el historial
         $history = [$record];
+
+        // Obtener todas las citas del paciente
+        $appointments = $medicalHistoryModel->getAllPatientAppointments($patientId);
     } 
     // Si se proporciona patient_id, obtener todo el historial
     else if (isset($_GET['patient_id']) && is_numeric($_GET['patient_id'])) {
@@ -168,6 +172,9 @@ try {
 
         // Obtener historial médico del paciente
         $history = $medicalHistoryModel->getPatientHistory($patientId);
+
+        // Obtener todas las citas del paciente
+        $appointments = $medicalHistoryModel->getAllPatientAppointments($patientId);
     }
 
     // Generar HTML para el PDF
@@ -286,8 +293,6 @@ try {
                     <div class="record-date">' . htmlspecialchars($record['record_date']) . '</div>
                 </div>
                 <div class="record-content">
-                    <p><strong>Doctor:</strong> ' . htmlspecialchars($record['doctor_names'] . ' ' . $record['doctor_last_name'] . ' ' . $record['doctor_last_name2']) . '</p>
-
                     ' . (!empty($record['chief_complaint']) ? '<p><strong>Motivo de Consulta:</strong> ' . nl2br(htmlspecialchars($record['chief_complaint'])) . '</p>' : '') . '
                     ' . (!empty($record['current_illness']) ? '<p><strong>Enfermedad Actual:</strong> ' . nl2br(htmlspecialchars($record['current_illness'])) . '</p>' : '') . '
                     ' . (!empty($record['personal_history']) ? '<p><strong>Antecedentes Personales:</strong> ' . nl2br(htmlspecialchars($record['personal_history'])) . '</p>' : '') . '
@@ -302,6 +307,63 @@ try {
                 </div>
             </div>';
         }
+    }
+
+    // Agregar sección de citas
+    $html .= '<h2>Historial de Citas</h2>';
+
+    if (empty($appointments)) {
+        $html .= '<p>No hay citas registradas para este paciente.</p>';
+    } else {
+        $html .= '
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Doctor</th>
+                    <th>Estado</th>
+                    <th>Notas</th>
+                </tr>
+            </thead>
+            <tbody>';
+
+        foreach ($appointments as $appointment) {
+            // Formatear el estado de la cita
+            $status = '';
+            if (isset($appointment['status'])) {
+                switch ($appointment['status']) {
+                    case 'A':
+                        $status = 'Activo';
+                        break;
+                    case 'F':
+                        $status = 'Finalizado';
+                        break;
+                    case 'T':
+                        $status = 'Terminado';
+                        break;
+                    case 'C':
+                        $status = 'Cancelado';
+                        break;
+                    case 'X':
+                        $status = 'Cancelado';
+                        break;
+                    default:
+                        $status = $appointment['status'];
+                }
+            }
+
+            $html .= '
+                <tr>
+                    <td>' . (isset($appointment['appointment_date']) ? htmlspecialchars($appointment['appointment_date']) : 'N/A') . '</td>
+                    <td>' . (isset($appointment['doctor_names']) ? htmlspecialchars($appointment['doctor_names'] . ' ' . $appointment['doctor_last_name'] . ' ' . $appointment['doctor_last_name2']) : 'N/A') . '</td>
+                    <td>' . htmlspecialchars($status) . '</td>
+                    <td>' . (isset($appointment['notes']) && !empty($appointment['notes']) ? htmlspecialchars($appointment['notes']) : '-') . '</td>
+                </tr>';
+        }
+
+        $html .= '
+            </tbody>
+        </table>';
     }
 
     $html .= '

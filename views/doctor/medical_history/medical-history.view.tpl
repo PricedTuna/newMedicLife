@@ -13,9 +13,8 @@
     <script src="/views/doctor/medical_history/medical-history.app.js" defer></script>
     <script>
         // Pass PHP data to JavaScript
-        window.doctors = {$doctors|json_encode};
-        window.medical_areas = {$medical_areas|json_encode};
         window.isDoctor = {$isDoctor|json_encode};
+        window.doctorId = {$doctorId|json_encode};
 
         document.addEventListener('DOMContentLoaded', function() {
             {if isset($patient) && isset($patient.id)}
@@ -23,6 +22,8 @@
             window.currentPatientId = {$patient.id};
             console.log("Patient ID set from PHP:", window.currentPatientId);
             {/if}
+
+            console.log("Doctor ID set from PHP:", window.doctorId);
         });
     </script>
 </head>
@@ -95,46 +96,9 @@
                     </div>
                 </div>
 
-                <!-- Doctor selection outside of forms -->
-                <div class="doctor-selection" style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                    <h3>Selección de Médico</h3>
-                    <p class="help-text">Seleccione un médico para el historial o documento PDF</p>
-                    <div class="form-group">
-                        <label for="medical-area">Especialidad:</label>
-                        <select id="medical-area" name="medical-area">
-                            <option value="">Seleccione una especialidad (opcional)</option>
-                            {if isset($medical_areas) && $medical_areas|@count > 0}
-                                {foreach from=$medical_areas item=area}
-                                    <option value="{$area.id}">
-                                        {$area.name|escape}
-                                    </option>
-                                {/foreach}
-                            {/if}
-                        </select>
-                        <span class="error-message" id="medical-area-error"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="doctor-id">Médico: <span class="required">*</span></label>
-                        <select id="doctor-id" name="doctor-id">
-                            <option value="">Seleccione un médico</option>
-                            {if isset($doctors) && $doctors|@count > 0}
-                                {foreach from=$doctors item=doctor}
-                                    <option value="{$doctor.doctor_id}">
-                                        {$doctor.doctor_name|escape} {$doctor.last_name|escape} {$doctor.last_name2|escape}
-                                        {if isset($doctor.specialty) && $doctor.specialty} - {$doctor.specialty|escape}{/if}
-                                        {if isset($doctor.medical_area_name) && $doctor.medical_area_name} ({$doctor.medical_area_name|escape}){/if}
-                                    </option>
-                                {/foreach}
-                            {/if}
-                        </select>
-                        <span class="error-message" id="doctor-id-error"></span>
-                    </div>
-                </div>
 
                 <div class="history-actions">
                     <button id="new-record-btn" class="action-btn">Crear Historial</button>
-                    <button id="view-history-btn" class="action-btn">Ver Historial</button>
                     <button id="download-pdf-btn" class="action-btn">Descargar PDF</button>
                     <button id="upload-pdf-btn" class="action-btn">Subir PDF</button>
                 </div>
@@ -292,6 +256,81 @@
                         {/if}
                     </div>
                 </div>
+
+                <!-- Sección para mostrar citas anteriores -->
+                <div id="previous-appointments" class="previous-appointments">
+                    <h3>Citas Anteriores</h3>
+                    <div class="appointments-container">
+                        {if isset($patientAppointments) && $patientAppointments|@count > 0}
+                            <table class="appointments-table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th>Doctor</th>
+                                        <th>Estado</th>
+                                        <th>Notas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {foreach from=$patientAppointments item=appointment}
+                                        <tr>
+                                            <td>
+                                                {if isset($appointment.appointment_date)}
+                                                    {$appointment.appointment_date|date_format:"%d/%m/%Y"}
+                                                {else}
+                                                    N/A
+                                                {/if}
+                                            </td>
+                                            <td>
+                                                {if isset($appointment.appointment_time)}
+                                                    {$appointment.appointment_time|escape}
+                                                {else}
+                                                    N/A
+                                                {/if}
+                                            </td>
+                                            <td>
+                                                {if isset($appointment.doctor_names)}
+                                                    {$appointment.doctor_names|escape} {$appointment.doctor_last_name|escape} {$appointment.doctor_last_name2|escape}
+                                                {else}
+                                                    N/A
+                                                {/if}
+                                            </td>
+                                            <td>
+                                                {if isset($appointment.status)}
+                                                    {if $appointment.status == 'A'}
+                                                        <span class="status-active">Activa</span>
+                                                    {elseif $appointment.status == 'C'}
+                                                        <span class="status-completed">Completada</span>
+                                                    {elseif $appointment.status == 'X'}
+                                                        <span class="status-cancelled">Cancelada</span>
+                                                    {elseif $appointment.status == 'F'}
+                                                        <span class="status-completed">Finalizada</span>
+                                                    {elseif $appointment.status == 'T'}
+                                                        <span class="status-completed">Terminada</span>
+                                                    {else}
+                                                        {$appointment.status|escape}
+                                                    {/if}
+                                                {else}
+                                                    N/A
+                                                {/if}
+                                            </td>
+                                            <td>
+                                                {if isset($appointment.notes) && $appointment.notes}
+                                                    {$appointment.notes|escape}
+                                                {else}
+                                                    -
+                                                {/if}
+                                            </td>
+                                        </tr>
+                                    {/foreach}
+                                </tbody>
+                            </table>
+                        {else}
+                            <p>No hay citas registradas para este paciente.</p>
+                        {/if}
+                    </div>
+                </div>
             </section>
 
             <!-- Modal para nueva entrada de historial médico -->
@@ -311,24 +350,6 @@
                             <span class="error-message" id="record-date-error"></span>
                         </div>
 
-                        {if isset($patientAppointments) && $patientAppointments|@count > 0}
-                        <div class="form-group">
-                            <label for="appointment-select">Seleccionar Cita (opcional):</label>
-                            <select id="appointment-select" name="appointment-id">
-                                <option value="">Seleccione una cita</option>
-                                {foreach from=$patientAppointments item=appointment}
-                                    <option value="{$appointment.id}">
-                                        {if isset($appointment.appointment_date)}
-                                            {$appointment.appointment_date|date_format:"%d de %B de %Y"} 
-                                        {/if}
-                                        {if isset($appointment.medical_area)}
-                                            - {$appointment.medical_area|escape}
-                                        {/if}
-                                    </option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        {/if}
 
                         <div class="form-group">
                             <label for="chief-complaint">Motivo de Consulta: <span class="required">*</span></label>
@@ -385,6 +406,10 @@
                                     <input type="number" id="height" name="height" min="0" max="300">
                                 </div>
                                 <div class="vital-sign-item">
+                                    <label for="bmi">IMC (kg/m²):</label>
+                                    <input type="number" id="bmi" name="bmi" step="0.01" min="0" max="100">
+                                </div>
+                                <div class="vital-sign-item">
                                     <label for="oxygen-saturation">Saturación de Oxígeno (%):</label>
                                     <input type="number" id="oxygen-saturation" name="oxygen-saturation" min="0" max="100">
                                 </div>
@@ -405,6 +430,45 @@
                         <div class="form-group">
                             <label for="treatment-plan">Plan de Tratamiento:</label>
                             <textarea id="treatment-plan" name="treatment-plan" rows="3" placeholder="Describa el plan de tratamiento recomendado"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Prescripciones Médicas:</label>
+                            <div class="prescriptions-container">
+                                <div class="prescription-item">
+                                    <div class="prescription-row">
+                                        <div class="prescription-field">
+                                            <label for="medication-type">Tipo de Medicamento:</label>
+                                            <select id="medication-type" name="medication-type">
+                                                <option value="">Seleccione un tipo</option>
+                                                <!-- Will be populated via JavaScript -->
+                                            </select>
+                                        </div>
+                                        <div class="prescription-field">
+                                            <label for="medication">Medicamento:</label>
+                                            <select id="medication" name="medication">
+                                                <option value="">Seleccione un medicamento</option>
+                                                <!-- Will be populated via JavaScript based on selected type -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="prescription-row">
+                                        <div class="prescription-field">
+                                            <label for="medication-dose">Dosis:</label>
+                                            <input type="text" id="medication-dose" name="medication-dose" placeholder="Ej: 1 tableta">
+                                        </div>
+                                        <div class="prescription-field">
+                                            <label for="medication-frequency">Frecuencia:</label>
+                                            <input type="text" id="medication-frequency" name="medication-frequency" placeholder="Ej: Cada 8 horas">
+                                        </div>
+                                        <div class="prescription-field">
+                                            <label for="medication-duration">Duración:</label>
+                                            <input type="text" id="medication-duration" name="medication-duration" placeholder="Ej: 7 días">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" id="add-prescription-btn" class="add-btn">Agregar Medicamento</button>
+                            </div>
                         </div>
 
                         <div class="form-group">

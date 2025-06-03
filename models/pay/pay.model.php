@@ -1,19 +1,29 @@
  <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/utils.php';
 
+
+
+
     class PaymentModel
     {
         private $clientId;
         private $secret;
         private $baseUrl;
         private $pdo;
+        private $paypalReturnBaseUrl;
+
+
 
         public function __construct($pdo)
         {
             $this->pdo = $pdo;
-            $this->clientId = '';
-            $this->secret = '';
+            $this->clientId = 'Adlc27kvKviM2KXGbjAP-4jx9YX8rubKFn1v8bx_oYVa6A4S5JcvPWpd6tYoPcbVA8bau-CZF9IhpC5u';
+            $this->secret = 'EA9MDIc37gHd0QRS0MjSXwA4DGi3J_engTdgDCVSqzzRwxMHhaCZGwu6b3uIGMIeH2uWzMDNDVWT5rBL';
             $this->baseUrl = 'https://api-m.sandbox.paypal.com'; // Usa "api-m.paypal.com" en producción
+
+            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+            $host = $_SERVER['HTTP_HOST'];
+            $this->paypalReturnBaseUrl = $protocol . "://" . $host;
         }
 
         function updateAppointment($id_appointment)
@@ -69,8 +79,8 @@
                     ]
                 ]],
                 "application_context" => [
-                    "return_url" => "http://localhost:3000/controllers/pay/pay.controller.php",
-                    "cancel_url" => "http://localhost:3000/controllers/pay/pay.controller.php"
+                    "return_url" => $this->paypalReturnBaseUrl . "/controllers/pay/pay.controller.php?name=" . urlencode($name) . "&amount=" . urlencode($amount),
+                    "cancel_url" => $this->paypalReturnBaseUrl . "/views/doctor/list/list-doctors.view.php?error=" . urlencode("Pago cancelado")
                 ]
             ];
 

@@ -15,6 +15,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/email/email.controller.ph
 // Only administrators and secretaries can manage doctors
 checkUserRole(['A', 'S']);
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recopilación centralizada de datos del formulario
     $doctorId = isset($_POST['id']) && is_numeric($_POST['id']) ? $_POST['id'] : null;

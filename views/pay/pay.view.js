@@ -1,51 +1,57 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const efectivoRadio = document.getElementById('efectivo');
-    const paypalRadio = document.getElementById('paypal');
-    const cashFields = document.getElementById('cash-fields');
-    const paypalFields = document.getElementById('paypal-fields');
-    const montoInput = document.getElementById('monto');
-    const pagaConInput = document.getElementById('paga_con');
-    const restanteDisplay = document.getElementById('restante');
+  const efectivoRadio = document.getElementById('efectivo');
+  const paypalRadio = document.getElementById('paypal');
+  const paypalFields = document.getElementById('paypal-fields');
+  const montoInput = document.getElementById('monto');
+  const paypalName = document.getElementById('paypal_name');
+  const paypalCountry = document.getElementById('paypal_country');
+  const form = document.getElementById('payment-form');
 
-    function toggleFields() {
-        if (efectivoRadio.checked) {
-            cashFields.classList.remove('hidden');
-            paypalFields.classList.add('hidden');
-            // Hacer required solo los campos de efectivo
-            montoInput.required = true;
-            pagaConInput.required = true;
+  function toggleFields() {
+    if (paypalRadio.checked) {
+      paypalFields.classList.remove('hidden');
+      paypalName.required = true;
+      paypalCountry.required = true;
+    } else {
+      paypalFields.classList.add('hidden');
+      paypalName.required = false;
+      paypalCountry.required = false;
+    }
+  }
 
-            // Quitar required a campos de PayPal
-            document.getElementById('paypal_name').required = false;
-            document.getElementById('paypal_email').required = false;
-            document.getElementById('paypal_country').required = false;
-        } else if (paypalRadio.checked) {
-            cashFields.classList.add('hidden');
-            paypalFields.classList.remove('hidden');
-            // Quitar required a campos de efectivo
-            montoInput.required = false;
-            pagaConInput.required = false;
+  efectivoRadio.addEventListener('change', toggleFields);
+  paypalRadio.addEventListener('change', toggleFields);
+  toggleFields();
 
-            // Hacer required solo los campos de PayPal
-            document.getElementById('paypal_name').required = true;
-            document.getElementById('paypal_email').required = true;
-            document.getElementById('paypal_country').required = true;
-        }
+  form.addEventListener('submit', (e) => {
+    const selected = document.querySelector('input[name="metodo_pago"]:checked');
+    if (!selected) {
+      alert('Por favor, selecciona un método de pago.');
+      e.preventDefault();
+      return;
     }
 
-    function calcularRestante() {
-        const monto = parseFloat(montoInput.value) || 0;
-        const pagaCon = parseFloat(pagaConInput.value) || 0;
-        const cambio = pagaCon - monto;
-        restanteDisplay.textContent = `Restante: $${cambio.toFixed(2)}`;
+    if (!montoInput.value || parseFloat(montoInput.value) <= 0) {
+      alert('Ingresa un monto válido.');
+      montoInput.focus();
+      e.preventDefault();
+      return;
     }
 
-    efectivoRadio.addEventListener('change', toggleFields);
-    paypalRadio.addEventListener('change', toggleFields);
+    if (selected.value === 'paypal') {
+      if (!paypalName.value.trim()) {
+        alert('Ingresa tu nombre completo.');
+        paypalName.focus();
+        e.preventDefault();
+        return;
+      }
 
-    montoInput.addEventListener('input', calcularRestante);
-    pagaConInput.addEventListener('input', calcularRestante);
-
-    // Inicializa bien los campos según el radio seleccionado (si uno ya viene seleccionado)
-    toggleFields();
+      if (!paypalCountry.value) {
+        alert('Selecciona un país.');
+        paypalCountry.focus();
+        e.preventDefault();
+        return;
+      }
+    }
+  });
 });

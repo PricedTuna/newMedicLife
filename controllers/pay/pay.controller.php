@@ -14,21 +14,37 @@ checkUserRole(['A', 'S']);
 
 $paypalModel = new PaymentModel($pdo);
 $emailController = new EmailController();
-session_start(); // Recuperar datos previos como id_patient, id_user si se necesitan
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // 1. Manejar retorno de PayPal (pago exitoso)
 if (isset($_GET['token']) && isset($_GET['PayerID'])) {
     try {
+        // Recibir parámetros que pasaste en return_url
+        $name = $_GET['name'] ?? 'Cliente';
+        $monto = $_GET['amount'] ?? 0;
         $id_cita = $_GET['id_cita'] ?? null;
+
+        // Capturar el pago con token y PayerID
         $status = $paypalModel->captureAndStorePayment($_GET['token'], $_GET['PayerID'], $id_cita);
-        $paypalModel->updateAppointment($_SESSION['patient_appointment']);
+
+        // Actualizar cita usando sesión o id_cita recibido
+        if ($id_cita) {
+            $paypalModel->updateAppointment($id_cita);
+        } elseif (isset($_SESSION['patient_appointment'])) {
+            $paypalModel->updateAppointment($_SESSION['patient_appointment']);
+        }
 
         $subject = "Confirmación de pago exitoso";
-        $message = "Hola $name,\n\nTu pago de $monto MXN ha sido recibido con éxito.\nGracias por tu preferencia.\n\nSaludos.";
+        $message = "Hola $name,\n\nTu pago de $monto MXN por medio de PayPal ha sido recibido con éxito.\nGracias por tu preferencia.\n\nSaludos.";
         $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
 
-        // Usa el controlador de email si existe
-        $result = $emailController->sendEmail($_SESSION['patient_email'], $subject, $message, $from);
+        // Enviar correo de confirmación
+        $email = $_SESSION['patient_email'] ?? 'cliente@correo.com';
+        $emailController->sendEmail($email, $subject, $message, $from);
+
         header('Location: /views/appointment/list/list-appointments.view.php?success=' . urlencode("La cita ha sido pagada con éxito."));
         exit;
     } catch (Exception $e) {
@@ -36,6 +52,7 @@ if (isset($_GET['token']) && isset($_GET['PayerID'])) {
         exit;
     }
 }
+
 
 // 2. Cancelación de PayPal
 if (isset($_GET['paypal_cancel'])) {
@@ -55,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_cita = $_POST['id_cita'] ?? '';
 
 
-    session_start();
     $id_user = $_SESSION['id_user'] ?? 1;
 
     try {
@@ -64,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($metodoPago === 'efectivo') {
-            if ($monto <= 0 || $pagaCon < $monto) {
+            if (!$monto) {
                 throw new Exception("Datos incorrectos para pago en efectivo.");
             }
 

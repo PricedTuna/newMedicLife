@@ -1,5 +1,5 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f0f4fa;
     margin: 0;
     padding: 0;
@@ -9,56 +9,92 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    padding: 40px 20px;
+    min-height: 100vh;
 }
 
 .payment-box {
-    background: white;
+    background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 112, 186, 0.2);
-    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 112, 186, 0.15);
+    padding: 32px;
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
     text-align: center;
+    border: 1px solid #e0e6f1;
 }
 
 .payment-title {
     color: #0070ba;
-    margin-bottom: 25px;
-    font-size: 22px;
+    margin-bottom: 28px;
+    font-size: 24px;
     font-weight: 600;
+    border-bottom: 2px solid #0070ba20;
+    padding-bottom: 10px;
 }
 
 .option {
-    display: block;
-    text-align: left;
-    border: 2px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     cursor: pointer;
-    transition: border-color 0.3s;
+    gap: 10px;
 }
 
-.option:hover {
-    border-color: #0070ba;
+.option input[type="radio"] {
+    margin-right: 10px;
 }
+
 
 .option input {
-    margin-right: 10px;
+    margin-right: 12px;
+    transform: scale(1.2);
+}
+
+label {
+    display: block;
+    margin-bottom: 14px;
+    text-align: left;
+    font-weight: 500;
+    color: #333;
+}
+
+input[type="number"],
+input[type="text"],
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e0;
+    margin-top: 4px;
+    font-size: 15px;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #0070ba;
+    box-shadow: 0 0 0 2px #0070ba40;
 }
 
 .submit-btn {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background-color: #0070ba;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: bold;
+    margin-top: 24px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 .submit-btn:hover {
@@ -69,49 +105,19 @@ body {
     display: none;
 }
 
-#cash-fields {
-    margin-top: 20px;
-    text-align: left;
-}
-
-#cash-fields label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-#cash-fields input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 4px;
-    box-sizing: border-box;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-#restante {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #0070ba;
+#monto {
+    margin-bottom: 20px;
 }
 
 #paypal-fields {
-    margin-top: 20px;
+    margin-top: 24px;
+    border-top: 1px solid #e1e7f0;
+    padding-top: 16px;
+}
+
+#restante {
+    margin-top: 12px;
+    font-weight: bold;
+    color: #0070ba;
     text-align: left;
 }
-
-#paypal-fields label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-#paypal-fields input,
-#paypal-fields select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 4px;
-    box-sizing: border-box;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-

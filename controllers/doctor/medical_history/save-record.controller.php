@@ -41,38 +41,29 @@ try {
     // Debug: Log all POST data
     error_log("POST data: " . print_r($_POST, true));
 
-    // Obtener ID del doctor seleccionado en el formulario
+    // Obtener ID del doctor seleccionado en el formulario (ahora es opcional)
     $doctorId = null;
 
     // Verificar si se especificó un doctor en el formulario
     if (isset($_POST['doctor-id']) && is_numeric($_POST['doctor-id'])) {
         $doctorId = (int)$_POST['doctor-id'];
         error_log("Doctor ID from form: " . $doctorId);
-    } else {
+    } else if ($_SESSION['role'] === 'D') {
         // Si no se especificó un doctor en el formulario, intentar usar el ID del doctor actual (si es un doctor)
-        if ($_SESSION['role'] === 'D') {
-            $stmt = $pdo->prepare("SELECT id_doctor FROM users WHERE email = :email");
-            $stmt->execute([':email' => $_SESSION['usuario']]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $pdo->prepare("SELECT id_doctor FROM users WHERE email = :email");
+        $stmt->execute([':email' => $_SESSION['usuario']]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Debug: Log user data
-            error_log("User data: " . print_r($user, true));
+        // Debug: Log user data
+        error_log("User data: " . print_r($user, true));
 
-            if (!$user || !$user['id_doctor']) {
-                error_log("Error: No se pudo determinar el ID del doctor para el usuario " . $_SESSION['usuario']);
-                throw new Exception('No se pudo determinar el ID del doctor. Por favor, contacte al administrador.');
-            }
-
+        if ($user && $user['id_doctor']) {
             $doctorId = $user['id_doctor'];
-        } else {
-            // Si es un administrador y no especificó un doctor, mostrar error
-            error_log("Error: No se especificó un doctor");
-            throw new Exception('Debe especificar un doctor para el registro');
         }
     }
 
     // Debug: Log doctor ID
-    error_log("Doctor ID: " . $doctorId);
+    error_log("Doctor ID: " . ($doctorId ? $doctorId : "Not provided"));
 
     // Preparar datos para guardar
     $data = [

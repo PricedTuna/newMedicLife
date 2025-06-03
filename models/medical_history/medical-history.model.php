@@ -136,11 +136,6 @@ class MedicalHistoryModel {
                 throw new PDOException("El ID del paciente es obligatorio");
             }
 
-            if (empty($data['doctor_id'])) {
-                error_log("Error: doctor_id is empty");
-                throw new PDOException("El ID del doctor es obligatorio");
-            }
-
             if (empty($data['date_created'])) {
                 error_log("Error: date_created is empty");
                 throw new PDOException("La fecha es obligatoria");
@@ -177,7 +172,7 @@ class MedicalHistoryModel {
                     treatment_plan TEXT,
                     observations TEXT,
                     next_appointment DATE,
-                    doctor_id INT NOT NULL,
+                    doctor_id INT,
                     status ENUM('active', 'archived', 'deleted') DEFAULT 'active',
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -210,34 +205,65 @@ class MedicalHistoryModel {
                 error_log("Tabla vital_signs_history creada exitosamente");
             }
 
-            $stmt = $this->pdo->prepare("
-                INSERT INTO medical_history (
-                    patient_id, doctor_id, date_created, 
-                    chief_complaint, current_illness, personal_history, family_history,
-                    physical_examination, diagnosis, treatment_plan, observations,
-                    next_appointment, status, created_at
-                ) VALUES (
-                    :patient_id, :doctor_id, :date_created, 
-                    :chief_complaint, :current_illness, :personal_history, :family_history,
-                    :physical_examination, :diagnosis, :treatment_plan, :observations,
-                    :next_appointment, 'active', NOW()
-                )
-            ");
+            // Prepare SQL based on whether doctor_id is provided
+            if (isset($data['doctor_id']) && !empty($data['doctor_id'])) {
+                $stmt = $this->pdo->prepare("
+                    INSERT INTO medical_history (
+                        patient_id, doctor_id, date_created, 
+                        chief_complaint, current_illness, personal_history, family_history,
+                        physical_examination, diagnosis, treatment_plan, observations,
+                        next_appointment, status, created_at
+                    ) VALUES (
+                        :patient_id, :doctor_id, :date_created, 
+                        :chief_complaint, :current_illness, :personal_history, :family_history,
+                        :physical_examination, :diagnosis, :treatment_plan, :observations,
+                        :next_appointment, 'active', NOW()
+                    )
+                ");
 
-            $params = [
-                ':patient_id' => $data['patient_id'],
-                ':doctor_id' => $data['doctor_id'],
-                ':date_created' => $data['date_created'] ?? date('Y-m-d H:i:s'),
-                ':chief_complaint' => $data['chief_complaint'] ?? null,
-                ':current_illness' => $data['current_illness'] ?? null,
-                ':personal_history' => $data['personal_history'] ?? null,
-                ':family_history' => $data['family_history'] ?? null,
-                ':physical_examination' => $data['physical_examination'] ?? null,
-                ':diagnosis' => $data['diagnosis'] ?? null,
-                ':treatment_plan' => $data['treatment_plan'] ?? null,
-                ':observations' => $data['observations'] ?? null,
-                ':next_appointment' => $data['next_appointment'] ?? null
-            ];
+                $params = [
+                    ':patient_id' => $data['patient_id'],
+                    ':doctor_id' => $data['doctor_id'],
+                    ':date_created' => $data['date_created'] ?? date('Y-m-d H:i:s'),
+                    ':chief_complaint' => $data['chief_complaint'] ?? null,
+                    ':current_illness' => $data['current_illness'] ?? null,
+                    ':personal_history' => $data['personal_history'] ?? null,
+                    ':family_history' => $data['family_history'] ?? null,
+                    ':physical_examination' => $data['physical_examination'] ?? null,
+                    ':diagnosis' => $data['diagnosis'] ?? null,
+                    ':treatment_plan' => $data['treatment_plan'] ?? null,
+                    ':observations' => $data['observations'] ?? null,
+                    ':next_appointment' => $data['next_appointment'] ?? null
+                ];
+            } else {
+                $stmt = $this->pdo->prepare("
+                    INSERT INTO medical_history (
+                        patient_id, date_created, 
+                        chief_complaint, current_illness, personal_history, family_history,
+                        physical_examination, diagnosis, treatment_plan, observations,
+                        next_appointment, status, created_at
+                    ) VALUES (
+                        :patient_id, :date_created, 
+                        :chief_complaint, :current_illness, :personal_history, :family_history,
+                        :physical_examination, :diagnosis, :treatment_plan, :observations,
+                        :next_appointment, 'active', NOW()
+                    )
+                ");
+
+                $params = [
+                    ':patient_id' => $data['patient_id'],
+                    ':date_created' => $data['date_created'] ?? date('Y-m-d H:i:s'),
+                    ':chief_complaint' => $data['chief_complaint'] ?? null,
+                    ':current_illness' => $data['current_illness'] ?? null,
+                    ':personal_history' => $data['personal_history'] ?? null,
+                    ':family_history' => $data['family_history'] ?? null,
+                    ':physical_examination' => $data['physical_examination'] ?? null,
+                    ':diagnosis' => $data['diagnosis'] ?? null,
+                    ':treatment_plan' => $data['treatment_plan'] ?? null,
+                    ':observations' => $data['observations'] ?? null,
+                    ':next_appointment' => $data['next_appointment'] ?? null
+                ];
+            }
 
             // Debug: Log SQL parameters
             error_log("SQL parameters: " . print_r($params, true));
@@ -471,7 +497,7 @@ class MedicalHistoryModel {
                     treatment_plan TEXT,
                     observations TEXT,
                     next_appointment DATE,
-                    doctor_id INT NOT NULL,
+                    doctor_id INT,
                     status ENUM('active', 'archived', 'deleted') DEFAULT 'active',
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -492,11 +518,15 @@ class MedicalHistoryModel {
                 // Create a basic medical history record
                 $historyData = [
                     'patient_id' => $data['patient_id'],
-                    'doctor_id' => $data['doctor_id'],
                     'diagnosis' => $data['title'],
                     'observations' => $data['description'] ?? 'Documento PDF subido',
                     'date_created' => date('Y-m-d H:i:s')
                 ];
+
+                // Add doctor_id if provided
+                if (!empty($data['doctor_id'])) {
+                    $historyData['doctor_id'] = $data['doctor_id'];
+                }
 
                 $medicalHistoryId = $this->saveHistoryRecord($historyData);
 

@@ -30,7 +30,7 @@
         <div class="main-content">
             <header>
 
-                <h1>Dashboard</h1>
+                <h1>Panel Principal</h1>
 
                 {if isset($smarty.get.success)}
                     <div

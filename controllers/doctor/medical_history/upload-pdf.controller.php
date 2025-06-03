@@ -42,28 +42,25 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' ||
 }
 
 try {
-    // Obtener ID del doctor actual
+    // Obtener ID del doctor actual (ahora es opcional)
     $doctorId = null;
 
     if ($_SESSION['role'] === 'D') {
-        // Si es un doctor, usar su ID
+        // Si es un doctor, intentar usar su ID
         $stmt = $pdo->prepare("SELECT id_doctor FROM users WHERE email = :email");
         $stmt->execute([':email' => $_SESSION['usuario']]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$user || !$user['id_doctor']) {
-            throw new Exception('No se pudo determinar el ID del doctor');
+        if ($user && $user['id_doctor']) {
+            $doctorId = $user['id_doctor'];
         }
-
-        $doctorId = $user['id_doctor'];
-    } else {
-        // Si es un administrador, verificar si se especificó un doctor
-        if (!isset($_POST['doctor-id']) || !is_numeric($_POST['doctor-id'])) {
-            throw new Exception('Debe especificar un doctor para el documento');
-        }
-
+    } else if (isset($_POST['doctor-id']) && is_numeric($_POST['doctor-id'])) {
+        // Si es un administrador y se especificó un doctor, usar ese ID
         $doctorId = (int)$_POST['doctor-id'];
     }
+
+    // Log doctor ID (for debugging)
+    error_log("Doctor ID for PDF upload: " . ($doctorId ? $doctorId : "Not provided"));
 
     // Verificar que el archivo sea un PDF
     $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -89,10 +86,14 @@ try {
     // Preparar datos para guardar
     $data = [
         'patient_id' => (int)$_POST['patient-id'],
-        'doctor_id' => $doctorId,
         'title' => $_POST['document-title'],
         'description' => isset($_POST['document-description']) ? $_POST['document-description'] : ''
     ];
+
+    // Add doctor_id only if it's provided
+    if ($doctorId) {
+        $data['doctor_id'] = $doctorId;
+    }
 
     // Instanciar el modelo
     $medicalHistoryModel = new MedicalHistoryModel($pdo);

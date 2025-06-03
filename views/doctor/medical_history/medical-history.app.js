@@ -938,28 +938,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const diagnosis = document.getElementById('diagnosis');
     const doctorId = document.getElementById('doctor-id');
 
-    // Validate doctor selection on input and change
+    // Validate doctor selection on input and change (now optional)
     function validateDoctor() {
         if (!doctorId) {
             console.error('doctorId not found in the DOM');
-            return false;
+            return true; // Return true since doctor ID is now optional
         }
 
-        if (!doctorId.value) {
-            doctorId.classList.add('invalid');
-            const errorElement = document.getElementById('doctor-id-error');
-            if (errorElement) {
-                errorElement.textContent = 'Debe seleccionar un médico';
-            }
-            return false;
-        } else {
-            doctorId.classList.remove('invalid');
-            const errorElement = document.getElementById('doctor-id-error');
-            if (errorElement) {
-                errorElement.textContent = '';
-            }
-            return true;
+        // Doctor ID is now optional, so always return true
+        // Just remove any error styling if it exists
+        doctorId.classList.remove('invalid');
+        const errorElement = document.getElementById('doctor-id-error');
+        if (errorElement) {
+            errorElement.textContent = '';
         }
+        return true;
     }
 
     if (doctorId) {

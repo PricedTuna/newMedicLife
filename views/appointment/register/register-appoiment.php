@@ -61,7 +61,7 @@ $schedules = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
 // Obtener pacientes
 $patients = null;
-$stmt = $pdo->prepare("SELECT id, names, last_name, last_name2, CURP, email FROM patients");
+$stmt = $pdo->prepare("SELECT id, names, last_name, last_name2, CURP, email FROM patients WHERE status = 'A'");
 $stmt->execute();
 $patients = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

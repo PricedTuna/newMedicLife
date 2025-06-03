@@ -1,6 +1,9 @@
 <?php
 // email.model.php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+require_once __DIR__ . '/../../load_env.php';
+loadEnv(__DIR__ . '/../../.env');
+
 
 use Mailgun\Mailgun;
 use Mailgun\Exception\HttpClientException;

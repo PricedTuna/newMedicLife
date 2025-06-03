@@ -1,6 +1,7 @@
  <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/utils/utils.php';
-
+    require_once __DIR__ . '/../../load_env.php';
+    loadEnv(__DIR__ . '/../../.env');
 
 
 
@@ -17,8 +18,8 @@
         public function __construct($pdo)
         {
             $this->pdo = $pdo;
-            $this->clientId = 'Adlc27kvKviM2KXGbjAP-4jx9YX8rubKFn1v8bx_oYVa6A4S5JcvPWpd6tYoPcbVA8bau-CZF9IhpC5u';
-            $this->secret = 'EA9MDIc37gHd0QRS0MjSXwA4DGi3J_engTdgDCVSqzzRwxMHhaCZGwu6b3uIGMIeH2uWzMDNDVWT5rBL';
+            $this->clientId = getenv('PAYPAL_CLIENT') ?: '';
+            $this->secret = getenv('PAYPAL_SECRET') ?: '';
             $this->baseUrl = 'https://api-m.sandbox.paypal.com'; // Usa "api-m.paypal.com" en producción
 
             $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";

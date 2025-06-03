@@ -17,7 +17,7 @@
     </div>
     <div class="form-group">
         <label for="intNumber">Número Interior (Opcional)</label>
-        <input type="text" id="intNumber" name="intNumber" value="{$doctor.internal_number|default:''}" maxlength="10">
+        <input type="text" id="intNumber" name="intNumber" value="{$doctor.internal_number|default:''}" maxlength="8">
     </div>
     <div class="form-group">
         <label for="state">Estado</label>

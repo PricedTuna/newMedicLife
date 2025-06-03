@@ -90,7 +90,7 @@
                     </div>
                     <div class="form-group">
                         <label for="email">Correo Electrónico <span class="required">*</span></label>
-                        <input type="email" id="email" name="email" placeholder="Correo electrónico" value="{if $editMode}{$userData.email}{/if}" required maxlength="100" onblur="validateEmailLength(this)">
+                        <input type="email" id="email" name="email" placeholder="Correo electrónico" value="{if $editMode}{$userData.email}{/if}" required maxlength="100" onblur="validateEmailLength(this) && checkEmailUniqueness(this)">
                         <div id="email-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
                     {else}
@@ -229,6 +229,82 @@
             return true;
         }
 
+        function checkEmailUniqueness(input) {
+            const emailError = document.getElementById('email-error');
+            const email = input.value.trim();
+
+            // Validar formato de correo electrónico
+            if (!isValidEmail(email)) {
+                emailError.textContent = 'Correo electrónico no válido. Debe tener formato usuario@dominio.com';
+                emailError.style.display = 'block';
+                emailError.style.color = "red";
+                input.style.border = "2px solid red";
+                isEmailValid = false;
+                return false;
+            }
+
+            // Mostrar indicador de carga
+            emailError.textContent = "Verificando disponibilidad...";
+            emailError.style.display = 'block';
+            emailError.style.color = "#FFA500"; // Naranja para indicar verificación en progreso
+            input.style.border = "2px solid #FFA500";
+
+            // Obtener el ID del usuario si estamos en modo edición
+            const userIdInput = document.querySelector('input[name="user_id"]');
+            const userId = userIdInput ? userIdInput.value : '';
+
+            const formData = new FormData();
+            formData.append('email', email);
+            if (userId) {
+                formData.append('userId', userId);
+            }
+
+            // Realizar la petición AJAX para verificar la unicidad del email
+            fetch('/controllers/user/check-email-uniqueness.controller.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Email disponible
+                    emailError.textContent = "Email disponible";
+                    emailError.style.display = 'block';
+                    emailError.style.color = "green";
+                    input.style.border = "2px solid green";
+                    isEmailValid = true;
+                    // Eliminar el mensaje después de 3 segundos
+                    setTimeout(() => {
+                        emailError.style.display = 'none';
+                        input.style.border = "2px solid var(--line-clr)";
+                    }, 3000);
+                    return true;
+                } else {
+                    // Email ya registrado
+                    emailError.textContent = data.message || "Este email ya está registrado";
+                    emailError.style.display = 'block';
+                    emailError.style.color = "red";
+                    input.style.border = "2px solid red";
+                    isEmailValid = false;
+                    return false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                emailError.textContent = "Error al verificar el email";
+                emailError.style.display = 'block';
+                emailError.style.color = "red";
+                input.style.border = "2px solid red";
+                isEmailValid = false;
+                return false;
+            });
+        }
+
+        function isValidEmail(email) {
+            // Función simple para validar formato de email
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
         function validatePassword() {
             const passwordInput = document.getElementById('password');
             const passwordError = document.getElementById('password-error');
@@ -286,6 +362,9 @@
             return true;
         }
 
+        // Variable global para rastrear si el email es válido
+        let isEmailValid = true;
+
         document.addEventListener('DOMContentLoaded', function() {
             const userForm = document.getElementById('user-form');
 
@@ -311,8 +390,17 @@
                     if (this.value.length > 100) {
                         document.getElementById('email-error').textContent = 'El correo electrónico supera la longitud máxima de 100 caracteres.';
                         document.getElementById('email-error').style.display = 'block';
+                        isEmailValid = false;
                     } else {
                         document.getElementById('email-error').style.display = 'none';
+                        // No marcamos como válido aquí, ya que se validará en checkEmailUniqueness
+                    }
+                });
+
+                // Validar email cuando pierde el foco
+                emailInput.addEventListener('blur', function() {
+                    if (this.value.trim() && this.value.length <= 100) {
+                        checkEmailUniqueness(this);
                     }
                 });
             }
@@ -324,11 +412,37 @@
                 const emailInput = document.getElementById('email');
 
                 const isNameValid = nameInput ? validateNameLength(nameInput) : true;
-                const isEmailValid = emailInput ? validateEmailLength(emailInput) : true;
+                const isEmailLengthValid = emailInput ? validateEmailLength(emailInput) : true;
                 const isPasswordValid = validatePassword();
                 const isPasswordMatchValid = validatePasswordMatch();
 
-                if (!isNameValid || !isEmailValid || !isPasswordValid || !isPasswordMatchValid) {
+                // Verificar si el email es válido (no está ya registrado)
+                if (emailInput && emailInput.value.trim() !== '') {
+                    // Si el email no ha sido validado aún, validarlo ahora
+                    if (document.getElementById('email-error').textContent !== "Email disponible" && 
+                        document.getElementById('email-error').textContent !== "Verificando disponibilidad...") {
+                        checkEmailUniqueness(emailInput);
+                        // Mostrar mensaje de error
+                        Swal.fire({
+                            title: 'Validación en progreso',
+                            text: 'Por favor, espere mientras validamos su correo electrónico.',
+                            icon: 'info',
+                            confirmButtonText: 'Entendido'
+                        });
+                        return;
+                    }
+                }
+
+                if (!isNameValid || !isEmailLengthValid || !isEmailValid || !isPasswordValid || !isPasswordMatchValid) {
+                    // Mostrar mensaje de error específico para email ya registrado
+                    if (!isEmailValid) {
+                        Swal.fire({
+                            title: 'Error de validación',
+                            text: 'El correo electrónico ya está registrado en el sistema. Por favor, utilice otro.',
+                            icon: 'error',
+                            confirmButtonText: 'Entendido'
+                        });
+                    }
                     return;
                 }
 

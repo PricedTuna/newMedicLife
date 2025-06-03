@@ -28,6 +28,14 @@ try {
                 'end_time' => $schedule['end_time']
             ];
         }
+
+        // Obtener la especialidad (área médica) del doctor
+        $stmt = $pdo->prepare("SELECT id_medical_area FROM doctor_assignments WHERE id_doctor = :id_doctor");
+        $stmt->execute([':id_doctor' => $_GET['id']]);
+        $medicalArea = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($medicalArea) {
+            $doctor['id_medical_area'] = $medicalArea['id_medical_area'];
+        }
     }
 
     $doctorAssignments = null;

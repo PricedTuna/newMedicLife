@@ -6,6 +6,7 @@
     <title>Historial Médico Público | Medic Life</title>
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -163,7 +164,13 @@
                     if (curp) {
                         window.location.href = '/views/public/medical_history/view-history.view.php?curp=' + encodeURIComponent(curp);
                     } else {
-                        alert('Por favor, ingrese su CURP');
+                        Swal.fire({
+                            title: 'Campo requerido',
+                            text: 'Por favor, ingrese su CURP',
+                            icon: 'warning',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Entendido'
+                        });
                     }
                 }
             </script>

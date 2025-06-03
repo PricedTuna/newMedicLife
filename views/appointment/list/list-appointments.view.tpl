@@ -41,21 +41,20 @@
                 <button id="clearFilters">Limpiar filtros</button>
             </div>
 
+            {if isset($error)}
+                <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
+                    {$error|escape}
+                </div>
+            {/if}
+
+            {if isset($success)}
+                <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
+                    {$success|escape}
+                </div>
+            {/if}
+
+            <h2>Citas Activas</h2>
             <div class="table-container">
-                {if isset($error)}
-                    <div style="color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;">
-                        {$error|escape}
-                    </div>
-                {/if}
-
-                {if isset($success)}
-                    <div style="color: darkgreen; margin-bottom: 1rem; border: 1px solid green; padding: 0.5rem; border-radius: 5px; background-color: lightgreen;">
-                        {$success|escape}
-                    </div>
-                {/if}
-
-
-                <h2>Citas Activas</h2>
                 <table>
                     <thead>
                         <tr>
@@ -108,8 +107,8 @@
                 </table>
             </div>
 
+            <h2>Citas Terminadas</h2>
             <div class="table-container">
-                <h2>Citas Terminadas</h2>
                 <table>
                     <thead>
                         <tr>
@@ -156,8 +155,8 @@
                 </table>
             </div>
 
+            <h2>Citas Finalizadas</h2>
             <div class="table-container">
-                <h2>Citas Finalizadas</h2>
                 <table>
                     <thead>
                         <tr>

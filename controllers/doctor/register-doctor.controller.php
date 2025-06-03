@@ -73,6 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Actualización del doctor
             $doctorModel->updateDoctor($doctorId, $data, $photoData, $updatePhoto);
 
+            // Actualizar la asignación del doctor al área médica
+            $assignmentModel = new DoctorAssignmentModel($pdo);
+            $assignmentModel->updateMedicalArea($doctorId, $data['medical_area']);
+
             // Correo de confirmación para actualización
             $subject = "Confirmación de Actualización de datos";
             $message = "Hola $name,\n\nTu Actualización de datos en nuestro sistema de administración medica Medic Life a sido exitoso" . "\nGracias por tu preferencia.\n\nSaludos.";

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded event triggered');
-    
+
     // Check if window.doctors is defined
     if (typeof window.doctors !== 'undefined') {
         console.log('window.doctors:', window.doctors);
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('window.doctors is not defined');
     }
-    
+
     // Check if window.medical_areas is defined
     if (typeof window.medical_areas !== 'undefined') {
         console.log('window.medical_areas:', window.medical_areas);
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         console.error('window.medical_areas is not defined');
     }
-    
+
     // Check if window.isDoctor is defined
     if (typeof window.isDoctor !== 'undefined') {
         console.log('window.isDoctor:', window.isDoctor);
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
     const searchForm = document.getElementById('searchPatientForm');
     console.log('searchForm:', searchForm);
-    
+
     // Check if searchForm exists
     if (!searchForm) {
         console.error('searchForm not found in the DOM');
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const newRecordBtn = document.getElementById('new-record-btn');
     console.log('newRecordBtn:', newRecordBtn);
-    
+
     // Check if newRecordBtn exists
     if (!newRecordBtn) {
         console.error('newRecordBtn not found in the DOM');
@@ -633,13 +633,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to filter doctors by medical area
     function filterDoctorsByArea(areaId) {
         console.log('filterDoctorsByArea called with areaId:', areaId);
-        
+
         // Check if window.doctors is defined
         if (typeof window.doctors === 'undefined') {
             console.error('window.doctors is not defined');
             return;
         }
-        
+
         console.log('window.doctors:', window.doctors);
 
         // Check if doctors data is available
@@ -679,8 +679,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Add only the first doctor (should be the current doctor)
                 const option = document.createElement('option');
                 option.value = doctor.doctor_id;
-                option.textContent = doctor.doctor_name + ' ' + 
-                                    doctor.last_name + ' ' + 
+                option.textContent = doctor.doctor_name + ' ' +
+                                    doctor.last_name + ' ' +
                                     (doctor.last_name2 || '');
                 doctorIdSelect.appendChild(option);
 
@@ -722,7 +722,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener for medical area change
     if (medicalAreaSelect) {
         console.log('medicalAreaSelect found:', medicalAreaSelect);
-        
+
         try {
             console.log('medicalAreaSelect ID:', medicalAreaSelect.id);
             console.log('medicalAreaSelect name:', medicalAreaSelect.name);
@@ -876,7 +876,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('doctorId not found in the DOM');
             return false;
         }
-        
+
         if (!doctorId.value) {
             doctorId.classList.add('invalid');
             const errorElement = document.getElementById('doctor-id-error');
@@ -905,7 +905,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('recordDate not found in the DOM');
             return false;
         }
-        
+
         if (!recordDate.value) {
             recordDate.classList.add('invalid');
             const errorElement = document.getElementById('record-date-error');
@@ -935,37 +935,37 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('chiefComplaint or diagnosis not found in the DOM');
             return false;
         }
-        
+
         if (!chiefComplaint.value && !diagnosis.value) {
             chiefComplaint.classList.add('invalid');
             diagnosis.classList.add('invalid');
             const chiefComplaintError = document.getElementById('chief-complaint-error');
             const diagnosisError = document.getElementById('diagnosis-error');
-            
+
             if (chiefComplaintError) {
                 chiefComplaintError.textContent = 'Debe completar al menos uno de estos campos';
             }
-            
+
             if (diagnosisError) {
                 diagnosisError.textContent = 'Debe completar al menos uno de estos campos';
             }
-            
+
             return false;
         } else {
             chiefComplaint.classList.remove('invalid');
             diagnosis.classList.remove('invalid');
-            
+
             const chiefComplaintError = document.getElementById('chief-complaint-error');
             const diagnosisError = document.getElementById('diagnosis-error');
-            
+
             if (chiefComplaintError) {
                 chiefComplaintError.textContent = '';
             }
-            
+
             if (diagnosisError) {
                 diagnosisError.textContent = '';
             }
-            
+
             return true;
         }
     }
@@ -1384,11 +1384,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show alert using SweetAlert2
     function showAlert(message, type) {
         if (typeof Swal === 'undefined') {
-            console.error('SweetAlert2 is not defined');
-            alert(message);
+            console.error('SweetAlert2 is not defined, intentando cargar dinámicamente');
+
+            // Intentar cargar SweetAlert2 dinámicamente
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+            script.onload = function() {
+                // Una vez cargado, mostrar la alerta
+                Swal.fire({
+                    text: message,
+                    icon: type,
+                    confirmButtonText: 'Aceptar'
+                });
+            };
+            script.onerror = function() {
+                console.error('No se pudo cargar SweetAlert2 dinámicamente');
+                // No usar alert() como fallback
+            };
+            document.head.appendChild(script);
             return;
         }
-        
+
         Swal.fire({
             text: message,
             icon: type,

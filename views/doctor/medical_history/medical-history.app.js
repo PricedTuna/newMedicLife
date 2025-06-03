@@ -676,8 +676,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Add only the first doctor (should be the current doctor)
                 const option = document.createElement('option');
                 option.value = doctor.doctor_id;
-                option.textContent = doctor.doctor_name + ' ' + 
-                                    doctor.last_name + ' ' + 
+                option.textContent = doctor.doctor_name + ' ' +
+                                    doctor.last_name + ' ' +
                                     (doctor.last_name2 || '');
                 doctorIdSelect.appendChild(option);
 
@@ -1473,8 +1473,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show alert using SweetAlert2
     function showAlert(message, type) {
         if (typeof Swal === 'undefined') {
-            console.error('SweetAlert2 is not defined');
-            alert(message);
+            console.error('SweetAlert2 is not defined, intentando cargar dinámicamente');
+
+            // Intentar cargar SweetAlert2 dinámicamente
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+            script.onload = function() {
+                // Una vez cargado, mostrar la alerta
+                Swal.fire({
+                    text: message,
+                    icon: type,
+                    confirmButtonText: 'Aceptar'
+                });
+            };
+            script.onerror = function() {
+                console.error('No se pudo cargar SweetAlert2 dinámicamente');
+                // No usar alert() como fallback
+            };
+            document.head.appendChild(script);
             return;
         }
 

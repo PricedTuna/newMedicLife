@@ -351,7 +351,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (start >= end) {
-      endInput.value = "";
       errorDiv.textContent = "La hora de fin debe ser mayor que la de inicio.";
       errorDiv.style.display = "block";
       errorDiv.style.color = "red";
@@ -364,35 +363,126 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  // Copiar horario a otros días si el usuario lo aprueba
-  function handleCopyPrompt(day) {
+  // Función para clonar horario a todos los días
+  function cloneScheduleToAllDays(day) {
     const startTimeInput = document.getElementById(`${day}_start`);
     const endTimeInput = document.getElementById(`${day}_end`);
 
-    let shouldPrompt = false;
+    if (!startTimeInput.value || !endTimeInput.value) {
+      return; // No clonar si no hay horario completo
+    }
 
     days.forEach((otherDay) => {
       if (otherDay !== day) {
         const otherStartInput = document.getElementById(`${otherDay}_start`);
         const otherEndInput = document.getElementById(`${otherDay}_end`);
-        const otherActiveCheckbox = document.getElementById(
-          `${otherDay}_active`
-        );
+        const otherActiveCheckbox = document.getElementById(`${otherDay}_active`);
 
-        if (
-          otherActiveCheckbox?.checked &&
-          (otherStartInput?.value !== startTimeInput.value ||
-            otherEndInput?.value !== endTimeInput.value)
-        ) {
-          shouldPrompt = true;
+        if (otherStartInput && otherEndInput && otherActiveCheckbox) {
+          otherActiveCheckbox.checked = true;
+          otherStartInput.value = startTimeInput.value;
+          otherEndInput.value = endTimeInput.value;
+          toggleInputs(otherDay);
+          validateDay(otherDay);
         }
       }
     });
+  }
 
-    if (shouldPrompt) {
+  // Función para crear el botón de clonar horario
+  function createCloneButton(day) {
+    // Buscar el checkbox del día para encontrar el contenedor
+    const checkbox = document.getElementById(`${day}_active`);
+    if (!checkbox) {
+      console.error(`No se encontró el checkbox para el día ${day}`);
+      return;
+    }
+
+    // Intentar encontrar el contenedor del día de varias maneras
+    let container = null;
+
+    // Método 1: Buscar el elemento .schedule-row que contiene el checkbox
+    container = checkbox.closest('.schedule-row');
+
+    // Método 2: Si no se encuentra, buscar el elemento padre que contiene los inputs de tiempo
+    if (!container) {
+      const startInput = document.getElementById(`${day}_start`);
+      if (startInput) {
+        container = startInput.closest('.schedule-row');
+      }
+    }
+
+    // Método 3: Si aún no se encuentra, buscar cualquier elemento que contenga los inputs del día
+    if (!container) {
+      // Buscar un elemento común que contenga tanto el checkbox como los inputs
+      let parent = checkbox.parentElement;
+      while (parent && !container) {
+        if (parent.querySelector(`#${day}_start`) && parent.querySelector(`#${day}_end`)) {
+          container = parent;
+          break;
+        }
+        parent = parent.parentElement;
+      }
+    }
+
+    // Si no se encuentra ningún contenedor, usar el padre directo del checkbox
+    if (!container) {
+      container = checkbox.parentElement;
+      console.warn(`No se encontró un contenedor adecuado para el día ${day}, usando el padre directo del checkbox`);
+    }
+
+    // Verificar si ya existe un botón de clonar
+    const existingButton = document.querySelector(`.clone-button[data-day="${day}"]`);
+    if (existingButton) {
+      console.log(`Ya existe un botón de clonar para el día ${day}`);
+      return;
+    }
+
+    const cloneButton = document.createElement('button');
+    cloneButton.type = 'button';
+    cloneButton.className = 'clone-button';
+    cloneButton.setAttribute('data-day', day);
+    cloneButton.innerHTML = '<i class="fas fa-copy"></i> Clonar a todos los días';
+    cloneButton.style.marginLeft = '10px';
+    cloneButton.style.padding = '5px 10px';
+    cloneButton.style.backgroundColor = '#3498db';
+    cloneButton.style.color = 'white';
+    cloneButton.style.border = 'none';
+    cloneButton.style.borderRadius = '4px';
+    cloneButton.style.cursor = 'pointer';
+    cloneButton.style.fontSize = '12px';
+    cloneButton.style.display = 'inline-block'; // Asegurar que sea visible
+
+    cloneButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      const startInput = document.getElementById(`${day}_start`);
+      const endInput = document.getElementById(`${day}_end`);
+
+      if (!startInput.value || !endInput.value) {
+        Swal.fire({
+          title: "Error",
+          text: "Debe ingresar hora de inicio y fin antes de clonar.",
+          icon: "error",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Entendido"
+        });
+        return;
+      }
+
+      if (!validateDay(day)) {
+        Swal.fire({
+          title: "Error",
+          text: "El horario no es válido. Corrija los errores antes de clonar.",
+          icon: "error",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Entendido"
+        });
+        return;
+      }
+
       Swal.fire({
-        title: "¿Copiar horario?",
-        text: `¿Desea aplicar este horario (${startTimeInput.value} - ${endTimeInput.value}) a todos los demás días?`,
+        title: "¿Clonar horario?",
+        text: `¿Desea aplicar este horario (${startInput.value} - ${endInput.value}) a todos los demás días?`,
         icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -401,28 +491,39 @@ document.addEventListener("DOMContentLoaded", () => {
         cancelButtonText: "Cancelar",
       }).then((result) => {
         if (result.isConfirmed) {
-          days.forEach((otherDay) => {
-            if (otherDay !== day) {
-              const otherStartInput = document.getElementById(
-                `${otherDay}_start`
-              );
-              const otherEndInput = document.getElementById(`${otherDay}_end`);
-              const otherActiveCheckbox = document.getElementById(
-                `${otherDay}_active`
-              );
-
-              if (otherStartInput && otherEndInput && otherActiveCheckbox) {
-                otherActiveCheckbox.checked = true;
-                otherStartInput.value = startTimeInput.value;
-                otherEndInput.value = endTimeInput.value;
-                toggleInputs(otherDay);
-                validateDay(otherDay);
-              }
-            }
+          cloneScheduleToAllDays(day);
+          Swal.fire({
+            title: "¡Horario clonado!",
+            text: "El horario se ha aplicado a todos los días.",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Entendido"
           });
         }
       });
+    });
+
+    // Intentar agregar el botón en diferentes lugares
+
+    // Opción 1: Agregar al contenedor de inputs de tiempo
+    const timeInputsContainer = container.querySelector('.schedule-time-inputs');
+    if (timeInputsContainer) {
+      timeInputsContainer.appendChild(cloneButton);
+      console.log(`Botón de clonar agregado al contenedor de inputs de tiempo para el día ${day}`);
+      return;
     }
+
+    // Opción 2: Agregar junto al input de fin
+    const endInput = document.getElementById(`${day}_end`);
+    if (endInput && endInput.parentElement) {
+      endInput.parentElement.appendChild(cloneButton);
+      console.log(`Botón de clonar agregado junto al input de fin para el día ${day}`);
+      return;
+    }
+
+    // Opción 3: Agregar al contenedor principal
+    container.appendChild(cloneButton);
+    console.log(`Botón de clonar agregado al contenedor principal para el día ${day}`);
   }
 
   // Inicializar eventos para cada día
@@ -434,26 +535,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     toggleInputs(day);
 
+    // Crear el botón de clonar para este día
+    createCloneButton(day);
+
     checkbox.addEventListener("change", () => {
       toggleInputs(day);
       errorDiv.style.display = "none";
       if (checkbox.checked && startInput.value && endInput.value) {
         validateDay(day);
-        handleCopyPrompt(day);
       }
     });
 
     startInput.addEventListener("input", () => {
       toggleInputs(day);
-      if (validateDay(day)) {
-        handleCopyPrompt(day);
-      }
+      validateDay(day);
     });
 
     endInput.addEventListener("input", () => {
-      if (validateDay(day)) {
-        handleCopyPrompt(day);
-      }
+      validateDay(day);
     });
   });
 

@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
     minDate: "today",
     locale: "es",
     disable: [],
+    minuteIncrement: 30,
   });
 
   // Rellenar datalist de CURP
@@ -126,55 +127,77 @@ document.addEventListener("DOMContentLoaded", function () {
     const doctorSchedules = schedules.filter(
       (s) => s.id_doctor === selectedDoctorId
     );
+
+    // Obtener días en que el doctor trabaja
     const workingDays = doctorSchedules
       .map((s) => s.day.toLowerCase())
       .map((day) => dayNameToNumber[day])
       .filter((v, i, a) => a.indexOf(v) === i);
 
+    // Habilitar solo los días que trabaja el doctor
     fp.set("disable", [(date) => !workingDays.includes(date.getDay())]);
 
-    // Clear the date if it's not in the doctor's schedule
+    // Filtrar horas según el día seleccionado y el horario del doctor
+    fp.set("enableTime", true);
+
+    // Obtener horarios para un día específico
+    const selectedDate = fp.selectedDates[0] || null;
+    if (selectedDate) {
+      const dayOfWeek = selectedDate.getDay();
+
+      // Obtener los horarios para ese día
+      const daySchedules = doctorSchedules.filter(
+        (s) => dayNameToNumber[s.day.toLowerCase()] === dayOfWeek
+      );
+
+      // Crear un array de rangos permitidos en formato { from: Date, to: Date }
+      const allowedTimeRanges = daySchedules.map((schedule) => {
+        // Crear fechas basadas en selectedDate para start y end time
+        const [startHour, startMinute] = schedule.start_time
+          .split(":")
+          .map(Number);
+        const [endHour, endMinute] = schedule.end_time.split(":").map(Number);
+
+        const from = new Date(selectedDate);
+        from.setHours(startHour, startMinute, 0, 0);
+
+        const to = new Date(selectedDate);
+        to.setHours(endHour, endMinute, 0, 0);
+
+        return { from, to };
+      });
+
+      // Configurar la función disable para bloquear horas fuera de los rangos permitidos
+      fp.set("disable", [
+        (date) => {
+          // Deshabilitar si no está en el día de trabajo
+          if (!workingDays.includes(date.getDay())) return true;
+
+          // Para las horas, si la fecha es igual al día seleccionado
+          if (
+            date.toDateString() === selectedDate.toDateString() &&
+            fp.config.enableTime
+          ) {
+            // Verificar si la hora está dentro de algún rango permitido
+            const inAllowedRange = allowedTimeRanges.some(
+              (range) => date >= range.from && date <= range.to
+            );
+            return !inAllowedRange;
+          }
+          return false;
+        },
+      ]);
+    }
+
+    // Limpiar fecha si no corresponde al horario del doctor
     if (appointmentDate.value) {
-      const selectedDate = new Date(appointmentDate.value);
-      if (!workingDays.includes(selectedDate.getDay())) {
+      const selectedDateCheck = new Date(appointmentDate.value);
+      if (!workingDays.includes(selectedDateCheck.getDay())) {
         fp.clear();
       }
     }
-
-    // If no date is selected, automatically select the first available time slot
-    if (!appointmentDate.value) {
-      // Find the next available working day
-      const today = new Date();
-      let nextAvailableDate = new Date(today);
-
-      // Try the next 14 days to find a working day
-      for (let i = 0; i < 14; i++) {
-        if (workingDays.includes(nextAvailableDate.getDay())) {
-          break;
-        }
-        nextAvailableDate.setDate(nextAvailableDate.getDate() + 1);
-      }
-
-      // Get the day name for the available date
-      const dayName = Object.keys(dayNameToNumber).find(
-        (key) => dayNameToNumber[key] === nextAvailableDate.getDay()
-      );
-
-      // Find the schedule for this day
-      const daySchedule = doctorSchedules.find(
-        (s) => s.day.toLowerCase() === dayName
-      );
-
-      if (daySchedule) {
-        // Set the time to the start time of the doctor's schedule
-        const [hours, minutes] = daySchedule.start_time.split(":").map(Number);
-        nextAvailableDate.setHours(hours, minutes, 0, 0);
-
-        // Set the date in the flatpickr
-        fp.setDate(nextAvailableDate);
-      }
-    }
   }
+
   updateEnabledDays();
 
   appointmentDate.addEventListener("change", function () {
@@ -233,19 +256,37 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("appointmentId")?.value || 0
     );
 
-    const isDuplicate = allAppointments.some(
+    const selectedDateTime = selectedDateStr.slice(0, 16); // formato YYYY-MM-DDTHH:mm
+
+    // Detectar si el paciente ya tiene una cita a esa hora
+    const patientHasConflict = allAppointments.some(
       (appt) =>
-        parseInt(appt.id_doctor) === selectedDoctorId &&
         parseInt(appt.id_patient) === selectedPatientId &&
         appt.id != currentAppointmentId &&
-        appt.appointment_date.slice(0, 16) === selectedDateStr // asumiendo formato YYYY-MM-DDTHH:mm
+        appt.appointment_date.slice(0, 16) === selectedDateTime
     );
 
-    if (isDuplicate) {
-      dateError.textContent =
-        "Ya existe una cita en ese horario para este paciente y doctor.";
+    // Detectar si el doctor ya tiene una cita a esa hora
+    const doctorHasConflict = allAppointments.some(
+      (appt) =>
+        parseInt(appt.id_doctor) === selectedDoctorId &&
+        appt.id != currentAppointmentId &&
+        appt.appointment_date.slice(0, 16) === selectedDateTime
+    );
+
+    if (patientHasConflict || doctorHasConflict) {
+      if (patientHasConflict && doctorHasConflict) {
+        dateError.textContent =
+          "Ya existe una cita para este paciente y este doctor en ese horario.";
+      } else if (patientHasConflict) {
+        dateError.textContent =
+          "Este paciente ya tiene una cita a esa hora con otro doctor.";
+      } else if (doctorHasConflict) {
+        dateError.textContent =
+          "Este doctor ya tiene una cita a esa hora con otro paciente.";
+      }
       dateError.style.display = "inline";
-      appointmentDate.setCustomValidity("Cita duplicada.");
+      appointmentDate.setCustomValidity("Cita en conflicto.");
     } else {
       dateError.style.display = "none";
       appointmentDate.setCustomValidity("");
@@ -314,23 +355,62 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   doctorForm.addEventListener("change", function () {
-    showLoading();
+  showLoading();
 
-    // Actualizar días habilitados (ya existente)
-    updateEnabledDays();
+  updateEnabledDays();
 
-    // Obtener el select del doctor y el input hidden
-    const doctorSelect = document.getElementById("doctor");
-    const nameDoctorInput = document.getElementById("name_doctor");
+  const nameDoctorInput = document.getElementById("name_doctor");
 
-    if (doctorSelect && nameDoctorInput) {
-      const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
-      const fullName = selectedOption.text || "";
-      nameDoctorInput.value = fullName.trim();
-    }
+  if (doctorSelect && nameDoctorInput) {
+    const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
+    const fullName = selectedOption.text || "";
+    nameDoctorInput.value = fullName.trim();
+  }
 
+  // Mostrar horarios disponibles del médico seleccionado
+  const selectedDoctorId = doctorForm.value;
+  const scheduleContainer = document.getElementById("doctorScheduleContainer");
+  const scheduleList = document.getElementById("doctorScheduleList");
+  scheduleList.innerHTML = "";
+
+  if (!selectedDoctorId) {
+    scheduleContainer.style.display = "none";
     hideLoading();
-  });
+    return;
+  }
+
+  const doctorSchedules = window.schedules.filter(
+    (schedule) => schedule.id_doctor == selectedDoctorId
+  );
+
+  // Mapeo de días en inglés a español
+  const diasSemana = {
+    monday: "Lunes",
+    tuesday: "Martes",
+    wednesday: "Miércoles",
+    thursday: "Jueves",
+    friday: "Viernes",
+    saturday: "Sábado",
+    sunday: "Domingo",
+  };
+
+  if (doctorSchedules.length === 0) {
+    scheduleList.innerHTML =
+      "<li>Este médico no tiene horarios disponibles.</li>";
+  } else {
+    doctorSchedules.forEach((schedule) => {
+      const dia = diasSemana[schedule.day.toLowerCase()] || schedule.day;
+      const item = document.createElement("li");
+      item.textContent = `${dia} - ${schedule.start_time} a ${schedule.end_time}`;
+      scheduleList.appendChild(item);
+    });
+  }
+
+  scheduleContainer.style.display = "block";
+
+  hideLoading();
+});
+
 
   if (typeof appointment !== "undefined" && appointment.id_doctor) {
     setTimeout(() => {
@@ -376,6 +456,66 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   updateMedicalAreaName();
+
+  document
+    .getElementById("solicitarCita")
+    .addEventListener("submit", function (event) {
+      // Aquí verificas los campos que quieres validar
+      const curpValue = curpInput.value.trim();
+      const doctorValue = doctorSelect.value;
+      const appointmentValue = appointmentDate.value;
+      const medicalAreaValue = medicalArea.value;
+
+      let formIsValid = true;
+
+      // Limpiar mensajes anteriores
+      curpError.style.display = "none";
+      dateError.style.display = "none";
+
+      // Validar CURP
+      if (!curpValue || !isValidCURP(curpValue.split(" - ")[0])) {
+        curpError.textContent = "Por favor ingresa una CURP válida.";
+        curpError.style.display = "block";
+        formIsValid = false;
+      }
+
+      // Validar especialidad médica
+      if (!medicalAreaValue) {
+        let error = document.getElementById("specialityError");
+        if (!error) {
+          const errorSpan = document.createElement("span");
+          errorSpan.id = "specialityError";
+          errorSpan.style.color = "red";
+          errorSpan.textContent = "Debe seleccionar una especialidad.";
+          medicalArea.parentNode.appendChild(errorSpan);
+        }
+        formIsValid = false;
+      }
+
+      // Validar doctor
+      if (!doctorValue) {
+        let error = document.getElementById("doctorError");
+        if (!error) {
+          const errorSpan = document.createElement("span");
+          errorSpan.id = "doctorError";
+          errorSpan.style.color = "red";
+          errorSpan.textContent = "Debe seleccionar un doctor.";
+          doctorSelect.parentNode.appendChild(errorSpan);
+        }
+        formIsValid = false;
+      }
+
+      // Validar fecha de cita
+      if (!appointmentValue) {
+        dateError.textContent = "Debe seleccionar una fecha válida.";
+        dateError.style.display = "inline";
+        formIsValid = false;
+      }
+
+      if (!formIsValid) {
+        event.preventDefault(); // Previene el envío del formulario si no es válido
+      }
+    });
 });
 
 function getParamsMedical(medicalArea) {
@@ -422,7 +562,8 @@ function filterDoctorsByArea(
     filtered.forEach((doctor) => {
       const option = document.createElement("option");
       option.value = doctor.doctor_id;
-      option.text = doctor.doctor_name + " " + doctor.last_name + " " + doctor.last_name2;
+      option.text =
+        doctor.doctor_name + " " + doctor.last_name + " " + doctor.last_name2;
       doctorSelect.appendChild(option);
     });
 
@@ -443,4 +584,50 @@ function isValidCURP(curp) {
 function updateMedicalAreaName() {
   const selectedOption = speciality.options[speciality.selectedIndex];
   nameMedicalArea.value = selectedOption.text;
+}
+
+function getAvailableTimeSlotsForDate(date, doctorId) {
+  const dayOfWeek = date
+    .toLocaleDateString("en-US", { weekday: "long" })
+    .toLowerCase();
+  const schedulesForDay = schedules.filter(
+    (s) =>
+      parseInt(s.id_doctor) === doctorId && s.day.toLowerCase() === dayOfWeek
+  );
+
+  const appointmentsForDoctor = allAppointments.filter(
+    (appt) =>
+      parseInt(appt.id_doctor) === doctorId &&
+      appt.appointment_date.startsWith(date.toISOString().slice(0, 10))
+  );
+
+  const bookedTimes = appointmentsForDoctor.map((appt) =>
+    appt.appointment_date.slice(11, 16)
+  );
+
+  const timeSlots = [];
+
+  schedulesForDay.forEach((s) => {
+    const [startH, startM] = s.start_time.split(":").map(Number);
+    const [endH, endM] = s.end_time.split(":").map(Number);
+
+    let start = new Date(date);
+    start.setHours(startH, startM, 0, 0);
+    let end = new Date(date);
+    end.setHours(endH, endM, 0, 0);
+
+    while (start < end) {
+      const hours = start.getHours().toString().padStart(2, "0");
+      const minutes = start.getMinutes().toString().padStart(2, "0");
+      const timeStr = `${hours}:${minutes}`;
+
+      if (!bookedTimes.includes(timeStr)) {
+        timeSlots.push(timeStr);
+      }
+
+      start.setMinutes(start.getMinutes() + 30);
+    }
+  });
+
+  return timeSlots;
 }

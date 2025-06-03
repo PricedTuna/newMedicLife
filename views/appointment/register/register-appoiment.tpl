@@ -60,7 +60,7 @@
                     <div class="form-group">
                         <label for="patientId">Número de identificación del paciente</label>
                         <input type="text" name="id_patient" id="patientId" value="{$appointment.id_patient|default:''}"
-                            required>
+                            readonly required>
                     </div>
 
                     {* Aquí se envía el email del paciente para notificarlo por correo electrónico *}
@@ -73,7 +73,7 @@
                         <label for="name">Nombre del paciente</label>
                         <input type="text" name="patientName" id="patientName" placeholder="Nombre completo"
                             value="{$appointment.patient_name|default:''} {$appointment.last_name|default:''} {$appointment.last_name2|default:''}"
-                            required></input>
+                            readonly required></input>
                     </div>
 
                     <div class="form-group">
@@ -98,6 +98,12 @@
                         </select>
                     </div>
 
+                    <div class="form-group" id="doctorScheduleContainer" style="display: none;">
+                        <label>Horarios disponibles del médico</label>
+                        <ul id="doctorScheduleList" style="padding-left: 20px;"></ul>
+                    </div>
+
+
                     <input type="hidden" id="name_doctor" name="name_doctor"
                         value="{$appointment.name_doctor|default:''} {$appointment.doctor_last_name|default:''} {$appointment.doctor_last_name2|default:''}"
                         required>
@@ -116,7 +122,7 @@
             </div>
         </div>
     </main>
-
+    <script src="/views/appointment/register/validate.js"></script>
 </body>
 
 </html>

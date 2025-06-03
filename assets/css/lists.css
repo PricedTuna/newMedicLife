@@ -9,6 +9,13 @@
   width: 100%;
   overflow-x: auto;
   position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin-bottom: 20px;
+}
+
+.table-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Table styles */
@@ -33,11 +40,15 @@ thead th {
 tbody tr {
   padding: 10px 0;
   border-bottom: 1px solid var(--line-clr);
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  position: relative;
 }
 
 tbody tr:hover {
   background-color: var(--light-clr);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1;
 }
 
 tbody td {
@@ -75,6 +86,12 @@ tr[data-status="F"] {
   max-width: 95%;
   flex-wrap: wrap;
   align-items: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.filter-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .filter-container input[type="text"] {
@@ -144,6 +161,35 @@ tr[data-status="F"] {
   padding: 2rem;
 }
 
+.table-header h1 {
+  font-size: 1.5em;
+  color: var(--accent-clr);
+  position: relative;
+  display: inline-block;
+  padding-bottom: 5px;
+  transition: all 0.3s ease;
+}
+
+.table-header h1::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--accent-clr);
+  transition: width 0.5s ease;
+}
+
+.table-header h1:hover {
+  transform: translateY(-2px);
+  text-shadow: 0 2px 4px rgba(94, 99, 255, 0.3);
+}
+
+.table-header h1:hover::after {
+  width: 100%;
+}
+
 /* Actions column */
 .actions-td {
   display: flex;
@@ -174,6 +220,85 @@ tr[data-status="F"] {
   justify-content: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   margin-left: 10px;
+}
+
+/* Button styles */
+.delete-btn,
+.update-btn,
+.view-btn {
+  flex: 1;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.delete-btn::before,
+.update-btn::before,
+.view-btn::before,
+.create-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.4s ease;
+}
+
+.delete-btn:hover::before,
+.update-btn:hover::before,
+.view-btn:hover::before,
+.create-btn:hover::before {
+  left: 100%;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.update-btn {
+  background-color: #3498db;
+}
+
+.update-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.view-btn {
+  background-color: #2ecc71;
+}
+
+.view-btn:hover {
+  background-color: #27ae60;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.create-btn {
+  background-color: #9b59b6;
+}
+
+.create-btn:hover {
+  background-color: #8e44ad;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Responsive styles */

@@ -2,7 +2,7 @@
 // Estado Global
 // ===========================
 
-let currentStep = 3; // Guarda el paso actual del formulario
+let currentStep = 1; // Guarda el paso actual del formulario
 
 // ===========================
 // Funciones de Visualización

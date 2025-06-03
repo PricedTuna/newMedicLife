@@ -1,7 +1,8 @@
 <input type="hidden" name="emergency_contacts_id" value="{$emergencyContacts.id|default:''}">
 
 <div class="form-step" id="step-4">
-    <h2 class="formSubtitle">Contacto de emergencía</h1>
+    <h2 class="formSubtitle">Contacto de Emergencia</h2>
+    <p class="form-description">Por favor, proporcione la información de una persona a quien podamos contactar en caso de emergencia.</p>
     <div class="form-group">
         <label for="contactFirstName">Nombre del Contacto</label>
         <input type="text" id="contactFirstName"  value="{$emergencyContacts.names|default:''}" name="ec_name" required>

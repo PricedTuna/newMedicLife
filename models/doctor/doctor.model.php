@@ -51,6 +51,7 @@ class DoctorModel {
         $this->validateRegex($data['CP'], '/^\d{5}$/', 'código postal');
         $this->validateField($data['street'], 50, 'calle');
         $this->validateField($data['external_number'], 8, 'número exterior');
+        $this->validateRegex($data['external_number'], '/^\d+$/', 'número exterior (solo números)');
         $this->validateField($data['neighborhood'], 50, 'colonia');
         $this->validateField($data['insurance_number'], 20, 'número de afiliación');
         $this->validateField($data['professional_id'], 15, 'cédula profesional');
@@ -63,6 +64,7 @@ class DoctorModel {
 
         if (!empty($data['internal_number'])) {
             $this->validateField($data['internal_number'], 8, 'número interior');
+            $this->validateRegex($data['internal_number'], '/^\d+$/', 'número interior (solo números)');
         }
 
         // Validación de unicidad
@@ -77,8 +79,12 @@ class DoctorModel {
      * @param array $data Datos a actualizar.
      * @param string|null $photoData Datos binarios de la foto.
      * @param bool $updatePhoto Indica si se debe actualizar la foto.
+     * @throws Exception Si los datos no son válidos o el doctor no existe
      */
     public function updateDoctor($doctorId, $data, $photoData, $updatePhoto = false) {
+        // Validar los datos antes de actualizarlos
+        $this->validateData($data, $doctorId);
+
         // Verifica que el doctor exista
         $stmt = $this->pdo->prepare("SELECT id FROM doctors WHERE id = :doctor_id");
         $stmt->execute([':doctor_id' => $doctorId]);
@@ -141,8 +147,12 @@ class DoctorModel {
      * @param array $data Datos del doctor.
      * @param string|null $photoData Datos binarios de la foto.
      * @return int ID del nuevo doctor.
+     * @throws Exception Si los datos no son válidos
      */
     public function createDoctor($data, $photoData) {
+        // Validar los datos antes de guardarlos
+        $this->validateData($data);
+
         $stmt = $this->pdo->prepare("INSERT INTO doctors (
             names, last_name, last_name2, id_state, id_municipality, id_locality,
             CP, street, external_number, internal_number, neighborhood, insurance_number,

@@ -107,9 +107,13 @@ class PatientModel
      * @param int $doctorId ID del paciente.
      * @param array $data Datos a actualizar.
      * @param string|null $photoData Datos binarios de la foto.
+     * @throws Exception Si los datos no son válidos o el paciente no existe
      */
     public function updatePatient($patientId, $data, $photoData)
     {
+        // Validar los datos antes de actualizarlos
+        $this->validatePatientData($data);
+
         // Verifica que el paciente exista
         $stmt = $this->pdo->prepare("SELECT id FROM patients WHERE id = :patient_id");
         $stmt->execute([':patient_id' => $patientId]);
@@ -117,46 +121,131 @@ class PatientModel
             throw new Exception("El paciente con ID $patientId no existe.");
         }
 
-        $stmt = $this->pdo->prepare("UPDATE patients SET
-            names = :names, last_name = :last_name, last_name2 = :last_name2,
-            id_state = :id_state, id_municipality = :id_municipality, id_locality = :id_locality,
-            CP = :CP, street = :street, external_number = :external_number, internal_number = :internal_number,
-            neighborhood = :neighborhood, insurance_number = :insurance_number,
-            birth_date = :birth_date, CURP = :CURP, RFC = :RFC, phone = :phone,photo = :photo,
-            email = :email, gender = :gender, weight = :weight, height = :height, blood_type = :blood_type,
-            id_emergency_contact = :id_emergency_contact, marital_status = :marital_status, ethnic_group = :ethnic_group, religion = :religion,
-            status = :status
-            WHERE id = :patient_id");
-        $stmt->execute([
-            ':names'             => $data['names'],
-            ':last_name'         => $data['last_name'],
-            ':last_name2'        => $data['last_name2'],
-            ':id_state'          => $data['id_state'],
-            ':id_municipality'   => $data['id_municipality'],
-            ':id_locality'       => $data['id_locality'],
-            ':CP'                => $data['CP'],
-            ':street'            => $data['street'],
-            ':external_number'   => $data['external_number'],
-            ':internal_number'   => $data['internal_number'],
-            ':neighborhood'      => $data['neighborhood'],
-            ':insurance_number'  => $data['insurance_number'],
-            ':birth_date'        => $data['birth_date'],
-            ':CURP'              => $data['CURP'],
-            ':RFC'               => $data['RFC'],
-            ':phone'             => $data['phone'],
-            ':photo'             => $photoData,
-            ':email'             => $data['email'],
-            ':gender'            => $data['gender'],
-            ':weight'            => $data['weight'],
-            ':height'            => $data['height'],
-            ':blood_type'        => $data['blood_type'],
-            ':id_emergency_contact'  => $data['id_emergency_contact'],
-            ':marital_status'    => $data['marital_status'],
-            ':ethnic_group'      => $data['ethnic_group'],
-            ':religion'          => $data['religion'],
-            ':status'            => 'A',
-            ':patient_id'         => $patientId
-        ]);
+        // Si no se proporciona una nueva foto, mantener la existente
+        if ($photoData === null) {
+            $sql = "UPDATE patients SET
+                names = :names, last_name = :last_name, last_name2 = :last_name2,
+                id_state = :id_state, id_municipality = :id_municipality, id_locality = :id_locality,
+                CP = :CP, street = :street, external_number = :external_number, internal_number = :internal_number,
+                neighborhood = :neighborhood, insurance_number = :insurance_number,
+                birth_date = :birth_date, CURP = :CURP, RFC = :RFC, phone = :phone,
+                email = :email, gender = :gender, weight = :weight, height = :height, blood_type = :blood_type,
+                id_emergency_contact = :id_emergency_contact, marital_status = :marital_status, ethnic_group = :ethnic_group, religion = :religion,
+                status = :status
+                WHERE id = :patient_id";
+
+            $params = [
+                ':names'             => $data['names'],
+                ':last_name'         => $data['last_name'],
+                ':last_name2'        => $data['last_name2'],
+                ':id_state'          => $data['id_state'],
+                ':id_municipality'   => $data['id_municipality'],
+                ':id_locality'       => $data['id_locality'],
+                ':CP'                => $data['CP'],
+                ':street'            => $data['street'],
+                ':external_number'   => $data['external_number'],
+                ':internal_number'   => $data['internal_number'],
+                ':neighborhood'      => $data['neighborhood'],
+                ':insurance_number'  => $data['insurance_number'],
+                ':birth_date'        => $data['birth_date'],
+                ':CURP'              => $data['CURP'],
+                ':RFC'               => $data['RFC'],
+                ':phone'             => $data['phone'],
+                ':email'             => $data['email'],
+                ':gender'            => $data['gender'],
+                ':weight'            => $data['weight'],
+                ':height'            => $data['height'],
+                ':blood_type'        => $data['blood_type'],
+                ':id_emergency_contact'  => $data['id_emergency_contact'],
+                ':marital_status'    => $data['marital_status'],
+                ':ethnic_group'      => $data['ethnic_group'],
+                ':religion'          => $data['religion'],
+                ':status'            => 'A',
+                ':patient_id'        => $patientId
+            ];
+        } else {
+            // Si se proporciona una nueva foto, actualizarla
+            $sql = "UPDATE patients SET
+                names = :names, last_name = :last_name, last_name2 = :last_name2,
+                id_state = :id_state, id_municipality = :id_municipality, id_locality = :id_locality,
+                CP = :CP, street = :street, external_number = :external_number, internal_number = :internal_number,
+                neighborhood = :neighborhood, insurance_number = :insurance_number,
+                birth_date = :birth_date, CURP = :CURP, RFC = :RFC, phone = :phone, photo = :photo,
+                email = :email, gender = :gender, weight = :weight, height = :height, blood_type = :blood_type,
+                id_emergency_contact = :id_emergency_contact, marital_status = :marital_status, ethnic_group = :ethnic_group, religion = :religion,
+                status = :status
+                WHERE id = :patient_id";
+
+            $params = [
+                ':names'             => $data['names'],
+                ':last_name'         => $data['last_name'],
+                ':last_name2'        => $data['last_name2'],
+                ':id_state'          => $data['id_state'],
+                ':id_municipality'   => $data['id_municipality'],
+                ':id_locality'       => $data['id_locality'],
+                ':CP'                => $data['CP'],
+                ':street'            => $data['street'],
+                ':external_number'   => $data['external_number'],
+                ':internal_number'   => $data['internal_number'],
+                ':neighborhood'      => $data['neighborhood'],
+                ':insurance_number'  => $data['insurance_number'],
+                ':birth_date'        => $data['birth_date'],
+                ':CURP'              => $data['CURP'],
+                ':RFC'               => $data['RFC'],
+                ':phone'             => $data['phone'],
+                ':photo'             => $photoData,
+                ':email'             => $data['email'],
+                ':gender'            => $data['gender'],
+                ':weight'            => $data['weight'],
+                ':height'            => $data['height'],
+                ':blood_type'        => $data['blood_type'],
+                ':id_emergency_contact'  => $data['id_emergency_contact'],
+                ':marital_status'    => $data['marital_status'],
+                ':ethnic_group'      => $data['ethnic_group'],
+                ':religion'          => $data['religion'],
+                ':status'            => 'A',
+                ':patient_id'        => $patientId
+            ];
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+    }
+
+    /**
+     * Valida los datos del paciente antes de guardarlos
+     * @param array $data Datos del paciente a validar
+     * @throws Exception Si los datos no son válidos
+     */
+    private function validatePatientData($data)
+    {
+        // Validar teléfono (debe tener exactamente 10 dígitos)
+        if (isset($data['phone']) && !empty($data['phone'])) {
+            if (!preg_match('/^\d{10}$/', $data['phone'])) {
+                throw new Exception('El número de teléfono debe tener exactamente 10 dígitos');
+            }
+        }
+
+        // Validar código postal (debe tener exactamente 5 dígitos)
+        if (isset($data['CP']) && !empty($data['CP'])) {
+            if (!preg_match('/^\d{5}$/', $data['CP'])) {
+                throw new Exception('El código postal debe tener exactamente 5 dígitos');
+            }
+        }
+
+        // Validar número exterior (debe contener solo números)
+        if (isset($data['external_number']) && !empty($data['external_number'])) {
+            if (!preg_match('/^\d+$/', $data['external_number'])) {
+                throw new Exception('El número exterior debe contener solo números');
+            }
+        }
+
+        // Validar número interior (debe contener solo números)
+        if (isset($data['internal_number']) && !empty($data['internal_number'])) {
+            if (!preg_match('/^\d+$/', $data['internal_number'])) {
+                throw new Exception('El número interior debe contener solo números');
+            }
+        }
     }
 
     /**
@@ -164,9 +253,13 @@ class PatientModel
      * @param array $data Datos del pacientes.
      * @param string|null $photoData Datos binarios de la foto.
      * @return int ID del nuevo paciente.
+     * @throws Exception Si los datos no son válidos
      */
     public function createPatient($data, $photoData)
     {
+        // Validar los datos antes de guardarlos
+        $this->validatePatientData($data);
+
         $stmt = $this->pdo->prepare("INSERT INTO patients (
             names, last_name, last_name2, id_state, id_municipality, id_locality,
             CP, street, external_number, internal_number, neighborhood, insurance_number,
@@ -249,6 +342,36 @@ class PatientModel
         } catch (PDOException $e) {
             error_log("Error al buscar paciente por CURP: " . $e->getMessage());
             return null;
+        }
+    }
+
+    /**
+     * Busca pacientes por CURP o nombre
+     * @param string $searchTerm Término de búsqueda (CURP o parte del nombre)
+     * @return array Lista de pacientes que coinciden con la búsqueda
+     */
+    public function searchPatients($searchTerm)
+    {
+        try {
+            // Preparar el término de búsqueda para usar en LIKE
+            $searchParam = '%' . $searchTerm . '%';
+
+            // Buscar por CURP, nombres o apellidos
+            $sql = "SELECT * FROM patients 
+                    WHERE (CURP LIKE :search 
+                    OR names LIKE :search 
+                    OR last_name LIKE :search 
+                    OR last_name2 LIKE :search) 
+                    AND status != 'I'
+                    ORDER BY names, last_name, last_name2";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':search' => $searchParam]);
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al buscar pacientes: " . $e->getMessage());
+            return [];
         }
     }
 }

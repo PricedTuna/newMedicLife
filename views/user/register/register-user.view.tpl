@@ -10,6 +10,12 @@
     <script src="/views/components/sidebar.app.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Registro de Usuarios | Medic Life</title>
+    <style>
+        .required {
+            color: red;
+            margin-left: 2px;
+        }
+    </style>
 </head>
 
 <body>
@@ -60,7 +66,7 @@
                     {/if}
                     {if !$passwordChangeMode}
                     <div class="form-group">
-                        <label for="role">Rol</label>
+                        <label for="role">Rol <span class="required">*</span></label>
                         <select id="role" name="role" required>
                             <option value="S" {if $editMode && $userData.role == 'S'}selected{/if}>Administración</option>
                             <option value="A" {if $editMode && $userData.role == 'A'}selected{/if}>Administrador</option>
@@ -69,7 +75,7 @@
                     </div>
 
                     <div class="form-group" id="doctor-select-container" style="display: none;">
-                        <label for="id_doctor">Seleccionar doctor</label>
+                        <label for="id_doctor">Seleccionar doctor <span class="required">*</span></label>
                         <select id="id_doctor" name="id_doctor">
                             <option value="">Seleccione un doctor</option>
                             {foreach from=$doctors item=doctor}
@@ -78,11 +84,11 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="name">Nombre completo</label>
+                        <label for="name">Nombre completo <span class="required">*</span></label>
                         <input type="text" id="name" name="name" placeholder="Nombre completo" value="{if $editMode}{$userData.name}{/if}" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Correo Electrónico</label>
+                        <label for="email">Correo Electrónico <span class="required">*</span></label>
                         <input type="email" id="email" name="email" placeholder="Correo electrónico" value="{if $editMode}{$userData.email}{/if}" required>
                     </div>
                     {else}
@@ -98,13 +104,13 @@
                     </div>
                     {/if}
                     <div class="form-group">
-                        <label for="password">Contraseña</label>
+                        <label for="password">Contraseña {if !$editMode || $passwordChangeMode}<span class="required">*</span>{/if}</label>
                         <input type="password" id="password" name="password" placeholder="Contraseña" {if !$editMode || $passwordChangeMode}required{/if} onblur="validatePassword()">
                         <div id="password-error" class="error-message" style="color: red; display: none;"></div>
                         {if $editMode && !$passwordChangeMode}<small style="color: #666;">Dejar en blanco para mantener la contraseña actual</small>{/if}
                     </div>
                     <div class="form-group">
-                        <label for="confirm_password">Confirmar Contraseña</label>
+                        <label for="confirm_password">Confirmar Contraseña {if !$editMode || $passwordChangeMode}<span class="required">*</span>{/if}</label>
                         <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" {if !$editMode || $passwordChangeMode}required{/if} onblur="validatePasswordMatch()">
                         <div id="confirm-password-error" class="error-message" style="color: red; display: none;"></div>
                     </div>

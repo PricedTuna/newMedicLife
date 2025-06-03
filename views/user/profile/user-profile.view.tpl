@@ -10,6 +10,51 @@
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <title>Perfil de usuario | Medic Life</title>
+    <style>
+        .required {
+            color: red;
+            margin-left: 2px;
+        }
+        .info-tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            cursor: help;
+        }
+        .info-tooltip i {
+            color: #007bff;
+        }
+        .info-tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .info-tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+        .info-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Helper functions for form validation
@@ -277,12 +322,12 @@
                                 <input type="hidden" name="user_id" value="{$user.id}">
 
                                 <div class="form-group">
-                                    <label for="name">Nombre:</label>
+                                    <label for="name">Nombre: <span class="required">*</span></label>
                                     <input type="text" id="name" name="name" value="{$user.name}" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email">Correo Electrónico:</label>
+                                    <label for="email">Correo Electrónico: <span class="required">*</span></label>
                                     <input type="email" id="email" name="email" value="{$user.email}" required>
                                 </div>
 
@@ -309,12 +354,12 @@
                                 <input type="hidden" name="user_id" value="{$user.id}">
 
                                 <div class="form-group">
-                                    <label for="current_password">Contraseña Actual:</label>
+                                    <label for="current_password">Contraseña Actual: <span class="required">*</span></label>
                                     <input type="password" id="current_password" name="current_password" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="new_password">Nueva Contraseña:</label>
+                                    <label for="new_password">Nueva Contraseña: <span class="required">*</span></label>
                                     <input type="password" id="new_password" name="new_password" required>
                                     <div class="password-requirements">
                                         <small>La contraseña debe tener al menos 8 caracteres</small>
@@ -322,7 +367,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="confirm_password">Confirmar Contraseña:</label>
+                                    <label for="confirm_password">Confirmar Contraseña: <span class="required">*</span></label>
                                     <input type="password" id="confirm_password" name="confirm_password" required>
                                 </div>
 
@@ -356,9 +401,12 @@
                                         <input type="hidden" name="doctor_id" value="{$doctorData.id}">
                                         <div class="form-group">
                                             <label for="doctor-photo-profile" class="file-label" id="photo-label">
-                                                <i class="bi bi-cloud-arrow-up"></i> Subir Foto
+                                                <i class="bi bi-cloud-arrow-up"></i> Subir Foto <span class="required">*</span>
                                             </label>
                                             <input type="file" id="doctor-photo-profile" name="doctor_photo" accept="image/*" required style="display: none;">
+                                            <div class="photo-requirements">
+                                                <small><span class="required">*</span> La foto de perfil es obligatoria</small>
+                                            </div>
                                             <div id="doctor-image-preview-container" class="image-preview-container">
                                                 <img id="image-preview" class="image-preview" src="" alt="Vista previa" style="display: none;">
                                                 <div id="preview-placeholder" class="preview-placeholder">

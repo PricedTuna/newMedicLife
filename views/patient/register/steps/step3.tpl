@@ -27,11 +27,11 @@
 
     <div class="form-group">
         <label for="weight">Peso (kg) <span class="required">*</span></label>
-        <input type="number" id="weight" value="{$patient.weight|default: ''}" name="weight" required>
+        <input type="number" id="weight" value="{$patient.weight|default: ''}" name="weight" required step="0.01" min="0" max="999.99" oninput="validateWeight(this);">
     </div>
     <div class="form-group">
         <label for="height">Altura (cm) <span class="required">*</span></label>
-        <input type="number" id="height" value="{$patient.height|default: ''}" name="height" required>
+        <input type="number" id="height" value="{$patient.height|default: ''}" name="height" required step="0.01" min="0" max="300" oninput="validateHeight(this);">
     </div>
     <div class="form-group">
         <label for="ethnicGroup">Grupo Étnico
@@ -40,7 +40,7 @@
                 <span class="tooltip-text">Información sobre el grupo étnico al que pertenece el paciente. Este dato es importante para considerar factores de riesgo específicos.</span>
             </span>
         </label>
-        <input type="text" id="ethnicGroup" value="{$patient.ethnic_group|default: ''}" name="ethnic_group">
+        <input type="text" id="ethnicGroup" value="{$patient.ethnic_group|default: ''}" name="ethnic_group" maxlength="50">
     </div>
     <div class="form-group">
         <label for="religion">Religión
@@ -49,7 +49,7 @@
                 <span class="tooltip-text">Información sobre la religión del paciente. Este dato puede ser relevante para ciertas decisiones médicas y consideraciones de tratamiento.</span>
             </span>
         </label>
-        <input type="text" id="religion" value="{$patient.religion|default: ''}" name="religion">
+        <input type="text" id="religion" value="{$patient.religion|default: ''}" name="religion" maxlength="50">
     </div>
     <button type="button" class="prev-btn" onclick="prevStep(2)">Atrás</button>
     <button type="button" class="next-btn" onclick="nextStep(4)">Siguiente</button>

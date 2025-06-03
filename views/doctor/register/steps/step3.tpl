@@ -1,21 +1,28 @@
 <div class="form-step" id="step-3" style="display: none;">
+<style>
+    .required {
+        color: red;
+        margin-left: 2px;
+    }
+</style>
     <div class="form-group">
         <label for="curp">CURP</label>
-        <input type="text" id="curp" name="curp" value="{$doctor.CURP|default:''}" required>
+        <input type="text" id="curp" name="curp" value="{$doctor.CURP|default:''}" required maxlength="18">
     </div>
     <div class="form-group">
         <label for="rfc">RFC</label>
-        <input type="text" id="rfc" name="rfc" value="{$doctor.RFC|default:''}" required>
+        <input type="text" id="rfc" name="rfc" value="{$doctor.RFC|default:''}" required maxlength="13">
     </div>
     <div class="form-group">
         <label for="affiliationNumber">Número de Afiliación</label>
         <input type="text" id="affiliationNumber" name="affiliationNumber" value="{$doctor.insurance_number|default:''}"
-            required>
+            required maxlength="20">
     </div>
     <div class="form-group">
-        <label for="professionalLicense">Cédula Profesional</label>
+        <label for="professionalLicense">Cédula Profesional <span class="required">*</span></label>
         <input type="text" id="professionalLicense" name="professionalLicense"
-            value="{$doctor.professional_id|default:''}" required>
+            value="{$doctor.professional_id|default:''}" required maxlength="15">
+        <div id="professionalLicense-error" class="error-message" style="color: red; display: none;"></div>
     </div>
 
     <div class="form-group">
@@ -71,9 +78,12 @@
 
     <div class="form-group">
         <label for="photo" class="file-label" id="photo-label">
-            <i class="bi bi-cloud-arrow-up"></i> Subir Foto
+            <i class="bi bi-cloud-arrow-up"></i> Subir Foto <span class="required">*</span>
         </label>
         <input type="file" id="photo" name="photo" accept="image/*" {if !$doctor}required{/if} style="display: none;">
+        <div class="photo-requirements">
+            <small><span class="required">*</span> La foto de perfil es obligatoria</small>
+        </div>
         <div id="doctor-image-preview-container" class="image-preview-container">
             <img id="doctor-image-preview" class="image-preview"
                 src="{if $doctor}/controllers/doctor/mostrar_foto.php?id={$doctor.id}{/if}" alt="Vista previa"

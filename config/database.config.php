@@ -4,7 +4,7 @@
 $host     = "localhost:3306";
 $dbname   = "medic_life";
 $username = "root";
-$password = "Root";
+$password = "root";
 
 // Variable global para la conexión
 $GLOBALS['pdo'] = null;

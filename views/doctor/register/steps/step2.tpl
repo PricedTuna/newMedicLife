@@ -1,23 +1,23 @@
 <div class="form-step" id="step-2" style="display: none;">
     <div class="form-group">
         <label for="street">Calle</label>
-        <input type="text" id="street" name="street" value="{$doctor.street|default:''}" required>
+        <input type="text" id="street" name="street" value="{$doctor.street|default:''}" required maxlength="30">
     </div>
     <div class="form-group">
         <label for="neighborhood">Colonia</label>
-        <input type="text" id="neighborhood" name="neighborhood" value="{$doctor.neighborhood|default:''}" required>
+        <input type="text" id="neighborhood" name="neighborhood" value="{$doctor.neighborhood|default:''}" required maxlength="30">
     </div>
     <div class="form-group">
         <label for="postalCode">Código Postal</label>
-        <input type="number" id="postalCode" name="postalCode" value="{$doctor.CP|default:''}" required>
+        <input type="number" id="postalCode" name="postalCode" value="{$doctor.CP|default:''}" required maxlength="5" oninput="if(this.value.length > 5) this.value = this.value.slice(0, 5);">
     </div>
     <div class="form-group">
         <label for="extNumber">Número Exterior</label>
-        <input type="text" id="extNumber" name="extNumber" value="{$doctor.external_number|default:''}" required>
+        <input type="text" id="extNumber" name="extNumber" value="{$doctor.external_number|default:''}" required maxlength="10">
     </div>
     <div class="form-group">
         <label for="intNumber">Número Interior (Opcional)</label>
-        <input type="text" id="intNumber" name="intNumber" value="{$doctor.internal_number|default:''}">
+        <input type="text" id="intNumber" name="intNumber" value="{$doctor.internal_number|default:''}" maxlength="10">
     </div>
     <div class="form-group">
         <label for="state">Estado</label>

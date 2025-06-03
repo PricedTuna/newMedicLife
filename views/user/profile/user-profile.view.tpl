@@ -87,6 +87,26 @@
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return emailRegex.test(email);
             }
+
+            function validateNameLength(input) {
+                clearInputError(input);
+
+                if (input.value.length > 30) {
+                    showInputError(input, 'El campo nombre supera la longitud máxima de 30 caracteres.');
+                    return false;
+                }
+                return true;
+            }
+
+            function validateEmailLength(input) {
+                clearInputError(input);
+
+                if (input.value.length > 100) {
+                    showInputError(input, 'El correo electrónico supera la longitud máxima de 100 caracteres.');
+                    return false;
+                }
+                return true;
+            }
             // Photo preview functionality
             const fileInput = document.getElementById('doctor-photo-profile');
             const imagePreview = document.getElementById('image-preview');
@@ -123,6 +143,32 @@
                     profileInfoView.style.display = 'none';
                     profileEditForm.style.display = 'block';
                     editProfileBtn.style.display = 'none';
+
+                    // Add real-time validation for name field
+                    const nameInput = document.getElementById('name');
+                    if (nameInput) {
+                        nameInput.addEventListener('input', function() {
+                            if (this.value.length > 30) {
+                                showInputError(this, 'El campo nombre supera la longitud máxima de 30 caracteres.');
+                                // Truncar el valor a 30 caracteres
+                                this.value = this.value.slice(0, 30);
+                            } else {
+                                clearInputError(this);
+                            }
+                        });
+                    }
+
+                    // Add real-time validation for email field
+                    const emailInput = document.getElementById('email');
+                    if (emailInput) {
+                        emailInput.addEventListener('input', function() {
+                            if (this.value.length > 100) {
+                                showInputError(this, 'El correo electrónico supera la longitud máxima de 100 caracteres.');
+                            } else {
+                                clearInputError(this);
+                            }
+                        });
+                    }
                 });
 
                 // Toggle back to view mode
@@ -143,6 +189,9 @@
                     if (!nameInput.value.trim()) {
                         showInputError(nameInput, 'El nombre es obligatorio');
                         isValid = false;
+                    } else if (nameInput.value.length > 30) {
+                        showInputError(nameInput, 'El campo nombre supera la longitud máxima de 30 caracteres');
+                        isValid = false;
                     } else {
                         clearInputError(nameInput);
                     }
@@ -153,6 +202,9 @@
                         isValid = false;
                     } else if (!isValidEmail(emailInput.value.trim())) {
                         showInputError(emailInput, 'El correo electrónico no es válido');
+                        isValid = false;
+                    } else if (emailInput.value.length > 100) {
+                        showInputError(emailInput, 'El correo electrónico supera la longitud máxima de 100 caracteres');
                         isValid = false;
                     } else {
                         clearInputError(emailInput);
@@ -323,12 +375,14 @@
 
                                 <div class="form-group">
                                     <label for="name">Nombre: <span class="required">*</span></label>
-                                    <input type="text" id="name" name="name" value="{$user.name}" required>
+                                    <input type="text" id="name" name="name" value="{$user.name}" required maxlength="30" onblur="validateNameLength(this)">
+                                    <div id="name-error" class="error-message" style="display: none;"></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="email">Correo Electrónico: <span class="required">*</span></label>
-                                    <input type="email" id="email" name="email" value="{$user.email}" required>
+                                    <input type="email" id="email" name="email" value="{$user.email}" required maxlength="100" onblur="validateEmailLength(this)">
+                                    <div id="email-error" class="error-message" style="display: none;"></div>
                                 </div>
 
                                 <div class="form-actions">
@@ -355,20 +409,20 @@
 
                                 <div class="form-group">
                                     <label for="current_password">Contraseña Actual: <span class="required">*</span></label>
-                                    <input type="password" id="current_password" name="current_password" required>
+                                    <input type="password" id="current_password" name="current_password" required maxlength="50">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="new_password">Nueva Contraseña: <span class="required">*</span></label>
-                                    <input type="password" id="new_password" name="new_password" required>
+                                    <input type="password" id="new_password" name="new_password" required maxlength="50">
                                     <div class="password-requirements">
-                                        <small>La contraseña debe tener al menos 8 caracteres</small>
+                                        <small>La contraseña debe tener al menos 8 caracteres y no exceder 50 caracteres</small>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="confirm_password">Confirmar Contraseña: <span class="required">*</span></label>
-                                    <input type="password" id="confirm_password" name="confirm_password" required>
+                                    <input type="password" id="confirm_password" name="confirm_password" required maxlength="50">
                                 </div>
 
                                 <div class="form-actions">

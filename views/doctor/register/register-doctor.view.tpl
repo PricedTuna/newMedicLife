@@ -14,6 +14,12 @@
     <script src="/views/doctor/register/register-doctor.app.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Registro de Médicos</title>
+    <style>
+        .required {
+            color: red;
+            margin-left: 2px;
+        }
+    </style>
 
     <script>
         window.municipalities = {$municipalities|json_encode};

@@ -85,11 +85,13 @@
                     </div>
                     <div class="form-group">
                         <label for="name">Nombre completo <span class="required">*</span></label>
-                        <input type="text" id="name" name="name" placeholder="Nombre completo" value="{if $editMode}{$userData.name}{/if}" required>
+                        <input type="text" id="name" name="name" placeholder="Nombre completo" value="{if $editMode}{$userData.name}{/if}" required maxlength="30" onblur="validateNameLength(this)">
+                        <div id="name-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
                     <div class="form-group">
                         <label for="email">Correo Electrónico <span class="required">*</span></label>
-                        <input type="email" id="email" name="email" placeholder="Correo electrónico" value="{if $editMode}{$userData.email}{/if}" required>
+                        <input type="email" id="email" name="email" placeholder="Correo electrónico" value="{if $editMode}{$userData.email}{/if}" required maxlength="100" onblur="validateEmailLength(this)">
+                        <div id="email-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
                     {else}
                     <input type="hidden" name="name" value="{$userData.name}">
@@ -105,13 +107,13 @@
                     {/if}
                     <div class="form-group">
                         <label for="password">Contraseña {if !$editMode || $passwordChangeMode}<span class="required">*</span>{/if}</label>
-                        <input type="password" id="password" name="password" placeholder="Contraseña" {if !$editMode || $passwordChangeMode}required{/if} onblur="validatePassword()">
+                        <input type="password" id="password" name="password" placeholder="Contraseña" {if !$editMode || $passwordChangeMode}required{/if} maxlength="50" onblur="validatePassword()">
                         <div id="password-error" class="error-message" style="color: red; display: none;"></div>
                         {if $editMode && !$passwordChangeMode}<small style="color: #666;">Dejar en blanco para mantener la contraseña actual</small>{/if}
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirmar Contraseña {if !$editMode || $passwordChangeMode}<span class="required">*</span>{/if}</label>
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" {if !$editMode || $passwordChangeMode}required{/if} onblur="validatePasswordMatch()">
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" {if !$editMode || $passwordChangeMode}required{/if} maxlength="50" onblur="validatePasswordMatch()">
                         <div id="confirm-password-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
                     <button type="submit" class="submit-btn">
@@ -201,6 +203,32 @@
     </main>
 
     <script>
+        function validateNameLength(input) {
+            const nameError = document.getElementById('name-error');
+            nameError.style.display = 'none';
+            nameError.textContent = '';
+
+            if (input.value.length > 30) {
+                nameError.textContent = 'El campo nombre supera la longitud máxima de 30 caracteres.';
+                nameError.style.display = 'block';
+                return false;
+            }
+            return true;
+        }
+
+        function validateEmailLength(input) {
+            const emailError = document.getElementById('email-error');
+            emailError.style.display = 'none';
+            emailError.textContent = '';
+
+            if (input.value.length > 100) {
+                emailError.textContent = 'El correo electrónico supera la longitud máxima de 100 caracteres.';
+                emailError.style.display = 'block';
+                return false;
+            }
+            return true;
+        }
+
         function validatePassword() {
             const passwordInput = document.getElementById('password');
             const passwordError = document.getElementById('password-error');
@@ -216,6 +244,12 @@
 
             if (passwordInput.value.length < 8) {
                 passwordError.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+                passwordError.style.display = 'block';
+                return false;
+            }
+
+            if (passwordInput.value.length > 50) {
+                passwordError.textContent = 'La contraseña supera la longitud máxima de 50 caracteres.';
                 passwordError.style.display = 'block';
                 return false;
             }
@@ -243,19 +277,58 @@
                 return false;
             }
 
+            if (confirmPasswordInput.value.length > 50) {
+                confirmPasswordError.textContent = 'La contraseña supera la longitud máxima de 50 caracteres.';
+                confirmPasswordError.style.display = 'block';
+                return false;
+            }
+
             return true;
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             const userForm = document.getElementById('user-form');
 
+            // Add real-time validation for name field
+            const nameInput = document.getElementById('name');
+            if (nameInput) {
+                nameInput.addEventListener('input', function() {
+                    if (this.value.length > 30) {
+                        document.getElementById('name-error').textContent = 'El campo nombre supera la longitud máxima de 30 caracteres.';
+                        document.getElementById('name-error').style.display = 'block';
+                        // Truncar el valor a 30 caracteres
+                        this.value = this.value.slice(0, 30);
+                    } else {
+                        document.getElementById('name-error').style.display = 'none';
+                    }
+                });
+            }
+
+            // Add real-time validation for email field
+            const emailInput = document.getElementById('email');
+            if (emailInput) {
+                emailInput.addEventListener('input', function() {
+                    if (this.value.length > 100) {
+                        document.getElementById('email-error').textContent = 'El correo electrónico supera la longitud máxima de 100 caracteres.';
+                        document.getElementById('email-error').style.display = 'block';
+                    } else {
+                        document.getElementById('email-error').style.display = 'none';
+                    }
+                });
+            }
+
             userForm.addEventListener('submit', function(event) {
                 event.preventDefault();
 
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+
+                const isNameValid = nameInput ? validateNameLength(nameInput) : true;
+                const isEmailValid = emailInput ? validateEmailLength(emailInput) : true;
                 const isPasswordValid = validatePassword();
                 const isPasswordMatchValid = validatePasswordMatch();
 
-                if (!isPasswordValid || !isPasswordMatchValid) {
+                if (!isNameValid || !isEmailValid || !isPasswordValid || !isPasswordMatchValid) {
                     return;
                 }
 

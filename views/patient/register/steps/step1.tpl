@@ -1,25 +1,31 @@
 <input type="hidden" name="patient_id" value="{$patient.id|default:''}">
 
 <div class="form-step" id="step-1">
+<style>
+    .required {
+        color: red;
+        margin-left: 2px;
+    }
+</style>
     <div class="form-group">
         <label for="lastName">Apellido Paterno</label>
-        <input type="text" id="lastName" value="{$patient.last_name|default:''}" name="fatherLastName" required>
+        <input type="text" id="lastName" value="{$patient.last_name|default:''}" name="fatherLastName" required maxlength="30">
     </div>
     <div class="form-group">
         <label for="motherLastName">Apellido Materno</label>
-        <input type="text" id="motherLastName" value="{$patient.last_name2|default:''}" name="motherLastName" required>
+        <input type="text" id="motherLastName" value="{$patient.last_name2|default:''}" name="motherLastName" required maxlength="30">
     </div>
     <div class="form-group">
         <label for="firstName">Nombre</label>
-        <input type="text" id="firstName" value="{$patient.names|default:''}" name="name" required>
+        <input type="text" id="firstName" value="{$patient.names|default:''}" name="name" required maxlength="30">
     </div>
     <div class="form-group">
         <label for="phoneNumber">Número Telefónico</label>
-        <input type="number" id="phoneNumber" value="{$patient.phone|default: ''}" name="phoneNumber" required>
+        <input type="number" id="phoneNumber" value="{$patient.phone|default: ''}" name="phoneNumber" required maxlength="10" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
     </div>
     <div class="form-group">
         <label for="email">Correo Electrónico</label>
-        <input type="email" id="email" value="{$patient.email|default: ''}" name="email" required>
+        <input type="email" id="email" value="{$patient.email|default: ''}" name="email" required maxlength="100">
     </div>
     <div class="form-group">
         <label for="gender">Sexo</label>
@@ -35,17 +41,20 @@
     </div>
     <div class="form-group">
         <label for="curp">CURP</label>
-        <input type="text" id="curp" value="{$patient.CURP|default: ''}" name="curp" required>
+        <input type="text" id="curp" value="{$patient.CURP|default: ''}" name="curp" required maxlength="18">
     </div>
     <div class="form-group">
         <label for="rfc">RFC</label>
-        <input type="text" id="rfc" value="{$patient.RFC|default: ''}" name="rfc" required>
+        <input type="text" id="rfc" value="{$patient.RFC|default: ''}" name="rfc" required maxlength="13">
     </div>
     <div class="form-group">
         <label for="photo" class="file-label" id="photo-label">
-            <i class="bi bi-cloud-arrow-up"></i> Subir Foto
+            <i class="bi bi-cloud-arrow-up"></i> Subir Foto <span class="required">*</span>
         </label>
         <input type="file" id="photo" name="photo" accept="image/*" {if !$patient}required{/if} style="display: none;">
+        <div class="photo-requirements">
+            <small><span class="required">*</span> La foto de perfil es obligatoria</small>
+        </div>
         <div id="patient-image-preview-container" class="image-preview-container">
             <img id="patient-image-preview" class="image-preview" src="{if isset($patient) && $patient.id}/controllers/patient/mostrar_foto.php?id={$patient.id}{/if}" alt="Vista previa" style="{if !isset($patient) || !$patient.id}display: none;{else}display: block;{/if}">
             <div id="patient-preview-placeholder" class="preview-placeholder" style="{if isset($patient) && $patient.id}display: none;{else}display: flex;{/if}">
@@ -56,7 +65,7 @@
     </div>
     <div class="form-group">
         <label for="affiliationNumber">Número de Afiliación</label>
-        <input type="text" id="affiliationNumber" value="{$patient.insurance_number|default: ''}" name="affiliationNumber" required>
+        <input type="text" id="affiliationNumber" value="{$patient.insurance_number|default: ''}" name="affiliationNumber" required maxlength="20">
     </div>
     <button type="button" class="next-btn" onclick="nextStep(2)">Siguiente</button>
 </div>

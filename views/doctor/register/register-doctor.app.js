@@ -563,13 +563,17 @@ document.addEventListener("DOMContentLoaded", () => {
           .join(" ");
       });
 
-      // Valida en tiempo real (onChange) para no permitir caracteres especiales ni números
+      // Valida en tiempo real (onChange) para no permitir caracteres especiales ni números y limitar a 30 caracteres
       input.addEventListener("input", () => {
         const namePattern = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]*$/;
         if (!namePattern.test(input.value)) {
           showErrorMessage(input, "Solo se permiten letras, espacios, acentos y ñ.");
           // Eliminar el último carácter ingresado si no es válido
           input.value = input.value.slice(0, -1);
+        } else if (input.value.length > 30) {
+          showErrorMessage(input, "El campo no debe exceder los 30 caracteres.");
+          // Truncar el valor a 30 caracteres
+          input.value = input.value.slice(0, 30);
         } else {
           clearErrorMessage(input);
         }
@@ -774,6 +778,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Añadir validación en tiempo real para la cédula profesional
+  const professionalLicenseInput = document.getElementById("professionalLicense");
+  if (professionalLicenseInput) {
+    professionalLicenseInput.addEventListener("input", () => {
+      const errorElement = document.getElementById("professionalLicense-error");
+      if (professionalLicenseInput.value.length > 15) {
+        errorElement.textContent = "La cédula profesional no debe exceder los 15 caracteres.";
+        errorElement.style.display = "block";
+        professionalLicenseInput.style.border = "2px solid red";
+      } else {
+        errorElement.style.display = "none";
+        professionalLicenseInput.style.border = "2px solid var(--line-clr)";
+      }
+    });
+  }
+
   // Añadir validación onBlur para los campos del paso 3
   document.querySelectorAll("#step-3 input").forEach((input) => {
     input.addEventListener("blur", () => {
@@ -926,7 +946,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } else if (input.id === "professionalLicense" && input.value.trim() !== "") {
         const alphanumericPattern = /^[A-Za-z0-9]+$/;
-        if (!alphanumericPattern.test(input.value.trim())) {
+        if (input.value.trim().length > 15) {
+          showErrorMessage(input, "La cédula profesional no debe exceder los 15 caracteres.");
+        } else if (!alphanumericPattern.test(input.value.trim())) {
           showErrorMessage(input, "Solo puede contener letras y números.");
         } else {
           // Verificar unicidad de la cédula profesional

@@ -73,3 +73,10 @@ Error al eliminar: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot 
 {"doctor_id":"13"}
 {"doctor_id":"17"}
 {"doctor_id":"16"}
+{"doctor_id":"8","doctor_names":"Edgar Eduardoasdf Vegaasdf Ruizasdf","doctor_email":"edgarevegar04@gmail.com"}
+{"doctor_id":"10","doctor_names":"Carlos Yewdi Martinez","doctor_email":"yewdi@mail.com"}
+{"doctor_id":"11","doctor_names":"Jorge A Aaa","doctor_email":"MAIL@MAIL.COM"}
+{"doctor_id":"12","doctor_names":"Edgar Eduardo Vega Ruiz","doctor_email":"edgarevegar04@gmail.com"}
+{"doctor_id":"15","doctor_names":"Federico Fretch Rivera","doctor_email":"federico@federico.com"}
+{"doctor_id":"16","doctor_names":"Lusi Gustavo Aguilera Armenta","doctor_email":"luis@luis.com"}
+{"doctor_id":"18","doctor_names":"Aaaaaaaaaaaaaaaaaaaaaaaaaa Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","doctor_email":"jose@mail.com"}

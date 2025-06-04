@@ -11,9 +11,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/assets/css/cancel-button.css">
     <script src="/views/components/sidebar.app.js" defer></script>
-    <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/doctor/register/register-doctor.app.js" defer></script>
+    <script src="/views/doctor/register/dynamic-content-fix.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Fix for views-handler.js error
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if #dynamic-content exists, if not create it
+            if (!document.getElementById('dynamic-content')) {
+                const dynamicContent = document.createElement('div');
+                dynamicContent.id = 'dynamic-content';
+                dynamicContent.style.display = 'none'; // Hide it as it's not needed
+                document.body.appendChild(dynamicContent);
+            }
+        });
+    </script>
     <title>Registro de Médicos</title>
     <style>
         .required {
@@ -62,9 +74,9 @@
     </style>
 
     <script>
-        window.municipalities = {$municipalities|json_encode};
-        window.localities = {$localities|json_encode};
-        window.states = {$states|json_encode};
+        window.municipalities = JSON.parse('{$municipalities|json_encode}');
+        window.localities = JSON.parse('{$localities|json_encode}');
+        window.states = JSON.parse('{$states|json_encode}');
 
         document.addEventListener('DOMContentLoaded', function() {
             const fileInput = document.getElementById('photo');
@@ -93,6 +105,7 @@
     </script>
 
     <script src="register-doctor.view.js" defer></script>
+    <script src="dynamic-content-fix.js" defer></script>
     <script>
         window.preselectedDoctorData = {
             state: {$doctor.id_state|default:'null'},
@@ -182,6 +195,7 @@
                     </h2>
                 </div>
 
+
                 <div class="steps">
                     <div class="step step-active" data-step="1">Paso 1</div>
                     <div class="step" data-step="2">Paso 2</div>
@@ -224,6 +238,47 @@
                     });
                 });
             }
+
+            // Manejar el selector de tipo de formulario
+            const formTypeSelector = document.getElementById('form-type-selector');
+            const formTypeDescription = document.getElementById('form-type-description');
+            const phoneNumberInput = document.getElementById('phoneNumber');
+            const rfcInput = document.getElementById('rfc');
+
+            if (formTypeSelector && formTypeDescription) {
+                formTypeSelector.addEventListener('change', function() {
+                    const isQuickForm = this.value === 'quick';
+
+                    // Actualizar la descripción
+                    if (isQuickForm) {
+                        formTypeDescription.textContent = 'Formulario rápido con campos mínimos requeridos. Podrá completar el resto de la información más tarde.';
+
+                        // Agregar campo oculto para indicar que es un formulario rápido
+                        let quickFormInput = document.getElementById('quick-form-input');
+                        if (!quickFormInput) {
+                            quickFormInput = document.createElement('input');
+                            quickFormInput.type = 'hidden';
+                            quickFormInput.id = 'quick-form-input';
+                            quickFormInput.name = 'quick_form';
+                            quickFormInput.value = '1';
+                            document.getElementById('doctor-form').appendChild(quickFormInput);
+                        }
+                    } else {
+                        formTypeDescription.textContent = 'Formulario completo con todos los campos requeridos.';
+
+                        // Eliminar campo oculto si existe
+                        const quickFormInput = document.getElementById('quick-form-input');
+                        if (quickFormInput) {
+                            quickFormInput.remove();
+                        }
+                    }
+
+                    // Notificar a la aplicación sobre el cambio de tipo de formulario
+                    window.dispatchEvent(new CustomEvent('formTypeChanged', { 
+                        detail: { isQuickForm: isQuickForm }
+                    }));
+                });
+            }
         });
     </script>
 <script>
@@ -256,6 +311,48 @@
                     });
                 });
             }
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Manejar el selector de tipo de formulario
+        const formTypeSelector = document.getElementById('form-type-selector');
+        const formTypeDescription = document.getElementById('form-type-description');
+
+        if (formTypeSelector && formTypeDescription) {
+            formTypeSelector.addEventListener('change', function() {
+                const isQuickForm = this.value === 'quick';
+
+                // Actualizar la descripción
+                if (isQuickForm) {
+                    formTypeDescription.textContent = 'Formulario rápido con campos mínimos requeridos. Podrá completar el resto de la información más tarde.';
+
+                    // Agregar campo oculto para indicar que es un formulario rápido
+                    let quickFormInput = document.getElementById('quick-form-input');
+                    if (!quickFormInput) {
+                        quickFormInput = document.createElement('input');
+                        quickFormInput.type = 'hidden';
+                        quickFormInput.id = 'quick-form-input';
+                        quickFormInput.name = 'quick_form';
+                        quickFormInput.value = '1';
+                        document.getElementById('doctor-form').appendChild(quickFormInput);
+                    }
+                } else {
+                    formTypeDescription.textContent = 'Formulario completo con todos los campos requeridos.';
+
+                    // Eliminar campo oculto si existe
+                    const quickFormInput = document.getElementById('quick-form-input');
+                    if (quickFormInput) {
+                        quickFormInput.remove();
+                    }
+                }
+
+                // Notificar a la aplicación sobre el cambio de tipo de formulario
+                window.dispatchEvent(new CustomEvent('formTypeChanged', { 
+                    detail: { isQuickForm: isQuickForm }
+                }));
+            });
         }
     });
 </script>

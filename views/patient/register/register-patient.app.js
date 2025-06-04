@@ -265,6 +265,180 @@ function validateHeight(input) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Fix for views-handler.js error
+    if (!document.getElementById('dynamic-content')) {
+        const dynamicContent = document.createElement('div');
+        dynamicContent.id = 'dynamic-content';
+        dynamicContent.style.display = 'none'; // Hide it as it's not needed
+        document.body.appendChild(dynamicContent);
+        console.log('Created #dynamic-content element for views-handler.js');
+    }
+    // Obtener el tipo de formulario de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const formType = urlParams.get('form_type');
+    const isQuickForm = formType === 'quick';
+
+    // Si se especifica el tipo de formulario, configurarlo
+    if (formType) {
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        const rfcInput = document.getElementById('rfc');
+        const photoInput = document.getElementById('photo');
+        const affiliationNumberInput = document.getElementById('affiliationNumber');
+
+        // Asegurarse de que el campo firstName (nombre) tenga el atributo required
+        const firstNameInput = document.getElementById('firstName');
+        if (firstNameInput) {
+            firstNameInput.setAttribute('required', 'required');
+        }
+
+        if (isQuickForm) {
+            // Configurar formulario rápido
+
+            // Hacer el número de teléfono opcional
+            if (phoneNumberInput) {
+                phoneNumberInput.removeAttribute('required');
+                const phoneLabel = document.querySelector('label[for="phoneNumber"]');
+                if (phoneLabel) {
+                    phoneLabel.innerHTML = phoneLabel.innerHTML.replace('*', '');
+                }
+            }
+
+            // Hacer el RFC opcional
+            if (rfcInput) {
+                rfcInput.removeAttribute('required');
+                const rfcLabel = document.querySelector('label[for="rfc"]');
+                if (rfcLabel) {
+                    rfcLabel.innerHTML = rfcLabel.innerHTML.replace('*', '');
+                }
+            }
+
+            // Hacer la foto opcional
+            if (photoInput) {
+                photoInput.removeAttribute('required');
+                const photoLabel = document.querySelector('label[for="photo"]');
+                if (photoLabel) {
+                    photoLabel.innerHTML = photoLabel.innerHTML.replace('<span class="required">*</span>', '');
+                }
+                const photoRequirements = document.querySelector('.photo-requirements');
+                if (photoRequirements) {
+                    photoRequirements.innerHTML = photoRequirements.innerHTML.replace('<span class="required">*</span>', '');
+                }
+            }
+
+            // Hacer el número de afiliación opcional
+            if (affiliationNumberInput) {
+                affiliationNumberInput.removeAttribute('required');
+                const affiliationLabel = document.querySelector('label[for="affiliationNumber"]');
+                if (affiliationLabel) {
+                    affiliationLabel.innerHTML = affiliationLabel.innerHTML.replace('*', '');
+                }
+            }
+
+            // Agregar campo oculto para indicar que es un formulario rápido
+            let quickFormInput = document.getElementById('quick-form-input');
+            if (!quickFormInput) {
+                quickFormInput = document.createElement('input');
+                quickFormInput.type = 'hidden';
+                quickFormInput.id = 'quick-form-input';
+                quickFormInput.name = 'quick_form';
+                quickFormInput.value = '1';
+                document.getElementById('patient-form').appendChild(quickFormInput);
+            }
+
+            // Modificar la navegación para saltar los pasos 2, 3 y 4
+            window.originalNextStep = window.nextStep;
+            window.nextStep = function(step) {
+                if (step === 2) {
+                    // Enviar el formulario directamente
+                    document.getElementById('patient-form').submit();
+                } else {
+                    window.originalNextStep(step);
+                }
+            };
+
+            // Ocultar los pasos 2, 3 y 4 en el indicador de pasos
+            const stepsToHide = [2, 3, 4];
+            stepsToHide.forEach(stepNum => {
+                const stepIndicator = document.querySelector(`.step[data-step="${stepNum}"]`);
+                if (stepIndicator) {
+                    stepIndicator.style.display = 'none';
+                }
+            });
+
+            // Ajustar el ancho de los indicadores de pasos
+            const steps = document.querySelectorAll('.step');
+            steps.forEach(step => {
+                if (step.dataset.step === '1') {
+                    step.style.width = '100%';
+                }
+            });
+
+            // Mostrar mensaje de confirmación
+            Swal.fire({
+                title: 'Formulario rápido seleccionado',
+                text: 'Se mostrarán solo los campos esenciales.',
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        } else {
+            // Configurar formulario completo (por defecto)
+
+            // Asegurarse de que el número de teléfono sea requerido
+            if (phoneNumberInput) {
+                phoneNumberInput.setAttribute('required', '');
+                const phoneLabel = document.querySelector('label[for="phoneNumber"]');
+                if (phoneLabel && !phoneLabel.innerHTML.includes('*')) {
+                    phoneLabel.innerHTML += ' <span class="required">*</span>';
+                }
+            }
+
+            // Asegurarse de que el RFC sea requerido
+            if (rfcInput) {
+                rfcInput.setAttribute('required', '');
+                const rfcLabel = document.querySelector('label[for="rfc"]');
+                if (rfcLabel && !rfcLabel.innerHTML.includes('*')) {
+                    rfcLabel.innerHTML += ' <span class="required">*</span>';
+                }
+            }
+
+            // Asegurarse de que la foto sea requerida
+            if (photoInput) {
+                photoInput.setAttribute('required', '');
+                const photoLabel = document.querySelector('label[for="photo"]');
+                if (photoLabel && !photoLabel.innerHTML.includes('<span class="required">*</span>')) {
+                    photoLabel.innerHTML = photoLabel.innerHTML.replace('Subir Foto', 'Subir Foto <span class="required">*</span>');
+                }
+                const photoRequirements = document.querySelector('.photo-requirements');
+                if (photoRequirements && !photoRequirements.innerHTML.includes('<span class="required">*</span>')) {
+                    photoRequirements.innerHTML = photoRequirements.innerHTML.replace('La foto de perfil es obligatoria', '<span class="required">*</span> La foto de perfil es obligatoria');
+                }
+            }
+
+            // Asegurarse de que el número de afiliación sea requerido
+            if (affiliationNumberInput) {
+                affiliationNumberInput.setAttribute('required', '');
+                const affiliationLabel = document.querySelector('label[for="affiliationNumber"]');
+                if (affiliationLabel && !affiliationLabel.innerHTML.includes('*')) {
+                    affiliationLabel.innerHTML += ' <span class="required">*</span>';
+                }
+            }
+
+            // Mostrar mensaje de confirmación
+            Swal.fire({
+                title: 'Formulario completo seleccionado',
+                text: 'Se mostrarán todos los campos requeridos.',
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        }
+    }
+
     showStep(currentStep);
 
     // Añadir validación onBlur para todos los campos requeridos
@@ -275,28 +449,99 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('patient-form').addEventListener('submit', (event) => {
-        if (!validateStep(currentStep)) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Campos incompletos',
-                text: 'Por favor, completa todos los campos antes de enviar.',
-                icon: 'error',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Entendido'
-            });
-        } else {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Registro exitoso',
-                text: 'Los datos se han guardado correctamente.',
-                icon: 'success',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Continuar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    event.target.submit();
+        // Verificar si es un formulario rápido
+        const isQuickForm = document.getElementById('quick-form-input') !== null;
+
+        if (isQuickForm) {
+            // Para formulario rápido, solo validar el paso 1
+            // Pero ignorar la validación de los campos que se hicieron opcionales
+            const requiredFields = document.querySelectorAll('#step-1 input[required], #step-1 select[required]');
+            let valid = true;
+
+            // Asegurarse de que el campo firstName (nombre) esté presente y no esté vacío
+            const firstNameInput = document.getElementById('firstName');
+            if (firstNameInput && !firstNameInput.value.trim()) {
+                showErrorMessage(firstNameInput, `El campo ${getFieldTitle(firstNameInput.id)} es obligatorio`);
+                valid = false;
+            }
+
+            requiredFields.forEach((input) => {
+                if (!validateField(input)) {
+                    valid = false;
                 }
             });
+
+            if (!valid) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Campos incompletos',
+                    text: 'Por favor, completa todos los campos requeridos antes de enviar.',
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+                });
+            } else {
+                event.preventDefault();
+
+                // Asegurarse de que los campos de los pasos 2, 3 y 4 no bloqueen el envío del formulario
+                // Remover temporalmente el atributo required de los campos de los pasos 2, 3 y 4
+                document.querySelectorAll('#step-2 [required], #step-3 [required], #step-4 [required]').forEach(field => {
+                    field.removeAttribute('required');
+                    // Agregar un atributo data-was-required para restaurarlo después si es necesario
+                    field.setAttribute('data-was-required', 'true');
+                });
+
+                // Verificar una vez más que el campo firstName (nombre) no esté vacío
+                const firstNameInput = document.getElementById('firstName');
+                if (firstNameInput && !firstNameInput.value.trim()) {
+                    event.preventDefault();
+                    Swal.fire({
+                        title: 'Campo obligatorio',
+                        text: 'El campo Nombre es obligatorio incluso en el formulario rápido.',
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Entendido'
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Registro rápido exitoso',
+                    text: 'Los datos básicos se han guardado correctamente. Podrá completar el resto de la información más tarde.',
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Continuar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.target.submit();
+                    }
+                });
+            }
+        } else {
+            // Para formulario completo, validar el paso actual
+            if (!validateStep(currentStep)) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Campos incompletos',
+                    text: 'Por favor, completa todos los campos antes de enviar.',
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+                });
+            } else {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Registro exitoso',
+                    text: 'Los datos se han guardado correctamente.',
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Continuar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.target.submit();
+                    }
+                });
+            }
         }
     });
 

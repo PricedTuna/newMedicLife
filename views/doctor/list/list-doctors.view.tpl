@@ -29,10 +29,42 @@
         <div class="main-content">
             <div class="table-header">
                 <h1>Lista de médicos    </h1>
-                <a href="/views/doctor/register/register-doctor.view.php">
+                <a href="#" id="add-doctor-btn">
                     <button class="create-btn">Agregar médicos</button>
                     <button class="icon-btn table-add-btn">+</button>
                 </a>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const addDoctorBtn = document.getElementById('add-doctor-btn');
+                        if (addDoctorBtn) {
+                            addDoctorBtn.addEventListener('click', function(e) {
+                                e.preventDefault();
+
+                                Swal.fire({
+                                    title: '¿Qué tipo de formulario deseas utilizar?',
+                                    html: `
+                                        <div style="text-align: left; margin-bottom: 15px;">
+                                            <p><strong>Formulario completo:</strong> Incluye todos los campos requeridos.</p>
+                                            <p><strong>Formulario rápido:</strong> Incluye solo los campos esenciales. Podrás completar el resto más tarde.</p>
+                                        </div>
+                                    `,
+                                    icon: 'question',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Formulario rápido',
+                                    cancelButtonText: 'Formulario completo',
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#6c757d',
+                                    reverseButtons: true
+                                }).then((result) => {
+                                    // Create the URL with a query parameter indicating the form type
+                                    const formType = result.isConfirmed ? 'quick' : 'complete';
+                                    window.location.href = "/views/doctor/register/register-doctor.view.php?form_type=" + formType;
+                                });
+                            });
+                        }
+                    });
+                </script>
             </div>
 
             <div class="filter-container">

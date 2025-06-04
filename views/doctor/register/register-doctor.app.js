@@ -276,10 +276,20 @@ function validateStep1() {
       () => "Solo se permiten letras y espacios."
     ) && valid;
 
-  // Validar número telefónico: exactamente 10 dígitos.
+  // Validar número telefónico: exactamente 10 dígitos (opcional para formulario rápido).
   const phoneInput = document.getElementById("phoneNumber");
-  if (!/^\d{10}$/.test(phoneInput.value.trim())) {
+  const isQuickForm = document.getElementById('quick-form-input') !== null;
+
+  // Si es formulario rápido y el campo está vacío, no validar
+  if (isQuickForm && phoneInput.value.trim() === "") {
+    clearErrorMessage(phoneInput);
+  } else if (phoneInput.value.trim() !== "" && !/^\d{10}$/.test(phoneInput.value.trim())) {
+    // Si se ha ingresado un valor (en cualquier tipo de formulario), validar el formato
     showErrorMessage(phoneInput, "El número debe tener exactamente 10 dígitos numéricos. Ejemplo: 5512345678");
+    valid = false;
+  } else if (!isQuickForm && phoneInput.value.trim() === "") {
+    // Si es formulario completo y el campo está vacío, mostrar error
+    showErrorMessage(phoneInput, "El número telefónico es obligatorio para el formulario completo.");
     valid = false;
   } else {
     clearErrorMessage(phoneInput);
@@ -417,34 +427,46 @@ function validateStep3() {
     }
   }
 
-  // Validar RFC: opcional, pero si se llena debe cumplir el formato.
+  // Validar RFC: opcional para formulario rápido, requerido para formulario completo
   const rfcInput = document.getElementById("rfc");
-  const rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
-  if (rfcInput.value.trim() !== "" && !rfcPattern.test(rfcInput.value.trim())) {
-    showErrorMessage(
-      rfcInput,
-      "RFC inválido. Debe tener entre 12 y 13 caracteres y seguir el formato correcto."
-    );
-    valid = false;
-  } else if (rfcInput.value.trim() !== "") {
-    // Validar coherencia entre CURP y RFC
-    if (curpInput.value.trim() !== "") {
-      const coherenceResult = validateCURPRFCCoherence(
-        curpInput.value.trim(),
-        rfcInput.value.trim()
-      );
+  const isQuickForm = document.getElementById('quick-form-input') !== null;
 
-      if (!coherenceResult.isValid) {
-        showErrorMessage(rfcInput, coherenceResult.message);
-        valid = false;
+  // Si es formulario rápido y el campo está vacío, no validar
+  if (isQuickForm && rfcInput.value.trim() === "") {
+    clearErrorMessage(rfcInput);
+  } else {
+    // Para formulario completo o si se ha ingresado un valor en formulario rápido
+    const rfcPattern = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/i;
+    if (rfcInput.value.trim() !== "" && !rfcPattern.test(rfcInput.value.trim())) {
+      showErrorMessage(
+        rfcInput,
+        "RFC inválido. Debe tener entre 12 y 13 caracteres y seguir el formato correcto."
+      );
+      valid = false;
+    } else if (rfcInput.value.trim() !== "") {
+      // Validar coherencia entre CURP y RFC
+      if (curpInput.value.trim() !== "") {
+        const coherenceResult = validateCURPRFCCoherence(
+          curpInput.value.trim(),
+          rfcInput.value.trim()
+        );
+
+        if (!coherenceResult.isValid) {
+          showErrorMessage(rfcInput, coherenceResult.message);
+          valid = false;
+        } else {
+          clearErrorMessage(rfcInput);
+        }
       } else {
         clearErrorMessage(rfcInput);
       }
+    } else if (!isQuickForm) {
+      // Si es formulario completo y el campo está vacío, mostrar error
+      showErrorMessage(rfcInput, "El RFC es obligatorio para el formulario completo.");
+      valid = false;
     } else {
       clearErrorMessage(rfcInput);
     }
-  } else {
-    clearErrorMessage(rfcInput);
   }
 
   // Validar Número de Afiliación: opcional, solo alfanumérico.
@@ -508,6 +530,9 @@ function validateStep3() {
  * @param {number} step - Número del siguiente paso.
  */
 window.nextStep = function (step) {
+  // Verificar si es un formulario rápido
+  const isQuickForm = document.getElementById('quick-form-input') !== null;
+
   // Validar el paso actual antes de avanzar
   if (currentStep === 1 && !validateStep1()) {
     Swal.fire({
@@ -519,6 +544,14 @@ window.nextStep = function (step) {
     });
     return;
   }
+
+  // Si es formulario rápido y estamos en el paso 1, saltar directamente al paso 3
+  if (isQuickForm && currentStep === 1 && step === 2) {
+    currentStep = 3;
+    showStep(currentStep);
+    return;
+  }
+
   if (currentStep === 2 && !validateStep2()) {
     Swal.fire({
       title: "Error de validación",
@@ -549,6 +582,124 @@ window.nextStep = function (step) {
 // ===========================
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Fix for views-handler.js error
+  if (!document.getElementById('dynamic-content')) {
+    const dynamicContent = document.createElement('div');
+    dynamicContent.id = 'dynamic-content';
+    dynamicContent.style.display = 'none'; // Hide it as it's not needed
+    document.body.appendChild(dynamicContent);
+    console.log('Created #dynamic-content element for views-handler.js');
+  }
+  // Obtener el tipo de formulario de la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const formType = urlParams.get('form_type');
+  const isQuickForm = formType === 'quick';
+
+  // Si no se especifica el tipo de formulario, usar el formulario completo por defecto
+  if (formType) {
+    const phoneNumberInput = document.getElementById('phoneNumber');
+    const rfcInput = document.getElementById('rfc');
+
+    if (isQuickForm) {
+      // Configurar formulario rápido
+
+      // Hacer el número de teléfono opcional
+      if (phoneNumberInput) {
+        phoneNumberInput.removeAttribute('required');
+        const phoneLabel = document.querySelector('label[for="phoneNumber"]');
+        if (phoneLabel) {
+          phoneLabel.innerHTML = phoneLabel.innerHTML.replace('*', '');
+        }
+      }
+
+      // Hacer el RFC opcional
+      if (rfcInput) {
+        rfcInput.removeAttribute('required');
+        const rfcLabel = document.querySelector('label[for="rfc"]');
+        if (rfcLabel) {
+          rfcLabel.innerHTML = rfcLabel.innerHTML.replace('*', '');
+        }
+      }
+
+      // Agregar campo oculto para indicar que es un formulario rápido
+      let quickFormInput = document.getElementById('quick-form-input');
+      if (!quickFormInput) {
+        quickFormInput = document.createElement('input');
+        quickFormInput.type = 'hidden';
+        quickFormInput.id = 'quick-form-input';
+        quickFormInput.name = 'quick_form';
+        quickFormInput.value = '1';
+        document.getElementById('doctor-form').appendChild(quickFormInput);
+      }
+
+      // Modificar la navegación para saltar el paso 2
+      window.originalNextStep = window.nextStep;
+      window.nextStep = function(step) {
+        if (step === 2) {
+          window.originalNextStep(3);
+        } else {
+          window.originalNextStep(step);
+        }
+      };
+
+      // Ocultar el paso 2 en el indicador de pasos
+      const step2Indicator = document.querySelector('.step[data-step="2"]');
+      if (step2Indicator) {
+        step2Indicator.style.display = 'none';
+      }
+
+      // Ajustar el ancho de los indicadores de pasos
+      const steps = document.querySelectorAll('.step');
+      steps.forEach(step => {
+        if (step.dataset.step !== '2') {
+          step.style.width = '50%';
+        }
+      });
+
+      // Mostrar mensaje de confirmación
+      Swal.fire({
+        title: 'Formulario rápido seleccionado',
+        text: 'Se mostrarán solo los campos esenciales.',
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    } else {
+      // Configurar formulario completo (por defecto)
+
+      // Asegurarse de que el número de teléfono sea requerido
+      if (phoneNumberInput) {
+        phoneNumberInput.setAttribute('required', '');
+        const phoneLabel = document.querySelector('label[for="phoneNumber"]');
+        if (phoneLabel && !phoneLabel.innerHTML.includes('*')) {
+          phoneLabel.innerHTML += ' <span class="required">*</span>';
+        }
+      }
+
+      // Asegurarse de que el RFC sea requerido
+      if (rfcInput) {
+        rfcInput.setAttribute('required', '');
+        const rfcLabel = document.querySelector('label[for="rfc"]');
+        if (rfcLabel && !rfcLabel.innerHTML.includes('*')) {
+          rfcLabel.innerHTML += ' <span class="required">*</span>';
+        }
+      }
+
+      // Mostrar mensaje de confirmación
+      Swal.fire({
+        title: 'Formulario completo seleccionado',
+        text: 'Se mostrarán todos los campos requeridos.',
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    }
+  }
+
   // Capitaliza los nombres al perder el foco y valida en tiempo real
   ["firstName", "lastName", "motherLastName"].forEach((id) => {
     const input = document.getElementById(id);
@@ -784,11 +935,15 @@ document.addEventListener("DOMContentLoaded", () => {
     professionalLicenseInput.addEventListener("input", () => {
       const errorElement = document.getElementById("professionalLicense-error");
       if (professionalLicenseInput.value.length > 15) {
-        errorElement.textContent = "La cédula profesional no debe exceder los 15 caracteres.";
-        errorElement.style.display = "block";
+        if (errorElement) {
+          errorElement.textContent = "La cédula profesional no debe exceder los 15 caracteres.";
+          errorElement.style.display = "block";
+        }
         professionalLicenseInput.style.border = "2px solid red";
       } else {
-        errorElement.style.display = "none";
+        if (errorElement) {
+          errorElement.style.display = "none";
+        }
         professionalLicenseInput.style.border = "2px solid var(--line-clr)";
       }
     });
@@ -1011,15 +1166,43 @@ document.addEventListener("DOMContentLoaded", () => {
     showStep(currentStep);
 
     doctorForm.addEventListener("submit", (event) => {
-      if (!validateStep1() || !validateStep2() || !validateStep3()) {
-        event.preventDefault();
-        Swal.fire({
-          title: "Formulario inválido",
-          text: "Por favor, revisa todos los campos y corrígelos antes de enviar de nuevo.",
-          icon: "error",
-          confirmButtonColor: "#3085d6",
-          confirmButtonText: "Entendido"
+      // Verificar si es un formulario rápido
+      const isQuickForm = document.getElementById('quick-form-input') !== null;
+
+      if (isQuickForm) {
+        // Para formulario rápido, solo validar paso 1 y paso 3 (sin RFC)
+        if (!validateStep1() || !validateStep3()) {
+          event.preventDefault();
+          Swal.fire({
+            title: "Formulario inválido",
+            text: "Por favor, revisa todos los campos y corrígelos antes de enviar de nuevo.",
+            icon: "error",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Entendido"
+          });
+          return;
+        }
+
+        // Asegurarse de que los campos del paso 2 no bloqueen el envío del formulario
+        // Remover temporalmente el atributo required de los campos del paso 2
+        document.querySelectorAll('#step-2 [required]').forEach(field => {
+          field.removeAttribute('required');
+          // Agregar un atributo data-was-required para restaurarlo después si es necesario
+          field.setAttribute('data-was-required', 'true');
         });
+      } else {
+        // Para formulario completo, validar todos los pasos
+        if (!validateStep1() || !validateStep2() || !validateStep3()) {
+          event.preventDefault();
+          Swal.fire({
+            title: "Formulario inválido",
+            text: "Por favor, revisa todos los campos y corrígelos antes de enviar de nuevo.",
+            icon: "error",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Entendido"
+          });
+          return;
+        }
       }
     });
   } else {

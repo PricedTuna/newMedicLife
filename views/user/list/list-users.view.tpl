@@ -35,11 +35,7 @@
                     <option value="A">Administrador</option>
                     <option value="D">Doctor</option>
                 </select>
-                <select id="statusFilter">
-                    <option value="all">Todos los estados</option>
-                    <option value="AC">Activo</option>
-                    <option value="IN">Inactivo</option>
-                </select>
+                <!-- Status filter removed as per requirements -->
                 <button id="clearFilters">Limpiar filtros</button>
             </div>
 

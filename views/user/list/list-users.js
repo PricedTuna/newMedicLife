@@ -5,14 +5,12 @@ document.addEventListener('DOMContentLoaded', function () {
   // Filtros de búsqueda
   const searchInput = document.getElementById('searchInput');
   const roleFilter = document.getElementById('roleFilter');
-  const statusFilter = document.getElementById('statusFilter');
   const clearFilters = document.getElementById('clearFilters');
   const rows = document.querySelectorAll('tbody tr');
 
   function applyFilters() {
     const searchTerm = searchInput.value.toLowerCase();
     const roleValue = roleFilter.value;
-    const statusValue = statusFilter.value;
 
     rows.forEach(row => {
       // Solo procesar filas que tienen celdas (no mensajes de "no hay usuarios")
@@ -27,30 +25,22 @@ document.addEventListener('DOMContentLoaded', function () {
         else if (roleTd.textContent.includes('Administrador')) role = 'A';
         else if (roleTd.textContent.includes('Doctor')) role = 'D';
 
-        // Obtener el estado (AC, IN) del texto mostrado
-        const statusTd = row.querySelector('[data-label="Estado"]');
-        let status;
-        if (statusTd.textContent.includes('Activo')) status = 'AC';
-        else if (statusTd.textContent.includes('Inactivo')) status = 'IN';
-        else status = statusTd.textContent.trim();
+        // All users are active now, no need to check status
 
         const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
         const matchesRole = roleValue === 'all' || role === roleValue;
-        const matchesStatus = statusValue === 'all' || status === statusValue;
 
-        row.style.display = matchesSearch && matchesRole && matchesStatus ? '' : 'none';
+        row.style.display = matchesSearch && matchesRole ? '' : 'none';
       }
     });
   }
 
-  if (searchInput && roleFilter && statusFilter && clearFilters) {
+  if (searchInput && roleFilter && clearFilters) {
     searchInput.addEventListener('input', applyFilters);
     roleFilter.addEventListener('change', applyFilters);
-    statusFilter.addEventListener('change', applyFilters);
     clearFilters.addEventListener('click', function() {
       searchInput.value = '';
       roleFilter.value = 'all';
-      statusFilter.value = 'all';
       applyFilters();
     });
   }

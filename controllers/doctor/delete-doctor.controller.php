@@ -6,6 +6,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php'
 // Only administrators and secretaries can delete doctors
 checkUserRole(['A', 'S']);
 
+// Get database connection
+$pdo = getConnection();
+
 header('Content-Type: application/json'); // Indicamos que la respuesta es JSON
 
 // 📌 Registra la solicitud en un log temporal
@@ -32,12 +35,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt = $pdo->prepare("UPDATE doctors SET status = 'I' WHERE id = :doctor_id");
                     $stmt->execute([':doctor_id' => $doctor_id]);
 
+                    // También desactivar el usuario asociado al doctor
+                    $stmt = $pdo->prepare("UPDATE users SET status = 'IN' WHERE id_doctor = :doctor_id");
+                    $stmt->execute([':doctor_id' => $doctor_id]);
+
                     header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor desactivado con éxito"));
                 } else {
                     // Tiene citas activas, no se puede eliminar
                     header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("El Doctor cuenta con citas, No se puede eliminar"));
                 }
-                
+
             } else {
                 header('Location: /views/doctor/list/list-doctors.view.php?error=' . urlencode("Doctor no encontrado"));
             }

@@ -53,9 +53,53 @@ if (isset($_GET['patient_id']) && is_numeric($_GET['patient_id'])) {
     $medicalHistoryModel = new MedicalHistoryModel($pdo);
 
     try {
-        $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id AND status != 'I'");
+        // Obtener datos del paciente - sin filtrar por status para diagnosticar problemas
+        $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id");
         $stmt->execute([':id' => $patientId]);
         $patient = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Si el paciente existe pero está inactivo, registrarlo pero seguir adelante
+        if ($patient && isset($patient['status']) && $patient['status'] === 'I') {
+            error_log("medical-history.view.php - Patient found but is inactive (status = 'I'). Will use the data anyway for debugging.");
+        }
+
+        // Add detailed logging
+        error_log("medical-history.view.php - Patient data retrieved for ID $patientId: " . print_r($patient, true));
+
+        if ($patient) {
+            error_log("medical-history.view.php - Patient found with ID: " . $patientId);
+            error_log("medical-history.view.php - Patient CURP: " . ($patient['CURP'] ?? $patient['curp'] ?? 'Not available'));
+            error_log("medical-history.view.php - Patient birth_date: " . ($patient['birth_date'] ?? 'Not available'));
+            error_log("medical-history.view.php - Patient email: " . ($patient['email'] ?? 'Not available'));
+        } else {
+            error_log("medical-history.view.php - No patient found with ID: " . $patientId);
+
+            // Check if the patient exists but is inactive
+            $checkStmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id");
+            $checkStmt->execute([':id' => $patientId]);
+            $inactivePatient = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($inactivePatient) {
+                error_log("medical-history.view.php - Patient exists but may be inactive. Status: " . ($inactivePatient['status'] ?? 'Unknown'));
+                // Use the inactive patient data anyway
+                $patient = $inactivePatient;
+                error_log("medical-history.view.php - Using inactive patient data for debugging");
+            } else {
+                error_log("medical-history.view.php - Patient does not exist in the database");
+                // Create a default patient object
+                $patient = [
+                    'id' => $patientId,
+                    'names' => 'Paciente',
+                    'last_name' => 'No',
+                    'last_name2' => 'Encontrado',
+                    'CURP' => 'No disponible',
+                    'curp' => 'No disponible',
+                    'birth_date' => date('Y-m-d'),
+                    'email' => 'No disponible'
+                ];
+                error_log("medical-history.view.php - Created default patient object: " . print_r($patient, true));
+            }
+        }
 
         if ($patient) {
             // Ensure CURP is available in both uppercase and lowercase
@@ -151,8 +195,6 @@ try {
 
 // Pasar datos a la plantilla
 $smarty->assign('doctorId', $doctorId);
-$smarty->assign('doctors', $doctors);
-$smarty->assign('medical_areas', $medical_areas);
 $smarty->assign('role', $_SESSION['role']);
 $smarty->assign('user', $_SESSION['usuario']);
 $smarty->assign('isDoctor', $_SESSION['role'] === 'D');

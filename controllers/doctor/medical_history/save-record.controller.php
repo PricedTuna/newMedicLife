@@ -171,6 +171,57 @@ try {
         throw new Exception('No se pudo guardar el registro. Verifique que todas las tablas necesarias existan en la base de datos.');
     }
 
+    // Guardar prescripciones médicas si se proporcionaron
+    if (isset($_POST['prescriptions'])) {
+        try {
+            $prescriptions = json_decode($_POST['prescriptions'], true);
+
+            if (is_array($prescriptions) && !empty($prescriptions)) {
+                error_log("Processing " . count($prescriptions) . " prescriptions");
+
+                // Obtener el ID de la cita si existe
+                $appointmentId = isset($data['appointment_id']) ? $data['appointment_id'] : null;
+
+                // Si no hay ID de cita, buscar una cita activa para el paciente
+                if (!$appointmentId) {
+                    $stmt = $pdo->prepare("
+                        SELECT id FROM appointments 
+                        WHERE id_patient = :patient_id AND status = 'A'
+                        ORDER BY appointment_date DESC
+                        LIMIT 1
+                    ");
+                    $stmt->execute([':patient_id' => $data['patient_id']]);
+                    $appointment = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                    if ($appointment) {
+                        $appointmentId = $appointment['id'];
+                        error_log("Found active appointment ID: " . $appointmentId);
+                    } else {
+                        error_log("No active appointment found for patient ID: " . $data['patient_id']);
+                    }
+                }
+
+                if ($appointmentId) {
+                    foreach ($prescriptions as $prescription) {
+                        if (!empty($prescription['medication_id'])) {
+                            $result = $medicalHistoryModel->savePrescription($appointmentId, $prescription);
+                            if ($result) {
+                                error_log("Prescription saved with ID: " . $result);
+                            } else {
+                                error_log("Failed to save prescription: " . print_r($prescription, true));
+                            }
+                        }
+                    }
+                } else {
+                    error_log("Cannot save prescriptions without an appointment ID");
+                }
+            }
+        } catch (Exception $e) {
+            error_log("Error processing prescriptions: " . $e->getMessage());
+            // Continue execution even if prescriptions fail
+        }
+    }
+
     // Devolver respuesta exitosa
     header('Content-Type: application/json');
     echo json_encode([

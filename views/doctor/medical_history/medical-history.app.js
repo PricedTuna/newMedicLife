@@ -1,29 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded event triggered');
 
-    // Check if window.doctors is defined
-    if (typeof window.doctors !== 'undefined') {
-        console.log('window.doctors:', window.doctors);
-        if (window.doctors && window.doctors.length > 0) {
-            console.log('First doctor:', window.doctors[0]);
-        } else {
-            console.error('No doctors found in window.doctors');
-        }
-    } else {
-        console.error('window.doctors is not defined');
-    }
+    // We no longer need to check for doctors and medical areas
+    console.log('Medical history app initialized');
 
-    // Check if window.medical_areas is defined
-    if (typeof window.medical_areas !== 'undefined') {
-        console.log('window.medical_areas:', window.medical_areas);
-        if (window.medical_areas && window.medical_areas.length > 0) {
-            console.log('First medical area:', window.medical_areas[0]);
-        } else {
-            console.error('No medical areas found in window.medical_areas');
-        }
-    } else {
-        console.error('window.medical_areas is not defined');
-    }
+    // Load medication types for prescriptions
+    loadMedicationTypes();
 
     // Check if window.isDoctor is defined
     if (typeof window.isDoctor !== 'undefined') {
@@ -74,9 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const patientId = document.getElementById('patient-id');
 
-    // This element might not exist in the template
-    const appointmentSelect = document.getElementById('appointment-select');
-    console.log('appointmentSelect:', appointmentSelect);
+    // We no longer use appointment selection
+    // const appointmentSelect = document.getElementById('appointment-select');
+    // console.log('appointmentSelect:', appointmentSelect);
 
     const cancelRecord = document.getElementById('cancel-record');
     const uploadModal = document.getElementById('upload-modal');
@@ -319,7 +301,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Clear any existing content
             const recordsContainer = document.querySelector('.records-container');
             recordsContainer.innerHTML = '';
-            recordsContainer.appendChild(noRecordsMessage);
+
+            // Check if noRecordsMessage is a valid DOM node
+            if (noRecordsMessage && noRecordsMessage.nodeType === Node.ELEMENT_NODE) {
+                recordsContainer.appendChild(noRecordsMessage);
+            } else {
+                // Create a new message element if noRecordsMessage is not valid
+                const message = document.createElement('p');
+                message.id = 'no-records-message';
+                message.textContent = 'No hay registros médicos para este paciente.';
+                recordsContainer.appendChild(message);
+            }
         });
     }
 
@@ -387,25 +379,24 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Email:", patient.email || 'Not found');
         console.log("Birth date:", patient.birth_date || 'Not found');
 
-        // Populate appointments dropdown if it exists
-        if (appointmentSelect) {
-            appointmentSelect.innerHTML = '<option value="">Seleccione una cita</option>';
-            console.log("Appointments data:", appointments); // Debug log
-            appointments.forEach(appointment => {
-                const option = document.createElement('option');
-                // Use appointment.cita (the ID field) or fallback to appointment.id
-                option.value = appointment.cita || appointment.id;
-                option.textContent = `${formatDate(appointment.appointment_date)} - ${appointment.medical_area || 'Consulta general'}`;
-                appointmentSelect.appendChild(option);
-            });
-        }
+        // We no longer populate appointments dropdown
+        console.log("Appointments data:", appointments); // Debug log
 
         // Display history records
         const recordsContainer = document.querySelector('.records-container');
         recordsContainer.innerHTML = '';
 
         if (history.length === 0) {
-            recordsContainer.appendChild(noRecordsMessage);
+            // Check if noRecordsMessage is a valid DOM node
+            if (noRecordsMessage && noRecordsMessage.nodeType === Node.ELEMENT_NODE) {
+                recordsContainer.appendChild(noRecordsMessage);
+            } else {
+                // Create a new message element if noRecordsMessage is not valid
+                const message = document.createElement('p');
+                message.id = 'no-records-message';
+                message.textContent = 'No hay registros médicos para este paciente.';
+                recordsContainer.appendChild(message);
+            }
         } else {
             history.forEach(record => {
                 const recordCard = createRecordCard(record);
@@ -621,7 +612,13 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadBtn.textContent = 'Descargar PDF';
         downloadBtn.addEventListener('click', () => downloadRecordPdf(record.id));
 
+        const downloadMedicalHistoryBtn = document.createElement('button');
+        downloadMedicalHistoryBtn.className = 'download-medical-history-btn';
+        downloadMedicalHistoryBtn.textContent = 'Descargar Historial Médico';
+        downloadMedicalHistoryBtn.addEventListener('click', () => downloadMedicalHistoryRecordPdf(record.id));
+
         actions.appendChild(downloadBtn);
+        actions.appendChild(downloadMedicalHistoryBtn);
 
         card.appendChild(header);
         card.appendChild(content);
@@ -630,185 +627,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return card;
     }
 
-    // Function to filter doctors by medical area
-    function filterDoctorsByArea(areaId) {
-        console.log('filterDoctorsByArea called with areaId:', areaId);
-
-        // Check if window.doctors is defined
-        if (typeof window.doctors === 'undefined') {
-            console.error('window.doctors is not defined');
-            return;
-        }
-
-        console.log('window.doctors:', window.doctors);
-
-        // Check if doctors data is available
-        if (!window.doctors || window.doctors.length === 0) {
-            console.error('Doctors data not available or empty');
-            return;
-        }
-
-        // Check if doctorIdSelect is defined
-        if (!doctorIdSelect) {
-            console.error('doctorIdSelect is not defined');
-            return;
-        }
-
-        // Clear current options
-        doctorIdSelect.innerHTML = '<option value="">Seleccione un médico</option>';
-
-        // Check if window.isDoctor is defined
-        if (typeof window.isDoctor === 'undefined') {
-            console.error('window.isDoctor is not defined');
-            // Default to false if not defined
-            window.isDoctor = false;
-        }
-
-        // Check if user is a doctor
-        const isUserDoctor = window.isDoctor === true;
-
-        // If user is a doctor, only show that doctor
-        if (isUserDoctor) {
-            // For doctor users, we'll show only their doctor profile
-            // This assumes the first doctor in the list is the current doctor
-            if (window.doctors.length > 0) {
-                const doctor = window.doctors[0];
-                // Add only the first doctor (should be the current doctor)
-                const option = document.createElement('option');
-                option.value = doctor.doctor_id;
-                option.textContent = doctor.doctor_name + ' ' +
-                                    doctor.last_name + ' ' +
-                                    (doctor.last_name2 || '');
-                doctorIdSelect.appendChild(option);
-
-                // Select automatically
-                doctorIdSelect.value = doctor.doctor_id;
-
-                // Trigger change event
-                const event = new Event('change');
-                doctorIdSelect.dispatchEvent(event);
-            }
-        } else {
-            // For non-doctor users, filter doctors by medical area if an area is selected
-            let doctorsToShow = window.doctors;
-
-            if (areaId) {
-                console.log('Filtering doctors by medical_area_id:', areaId);
-                doctorsToShow = window.doctors.filter(doctor => {
-                    // Check for different possible property names for medical area
-                    console.log('Checking doctor:', doctor);
-                    const doctorAreaId = doctor.medical_area_id || doctor.id_medical_area || doctor.area_id || doctor.id_area || doctor.medical_area;
-                    console.log('Doctor area ID:', doctorAreaId, 'Comparing with:', areaId);
-
-                    // If doctor has medical_area_name property, log it
-                    if (doctor.medical_area_name) {
-                        console.log('Doctor medical area name:', doctor.medical_area_name);
-                    }
-
-                    return doctorAreaId == areaId;
-                });
-                console.log('Filtered doctors:', doctorsToShow);
-            } else {
-                console.log('No area selected, showing all doctors');
-            }
-
-            // Add the filtered doctors to the dropdown
-            doctorsToShow.forEach(doctor => {
-                const option = document.createElement('option');
-                option.value = doctor.doctor_id;
-
-                let doctorText = doctor.doctor_name + ' ' + doctor.last_name + ' ' + (doctor.last_name2 || '');
-                if (doctor.specialty) {
-                    doctorText += ' - ' + doctor.specialty;
-                }
-                if (doctor.medical_area_name) {
-                    doctorText += ' (' + doctor.medical_area_name + ')';
-                }
-
-                option.textContent = doctorText;
-                doctorIdSelect.appendChild(option);
-            });
-        }
-
-        // Validate doctor selection
-        validateDoctor();
-    }
-
-    // Initialize the doctor dropdown with all doctors when the page loads
-    if (doctorIdSelect) {
-        filterDoctorsByArea('');
-    }
-
-    // Add event listener for medical area change
-    if (medicalAreaSelect) {
-        console.log('medicalAreaSelect found:', medicalAreaSelect);
-
-        try {
-            console.log('medicalAreaSelect ID:', medicalAreaSelect.id);
-            console.log('medicalAreaSelect name:', medicalAreaSelect.name);
-            console.log('medicalAreaSelect options:', medicalAreaSelect.options.length);
-
-            // Log all options
-            for (let i = 0; i < medicalAreaSelect.options.length; i++) {
-                console.log(`Option ${i}:`, {
-                    value: medicalAreaSelect.options[i].value,
-                    text: medicalAreaSelect.options[i].text
-                });
-            }
-        } catch (error) {
-            console.error('Error accessing medicalAreaSelect properties:', error);
-        }
-
-        // When medical area changes, we need to update the doctor dropdown
-        medicalAreaSelect.addEventListener('change', function() {
-            console.log('medicalAreaSelect change event triggered');
-            const selectedAreaId = this.value;
-            console.log('selectedAreaId:', selectedAreaId);
-            console.log('Selected option text:', this.options[this.selectedIndex].text);
-
-            // Call filterDoctorsByArea to update the doctor dropdown
-            filterDoctorsByArea(selectedAreaId);
-
-            // Update the hidden input in the record form
-            const formMedicalArea = document.getElementById('form-medical-area');
-            if (formMedicalArea) {
-                formMedicalArea.value = selectedAreaId;
-                console.log('Updated form-medical-area value:', formMedicalArea.value);
-            }
-
-            // Validate doctor selection
-            validateDoctor();
-        });
-    } else {
-        console.error('medicalAreaSelect not found');
-    }
-
-    // Add event listener for doctor change
-    if (doctorIdSelect) {
-        doctorIdSelect.addEventListener('change', function() {
-            console.log('doctorIdSelect change event triggered');
-            const selectedDoctorId = this.value;
-            console.log('selectedDoctorId:', selectedDoctorId);
-
-            // Update the hidden inputs in both forms
-            const formDoctorId = document.getElementById('form-doctor-id');
-            if (formDoctorId) {
-                formDoctorId.value = selectedDoctorId;
-                console.log('Updated form-doctor-id value:', formDoctorId.value);
-            }
-
-            const uploadDoctorId = document.getElementById('upload-doctor-id');
-            if (uploadDoctorId) {
-                uploadDoctorId.value = selectedDoctorId;
-                console.log('Updated upload-doctor-id value:', uploadDoctorId.value);
-            }
-
-            // Validate doctor selection
-            validateDoctor();
-        });
-    } else {
-        console.error('doctorIdSelect not found');
-    }
+    // We no longer need the doctor selection logic since we're using the current doctor ID from the session
 
     // New record button click
     if (newRecordBtn) {
@@ -846,66 +665,59 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('No currentPatientId available');
             }
 
-            // Copy the current values from the outside selects to the hidden inputs
-            const medicalAreaValue = medicalAreaSelect ? medicalAreaSelect.value : '';
-            const doctorIdValue = doctorIdSelect ? doctorIdSelect.value : '';
-
-            const formMedicalArea = document.getElementById('form-medical-area');
-            if (formMedicalArea) {
-                formMedicalArea.value = medicalAreaValue;
-                console.log('Set form-medical-area value:', formMedicalArea.value);
-            }
-
+            // Set the doctor ID from the session
             const formDoctorId = document.getElementById('form-doctor-id');
             if (formDoctorId) {
-                formDoctorId.value = doctorIdValue;
-                console.log('Set form-doctor-id value:', formDoctorId.value);
-            }
-
-            // If there's only one medical area, select it automatically
-            console.log('window.medical_areas:', window.medical_areas);
-            console.log('medicalAreaSelect in newRecordBtn click:', medicalAreaSelect);
-
-            if (window.medical_areas && window.medical_areas.length === 1 && medicalAreaSelect) {
-                console.log('Only one medical area found, selecting it automatically');
-                console.log('Medical area to select:', window.medical_areas[0]);
-
-                // Check if the medical area has an id property
-                if (window.medical_areas[0].id) {
-                    medicalAreaSelect.value = window.medical_areas[0].id;
-                    console.log('Medical area selected by id:', window.medical_areas[0].id);
+                // Use the doctorId from the PHP session
+                if (typeof window.doctorId !== 'undefined' && window.doctorId) {
+                    formDoctorId.value = window.doctorId;
+                    console.log('Set form-doctor-id value from session:', formDoctorId.value);
                 } else {
-                    // Try to find the first property that might be the id
-                    const possibleIdProps = Object.keys(window.medical_areas[0]);
-                    console.log('Possible ID properties:', possibleIdProps);
-
-                    if (possibleIdProps.length > 0) {
-                        const firstProp = possibleIdProps[0];
-                        medicalAreaSelect.value = window.medical_areas[0][firstProp];
-                        console.log(`Medical area selected by ${firstProp}:`, window.medical_areas[0][firstProp]);
-                    }
+                    console.log('No doctorId available from session');
                 }
-
-                // Log the current value of the select
-                console.log('medicalAreaSelect value after setting:', medicalAreaSelect.value);
-
-                // Trigger change event to populate doctors
-                const event = new Event('change');
-                medicalAreaSelect.dispatchEvent(event);
-                console.log('Change event dispatched to medicalAreaSelect');
-            } else if (window.medical_areas && window.medical_areas.length > 1) {
-                console.log('Multiple medical areas found:', window.medical_areas.length);
-
-                // Log all medical areas
-                window.medical_areas.forEach((area, index) => {
-                    console.log(`Medical area ${index}:`, area);
-                });
-
-                // Log the current value of the select
-                console.log('medicalAreaSelect value:', medicalAreaSelect.value);
-            } else {
-                console.log('No medical areas found or medicalAreaSelect not available');
             }
+
+            // Set the upload doctor ID as well
+            const uploadDoctorId = document.getElementById('upload-doctor-id');
+            if (uploadDoctorId) {
+                if (typeof window.doctorId !== 'undefined' && window.doctorId) {
+                    uploadDoctorId.value = window.doctorId;
+                    console.log('Set upload-doctor-id value from session:', uploadDoctorId.value);
+                }
+            }
+
+            // Set default values for vital signs
+            // Default temperature (36.5-37.5°C is normal)
+            const temperature = document.getElementById('temperature');
+            if (temperature) {
+                temperature.value = '36.5';
+            }
+
+            // Default blood pressure (120/80 mmHg is normal)
+            const bloodPressure = document.getElementById('blood-pressure');
+            if (bloodPressure) {
+                bloodPressure.value = '120/80';
+            }
+
+            // Default heart rate (60-100 bpm is normal)
+            const heartRate = document.getElementById('heart-rate');
+            if (heartRate) {
+                heartRate.value = '80';
+            }
+
+            // Default respiratory rate (12-20 breaths per minute is normal)
+            const respiratoryRate = document.getElementById('respiratory-rate');
+            if (respiratoryRate) {
+                respiratoryRate.value = '16';
+            }
+
+            // Default oxygen saturation (95-100% is normal)
+            const oxygenSaturation = document.getElementById('oxygen-saturation');
+            if (oxygenSaturation) {
+                oxygenSaturation.value = '98';
+            }
+
+            console.log('Default vital signs set');
 
             // Show modal
             if (recordModal) {
@@ -938,26 +750,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const diagnosis = document.getElementById('diagnosis');
     const doctorId = document.getElementById('doctor-id');
 
-    // Validate doctor selection on input and change (now optional)
+    // Vital signs fields for validation
+    const temperature = document.getElementById('temperature');
+    const bloodPressure = document.getElementById('blood-pressure');
+    const heartRate = document.getElementById('heart-rate');
+    const respiratoryRate = document.getElementById('respiratory-rate');
+    const weight = document.getElementById('weight');
+    const height = document.getElementById('height');
+    const bmi = document.getElementById('bmi');
+    const oxygenSaturation = document.getElementById('oxygen-saturation');
+    const glucoseLevel = document.getElementById('glucose-level');
+
+    // We no longer need to validate doctor selection since we're using the current doctor ID from the session
     function validateDoctor() {
-        if (!doctorId) {
-            console.error('doctorId not found in the DOM');
-            return true; // Return true since doctor ID is now optional
-        }
-
-        // Doctor ID is now optional, so always return true
-        // Just remove any error styling if it exists
-        doctorId.classList.remove('invalid');
-        const errorElement = document.getElementById('doctor-id-error');
-        if (errorElement) {
-            errorElement.textContent = '';
-        }
         return true;
-    }
-
-    if (doctorId) {
-        doctorId.addEventListener('change', validateDoctor);
-        doctorId.addEventListener('blur', validateDoctor);
     }
 
     // Validate date field on input and change
@@ -1038,25 +844,388 @@ document.addEventListener('DOMContentLoaded', function() {
         diagnosis.addEventListener('blur', validateComplaintAndDiagnosis);
     }
 
-    // View history button click
-    if (viewHistoryBtn) {
-        viewHistoryBtn.addEventListener('click', function() {
-            // Show history list
-            if (historyList) {
-                historyList.style.display = 'block';
-            } else {
-                console.error('historyList not found in the DOM');
-            }
+    // Validate vital signs in real-time
 
-            // Hide modal if open
-            if (recordModal) {
-                recordModal.style.display = 'none';
+    // Validate temperature (normal range: 35-42°C)
+    function validateTemperature() {
+        if (!temperature) return true;
+
+        const value = parseFloat(temperature.value);
+        if (temperature.value && (isNaN(value) || value < 35 || value > 42)) {
+            temperature.classList.add('invalid');
+            return false;
+        } else {
+            temperature.classList.remove('invalid');
+            return true;
+        }
+    }
+
+    // Validate blood pressure (format: systolic/diastolic, e.g., 120/80)
+    function validateBloodPressure() {
+        if (!bloodPressure) return true;
+
+        if (bloodPressure.value) {
+            const pattern = /^\d{2,3}\/\d{2,3}$/;
+            if (!pattern.test(bloodPressure.value)) {
+                bloodPressure.classList.add('invalid');
+                return false;
             } else {
-                console.error('recordModal not found in the DOM');
+                bloodPressure.classList.remove('invalid');
+                return true;
+            }
+        }
+        return true;
+    }
+
+    // Validate heart rate (normal range: 40-200 bpm)
+    function validateHeartRate() {
+        if (!heartRate) return true;
+
+        const value = parseInt(heartRate.value);
+        if (heartRate.value && (isNaN(value) || value < 40 || value > 200)) {
+            heartRate.classList.add('invalid');
+            return false;
+        } else {
+            heartRate.classList.remove('invalid');
+            return true;
+        }
+    }
+
+    // Validate respiratory rate (normal range: 8-40 breaths per minute)
+    function validateRespiratoryRate() {
+        if (!respiratoryRate) return true;
+
+        const value = parseInt(respiratoryRate.value);
+        if (respiratoryRate.value && (isNaN(value) || value < 8 || value > 40)) {
+            respiratoryRate.classList.add('invalid');
+            return false;
+        } else {
+            respiratoryRate.classList.remove('invalid');
+            return true;
+        }
+    }
+
+    // Validate oxygen saturation (normal range: 80-100%)
+    function validateOxygenSaturation() {
+        if (!oxygenSaturation) return true;
+
+        const value = parseInt(oxygenSaturation.value);
+        if (oxygenSaturation.value && (isNaN(value) || value < 80 || value > 100)) {
+            oxygenSaturation.classList.add('invalid');
+            return false;
+        } else {
+            oxygenSaturation.classList.remove('invalid');
+            return true;
+        }
+    }
+
+    // Calculate BMI when weight or height changes
+    function calculateBMI() {
+        if (!weight || !height || !bmi) return;
+
+        const weightValue = parseFloat(weight.value);
+        const heightValue = parseFloat(height.value);
+
+        if (!isNaN(weightValue) && !isNaN(heightValue) && heightValue > 0) {
+            // Convert height from cm to m
+            const heightInMeters = heightValue / 100;
+            // Calculate BMI: weight (kg) / height² (m²)
+            const bmiValue = (weightValue / (heightInMeters * heightInMeters)).toFixed(2);
+            bmi.value = bmiValue;
+        }
+    }
+
+    // Add event listeners for vital signs validation
+    if (temperature) {
+        temperature.addEventListener('input', validateTemperature);
+        temperature.addEventListener('blur', validateTemperature);
+    }
+
+    if (bloodPressure) {
+        bloodPressure.addEventListener('input', validateBloodPressure);
+        bloodPressure.addEventListener('blur', validateBloodPressure);
+    }
+
+    if (heartRate) {
+        heartRate.addEventListener('input', validateHeartRate);
+        heartRate.addEventListener('blur', validateHeartRate);
+    }
+
+    if (respiratoryRate) {
+        respiratoryRate.addEventListener('input', validateRespiratoryRate);
+        respiratoryRate.addEventListener('blur', validateRespiratoryRate);
+    }
+
+    if (oxygenSaturation) {
+        oxygenSaturation.addEventListener('input', validateOxygenSaturation);
+        oxygenSaturation.addEventListener('blur', validateOxygenSaturation);
+    }
+
+    // Add event listeners for BMI calculation
+    if (weight) {
+        weight.addEventListener('input', calculateBMI);
+        weight.addEventListener('blur', calculateBMI);
+    }
+
+    if (height) {
+        height.addEventListener('input', calculateBMI);
+        height.addEventListener('blur', calculateBMI);
+    }
+
+    // Medication types and medications functions
+    function loadMedicationTypes() {
+        // Fetch medication types from the server
+        fetch('/controllers/doctor/medical_history/get-medication-types.controller.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    populateMedicationTypes(data.types);
+                } else {
+                    console.error('Error loading medication types:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching medication types:', error);
+            });
+    }
+
+    function populateMedicationTypes(types) {
+        const medicationTypeSelect = document.getElementById('medication-type');
+        if (!medicationTypeSelect) {
+            console.error('Medication type select not found');
+            return;
+        }
+
+        // Clear existing options except the first one
+        while (medicationTypeSelect.options.length > 1) {
+            medicationTypeSelect.remove(1);
+        }
+
+        // Add new options
+        types.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type.id;
+            option.textContent = type.name;
+            medicationTypeSelect.appendChild(option);
+        });
+
+        // Add event listener to load medications when type changes
+        medicationTypeSelect.addEventListener('change', function() {
+            const typeId = this.value;
+            if (typeId) {
+                loadMedications(typeId);
+            } else {
+                // Clear medications dropdown if no type is selected
+                const medicationSelect = document.getElementById('medication');
+                if (medicationSelect) {
+                    while (medicationSelect.options.length > 1) {
+                        medicationSelect.remove(1);
+                    }
+                }
             }
         });
-    } else {
-        console.error('viewHistoryBtn not found in the DOM');
+    }
+
+    function loadMedications(typeId) {
+        // Fetch medications for the selected type
+        fetch(`/controllers/doctor/medical_history/get-medications.controller.php?type_id=${typeId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    populateMedications(data.medications);
+                } else {
+                    console.error('Error loading medications:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching medications:', error);
+            });
+    }
+
+    function populateMedications(medications) {
+        const medicationSelect = document.getElementById('medication');
+        if (!medicationSelect) {
+            console.error('Medication select not found');
+            return;
+        }
+
+        // Clear existing options except the first one
+        while (medicationSelect.options.length > 1) {
+            medicationSelect.remove(1);
+        }
+
+        // Add new options
+        medications.forEach(medication => {
+            const option = document.createElement('option');
+            option.value = medication.id;
+            option.textContent = medication.name;
+            medicationSelect.appendChild(option);
+        });
+    }
+
+    // Add prescription button click
+    const addPrescriptionBtn = document.getElementById('add-prescription-btn');
+    if (addPrescriptionBtn) {
+        addPrescriptionBtn.addEventListener('click', function() {
+            addPrescription();
+        });
+    }
+
+    function addPrescription() {
+        const prescriptionsContainer = document.querySelector('.prescriptions-container');
+        if (!prescriptionsContainer) {
+            console.error('Prescriptions container not found');
+            return;
+        }
+
+        // Create a new prescription item
+        const prescriptionItem = document.createElement('div');
+        prescriptionItem.className = 'prescription-item';
+
+        // Generate a unique ID for the new prescription fields
+        const prescriptionId = Date.now();
+
+        prescriptionItem.innerHTML = `
+            <div class="prescription-row">
+                <div class="prescription-field">
+                    <label for="medication-type-${prescriptionId}">Tipo de Medicamento:</label>
+                    <select id="medication-type-${prescriptionId}" name="medication-type-${prescriptionId}" class="medication-type">
+                        <option value="">Seleccione un tipo</option>
+                        <!-- Will be populated via JavaScript -->
+                    </select>
+                </div>
+                <div class="prescription-field">
+                    <label for="medication-${prescriptionId}">Medicamento:</label>
+                    <select id="medication-${prescriptionId}" name="medication-${prescriptionId}" class="medication">
+                        <option value="">Seleccione un medicamento</option>
+                        <!-- Will be populated via JavaScript based on selected type -->
+                    </select>
+                </div>
+            </div>
+            <div class="prescription-row">
+                <div class="prescription-field">
+                    <label for="medication-dose-${prescriptionId}">Dosis:</label>
+                    <input type="text" id="medication-dose-${prescriptionId}" name="medication-dose-${prescriptionId}" placeholder="Ej: 1 tableta" class="medication-dose">
+                </div>
+                <div class="prescription-field">
+                    <label for="medication-frequency-${prescriptionId}">Frecuencia:</label>
+                    <input type="text" id="medication-frequency-${prescriptionId}" name="medication-frequency-${prescriptionId}" placeholder="Ej: Cada 8 horas" class="medication-frequency">
+                </div>
+                <div class="prescription-field">
+                    <label for="medication-duration-${prescriptionId}">Duración:</label>
+                    <input type="text" id="medication-duration-${prescriptionId}" name="medication-duration-${prescriptionId}" placeholder="Ej: 7 días" class="medication-duration">
+                </div>
+            </div>
+            <button type="button" class="remove-prescription-btn">Eliminar Medicamento</button>
+        `;
+
+        // Insert the new prescription item before the add button
+        prescriptionsContainer.insertBefore(prescriptionItem, addPrescriptionBtn);
+
+        // Add event listener to the remove button
+        const removeBtn = prescriptionItem.querySelector('.remove-prescription-btn');
+        if (removeBtn) {
+            removeBtn.addEventListener('click', function() {
+                removePrescription(prescriptionItem);
+            });
+        }
+
+        // Populate the medication type dropdown
+        const medicationTypeSelect = prescriptionItem.querySelector('.medication-type');
+        if (medicationTypeSelect) {
+            // Copy options from the first medication type dropdown
+            const originalSelect = document.getElementById('medication-type');
+            if (originalSelect) {
+                Array.from(originalSelect.options).forEach(option => {
+                    const newOption = document.createElement('option');
+                    newOption.value = option.value;
+                    newOption.textContent = option.textContent;
+                    medicationTypeSelect.appendChild(newOption);
+                });
+            }
+
+            // Add event listener to load medications when type changes
+            medicationTypeSelect.addEventListener('change', function() {
+                const typeId = this.value;
+                if (typeId) {
+                    const medicationSelect = prescriptionItem.querySelector('.medication');
+                    loadMedicationsForSelect(typeId, medicationSelect);
+                } else {
+                    // Clear medications dropdown if no type is selected
+                    const medicationSelect = prescriptionItem.querySelector('.medication');
+                    if (medicationSelect) {
+                        while (medicationSelect.options.length > 1) {
+                            medicationSelect.remove(1);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function loadMedicationsForSelect(typeId, medicationSelect) {
+        if (!medicationSelect) {
+            console.error('Medication select not found');
+            return;
+        }
+
+        // Fetch medications for the selected type
+        fetch(`/controllers/doctor/medical_history/get-medications.controller.php?type_id=${typeId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Clear existing options except the first one
+                    while (medicationSelect.options.length > 1) {
+                        medicationSelect.remove(1);
+                    }
+
+                    // Add new options
+                    data.medications.forEach(medication => {
+                        const option = document.createElement('option');
+                        option.value = medication.id;
+                        option.textContent = medication.name;
+                        medicationSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('Error loading medications:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching medications:', error);
+            });
+    }
+
+    function removePrescription(prescriptionItem) {
+        if (prescriptionItem && prescriptionItem.parentNode) {
+            prescriptionItem.parentNode.removeChild(prescriptionItem);
+        }
+    }
+
+    function collectPrescriptionData() {
+        const prescriptions = [];
+        const prescriptionItems = document.querySelectorAll('.prescription-item');
+
+        prescriptionItems.forEach(item => {
+            const medicationTypeSelect = item.querySelector('.medication-type');
+            const medicationSelect = item.querySelector('.medication');
+            const doseInput = item.querySelector('.medication-dose');
+            const frequencyInput = item.querySelector('.medication-frequency');
+            const durationInput = item.querySelector('.medication-duration');
+
+            if (medicationSelect && medicationSelect.value) {
+                const prescription = {
+                    medication_id: medicationSelect.value,
+                    medication_type_id: medicationTypeSelect ? medicationTypeSelect.value : '',
+                    dose: doseInput ? doseInput.value : '',
+                    frequency: frequencyInput ? frequencyInput.value : '',
+                    duration: durationInput ? durationInput.value : ''
+                };
+
+                prescriptions.push(prescription);
+            }
+        });
+
+        return prescriptions;
     }
 
     // Close record modal
@@ -1116,7 +1285,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!doctorValid) {
             isValid = false;
         } else {
-            console.log("Doctor ID is set:", doctorId.value);
+            // Check if we have a doctor ID in the form-doctor-id hidden input
+            const formDoctorId = document.getElementById('form-doctor-id');
+            if (formDoctorId && formDoctorId.value) {
+                console.log("Doctor ID is set:", formDoctorId.value);
+            } else {
+                console.log("Doctor validation passed, using session doctor ID");
+            }
         }
 
         // Double-check that currentPatientId is set
@@ -1148,9 +1323,55 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
         }
 
+        // Validate vital signs if they have values
+        if (temperature && temperature.value) {
+            const tempValid = validateTemperature();
+            if (!tempValid) {
+                isValid = false;
+                showAlert('La temperatura debe estar entre 35°C y 42°C', 'error');
+                return false;
+            }
+        }
+
+        if (bloodPressure && bloodPressure.value) {
+            const bpValid = validateBloodPressure();
+            if (!bpValid) {
+                isValid = false;
+                showAlert('La presión arterial debe tener el formato sistólica/diastólica (ej: 120/80)', 'error');
+                return false;
+            }
+        }
+
+        if (heartRate && heartRate.value) {
+            const hrValid = validateHeartRate();
+            if (!hrValid) {
+                isValid = false;
+                showAlert('La frecuencia cardíaca debe estar entre 40 y 200 lpm', 'error');
+                return false;
+            }
+        }
+
+        if (respiratoryRate && respiratoryRate.value) {
+            const rrValid = validateRespiratoryRate();
+            if (!rrValid) {
+                isValid = false;
+                showAlert('La frecuencia respiratoria debe estar entre 8 y 40 rpm', 'error');
+                return false;
+            }
+        }
+
+        if (oxygenSaturation && oxygenSaturation.value) {
+            const osValid = validateOxygenSaturation();
+            if (!osValid) {
+                isValid = false;
+                showAlert('La saturación de oxígeno debe estar entre 80% y 100%', 'error');
+                return false;
+            }
+        }
+
         // If validation fails, show a more specific error message
         if (!isValid) {
-            showAlert('Por favor, complete los campos requeridos: Médico, Fecha y al menos uno de Motivo de Consulta o Diagnóstico', 'error');
+            showAlert('Por favor, complete los campos requeridos: Fecha y al menos uno de Motivo de Consulta o Diagnóstico', 'error');
         }
 
         return isValid;
@@ -1192,6 +1413,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const formData = new FormData(recordForm);
+
+            // Add prescription data to form data
+            const prescriptions = collectPrescriptionData();
+            if (prescriptions.length > 0) {
+                formData.append('prescriptions', JSON.stringify(prescriptions));
+            }
 
             // Debug form data being submitted
             console.log("Form data being submitted:");
@@ -1341,11 +1568,33 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('downloadPdfBtn not found in the DOM');
     }
 
+    // Download Medical History PDF button click
+    const downloadMedicalHistoryBtn = document.getElementById('download-medical-history-btn');
+    if (downloadMedicalHistoryBtn) {
+        downloadMedicalHistoryBtn.addEventListener('click', function() {
+            if (!currentPatientId) {
+                showAlert('No se ha seleccionado un paciente', 'error');
+                return;
+            }
+
+            // Redirect to Medical History PDF download endpoint
+            window.location.href = `/controllers/doctor/medical_history/download-medical-history-pdf.controller.php?patient_id=${currentPatientId}`;
+        });
+    } else {
+        console.error('downloadMedicalHistoryBtn not found in the DOM');
+    }
+
     // Download individual record as PDF
     function downloadRecordPdf(recordId) {
         // Redirect to PDF download endpoint for specific record
         // Using the existing download-history-pdf controller with record_id parameter
         window.location.href = `/controllers/doctor/medical_history/download-history-pdf.controller.php?record_id=${recordId}`;
+    }
+
+    // Download individual medical history record as PDF
+    function downloadMedicalHistoryRecordPdf(recordId) {
+        // Redirect to Medical History PDF download endpoint for specific record
+        window.location.href = `/controllers/doctor/medical_history/download-medical-history-pdf.controller.php?record_id=${recordId}`;
     }
 
     // Upload PDF button click

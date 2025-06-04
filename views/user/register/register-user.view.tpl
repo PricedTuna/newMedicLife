@@ -291,13 +291,18 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                emailError.textContent = "Error al verificar el email";
+                // En caso de error, permitimos continuar para no bloquear el registro
+                emailError.textContent = "No se pudo verificar el email, pero puede continuar";
                 emailError.style.display = 'block';
-                emailError.style.color = "red";
-                input.style.border = "2px solid red";
-                isEmailValid = false;
-                return false;
+                emailError.style.color = "#FFA500";
+                input.style.border = "2px solid #FFA500";
+                isEmailValid = true; // Permitimos continuar
+                return true;
             });
+
+            // Siempre devolvemos true para permitir la validación del formulario
+            // La validación real se hará en el servidor
+            return true;
         }
 
         function isValidEmail(email) {
@@ -363,6 +368,7 @@
         }
 
         // Variable global para rastrear si el email es válido
+        // Siempre asumimos que el email es válido a menos que se demuestre lo contrario
         let isEmailValid = true;
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -418,31 +424,30 @@
 
                 // Verificar si el email es válido (no está ya registrado)
                 if (emailInput && emailInput.value.trim() !== '') {
-                    // Si el email no ha sido validado aún, validarlo ahora
-                    if (document.getElementById('email-error').textContent !== "Email disponible" && 
-                        document.getElementById('email-error').textContent !== "Verificando disponibilidad...") {
-                        checkEmailUniqueness(emailInput);
+                    // Solo validamos si hay un error explícito de email ya registrado
+                    if (document.getElementById('email-error').style.display === 'block' && 
+                        document.getElementById('email-error').style.color === "red" &&
+                        document.getElementById('email-error').textContent.includes("ya está registrado")) {
                         // Mostrar mensaje de error
-                        Swal.fire({
-                            title: 'Validación en progreso',
-                            text: 'Por favor, espere mientras validamos su correo electrónico.',
-                            icon: 'info',
-                            confirmButtonText: 'Entendido'
-                        });
-                        return;
-                    }
-                }
-
-                if (!isNameValid || !isEmailLengthValid || !isEmailValid || !isPasswordValid || !isPasswordMatchValid) {
-                    // Mostrar mensaje de error específico para email ya registrado
-                    if (!isEmailValid) {
                         Swal.fire({
                             title: 'Error de validación',
                             text: 'El correo electrónico ya está registrado en el sistema. Por favor, utilice otro.',
                             icon: 'error',
                             confirmButtonText: 'Entendido'
                         });
+                        return;
                     }
+                }
+
+                if (!isNameValid || !isEmailLengthValid || !isPasswordValid || !isPasswordMatchValid) {
+                    // Solo mostramos mensaje genérico de validación
+                    return;
+                }
+
+                // Verificamos si hay un error explícito de email ya registrado
+                if (document.getElementById('email-error').style.display === 'block' && 
+                    document.getElementById('email-error').style.color === "red" &&
+                    document.getElementById('email-error').textContent.includes("ya está registrado")) {
                     return;
                 }
 

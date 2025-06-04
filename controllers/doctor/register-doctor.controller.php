@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'CP'                => $_POST['postalCode'] ?? '',
         'street'            => $_POST['street'] ?? '',
         'external_number'   => $_POST['extNumber'] ?? '',
-        'internal_number'   => !empty($_POST['intNumber']) ? $_POST['intNumber'] : null,
+        'internal_number'   => (isset($_POST['intNumber']) && $_POST['intNumber'] !== '') ? $_POST['intNumber'] : null,
         'neighborhood'      => $_POST['neighborhood'] ?? '',
         'insurance_number'  => $_POST['affiliationNumber'] ?? '',
         'professional_id'   => $_POST['professionalLicense'] ?? '',

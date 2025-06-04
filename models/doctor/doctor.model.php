@@ -9,7 +9,7 @@ class DoctorModel {
 
     // Valida que un campo no esté vacío y no exceda la longitud máxima
     private function validateField($value, $maxLength, $fieldName) {
-        if (empty($value)) {
+        if ($value === '' || $value === null) {
             throw new Exception("El campo $fieldName es obligatorio.");
         }
         if (strlen($value) > $maxLength) {
@@ -51,7 +51,7 @@ class DoctorModel {
         $this->validateRegex($data['CP'], '/^\d{5}$/', 'código postal');
         $this->validateField($data['street'], 50, 'calle');
         $this->validateField($data['external_number'], 8, 'número exterior');
-        $this->validateRegex($data['external_number'], '/^\d+$/', 'número exterior (solo números)');
+        $this->validateRegex($data['external_number'], '/^[A-Za-z0-9]+$/', 'número exterior (solo letras y números, sin caracteres especiales)');
         $this->validateField($data['neighborhood'], 50, 'colonia');
         $this->validateField($data['insurance_number'], 20, 'número de afiliación');
         $this->validateField($data['professional_id'], 15, 'cédula profesional');
@@ -62,9 +62,9 @@ class DoctorModel {
         $this->validateRegex($data['email'], '/^[\w\.\-]+@[\w\.\-]+\.\w{2,4}$/', 'correo electrónico');
         $this->validateField($data['gender'], 2, 'género');
 
-        if (!empty($data['internal_number'])) {
+        if ($data['internal_number'] !== '' && $data['internal_number'] !== null) {
             $this->validateField($data['internal_number'], 8, 'número interior');
-            $this->validateRegex($data['internal_number'], '/^\d+$/', 'número interior (solo números)');
+            $this->validateRegex($data['internal_number'], '/^[A-Za-z0-9]+$/', 'número interior (solo letras y números, sin caracteres especiales)');
         }
 
         // Validación de unicidad

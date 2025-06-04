@@ -13,7 +13,7 @@
     </div>
     <div class="form-group">
         <label for="extNumber">Número Exterior</label>
-        <input type="text" id="extNumber" name="extNumber" value="{$doctor.external_number|default:''}" required maxlength="10">
+        <input type="text" id="extNumber" name="extNumber" value="{$doctor.external_number|default:''}" required maxlength="8">
     </div>
     <div class="form-group">
         <label for="intNumber">Número Interior (Opcional)</label>

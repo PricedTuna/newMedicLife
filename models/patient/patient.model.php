@@ -233,17 +233,17 @@ class PatientModel
             }
         }
 
-        // Validar número exterior (debe contener solo números)
+        // Validar número exterior (debe contener solo letras y números, no caracteres especiales)
         if (isset($data['external_number']) && !empty($data['external_number'])) {
-            if (!preg_match('/^\d+$/', $data['external_number'])) {
-                throw new Exception('El número exterior debe contener solo números');
+            if (!preg_match('/^[A-Za-z0-9]+$/', $data['external_number'])) {
+                throw new Exception('El número exterior debe contener solo letras y números, sin caracteres especiales');
             }
         }
 
-        // Validar número interior (debe contener solo números)
+        // Validar número interior (debe contener solo letras y números, no caracteres especiales)
         if (isset($data['internal_number']) && !empty($data['internal_number'])) {
-            if (!preg_match('/^\d+$/', $data['internal_number'])) {
-                throw new Exception('El número interior debe contener solo números');
+            if (!preg_match('/^[A-Za-z0-9]+$/', $data['internal_number'])) {
+                throw new Exception('El número interior debe contener solo letras y números, sin caracteres especiales');
             }
         }
     }

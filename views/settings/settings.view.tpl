@@ -59,7 +59,7 @@
                             <h3>Navegación Principal</h3>
                             <div class="shortcut-item">
                                 <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>D</kbd></span>
-                                <span class="shortcut-description">Ir al Dashboard</span>
+                                <span class="shortcut-description">Ir al panel</span>
                             </div>
                             <div class="shortcut-item">
                                 <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>M</kbd></span>

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 22:17:16
+/* Smarty version 5.4.5, created on 2025-06-04 00:03:26
   from 'file:list-patients.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683cd16cd4e3c2_29462119',
+  'unifunc' => 'content_683f8d4ee15167_07983693',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '8f0f5c04f0f9a75b79c6221ce635ba02f3b6741e' => 
     array (
       0 => 'list-patients.view.tpl',
-      1 => 1748815854,
+      1 => 1748995340,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683cd16cd4e3c2_29462119 (\Smarty\Template $_smarty_tpl) {
+function content_683f8d4ee15167_07983693 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/patient/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -48,7 +48,8 @@ $_smarty_current_dir = '/var/www/html/views/patient/list';
  src="/views/components/sidebar.app.js" defer><?php echo '</script'; ?>
 >
 
-    <title>Lista de pacientes</title>
+    <title>Lista de pacientes | Medic Life</title>
+    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
 </head>
 <body>
     <?php $_smarty_tpl->renderSubTemplate("file:../../components/sidebar.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
@@ -137,12 +138,6 @@ echo htmlspecialchars((string)$_smarty_tpl->getValue('patient')['gender'], ENT_Q
                                         <?php }?>
                                     </td>
                                     <td class="actions-td">
-                                        <form action="/controllers/patient/delete-patient.controller.php" method="POST" class="action-wrapper">
-                                            <input type="hidden" name="patient_id" value="<?php echo $_smarty_tpl->getValue('patient')['id'];?>
-">
-                                            <button type="submit" class="delete-btn" data-id="<?php echo $_smarty_tpl->getValue('patient')['id'];?>
-"> Eliminar</button>
-                                        </form>
                                         <a href="/views/patient/register/register-patient.view.php?id=<?php echo $_smarty_tpl->getValue('patient')['id'];?>
 " class="action-wrapper">
                                             <button class="update-btn">Actualizar</button>

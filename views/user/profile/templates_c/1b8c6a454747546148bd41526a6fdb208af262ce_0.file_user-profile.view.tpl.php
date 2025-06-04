@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 23:52:22
+/* Smarty version 5.4.5, created on 2025-06-04 00:11:46
   from 'file:user-profile.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683ce7b6754ba0_85044271',
+  'unifunc' => 'content_683f8f422270f6_18175036',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1b8c6a454747546148bd41526a6fdb208af262ce' => 
     array (
       0 => 'user-profile.view.tpl',
-      1 => 1748821433,
+      1 => 1748995340,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683ce7b6754ba0_85044271 (\Smarty\Template $_smarty_tpl) {
+function content_683f8f422270f6_18175036 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/profile';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -39,6 +39,51 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <title>Perfil de usuario | Medic Life</title>
+    <style>
+        .required {
+            color: red;
+            margin-left: 2px;
+        }
+        .info-tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            cursor: help;
+        }
+        .info-tooltip i {
+            color: #007bff;
+        }
+        .info-tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .info-tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+        .info-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
     <?php echo '<script'; ?>
 >
         document.addEventListener('DOMContentLoaded', function() {
@@ -71,6 +116,26 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
             function isValidEmail(email) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return emailRegex.test(email);
+            }
+
+            function validateNameLength(input) {
+                clearInputError(input);
+
+                if (input.value.length > 30) {
+                    showInputError(input, 'El campo nombre supera la longitud máxima de 30 caracteres.');
+                    return false;
+                }
+                return true;
+            }
+
+            function validateEmailLength(input) {
+                clearInputError(input);
+
+                if (input.value.length > 100) {
+                    showInputError(input, 'El correo electrónico supera la longitud máxima de 100 caracteres.');
+                    return false;
+                }
+                return true;
             }
             // Photo preview functionality
             const fileInput = document.getElementById('doctor-photo-profile');
@@ -108,6 +173,32 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
                     profileInfoView.style.display = 'none';
                     profileEditForm.style.display = 'block';
                     editProfileBtn.style.display = 'none';
+
+                    // Add real-time validation for name field
+                    const nameInput = document.getElementById('name');
+                    if (nameInput) {
+                        nameInput.addEventListener('input', function() {
+                            if (this.value.length > 30) {
+                                showInputError(this, 'El campo nombre supera la longitud máxima de 30 caracteres.');
+                                // Truncar el valor a 30 caracteres
+                                this.value = this.value.slice(0, 30);
+                            } else {
+                                clearInputError(this);
+                            }
+                        });
+                    }
+
+                    // Add real-time validation for email field
+                    const emailInput = document.getElementById('email');
+                    if (emailInput) {
+                        emailInput.addEventListener('input', function() {
+                            if (this.value.length > 100) {
+                                showInputError(this, 'El correo electrónico supera la longitud máxima de 100 caracteres.');
+                            } else {
+                                clearInputError(this);
+                            }
+                        });
+                    }
                 });
 
                 // Toggle back to view mode
@@ -128,6 +219,9 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
                     if (!nameInput.value.trim()) {
                         showInputError(nameInput, 'El nombre es obligatorio');
                         isValid = false;
+                    } else if (nameInput.value.length > 30) {
+                        showInputError(nameInput, 'El campo nombre supera la longitud máxima de 30 caracteres');
+                        isValid = false;
                     } else {
                         clearInputError(nameInput);
                     }
@@ -138,6 +232,9 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
                         isValid = false;
                     } else if (!isValidEmail(emailInput.value.trim())) {
                         showInputError(emailInput, 'El correo electrónico no es válido');
+                        isValid = false;
+                    } else if (emailInput.value.length > 100) {
+                        showInputError(emailInput, 'El correo electrónico supera la longitud máxima de 100 caracteres');
                         isValid = false;
                     } else {
                         clearInputError(emailInput);
@@ -320,15 +417,17 @@ echo $_smarty_tpl->getValue('user')['status'];?>
 ">
 
                                 <div class="form-group">
-                                    <label for="name">Nombre:</label>
+                                    <label for="name">Nombre: <span class="required">*</span></label>
                                     <input type="text" id="name" name="name" value="<?php echo $_smarty_tpl->getValue('user')['name'];?>
-" required>
+" required maxlength="30" onblur="validateNameLength(this)">
+                                    <div id="name-error" class="error-message" style="display: none;"></div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email">Correo Electrónico:</label>
+                                    <label for="email">Correo Electrónico: <span class="required">*</span></label>
                                     <input type="email" id="email" name="email" value="<?php echo $_smarty_tpl->getValue('user')['email'];?>
-" required>
+" required maxlength="100" onblur="validateEmailLength(this)">
+                                    <div id="email-error" class="error-message" style="display: none;"></div>
                                 </div>
 
                                 <div class="form-actions">
@@ -355,21 +454,21 @@ echo $_smarty_tpl->getValue('user')['status'];?>
 ">
 
                                 <div class="form-group">
-                                    <label for="current_password">Contraseña Actual:</label>
-                                    <input type="password" id="current_password" name="current_password" required>
+                                    <label for="current_password">Contraseña Actual: <span class="required">*</span></label>
+                                    <input type="password" id="current_password" name="current_password" required maxlength="50">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="new_password">Nueva Contraseña:</label>
-                                    <input type="password" id="new_password" name="new_password" required>
+                                    <label for="new_password">Nueva Contraseña: <span class="required">*</span></label>
+                                    <input type="password" id="new_password" name="new_password" required maxlength="50">
                                     <div class="password-requirements">
-                                        <small>La contraseña debe tener al menos 8 caracteres</small>
+                                        <small>La contraseña debe tener al menos 8 caracteres y no exceder 50 caracteres</small>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="confirm_password">Confirmar Contraseña:</label>
-                                    <input type="password" id="confirm_password" name="confirm_password" required>
+                                    <label for="confirm_password">Confirmar Contraseña: <span class="required">*</span></label>
+                                    <input type="password" id="confirm_password" name="confirm_password" required maxlength="50">
                                 </div>
 
                                 <div class="form-actions">
@@ -404,9 +503,12 @@ echo $_smarty_tpl->getValue('user')['status'];?>
 ">
                                         <div class="form-group">
                                             <label for="doctor-photo-profile" class="file-label" id="photo-label">
-                                                <i class="bi bi-cloud-arrow-up"></i> Subir Foto
+                                                <i class="bi bi-cloud-arrow-up"></i> Subir Foto <span class="required">*</span>
                                             </label>
                                             <input type="file" id="doctor-photo-profile" name="doctor_photo" accept="image/*" required style="display: none;">
+                                            <div class="photo-requirements">
+                                                <small><span class="required">*</span> La foto de perfil es obligatoria</small>
+                                            </div>
                                             <div id="doctor-image-preview-container" class="image-preview-container">
                                                 <img id="image-preview" class="image-preview" src="" alt="Vista previa" style="display: none;">
                                                 <div id="preview-placeholder" class="preview-placeholder">

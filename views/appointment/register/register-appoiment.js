@@ -430,8 +430,80 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("submit", function (event) {
       event.preventDefault();
 
+      // Validar todos los campos
+      const curpValue = curpInput.value.trim();
+      const doctorValue = doctorSelect.value;
+      const appointmentValue = appointmentDate.value;
+      const medicalAreaValue = medicalArea.value;
+
+      let formIsValid = true;
+      let errorMessages = [];
+
+      // Limpiar mensajes anteriores
+      curpError.style.display = "none";
+      dateError.style.display = "none";
+
+      // Eliminar mensajes de error anteriores
+      const previousErrors = document.querySelectorAll("#specialityError, #doctorError");
+      previousErrors.forEach(error => error.remove());
+
+      // Validar CURP
+      if (!curpValue || !isValidCURP(curpValue.split(" - ")[0])) {
+        curpError.textContent = "Por favor ingresa una CURP válida.";
+        curpError.style.display = "block";
+        curpInput.classList.add("invalid-field");
+        formIsValid = false;
+        errorMessages.push("CURP inválida o no encontrada");
+      } else {
+        curpInput.classList.remove("invalid-field");
+      }
+
+      // Validar especialidad médica
+      if (!medicalAreaValue) {
+        const errorSpan = document.createElement("span");
+        errorSpan.id = "specialityError";
+        errorSpan.style.color = "red";
+        errorSpan.textContent = "Debe seleccionar una especialidad.";
+        medicalArea.parentNode.appendChild(errorSpan);
+        medicalArea.classList.add("invalid-field");
+        formIsValid = false;
+        errorMessages.push("Debe seleccionar una especialidad");
+      } else {
+        medicalArea.classList.remove("invalid-field");
+      }
+
+      // Validar doctor
+      if (!doctorValue) {
+        const errorSpan = document.createElement("span");
+        errorSpan.id = "doctorError";
+        errorSpan.style.color = "red";
+        errorSpan.textContent = "Debe seleccionar un doctor.";
+        doctorSelect.parentNode.appendChild(errorSpan);
+        doctorSelect.classList.add("invalid-field");
+        formIsValid = false;
+        errorMessages.push("Debe seleccionar un doctor");
+      } else {
+        doctorSelect.classList.remove("invalid-field");
+      }
+
+      // Validar fecha de cita
+      if (!appointmentValue) {
+        dateError.textContent = "Debe seleccionar una fecha válida.";
+        dateError.style.display = "inline";
+        appointmentDate.classList.add("invalid-field");
+        formIsValid = false;
+        errorMessages.push("Debe seleccionar una fecha válida");
+      } else if (dateError.style.display === "inline") {
+        // Si hay un error específico de fecha mostrado (conflicto de horarios)
+        appointmentDate.classList.add("invalid-field");
+        formIsValid = false;
+        errorMessages.push(dateError.textContent);
+      } else {
+        appointmentDate.classList.remove("invalid-field");
+      }
+
       // Verificar si todos los campos están correctos
-      if (this.checkValidity()) {
+      if (formIsValid && this.checkValidity()) {
         Swal.fire({
           title: "¿Confirmar cita?",
           text: `Paciente: ${patientName.value}\nDoctor: ${
@@ -447,75 +519,19 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
       } else {
+        // Mostrar alerta de error con todos los mensajes
         Swal.fire({
-          title: "Error",
-          text: "Por favor, complete todos los campos correctamente.",
+          title: "Error en el formulario",
+          html: errorMessages.length > 0
+            ? `<div style="text-align: left; color: #ff0000;">Por favor corrija los siguientes errores:<br><ul><li>${errorMessages.join('</li><li>')}</li></ul></div>`
+            : "Por favor, complete todos los campos correctamente.",
           icon: "error",
+          confirmButtonText: "Entendido"
         });
       }
     });
 
   updateMedicalAreaName();
-
-  document
-    .getElementById("solicitarCita")
-    .addEventListener("submit", function (event) {
-      // Aquí verificas los campos que quieres validar
-      const curpValue = curpInput.value.trim();
-      const doctorValue = doctorSelect.value;
-      const appointmentValue = appointmentDate.value;
-      const medicalAreaValue = medicalArea.value;
-
-      let formIsValid = true;
-
-      // Limpiar mensajes anteriores
-      curpError.style.display = "none";
-      dateError.style.display = "none";
-
-      // Validar CURP
-      if (!curpValue || !isValidCURP(curpValue.split(" - ")[0])) {
-        curpError.textContent = "Por favor ingresa una CURP válida.";
-        curpError.style.display = "block";
-        formIsValid = false;
-      }
-
-      // Validar especialidad médica
-      if (!medicalAreaValue) {
-        let error = document.getElementById("specialityError");
-        if (!error) {
-          const errorSpan = document.createElement("span");
-          errorSpan.id = "specialityError";
-          errorSpan.style.color = "red";
-          errorSpan.textContent = "Debe seleccionar una especialidad.";
-          medicalArea.parentNode.appendChild(errorSpan);
-        }
-        formIsValid = false;
-      }
-
-      // Validar doctor
-      if (!doctorValue) {
-        let error = document.getElementById("doctorError");
-        if (!error) {
-          const errorSpan = document.createElement("span");
-          errorSpan.id = "doctorError";
-          errorSpan.style.color = "red";
-          errorSpan.textContent = "Debe seleccionar un doctor.";
-          doctorSelect.parentNode.appendChild(errorSpan);
-        }
-        formIsValid = false;
-      }
-
-      // Validar fecha de cita
-      if (!appointmentValue) {
-        dateError.textContent = "Debe seleccionar una fecha válida.";
-        dateError.style.display = "inline";
-        formIsValid = false;
-      }
-
-      if (!formIsValid) {
-        event.preventDefault(); // Previene el envío del formulario si no es válido
-      }
-    });
 });
 
 function getParamsMedical(medicalArea) {

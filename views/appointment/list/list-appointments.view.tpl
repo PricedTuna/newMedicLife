@@ -15,6 +15,50 @@
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <script src="/scripts/form-validations.js"></script>
     <script src="/views/appointment/list/list-appointments.js" defer></script>
+    <style>
+        /* Add spacing between tables */
+        .table-container {
+            margin-bottom: 30px;
+        }
+
+        /* Different colors for each table */
+        h2 + .table-container table {
+            border: 1px solid #ddd;
+        }
+
+        /* Active appointments table - Blue */
+        h2:nth-of-type(1) + .table-container table {
+            background-color: #e6f2ff;
+            border-color: #007bff;
+        }
+
+        h2:nth-of-type(1) + .table-container table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Terminated appointments table - Yellow with black text */
+        h2:nth-of-type(2) + .table-container table {
+            background-color: #fff8cc;
+            border-color: #ffc107;
+        }
+
+        h2:nth-of-type(2) + .table-container table thead {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        /* Finalized appointments table - Green */
+        h2:nth-of-type(3) + .table-container table {
+            background-color: #e6ffe6;
+            border-color: #28a745;
+        }
+
+        h2:nth-of-type(3) + .table-container table thead {
+            background-color: #28a745;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,9 +78,9 @@
                 <input type="text" id="searchInput" placeholder="Buscar por paciente o médico...">
                 <select id="statusFilter">
                     <option value="all">Todos los estados</option>
-                    <option value="A">Activas</option>
+                    <option value="A">Pendientes</option>
                     <option value="T">Terminadas</option>
-                    <option value="F">Finalizadas</option>
+                    <option value="F">Pagadas</option>
                 </select>
                 <button id="clearFilters">Limpiar filtros</button>
             </div>
@@ -53,7 +97,7 @@
                 </div>
             {/if}
 
-            <h2>Citas Activas</h2>
+            <h2>Citas Pendientes</h2>
             <div class="table-container">
                 <table>
                     <thead>
@@ -155,7 +199,7 @@
                 </table>
             </div>
 
-            <h2>Citas Finalizadas</h2>
+            <h2>Citas Pagadas</h2>
             <div class="table-container">
                 <table>
                     <thead>

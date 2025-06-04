@@ -1,6 +1,11 @@
 <div class="form-step" id="step-3" style="display: none;">
     <div class="form-group">
-        <label for="bloodType">Tipo de Sangre <span class="required">*</span></label>
+        <label for="bloodType">Tipo de Sangre <span class="required">*</span>
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Seleccione el tipo de sangre del paciente.</span>
+            </span>
+        </label>
         <select id="bloodType" name="blood_type" required>
             <option value="">Seleccione...</option>
             <option value="A+" {if isset($patient) && $patient.blood_type == 'A+'}selected{/if}>A+</option>
@@ -14,7 +19,12 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="maritalStatus">Estado Civil <span class="required">*</span></label>
+        <label for="maritalStatus">Estado Civil <span class="required">*</span>
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Seleccione el estado civil actual del paciente.</span>
+            </span>
+        </label>
         <select id="maritalStatus" name="marital_status" required>
             <option value="">Seleccione...</option>
             <option value="Soltero(a)" {if isset($patient) && $patient.marital_status == "Soltero(a)"}selected{/if}>Soltero(a)</option>
@@ -26,17 +36,27 @@
 
 
     <div class="form-group">
-        <label for="weight">Peso (kg) <span class="required">*</span></label>
+        <label for="weight">Peso (kg) <span class="required">*</span>
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Ingrese el peso del paciente en kilogramos. Valor máximo: 999.99 kg.</span>
+            </span>
+        </label>
         <input type="number" id="weight" value="{$patient.weight|default: ''}" name="weight" required step="0.01" min="0" max="999.99" oninput="validateWeight(this);">
     </div>
     <div class="form-group">
-        <label for="height">Altura (cm) <span class="required">*</span></label>
+        <label for="height">Altura (cm) <span class="required">*</span>
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Ingrese la altura del paciente en centímetros. Valor máximo: 300 cm.</span>
+            </span>
+        </label>
         <input type="number" id="height" value="{$patient.height|default: ''}" name="height" required step="0.01" min="0" max="300" oninput="validateHeight(this);">
     </div>
     <div class="form-group">
         <label for="ethnicGroup">Grupo Étnico
-            <span class="info-tooltip">
-                <i class="bi bi-info-circle"></i>
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
                 <span class="tooltip-text">Información sobre el grupo étnico al que pertenece el paciente. Este dato es importante para considerar factores de riesgo específicos.</span>
             </span>
         </label>
@@ -44,8 +64,8 @@
     </div>
     <div class="form-group">
         <label for="religion">Religión
-            <span class="info-tooltip">
-                <i class="bi bi-info-circle"></i>
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
                 <span class="tooltip-text">Información sobre la religión del paciente. Este dato puede ser relevante para ciertas decisiones médicas y consideraciones de tratamiento.</span>
             </span>
         </label>

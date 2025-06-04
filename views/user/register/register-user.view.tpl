@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/assets/css/common.css">
     <link rel="stylesheet" href="/assets/css/forms.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/assets/css/cancel-button.css">
     <script src="/views/components/sidebar.app.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Registro de Usuarios | Medic Life</title>
@@ -14,6 +16,53 @@
         .required {
             color: red;
             margin-left: 2px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+
+        .password-toggle:hover {
+            color: #333;
+        }
+
+        .tooltip-icon {
+            margin-left: 5px;
+            color: #007bff;
+            cursor: help;
+            font-size: 14px;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
         }
     </style>
 </head>
@@ -27,8 +76,8 @@
         <div class="center-container">
             <div class="form-container">
                 <div class="form-header">
-                    <a href="/views/user/list/list-users.view.php" class="form-back-btn">
-                        <button class="back-btn">Volver</button>
+                    <a href="#" class="form-back-btn" id="cancel-btn">
+                        <button class="back-btn">Cancelar</button>
                         <span class="back-btn-icon">&#8617;</span>
                     </a>
                     <h2 class="form-title">
@@ -66,7 +115,12 @@
                     {/if}
                     {if !$passwordChangeMode}
                     <div class="form-group">
-                        <label for="role">Rol <span class="required">*</span></label>
+                        <label for="role">Rol <span class="required">*</span>
+                            <span class="tooltip-container">
+                                <i class="bi bi-question-circle tooltip-icon"></i>
+                                <span class="tooltip-text">Seleccione el rol que tendrá el usuario en el sistema.</span>
+                            </span>
+                        </label>
                         <select id="role" name="role" required>
                             <option value="S" {if $editMode && $userData.role == 'S'}selected{/if}>Administración</option>
                             <option value="A" {if $editMode && $userData.role == 'A'}selected{/if}>Administrador</option>
@@ -75,7 +129,12 @@
                     </div>
 
                     <div class="form-group" id="doctor-select-container" style="display: none;">
-                        <label for="id_doctor">Seleccionar doctor <span class="required">*</span></label>
+                        <label for="id_doctor">Seleccionar doctor <span class="required">*</span>
+                            <span class="tooltip-container">
+                                <i class="bi bi-question-circle tooltip-icon"></i>
+                                <span class="tooltip-text">Seleccione el doctor al que estará asociado este usuario.</span>
+                            </span>
+                        </label>
                         <select id="id_doctor" name="id_doctor">
                             <option value="">Seleccione un doctor</option>
                             {foreach from=$doctors item=doctor}
@@ -84,12 +143,22 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="name">Nombre completo <span class="required">*</span></label>
+                        <label for="name">Nombre completo <span class="required">*</span>
+                            <span class="tooltip-container">
+                                <i class="bi bi-question-circle tooltip-icon"></i>
+                                <span class="tooltip-text">Ingrese el nombre completo del usuario. Máximo 30 caracteres.</span>
+                            </span>
+                        </label>
                         <input type="text" id="name" name="name" placeholder="Nombre completo" value="{if $editMode}{$userData.name}{/if}" required maxlength="30" onblur="validateNameLength(this)">
                         <div id="name-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
                     <div class="form-group">
-                        <label for="email">Correo Electrónico <span class="required">*</span></label>
+                        <label for="email">Correo Electrónico <span class="required">*</span>
+                            <span class="tooltip-container">
+                                <i class="bi bi-question-circle tooltip-icon"></i>
+                                <span class="tooltip-text">Ingrese el correo electrónico del usuario. Debe tener un formato válido (ejemplo@dominio.com).</span>
+                            </span>
+                        </label>
                         <input type="email" id="email" name="email" placeholder="Correo electrónico" value="{if $editMode}{$userData.email}{/if}" required maxlength="100" onblur="validateEmailLength(this) && checkEmailUniqueness(this)">
                         <div id="email-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
@@ -106,14 +175,34 @@
                     </div>
                     {/if}
                     <div class="form-group">
-                        <label for="password">Contraseña {if !$editMode || $passwordChangeMode}<span class="required">*</span>{/if}</label>
-                        <input type="password" id="password" name="password" placeholder="Contraseña" {if !$editMode || $passwordChangeMode}required{/if} maxlength="50" onblur="validatePassword()">
+                        <label for="password">Contraseña {if !$editMode || $passwordChangeMode}<span class="required">*</span>{/if}
+                            <span class="tooltip-container">
+                                <i class="bi bi-question-circle tooltip-icon"></i>
+                                <span class="tooltip-text">Ingrese una contraseña segura. Debe tener al menos 8 caracteres.</span>
+                            </span>
+                        </label>
+                        <div style="position: relative;">
+                            <input type="password" id="password" name="password" placeholder="Contraseña" {if !$editMode || $passwordChangeMode}required{/if} maxlength="50" onblur="validatePassword()">
+                            <span class="password-toggle" onclick="togglePasswordVisibility('password')">
+                                <i class="bi bi-eye" id="password-toggle-icon"></i>
+                            </span>
+                        </div>
                         <div id="password-error" class="error-message" style="color: red; display: none;"></div>
                         {if $editMode && !$passwordChangeMode}<small style="color: #666;">Dejar en blanco para mantener la contraseña actual</small>{/if}
                     </div>
                     <div class="form-group">
-                        <label for="confirm_password">Confirmar Contraseña {if !$editMode || $passwordChangeMode}<span class="required">*</span>{/if}</label>
-                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" {if !$editMode || $passwordChangeMode}required{/if} maxlength="50" onblur="validatePasswordMatch()">
+                        <label for="confirm_password">Confirmar Contraseña {if !$editMode || $passwordChangeMode}<span class="required">*</span>{/if}
+                            <span class="tooltip-container">
+                                <i class="bi bi-question-circle tooltip-icon"></i>
+                                <span class="tooltip-text">Repita la contraseña para confirmar que es correcta.</span>
+                            </span>
+                        </label>
+                        <div style="position: relative;">
+                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" {if !$editMode || $passwordChangeMode}required{/if} maxlength="50" onblur="validatePasswordMatch()">
+                            <span class="password-toggle" onclick="togglePasswordVisibility('confirm_password')">
+                                <i class="bi bi-eye" id="confirm_password-toggle-icon"></i>
+                            </span>
+                        </div>
                         <div id="confirm-password-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
                     <button type="submit" class="submit-btn">
@@ -149,8 +238,7 @@
 
                             const editMode = document.querySelector('input[name="edit_mode"]');
                             if (editMode) {
-                                roleSelect.disabled = true;
-                                roleSelect.classList.add('input-disabled');
+                                // Allow role changes in edit mode
 
                                 if (roleSelect.value === 'D' && doctorSelect.value) {
                                     const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
@@ -479,6 +567,45 @@
                     }
                 });
             });
+        });
+    </script>
+
+    <script>
+        function togglePasswordVisibility(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = document.getElementById(inputId + '-toggle-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            }
+        }
+
+        // Add confirmation dialog for cancel button
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelBtn = document.getElementById('cancel-btn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: 'Si cancelas, se perderán todos los datos ingresados en el formulario.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, cancelar',
+                        cancelButtonText: 'No, continuar editando'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/views/user/list/list-users.view.php';
+                        }
+                    });
+                });
+            }
         });
     </script>
 </body>

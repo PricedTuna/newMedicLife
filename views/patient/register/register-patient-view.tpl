@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/assets/css/forms.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/assets/css/cancel-button.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/views/components/sidebar.app.js" defer></script>
     <script src="./register-patient.app.js" defer></script>
@@ -28,6 +29,63 @@
         };
     </script>
     <script src="form_steps.js" defer></script>
+    <style>
+        .tooltip-icon {
+            margin-left: 5px;
+            color: #007bff;
+            cursor: help;
+            font-size: 14px;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cancelBtn = document.getElementById('cancel-btn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: 'Si cancelas, se perderán todos los datos ingresados en el formulario.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, cancelar',
+                        cancelButtonText: 'No, continuar editando'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/views/patient/main/main-patient.view.php';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -38,8 +96,8 @@
         <div class="center-container">
             <div class="form-container">
                 <div class="form-header">
-                    <a href="/views/patient/list/list-patients.view.php" class="form-back-btn">
-                        <button class="back-btn">Volver</button>
+                    <a href="#" class="form-back-btn" id="cancel-btn">
+                        <button class="back-btn" style="background-color: #dc3545; color: white;">Cancelar</button>
                         <span class="back-btn-icon">&#8617;</span>
                     </a>
                     <h2 class="form-title">

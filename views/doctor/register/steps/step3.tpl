@@ -6,27 +6,52 @@
     }
 </style>
     <div class="form-group">
-        <label for="curp">CURP *</label>
+        <label for="curp">CURP *
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Ingrese la Clave Única de Registro de Población del médico. Debe tener 18 caracteres.</span>
+            </span>
+        </label>
         <input type="text" id="curp" name="curp" value="{$doctor.CURP|default:''}" required maxlength="18">
     </div>
     <div class="form-group">
-        <label for="rfc">RFC *</label>
+        <label for="rfc">RFC *
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Ingrese el Registro Federal de Contribuyentes del médico. Debe tener 13 caracteres.</span>
+            </span>
+        </label>
         <input type="text" id="rfc" name="rfc" value="{$doctor.RFC|default:''}" required maxlength="13">
     </div>
     <div class="form-group">
-        <label for="affiliationNumber">Número de Afiliación *</label>
+        <label for="affiliationNumber">Número de Afiliación *
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Ingrese el número de afiliación al seguro social del médico. Máximo 20 caracteres.</span>
+            </span>
+        </label>
         <input type="text" id="affiliationNumber" name="affiliationNumber" value="{$doctor.insurance_number|default:''}"
             required maxlength="20">
     </div>
     <div class="form-group">
-        <label for="professionalLicense">Cédula Profesional *</label>
+        <label for="professionalLicense">Cédula Profesional *
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Ingrese el número de cédula profesional del médico. Máximo 15 caracteres.</span>
+            </span>
+        </label>
         <input type="text" id="professionalLicense" name="professionalLicense"
             value="{$doctor.professional_id|default:''}" required maxlength="15">
         <div id="professionalLicense-error" class="error-message" style="color: red; display: none;"></div>
     </div>
 
     <div class="form-group">
-        <label for="speciality">Especialidad *</label>
+        <label for="speciality">Especialidad *
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Seleccione la especialidad médica del doctor.</span>
+            </span>
+        </label>
         <select name="medical_area" id="speciality" required>
             {foreach from=$medical_areas item=medical_area}
                 <option value="{$medical_area.id}"
@@ -82,6 +107,10 @@
     <div class="form-group">
         <label for="photo" class="file-label" id="photo-label">
             <i class="bi bi-cloud-arrow-up"></i> Subir Foto *
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Suba una fotografía del médico para su perfil. Formatos aceptados: JPG, PNG, GIF.</span>
+            </span>
         </label>
         <input type="file" id="photo" name="photo" accept="image/*" {if !$doctor}required{/if} style="display: none;">
         <div class="photo-requirements">
@@ -100,6 +129,19 @@
     </div>
 
 
+
+    {if !$doctor}
+    <div class="form-group" style="margin-top: 20px;">
+        <label for="create_user">
+            <input type="checkbox" id="create_user" name="create_user" value="1">
+            Crear usuario en la sección de usuarios para este doctor
+            <span class="tooltip-container">
+                <i class="bi bi-question-circle tooltip-icon"></i>
+                <span class="tooltip-text">Si marca esta opción, se creará automáticamente un usuario con rol de Doctor para este médico.</span>
+            </span>
+        </label>
+    </div>
+    {/if}
 
     <button type="button" class="prev-btn" onclick="prevStep(2)">Atrás</button>
     <button type="submit" class="submit-btn">

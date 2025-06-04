@@ -15,6 +15,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/email/email.controller.ph
 // Only administrators and secretaries can manage doctors
 checkUserRole(['A', 'S']);
 
+// Ensure we have access to the PDO connection
+global $pdo;
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recopilación centralizada de datos del formulario
@@ -141,6 +144,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $scheduleModel->saveOrUpdateSchedule($newDoctorId, $day, $startTime, $endTime);
                 }
             }
+
+            // Crear usuario para el doctor si se seleccionó la opción
+            if (isset($_POST['create_user']) && $_POST['create_user'] == '1') {
+                try {
+
+                    // Generar una contraseña aleatoria
+                    $password = bin2hex(random_bytes(4)); // 8 caracteres aleatorios
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+                    // Insertar el nuevo usuario con rol de doctor
+                    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, id_doctor, status) VALUES (:name, :email, :password, 'D', :id_doctor, 'AC')");
+                    $stmt->execute([
+                        ':name'     => $name,
+                        ':email'    => $email,
+                        ':password' => $hashedPassword,
+                        ':id_doctor'=> $newDoctorId
+                    ]);
+
+                    // Enviar correo con la contraseña
+                    $userSubject = "Credenciales de acceso a Medic Life";
+                    $userMessage = "Hola $name,\n\nSe ha creado una cuenta de usuario para ti en el sistema Medic Life.\n\nTus credenciales de acceso son:\nCorreo: $email\nContraseña: $password\n\nPor favor, cambia tu contraseña después de iniciar sesión por primera vez.\n\nSaludos.";
+                    $emailController->sendEmail($email, $userSubject, $userMessage, $from);
+
+                    header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito y usuario creado con contraseña enviada por correo"));
+                    exit;
+                } catch (Exception $e) {
+                    // Si hay un error al crear el usuario, continuamos con el flujo normal
+                    // pero mostramos un mensaje de error
+                    header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito") . '&error=' . urlencode("Error al crear usuario: " . $e->getMessage()));
+                    exit;
+                }
+            }
+
             header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito"));
         }
     } catch (Exception $e) {

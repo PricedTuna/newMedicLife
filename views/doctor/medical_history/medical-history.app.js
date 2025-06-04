@@ -612,7 +612,13 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadBtn.textContent = 'Descargar PDF';
         downloadBtn.addEventListener('click', () => downloadRecordPdf(record.id));
 
+        const downloadMedicalHistoryBtn = document.createElement('button');
+        downloadMedicalHistoryBtn.className = 'download-medical-history-btn';
+        downloadMedicalHistoryBtn.textContent = 'Descargar Historial Médico';
+        downloadMedicalHistoryBtn.addEventListener('click', () => downloadMedicalHistoryRecordPdf(record.id));
+
         actions.appendChild(downloadBtn);
+        actions.appendChild(downloadMedicalHistoryBtn);
 
         card.appendChild(header);
         card.appendChild(content);
@@ -1562,11 +1568,33 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('downloadPdfBtn not found in the DOM');
     }
 
+    // Download Medical History PDF button click
+    const downloadMedicalHistoryBtn = document.getElementById('download-medical-history-btn');
+    if (downloadMedicalHistoryBtn) {
+        downloadMedicalHistoryBtn.addEventListener('click', function() {
+            if (!currentPatientId) {
+                showAlert('No se ha seleccionado un paciente', 'error');
+                return;
+            }
+
+            // Redirect to Medical History PDF download endpoint
+            window.location.href = `/controllers/doctor/medical_history/download-medical-history-pdf.controller.php?patient_id=${currentPatientId}`;
+        });
+    } else {
+        console.error('downloadMedicalHistoryBtn not found in the DOM');
+    }
+
     // Download individual record as PDF
     function downloadRecordPdf(recordId) {
         // Redirect to PDF download endpoint for specific record
         // Using the existing download-history-pdf controller with record_id parameter
         window.location.href = `/controllers/doctor/medical_history/download-history-pdf.controller.php?record_id=${recordId}`;
+    }
+
+    // Download individual medical history record as PDF
+    function downloadMedicalHistoryRecordPdf(recordId) {
+        // Redirect to Medical History PDF download endpoint for specific record
+        window.location.href = `/controllers/doctor/medical_history/download-medical-history-pdf.controller.php?record_id=${recordId}`;
     }
 
     // Upload PDF button click

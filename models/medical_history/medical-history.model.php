@@ -740,4 +740,121 @@ class MedicalHistoryModel {
             return false;
         }
     }
+
+    /**
+     * Obtiene las prescripciones médicas para un registro de historial médico
+     * @param int $medicalHistoryId ID del registro de historial médico
+     * @return array Prescripciones médicas
+     */
+    public function getPrescriptionsForMedicalHistory($medicalHistoryId) {
+        try {
+            // Verificar si la tabla prescription_medications existe
+            $stmt = $this->pdo->prepare("
+                SELECT COUNT(*) as table_exists 
+                FROM information_schema.tables 
+                WHERE table_schema = DATABASE() 
+                AND table_name = 'prescription_medications'
+            ");
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result['table_exists'] == 0) {
+                error_log("La tabla prescription_medications no existe en la base de datos");
+                return [];
+            }
+
+            // Obtener el ID de la cita asociada al registro de historial médico
+            $stmt = $this->pdo->prepare("
+                SELECT appointment_id FROM medical_history WHERE id = :medical_history_id
+            ");
+            $stmt->execute([':medical_history_id' => $medicalHistoryId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$result || !$result['appointment_id']) {
+                return [];
+            }
+
+            $appointmentId = $result['appointment_id'];
+
+            // Obtener las prescripciones para la cita
+            $stmt = $this->pdo->prepare("
+                SELECT pm.*, m.name as medication_name, mt.name as medication_type_name
+                FROM prescription_medications pm
+                JOIN medications m ON pm.id_medicine = m.id
+                JOIN medications_types mt ON m.id_medicine_type = mt.id
+                WHERE pm.id_appointment = :appointment_id
+            ");
+            $stmt->execute([':appointment_id' => $appointmentId]);
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error al obtener prescripciones: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Obtiene las prescripciones médicas para un paciente
+     * @param int $patientId ID del paciente
+     * @return array Prescripciones médicas agrupadas por registro de historial médico
+     */
+    public function getPatientPrescriptions($patientId) {
+        try {
+            // Verificar si la tabla prescription_medications existe
+            $stmt = $this->pdo->prepare("
+                SELECT COUNT(*) as table_exists 
+                FROM information_schema.tables 
+                WHERE table_schema = DATABASE() 
+                AND table_name = 'prescription_medications'
+            ");
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result['table_exists'] == 0) {
+                error_log("La tabla prescription_medications no existe en la base de datos");
+                return [];
+            }
+
+            // Obtener todas las prescripciones para el paciente
+            $stmt = $this->pdo->prepare("
+                SELECT pm.*, m.name as medication_name, mt.name as medication_type_name,
+                       mh.id as medical_history_id, mh.diagnosis, mh.record_date
+                FROM prescription_medications pm
+                JOIN medications m ON pm.id_medicine = m.id
+                JOIN medications_types mt ON m.id_medicine_type = mt.id
+                JOIN appointments a ON pm.id_appointment = a.id
+                JOIN medical_history mh ON a.id = mh.appointment_id
+                WHERE mh.patient_id = :patient_id
+                ORDER BY mh.record_date DESC, mt.name, m.name
+            ");
+            $stmt->execute([':patient_id' => $patientId]);
+
+            $prescriptions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Agrupar prescripciones por registro de historial médico
+            $result = [];
+            foreach ($prescriptions as $prescription) {
+                $medicalHistoryId = $prescription['medical_history_id'];
+                if (!isset($result[$medicalHistoryId])) {
+                    $result[$medicalHistoryId] = [
+                        'medical_history_id' => $medicalHistoryId,
+                        'diagnosis' => $prescription['diagnosis'],
+                        'record_date' => $prescription['record_date'],
+                        'prescriptions' => []
+                    ];
+                }
+
+                unset($prescription['medical_history_id']);
+                unset($prescription['diagnosis']);
+                unset($prescription['record_date']);
+
+                $result[$medicalHistoryId]['prescriptions'][] = $prescription;
+            }
+
+            return $result;
+        } catch (PDOException $e) {
+            error_log("Error al obtener prescripciones del paciente: " . $e->getMessage());
+            return [];
+        }
+    }
 }

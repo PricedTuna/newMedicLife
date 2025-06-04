@@ -117,43 +117,6 @@ function renderVitalSigns($vitalSigns) {
     return $html;
 }
 
-/**
- * Renderiza las prescripciones médicas en formato HTML
- * @param array $prescriptions Datos de las prescripciones
- * @return string HTML con las prescripciones
- */
-function renderPrescriptions($prescriptions) {
-    if (empty($prescriptions)) {
-        return '';
-    }
-
-    $html = '<div class="prescriptions">
-        <h3>Prescripciones Médicas</h3>
-        <table>
-            <tr>
-                <th>Tipo de Medicamento</th>
-                <th>Medicamento</th>
-                <th>Dosis</th>
-                <th>Frecuencia</th>
-                <th>Duración</th>
-            </tr>';
-
-    foreach ($prescriptions as $prescription) {
-        $html .= '<tr>
-            <td>' . htmlspecialchars($prescription['medication_type_name']) . '</td>
-            <td>' . htmlspecialchars($prescription['medication_name']) . '</td>
-            <td>' . htmlspecialchars($prescription['dose']) . '</td>
-            <td>' . htmlspecialchars($prescription['frequency']) . '</td>
-            <td>' . htmlspecialchars($prescription['duration']) . '</td>
-        </tr>';
-    }
-
-    $html .= '</table>
-    </div>';
-
-    return $html;
-}
-
 try {
     // Instanciar los modelos
     $patientModel = new PatientModel($pdo);
@@ -161,7 +124,6 @@ try {
 
     $patient = null;
     $history = [];
-    $appointments = [];
 
     // Si se proporciona record_id, obtener un solo registro
     if (isset($_GET['record_id']) && is_numeric($_GET['record_id'])) {
@@ -176,42 +138,36 @@ try {
 
         // Obtener datos del paciente
         $patientId = $record['patient_id'];
-        $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id AND status != 'I'");
+        $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id");
         $stmt->execute([':id' => $patientId]);
         $patient = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$patient) {
             header('Content-Type: text/html');
-            echo 'Paciente no encontrado o inactivo';
+            echo 'Paciente no encontrado';
             exit;
         }
 
         // Usar solo este registro para el historial
         $history = [$record];
-
-        // Obtener todas las citas del paciente
-        $appointments = $medicalHistoryModel->getAllPatientAppointments($patientId);
     } 
     // Si se proporciona patient_id, obtener todo el historial
     else if (isset($_GET['patient_id']) && is_numeric($_GET['patient_id'])) {
         $patientId = (int)$_GET['patient_id'];
 
         // Obtener datos del paciente
-        $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id AND status != 'I'");
+        $stmt = $pdo->prepare("SELECT * FROM patients WHERE id = :id");
         $stmt->execute([':id' => $patientId]);
         $patient = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$patient) {
             header('Content-Type: text/html');
-            echo 'Paciente no encontrado o inactivo';
+            echo 'Paciente no encontrado';
             exit;
         }
 
         // Obtener historial médico del paciente
         $history = $medicalHistoryModel->getPatientHistory($patientId);
-
-        // Obtener todas las citas del paciente
-        $appointments = $medicalHistoryModel->getAllPatientAppointments($patientId);
     }
 
     // Generar HTML para el PDF
@@ -238,12 +194,6 @@ try {
                 font-size: 16px;
                 margin-top: 20px;
                 margin-bottom: 10px;
-            }
-            h3 {
-                color: #555;
-                font-size: 14px;
-                margin-top: 15px;
-                margin-bottom: 8px;
             }
             .patient-info {
                 margin-bottom: 20px;
@@ -292,7 +242,6 @@ try {
             table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-bottom: 15px;
             }
             table, th, td {
                 border: 1px solid #ddd;
@@ -304,9 +253,6 @@ try {
             th {
                 background-color: #f2f2f2;
             }
-            .vital-signs, .prescriptions {
-                margin-bottom: 15px;
-            }
         </style>
     </head>
     <body>
@@ -314,17 +260,17 @@ try {
             <img src="' . $_SERVER['DOCUMENT_ROOT'] . '/views/dashboard/icons/medicLifeLogo.svg" alt="Medic Life Logo">
         </div>
 
-        <h1>Historial Médico</h1>
+        <h1>Reporte de Historial Médico</h1>
 
         <div class="patient-info">
             <h2>Información del Paciente</h2>
             <p><strong>Nombre:</strong> ' . htmlspecialchars($patient['names'] . ' ' . $patient['last_name'] . ' ' . $patient['last_name2']) . '</p>
-            <p><strong>CURP:</strong> ' . htmlspecialchars($patient['CURP']) . '</p>
-            <p><strong>Fecha de Nacimiento:</strong> ' . htmlspecialchars($patient['birth_date']) . '</p>
-            <p><strong>Género:</strong> ' . htmlspecialchars($patient['gender'] == 'M' ? 'Masculino' : 'Femenino') . '</p>
-            <p><strong>Tipo de Sangre:</strong> ' . htmlspecialchars($patient['blood_type']) . '</p>
-            <p><strong>Peso:</strong> ' . htmlspecialchars($patient['weight']) . ' kg</p>
-            <p><strong>Altura:</strong> ' . htmlspecialchars($patient['height']) . ' cm</p>
+            <p><strong>CURP:</strong> ' . htmlspecialchars($patient['CURP'] ?? $patient['curp'] ?? 'No disponible') . '</p>
+            <p><strong>Fecha de Nacimiento:</strong> ' . htmlspecialchars($patient['birth_date'] ?? 'No disponible') . '</p>
+            <p><strong>Género:</strong> ' . htmlspecialchars(($patient['gender'] ?? '') == 'M' ? 'Masculino' : 'Femenino') . '</p>
+            <p><strong>Tipo de Sangre:</strong> ' . htmlspecialchars($patient['blood_type'] ?? 'No disponible') . '</p>
+            <p><strong>Peso:</strong> ' . htmlspecialchars($patient['weight'] ?? 'No disponible') . ' kg</p>
+            <p><strong>Altura:</strong> ' . htmlspecialchars($patient['height'] ?? 'No disponible') . ' cm</p>
         </div>
 
         <h2>Registros Médicos</h2>';
@@ -333,14 +279,11 @@ try {
         $html .= '<p>No hay registros médicos para este paciente.</p>';
     } else {
         foreach ($history as $record) {
-            // Obtener prescripciones para este registro
-            $prescriptions = $medicalHistoryModel->getPrescriptionsForMedicalHistory($record['id']);
-
             $html .= '
             <div class="record">
                 <div class="record-header">
-                    <div class="record-title">' . htmlspecialchars($record['diagnosis']) . '</div>
-                    <div class="record-date"><strong>Fecha:</strong> ' . htmlspecialchars($record['record_date']) . '</div>
+                    <div class="record-title">' . htmlspecialchars($record['diagnosis'] ?? 'Registro médico') . '</div>
+                    <div class="record-date">' . htmlspecialchars($record['record_date'] ?? $record['date_created'] ?? date('Y-m-d')) . '</div>
                 </div>
                 <div class="record-content">
                     ' . (!empty($record['chief_complaint']) ? '<p><strong>Motivo de Consulta:</strong> ' . nl2br(htmlspecialchars($record['chief_complaint'])) . '</p>' : '') . '
@@ -348,83 +291,25 @@ try {
                     ' . (!empty($record['personal_history']) ? '<p><strong>Antecedentes Personales:</strong> ' . nl2br(htmlspecialchars($record['personal_history'])) . '</p>' : '') . '
                     ' . (!empty($record['family_history']) ? '<p><strong>Antecedentes Familiares:</strong> ' . nl2br(htmlspecialchars($record['family_history'])) . '</p>' : '') . '
                     ' . (!empty($record['physical_examination']) ? '<p><strong>Examen Físico:</strong> ' . nl2br(htmlspecialchars($record['physical_examination'])) . '</p>' : '') . '
-                    ' . (isset($record['vital_signs_data']) && !empty($record['vital_signs_data']) ? renderVitalSigns($record['vital_signs_data'][0]) : '') . '
                     ' . (!empty($record['diagnosis']) ? '<p><strong>Diagnóstico:</strong> ' . nl2br(htmlspecialchars($record['diagnosis'])) . '</p>' : '') . '
                     ' . (!empty($record['treatment_plan']) ? '<p><strong>Plan de Tratamiento:</strong> ' . nl2br(htmlspecialchars($record['treatment_plan'])) . '</p>' : '') . '
-                    ' . (!empty($prescriptions) ? renderPrescriptions($prescriptions) : '') . '
                     ' . (!empty($record['observations']) ? '<p><strong>Observaciones:</strong> ' . nl2br(htmlspecialchars($record['observations'])) . '</p>' : '') . '
-                    ' . (!empty($record['next_appointment']) ? '<p><strong>Próxima Cita:</strong> ' . htmlspecialchars($record['next_appointment']) . '</p>' : '') . '
+
+                    ' . (isset($record['vital_signs_data']) && !empty($record['vital_signs_data']) ? renderVitalSigns($record['vital_signs_data'][0]) : '') . '
                 </div>
             </div>';
         }
     }
 
-    // Agregar sección de citas
-    $html .= '<h2>Historial de Citas</h2>';
-
-    if (empty($appointments)) {
-        $html .= '<p>No hay citas registradas para este paciente.</p>';
-    } else {
-        $html .= '
-        <table>
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Doctor</th>
-                    <th>Estado</th>
-                    <th>Notas</th>
-                </tr>
-            </thead>
-            <tbody>';
-
-        foreach ($appointments as $appointment) {
-            // Formatear el estado de la cita
-            $status = '';
-            if (isset($appointment['status'])) {
-                switch ($appointment['status']) {
-                    case 'A':
-                        $status = 'Activo';
-                        break;
-                    case 'F':
-                        $status = 'Finalizado';
-                        break;
-                    case 'T':
-                        $status = 'Terminado';
-                        break;
-                    case 'C':
-                        $status = 'Cancelado';
-                        break;
-                    case 'X':
-                        $status = 'Cancelado';
-                        break;
-                    default:
-                        $status = $appointment['status'];
-                }
-            }
-
-            $html .= '
-                <tr>
-                    <td>' . (isset($appointment['appointment_date']) ? htmlspecialchars($appointment['appointment_date']) : 'N/A') . '</td>
-                    <td>' . (isset($appointment['doctor_names']) ? htmlspecialchars($appointment['doctor_names'] . ' ' . $appointment['doctor_last_name'] . ' ' . $appointment['doctor_last_name2']) : 'N/A') . '</td>
-                    <td>' . htmlspecialchars($status) . '</td>
-                    <td>' . (isset($appointment['notes']) && !empty($appointment['notes']) ? htmlspecialchars($appointment['notes']) : '-') . '</td>
-                </tr>';
-        }
-
-        $html .= '
-            </tbody>
-        </table>';
-    }
-
     $html .= '
         <div class="footer">
-            <p>Este documento es un historial médico generado por Medic Life. Fecha de generación: ' . date('Y-m-d H:i:s') . '</p>
+            <p>Este documento es un reporte de historial médico generado por Medic Life. Fecha de generación: ' . date('Y-m-d H:i:s') . '</p>
         </div>
     </body>
     </html>';
 
     // Configurar cabeceras para descargar como PDF
-    $filename = 'Historial_Medico_' . $patient['CURP'] . '_' . date('Y-m-d') . '.pdf';
+    $filename = 'Reporte_Historial_Medico_' . ($patient['CURP'] ?? $patient['curp'] ?? 'Paciente') . '_' . date('Y-m-d') . '.pdf';
 
     // Generar PDF con TCPDF
     // Nota: Es necesario instalar TCPDF con: composer require tecnickcom/tcpdf
@@ -439,8 +324,8 @@ try {
         // Configurar el PDF
         $pdf->SetCreator('Medic Life');
         $pdf->SetAuthor('Medic Life');
-        $pdf->SetTitle('Historial Médico - ' . $patient['names'] . ' ' . $patient['last_name'] . ' ' . $patient['last_name2']);
-        $pdf->SetSubject('Historial Médico');
+        $pdf->SetTitle('Reporte de Historial Médico - ' . $patient['names'] . ' ' . $patient['last_name'] . ' ' . $patient['last_name2']);
+        $pdf->SetSubject('Reporte de Historial Médico');
 
         // Eliminar cabecera y pie de página predeterminados
         $pdf->setPrintHeader(false);

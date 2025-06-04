@@ -21,7 +21,7 @@
             <div class="profile-header">
                 <h1>Perfil de Paciente</h1>
                 <div class="profile-actions">
-                    <a href="/views/doctor/medical_history/medical-history.view.php?patient_id={$patientData.id}" class="action-btn">
+                    <a href="/views/doctor/medical_history/medical-history.view.php?patient_id={$patientData.id}" class="action-btn" style="margin-right: 10px;">
                         <i class="bi bi-journal-medical"></i> Historial Médico
                     </a>
                     <a href="/views/public/medical_history/view-history.view.php?curp={$patientData.CURP}" class="action-btn" style="background-color: #2ecc71;">

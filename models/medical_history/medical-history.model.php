@@ -166,9 +166,14 @@ class MedicalHistoryModel {
                   `patient_id` int NOT NULL,
                   `appointment_id` int DEFAULT NULL,
                   `record_date` date NOT NULL,
+                  `current_illness` text NOT NULL COMMENT 'Enfermedad Actual',
+                  `personal_history` text COMMENT 'Antecedentes Personales',
+                  `family_history` text COMMENT 'Antecedentes Familiares',
+                  `physical_examination` text COMMENT 'Examen Físico',
                   `diagnosis` varchar(255) NOT NULL,
                   `observations` text NOT NULL,
                   `treatment` text NOT NULL,
+                  `treatment_plan` text COMMENT 'Plan de Tratamiento',
                   `created_at` datetime NOT NULL,
                   PRIMARY KEY (`id`),
                   KEY `patient_id` (`patient_id`),
@@ -207,11 +212,13 @@ class MedicalHistoryModel {
                 $stmt = $this->pdo->prepare("
                     INSERT INTO medical_history (
                         patient_id, appointment_id, record_date, 
-                        diagnosis, observations, treatment, 
+                        current_illness, personal_history, family_history, physical_examination,
+                        diagnosis, observations, treatment, treatment_plan,
                         created_at
                     ) VALUES (
                         :patient_id, :appointment_id, :record_date, 
-                        :diagnosis, :observations, :treatment, 
+                        :current_illness, :personal_history, :family_history, :physical_examination,
+                        :diagnosis, :observations, :treatment, :treatment_plan,
                         NOW()
                     )
                 ");
@@ -220,19 +227,26 @@ class MedicalHistoryModel {
                     ':patient_id' => $data['patient_id'],
                     ':appointment_id' => $data['appointment_id'],
                     ':record_date' => $data['date_created'] ?? date('Y-m-d'),
+                    ':current_illness' => $data['current_illness'] ?? '',
+                    ':personal_history' => $data['personal_history'] ?? null,
+                    ':family_history' => $data['family_history'] ?? null,
+                    ':physical_examination' => $data['physical_examination'] ?? null,
                     ':diagnosis' => $data['diagnosis'] ?? null,
                     ':observations' => $data['observations'] ?? null,
-                    ':treatment' => $data['treatment_plan'] ?? null
+                    ':treatment' => $data['treatment_plan'] ?? null,
+                    ':treatment_plan' => $data['treatment_plan'] ?? null
                 ];
             } else {
                 $stmt = $this->pdo->prepare("
                     INSERT INTO medical_history (
                         patient_id, record_date, 
-                        diagnosis, observations, treatment, 
+                        current_illness, personal_history, family_history, physical_examination,
+                        diagnosis, observations, treatment, treatment_plan,
                         created_at
                     ) VALUES (
                         :patient_id, :record_date, 
-                        :diagnosis, :observations, :treatment, 
+                        :current_illness, :personal_history, :family_history, :physical_examination,
+                        :diagnosis, :observations, :treatment, :treatment_plan,
                         NOW()
                     )
                 ");
@@ -240,9 +254,14 @@ class MedicalHistoryModel {
                 $params = [
                     ':patient_id' => $data['patient_id'],
                     ':record_date' => $data['date_created'] ?? date('Y-m-d'),
+                    ':current_illness' => $data['current_illness'] ?? '',
+                    ':personal_history' => $data['personal_history'] ?? null,
+                    ':family_history' => $data['family_history'] ?? null,
+                    ':physical_examination' => $data['physical_examination'] ?? null,
                     ':diagnosis' => $data['diagnosis'] ?? null,
                     ':observations' => $data['observations'] ?? null,
-                    ':treatment' => $data['treatment_plan'] ?? null
+                    ':treatment' => $data['treatment_plan'] ?? null,
+                    ':treatment_plan' => $data['treatment_plan'] ?? null
                 ];
             }
 
@@ -493,9 +512,14 @@ class MedicalHistoryModel {
                   `patient_id` int NOT NULL,
                   `appointment_id` int DEFAULT NULL,
                   `record_date` date NOT NULL,
+                  `current_illness` text NOT NULL COMMENT 'Enfermedad Actual',
+                  `personal_history` text COMMENT 'Antecedentes Personales',
+                  `family_history` text COMMENT 'Antecedentes Familiares',
+                  `physical_examination` text COMMENT 'Examen Físico',
                   `diagnosis` varchar(255) NOT NULL,
                   `observations` text NOT NULL,
                   `treatment` text NOT NULL,
+                  `treatment_plan` text COMMENT 'Plan de Tratamiento',
                   `created_at` datetime NOT NULL,
                   PRIMARY KEY (`id`),
                   KEY `patient_id` (`patient_id`),
@@ -520,6 +544,8 @@ class MedicalHistoryModel {
                     'diagnosis' => $data['title'],
                     'observations' => $data['description'] ?? 'Documento PDF subido',
                     'treatment' => 'Ver documento adjunto',
+                    'treatment_plan' => 'Ver documento adjunto',
+                    'current_illness' => '',
                     'date_created' => date('Y-m-d')
                 ];
 
@@ -696,11 +722,12 @@ class MedicalHistoryModel {
 
     /**
      * Guarda una prescripción médica
-     * @param int $appointmentId ID de la cita
+     * @param int $patientId ID del paciente
+     * @param int $medicalHistoryId ID del historial médico
      * @param array $prescriptionData Datos de la prescripción
      * @return int|false ID de la nueva prescripción o false en caso de error
      */
-    public function savePrescription($appointmentId, $prescriptionData) {
+    public function savePrescription($patientId, $medicalHistoryId, $prescriptionData) {
         try {
             // Verificar si la tabla prescription_medications existe
             $stmt = $this->pdo->prepare("
@@ -713,25 +740,47 @@ class MedicalHistoryModel {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($result['table_exists'] == 0) {
-                error_log("La tabla prescription_medications no existe en la base de datos");
-                throw new PDOException("La tabla prescription_medications no existe en la base de datos");
+                error_log("La tabla prescription_medications no existe, intentando crearla");
+
+                // Crear la tabla prescription_medications
+                $createTableSQL = "
+                CREATE TABLE IF NOT EXISTS `prescription_medications` (
+                  `id` int NOT NULL AUTO_INCREMENT,
+                  `id_medicine` int NOT NULL,
+                  `id_patient` int NOT NULL,
+                  `dose` varchar(40) NOT NULL,
+                  `frequency` varchar(40) NOT NULL,
+                  `duration` varchar(40) NOT NULL,
+                  `medical_history_id` int NOT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `id_medicine` (`id_medicine`),
+                  KEY `id_patient` (`id_patient`),
+                  KEY `medical_history_id` (`medical_history_id`),
+                  CONSTRAINT `patient-medications-fk` FOREIGN KEY (`id_patient`) REFERENCES `patients` (`id`),
+                  CONSTRAINT `prescription_medications_ibfk_1` FOREIGN KEY (`id_medicine`) REFERENCES `medications` (`id`),
+                  CONSTRAINT `prescription_medications_ibfk_2` FOREIGN KEY (`medical_history_id`) REFERENCES `medical_history` (`id`)
+                )";
+
+                $this->pdo->exec($createTableSQL);
+                error_log("Tabla prescription_medications creada exitosamente");
             }
 
             // Insertar la prescripción
             $stmt = $this->pdo->prepare("
                 INSERT INTO prescription_medications (
-                    id_medicine, id_appointment, dose, frequency, duration
+                    id_medicine, id_patient, dose, frequency, duration, medical_history_id
                 ) VALUES (
-                    :id_medicine, :id_appointment, :dose, :frequency, :duration
+                    :id_medicine, :id_patient, :dose, :frequency, :duration, :medical_history_id
                 )
             ");
 
             $stmt->execute([
                 ':id_medicine' => $prescriptionData['medication_id'],
-                ':id_appointment' => $appointmentId,
+                ':id_patient' => $patientId,
                 ':dose' => $prescriptionData['dose'],
                 ':frequency' => $prescriptionData['frequency'],
-                ':duration' => $prescriptionData['duration']
+                ':duration' => $prescriptionData['duration'],
+                ':medical_history_id' => $medicalHistoryId
             ]);
 
             return $this->pdo->lastInsertId();
@@ -763,28 +812,15 @@ class MedicalHistoryModel {
                 return [];
             }
 
-            // Obtener el ID de la cita asociada al registro de historial médico
-            $stmt = $this->pdo->prepare("
-                SELECT appointment_id FROM medical_history WHERE id = :medical_history_id
-            ");
-            $stmt->execute([':medical_history_id' => $medicalHistoryId]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$result || !$result['appointment_id']) {
-                return [];
-            }
-
-            $appointmentId = $result['appointment_id'];
-
-            // Obtener las prescripciones para la cita
+            // Obtener directamente las prescripciones para el historial médico
             $stmt = $this->pdo->prepare("
                 SELECT pm.*, m.name as medication_name, mt.name as medication_type_name
                 FROM prescription_medications pm
                 JOIN medications m ON pm.id_medicine = m.id
                 JOIN medications_types mt ON m.id_medicine_type = mt.id
-                WHERE pm.id_appointment = :appointment_id
+                WHERE pm.medical_history_id = :medical_history_id
             ");
-            $stmt->execute([':appointment_id' => $appointmentId]);
+            $stmt->execute([':medical_history_id' => $medicalHistoryId]);
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -815,16 +851,15 @@ class MedicalHistoryModel {
                 return [];
             }
 
-            // Obtener todas las prescripciones para el paciente
+            // Obtener todas las prescripciones para el paciente directamente de la tabla prescription_medications
             $stmt = $this->pdo->prepare("
                 SELECT pm.*, m.name as medication_name, mt.name as medication_type_name,
                        mh.id as medical_history_id, mh.diagnosis, mh.record_date
                 FROM prescription_medications pm
                 JOIN medications m ON pm.id_medicine = m.id
                 JOIN medications_types mt ON m.id_medicine_type = mt.id
-                JOIN appointments a ON pm.id_appointment = a.id
-                JOIN medical_history mh ON a.id = mh.appointment_id
-                WHERE mh.patient_id = :patient_id
+                JOIN medical_history mh ON pm.medical_history_id = mh.id
+                WHERE pm.id_patient = :patient_id
                 ORDER BY mh.record_date DESC, mt.name, m.name
             ");
             $stmt->execute([':patient_id' => $patientId]);

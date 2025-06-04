@@ -172,54 +172,80 @@ try {
     }
 
     // Guardar prescripciones médicas si se proporcionaron
-    if (isset($_POST['prescriptions'])) {
-        try {
+    try {
+        // Verificar si se enviaron datos de prescripción en formato JSON
+        if (isset($_POST['prescriptions'])) {
             $prescriptions = json_decode($_POST['prescriptions'], true);
 
             if (is_array($prescriptions) && !empty($prescriptions)) {
-                error_log("Processing " . count($prescriptions) . " prescriptions");
+                error_log("Processing " . count($prescriptions) . " prescriptions from JSON");
 
-                // Obtener el ID de la cita si existe
-                $appointmentId = isset($data['appointment_id']) ? $data['appointment_id'] : null;
+                // Usar el ID del paciente y el ID del registro médico recién creado
+                $patientId = $data['patient_id'];
 
-                // Si no hay ID de cita, buscar una cita activa para el paciente
-                if (!$appointmentId) {
-                    $stmt = $pdo->prepare("
-                        SELECT id FROM appointments 
-                        WHERE id_patient = :patient_id AND status = 'A'
-                        ORDER BY appointment_date DESC
-                        LIMIT 1
-                    ");
-                    $stmt->execute([':patient_id' => $data['patient_id']]);
-                    $appointment = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if ($appointment) {
-                        $appointmentId = $appointment['id'];
-                        error_log("Found active appointment ID: " . $appointmentId);
-                    } else {
-                        error_log("No active appointment found for patient ID: " . $data['patient_id']);
-                    }
-                }
-
-                if ($appointmentId) {
+                // Verificar que tenemos un ID de registro médico válido
+                if ($recordId) {
                     foreach ($prescriptions as $prescription) {
                         if (!empty($prescription['medication_id'])) {
-                            $result = $medicalHistoryModel->savePrescription($appointmentId, $prescription);
-                            if ($result) {
-                                error_log("Prescription saved with ID: " . $result);
+                            // Verificar que todos los campos requeridos estén presentes
+                            if (
+                                isset($prescription['dose']) && 
+                                isset($prescription['frequency']) && 
+                                isset($prescription['duration'])
+                            ) {
+                                $result = $medicalHistoryModel->savePrescription($patientId, $recordId, $prescription);
+                                if ($result) {
+                                    error_log("Prescription saved with ID: " . $result);
+                                } else {
+                                    error_log("Failed to save prescription: " . print_r($prescription, true));
+                                }
                             } else {
-                                error_log("Failed to save prescription: " . print_r($prescription, true));
+                                error_log("Missing required fields for prescription: " . print_r($prescription, true));
                             }
                         }
                     }
                 } else {
-                    error_log("Cannot save prescriptions without an appointment ID");
+                    error_log("Cannot save prescriptions without a valid medical history record ID");
                 }
             }
-        } catch (Exception $e) {
-            error_log("Error processing prescriptions: " . $e->getMessage());
-            // Continue execution even if prescriptions fail
+        } 
+        // Verificar si se enviaron datos de prescripción como campos individuales
+        else if (isset($_POST['medication']) && !empty($_POST['medication']) && 
+                 isset($_POST['medication-dose']) && 
+                 isset($_POST['medication-frequency']) && 
+                 isset($_POST['medication-duration'])) {
+
+            error_log("Processing prescription from individual fields");
+
+            // Usar el ID del paciente y el ID del registro médico recién creado
+            $patientId = $data['patient_id'];
+
+            // Verificar que tenemos un ID de registro médico válido
+            if ($recordId) {
+                $prescription = [
+                    'medication_id' => (int)$_POST['medication'],
+                    'dose' => $_POST['medication-dose'],
+                    'frequency' => $_POST['medication-frequency'],
+                    'duration' => $_POST['medication-duration']
+                ];
+
+                error_log("Created prescription from fields: " . print_r($prescription, true));
+
+                $result = $medicalHistoryModel->savePrescription($patientId, $recordId, $prescription);
+                if ($result) {
+                    error_log("Prescription saved with ID: " . $result);
+                } else {
+                    error_log("Failed to save prescription: " . print_r($prescription, true));
+                }
+            } else {
+                error_log("Cannot save prescription without a valid medical history record ID");
+            }
+        } else {
+            error_log("No prescription data found in the request");
         }
+    } catch (Exception $e) {
+        error_log("Error processing prescriptions: " . $e->getMessage());
+        // Continue execution even if prescriptions fail
     }
 
     // Devolver respuesta exitosa

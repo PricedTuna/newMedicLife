@@ -306,7 +306,6 @@
                                 <div class="record-date">{$record.record_date|escape}</div>
                             </div>
                             <div class="record-content">
-                                <p><strong>Doctor:</strong> {$record.doctor_names|escape} {$record.doctor_last_name|escape} {$record.doctor_last_name2|escape}</p>
                                 <p><strong>Observaciones:</strong> {$record.observations|escape|nl2br}</p>
                                 <p><strong>Tratamiento:</strong> {$record.treatment|escape|nl2br}</p>
                             </div>

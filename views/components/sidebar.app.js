@@ -172,54 +172,54 @@ document.addEventListener("DOMContentLoaded", function () {
   //  ========= keyboard shortcuts
   document.addEventListener("keydown", function (e) {
     // Navegación principal
-    if (e.ctrlKey && e.key === "d") {
+    if (e.altKey && e.key === "d") {
       e.preventDefault();
       showShortcutToast('Navegando al Dashboard...');
       setTimeout(() => window.location.href = "/views/dashboard/dashboard.view.php", 500);
     }
-    if (e.ctrlKey && e.key === "m") {
+    if (e.altKey && e.key === "m") {
       e.preventDefault();
       showShortcutToast('Navegando a Médicos...');
       setTimeout(() => window.location.href = "/views/doctor/main/main-doctor.view.php", 500);
     }
-    if (e.ctrlKey && e.key === "p") {
+    if (e.altKey && e.key === "p") {
       e.preventDefault();
       showShortcutToast('Navegando a Pacientes...');
       setTimeout(() => window.location.href = "/views/patient/main/main-patient.view.php", 500);
     }
-    if (e.ctrlKey && e.key === "u") {
+    if (e.altKey && e.key === "u") {
       e.preventDefault();
       showShortcutToast('Navegando a Usuarios...');
       setTimeout(() => window.location.href = "/views/user/list/list-users.view.php", 500);
     }
-    if (e.ctrlKey && e.key === "c") {
+    if (e.altKey && e.key === "c") {
       e.preventDefault();
       showShortcutToast('Navegando a Citas...');
       setTimeout(() => window.location.href = "/views/appointment/list/list-appointments.view.php", 500);
     }
 
     // Acceso directo a formularios de registro
-    if (e.ctrlKey && e.shiftKey && e.key === "M") {
+    if (e.altKey && e.shiftKey && e.key === "M") {
       e.preventDefault();
       showShortcutToast('Accediendo al formulario de registro de médicos...');
       setTimeout(() => window.location.href = "/views/doctor/register/register-doctor.view.php", 500);
     }
-    if (e.ctrlKey && e.shiftKey && e.key === "P") {
+    if (e.altKey && e.shiftKey && e.key === "P") {
       e.preventDefault();
       showShortcutToast('Accediendo al formulario de registro de pacientes...');
       setTimeout(() => window.location.href = "/views/patient/register/register-patient.view.php", 500);
     }
-    if (e.ctrlKey && e.shiftKey && e.key === "C") {
+    if (e.altKey && e.shiftKey && e.key === "C") {
       e.preventDefault();
       showShortcutToast('Accediendo al formulario de registro de citas...');
       setTimeout(() => window.location.href = "/views/appointment/register/register-appoiment.php", 500);
     }
-    if (e.ctrlKey && e.shiftKey && e.key === "U") {
+    if (e.altKey && e.shiftKey && e.key === "U") {
       e.preventDefault();
       showShortcutToast('Accediendo al formulario de registro de usuarios...');
       setTimeout(() => window.location.href = "/views/user/register/register-user.view.php", 500);
     }
-    if (e.ctrlKey && e.key === "k") {
+    if (e.altKey && e.key === "k") {
       e.preventDefault();
       showShortcutToast('Mostrando atajos de teclado...');
       const shortcutsSection = document.querySelector('.shortcuts-info-section');

@@ -58,23 +58,23 @@
                         <div class="shortcuts-group">
                             <h3>Navegación Principal</h3>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>D</kbd></span>
+                                <span class="shortcut-keys"><kbd>Alt</kbd> + <kbd>D</kbd></span>
                                 <span class="shortcut-description">Ir al panel</span>
                             </div>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>M</kbd></span>
+                                <span class="shortcut-keys"><kbd>Alt</kbd> + <kbd>M</kbd></span>
                                 <span class="shortcut-description">Ir a Médicos</span>
                             </div>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>P</kbd></span>
+                                <span class="shortcut-keys"><kbd>Alt</kbd> + <kbd>P</kbd></span>
                                 <span class="shortcut-description">Ir a Pacientes</span>
                             </div>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>U</kbd></span>
+                                <span class="shortcut-keys"><kbd>Alt</kbd> + <kbd>U</kbd></span>
                                 <span class="shortcut-description">Ir a Usuarios</span>
                             </div>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>C</kbd></span>
+                                <span class="shortcut-keys"><kbd>Alt</kbd> + <kbd>C</kbd></span>
                                 <span class="shortcut-description">Ir a Citas</span>
                             </div>
                         </div>
@@ -82,19 +82,19 @@
                         <div class="shortcuts-group">
                             <h3>Acceso Directo a Formularios</h3>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></span>
+                                <span class="shortcut-keys"><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></span>
                                 <span class="shortcut-description">Formulario de registro de médicos</span>
                             </div>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></span>
+                                <span class="shortcut-keys"><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></span>
                                 <span class="shortcut-description">Formulario de registro de pacientes</span>
                             </div>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd></span>
+                                <span class="shortcut-keys"><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd></span>
                                 <span class="shortcut-description">Formulario de registro de citas</span>
                             </div>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>U</kbd></span>
+                                <span class="shortcut-keys"><kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>U</kbd></span>
                                 <span class="shortcut-description">Formulario de registro de usuarios</span>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                         <div class="shortcuts-group">
                             <h3>Otros Atajos</h3>
                             <div class="shortcut-item">
-                                <span class="shortcut-keys"><kbd>Ctrl</kbd> + <kbd>K</kbd></span>
+                                <span class="shortcut-keys"><kbd>Alt</kbd> + <kbd>K</kbd></span>
                                 <span class="shortcut-description">Mostrar esta sección de atajos</span>
                             </div>
                         </div>

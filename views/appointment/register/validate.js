@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
       } else {
         field.classList.remove("invalid-field");
       }
-    });
+  });
 
     return allValid;
   }

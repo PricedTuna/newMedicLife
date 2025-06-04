@@ -3,27 +3,27 @@
 <div class="form-step" id="step-1">
 
     <div class="form-group">
-        <label for="lastName">Apellido Paterno</label>
+        <label for="lastName">Apellido Paterno *</label>
         <input type="text" id="lastName" name="fatherLastName" value="{$doctor.last_name|default:''}" required maxlength="30">
     </div>
     <div class="form-group">
-        <label for="motherLastName">Apellido Materno</label>
+        <label for="motherLastName">Apellido Materno *</label>
         <input type="text" id="motherLastName" name="motherLastName" value="{$doctor.last_name2|default:''}" required maxlength="30">
     </div>
     <div class="form-group">
-        <label for="firstName">Nombre</label>
+        <label for="firstName">Nombre *</label>
         <input type="text" id="firstName" name="name" value="{$doctor.names|default:''}" required maxlength="30">
     </div>
     <div class="form-group">
-        <label for="phoneNumber">Número Telefónico</label>
+        <label for="phoneNumber">Número Telefónico *</label>
         <input type="number" id="phoneNumber" name="phoneNumber" value="{$doctor.phone|default:''}" required maxlength="10" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);">
     </div>
     <div class="form-group">
-        <label for="email">Correo Electrónico</label>
+        <label for="email">Correo Electrónico *</label>
         <input type="email" id="email" name="email" value="{$doctor.email|default:''}" required maxlength="100">
     </div>
     <div class="form-group">
-        <label for="gender">Sexo</label>
+        <label for="gender">Sexo *</label>
         <select id="gender" name="gender" required>
             <option value="">Seleccione...</option>
             <option value="M" {if isset($doctor.gender) && $doctor.gender == 'M'}selected{/if}>Masculino</option>
@@ -32,7 +32,7 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="birthDate">Fecha de Nacimiento</label>
+        <label for="birthDate">Fecha de Nacimiento *</label>
         <input type="date" id="birthDate" name="birthDate" value="{$doctor.birth_date|default:''}" required>
     </div>
     <button type="button" class="next-btn" onclick="nextStep(2)">Siguiente</button>

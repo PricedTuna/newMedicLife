@@ -6,27 +6,27 @@
     }
 </style>
     <div class="form-group">
-        <label for="curp">CURP</label>
+        <label for="curp">CURP *</label>
         <input type="text" id="curp" name="curp" value="{$doctor.CURP|default:''}" required maxlength="18">
     </div>
     <div class="form-group">
-        <label for="rfc">RFC</label>
+        <label for="rfc">RFC *</label>
         <input type="text" id="rfc" name="rfc" value="{$doctor.RFC|default:''}" required maxlength="13">
     </div>
     <div class="form-group">
-        <label for="affiliationNumber">Número de Afiliación</label>
+        <label for="affiliationNumber">Número de Afiliación *</label>
         <input type="text" id="affiliationNumber" name="affiliationNumber" value="{$doctor.insurance_number|default:''}"
             required maxlength="20">
     </div>
     <div class="form-group">
-        <label for="professionalLicense">Cédula Profesional <span class="required">*</span></label>
+        <label for="professionalLicense">Cédula Profesional *</label>
         <input type="text" id="professionalLicense" name="professionalLicense"
             value="{$doctor.professional_id|default:''}" required maxlength="15">
         <div id="professionalLicense-error" class="error-message" style="color: red; display: none;"></div>
     </div>
 
     <div class="form-group">
-        <label for="speciality">Especialidad</label>
+        <label for="speciality">Especialidad *</label>
         <select name="medical_area" id="speciality" required>
             {foreach from=$medical_areas item=medical_area}
                 <option value="{$medical_area.id}"
@@ -37,7 +37,10 @@
         </select>
     </div>
 
-    <h3 class="section-title">Horarios de Atención</h3>
+    <h3 class="section-title">Horarios de Atención *</h3>
+    <div style="margin-bottom: 10px; font-size: 0.9em;">
+        <small>* Debe ingresar al menos un día con horario válido</small>
+    </div>
 
     {assign var=days value=["Monday" => "Lunes", "Tuesday" => "Martes", "Wednesday" => "Miércoles", "Thursday" => "Jueves", "Friday" => "Viernes", "Saturday" => "Sábado", "Sunday" => "Domingo"]}
 
@@ -78,11 +81,11 @@
 
     <div class="form-group">
         <label for="photo" class="file-label" id="photo-label">
-            <i class="bi bi-cloud-arrow-up"></i> Subir Foto <span class="required">*</span>
+            <i class="bi bi-cloud-arrow-up"></i> Subir Foto *
         </label>
         <input type="file" id="photo" name="photo" accept="image/*" {if !$doctor}required{/if} style="display: none;">
         <div class="photo-requirements">
-            <small><span class="required">*</span> La foto de perfil es obligatoria</small>
+            <small>* La foto de perfil es obligatoria</small>
         </div>
         <div id="doctor-image-preview-container" class="image-preview-container">
             <img id="doctor-image-preview" class="image-preview"

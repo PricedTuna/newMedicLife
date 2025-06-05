@@ -33,7 +33,7 @@
                     <option value="all">Todos los roles</option>
                     <option value="S">Administración</option>
                     <option value="A">Administrador</option>
-                    <option value="D">Doctor</option>
+                    <option value="D">Medico</option>
                 </select>
                 <!-- Status filter removed as per requirements -->
                 <button id="clearFilters">Limpiar filtros</button>
@@ -59,7 +59,7 @@
                             <th>Nombre</th>
                             <th>Correo</th>
                             <th>Rol</th>
-                            <th>ID Doctor</th>
+                            <th>ID Medico</th>
                             <th>Fecha de Creación</th>
                             <th>Estado</th>
                             <th>Acciones</th>
@@ -75,11 +75,11 @@
                                     <td data-label="Rol">
                                         {if $user.role == 'S'}Administración
                                         {elseif $user.role == 'A'}Administrador
-                                        {elseif $user.role == 'D'}Doctor
+                                        {elseif $user.role == 'D'}Medico
                                         {else}{$user.role}
                                         {/if}
                                     </td>
-                                    <td data-label="ID Doctor">{$user.id_doctor|default:'-'}</td>
+                                    <td data-label="ID Medico">{$user.id_doctor|default:'-'}</td>
                                     <td data-label="Fecha de Creación">{$user.created_at}</td>
                                     <td data-label="Estado">
                                         {if $user.status == 'AC'}Activo

@@ -45,7 +45,7 @@ document.querySelectorAll(".delete-btn").forEach(button => {
         event.preventDefault();
 
         const result = await Swal.fire({
-            title: "¿Estás seguro de que deseas eliminar este doctor?",
+            title: "¿Estás seguro de que deseas eliminar este medico?",
             text: "",
             icon: "warning",
             showCancelButton: true,

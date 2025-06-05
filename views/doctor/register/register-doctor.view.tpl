@@ -141,8 +141,8 @@
                     if (!document.querySelector('input[name="id"]').value) {
                         e.preventDefault();
                         Swal.fire({
-                            title: '¿Crear usuario para este doctor?',
-                            text: 'Desea crear un usuario en la sección de usuarios para este doctor?',
+                            title: '¿Crear usuario para este medico?',
+                            text: 'Desea crear un usuario en la sección de usuarios para este medico?',
                             icon: 'question',
                             showCancelButton: true,
                             confirmButtonText: 'Sí, crear usuario',
@@ -292,7 +292,7 @@
                 doctorForm.addEventListener('submit', function(e) {
                     e.preventDefault();
                     Swal.fire({
-                        title: '¿Crear usuario para este doctor?',
+                        title: '¿Crear usuario para este medico?',
                         text: '¿Desea crear un usuario en la sección de usuarios para este doctor?',
                         icon: 'question',
                         showCancelButton: true,

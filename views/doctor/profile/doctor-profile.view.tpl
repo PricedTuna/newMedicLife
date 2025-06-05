@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/views/user/profile/user-profile.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
     <link rel="stylesheet" href="/views/components/sidebar.styles.css">
-    <title>Perfil de Doctor | Medic Life</title>
+    <title>Perfil de Medico | Medic Life</title>
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
 </head>
 
@@ -19,7 +19,7 @@
     <main>
         <div class="main-content">
             <div class="profile-header">
-                <h1>Perfil de Doctor</h1>
+                <h1>Perfil de Medico</h1>
             </div>
 
             {if isset($error)}
@@ -37,11 +37,11 @@
             {if isset($doctorData)}
                 <div class="profile-container">
                     <div class="profile-section doctor-section">
-                        <h2>Información del Doctor</h2>
+                        <h2>Información del Medico</h2>
                         <div class="profile-info">
                             <div class="doctor-photo-profile">
                                 {if $doctorData.photo}
-                                    <img src="/controllers/doctor/mostrar_foto.php?id={$doctorData.id}" alt="Foto del doctor">
+                                    <img src="/controllers/doctor/mostrar_foto.php?id={$doctorData.id}" alt="Foto del medico">
                                 {else}
                                     <div class="no-photo">Sin foto</div>
                                 {/if}

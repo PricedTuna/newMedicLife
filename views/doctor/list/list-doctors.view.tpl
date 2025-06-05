@@ -109,7 +109,7 @@
                                 <tr>
                                     <td class="photo-column">
                                         {if $doctor.photo}
-                                            <img src="/controllers/doctor/mostrar_foto.php?id={$doctor.id}" alt="Foto del doctor" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                                            <img src="/controllers/doctor/mostrar_foto.php?id={$doctor.id}" alt="Foto del medico" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                                         {else}
                                             <p>Sin foto</p>
                                         {/if}

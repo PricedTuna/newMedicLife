@@ -262,6 +262,63 @@ function validateHeight(input) {
     }
 }
 
+/**
+ * Valida que la CURP sea coherente con la fecha de nacimiento y el género.
+ *
+ * @param {string} curp - CURP a validar
+ * @param {string} birthDate - Fecha de nacimiento en formato YYYY-MM-DD
+ * @param {string} gender - Género (M o F)
+ * @returns {Object} Objeto con propiedades isValid y message
+ */
+function validateCURPCoherence(curp, birthDate, gender) {
+    if (!curp || !birthDate || !gender) {
+        return { isValid: false, message: "Faltan datos para validar la CURP." };
+    }
+
+    // Extraer fecha de nacimiento de la CURP (posiciones 4-9)
+    const curpYear = curp.substring(4, 6);
+    const curpMonth = curp.substring(6, 8);
+    const curpDay = curp.substring(8, 10);
+
+    // Extraer fecha de nacimiento del input
+    // Usar split para evitar problemas de timezone
+    const dateParts = birthDate.split('-');
+    const inputYear = dateParts[0].substring(2);
+    const inputMonth = dateParts[1];
+    const inputDay = dateParts[2];
+
+    // Extraer género de la CURP (posición 10)
+    const curpGender = curp.charAt(10);
+
+    // Validar coherencia de fecha
+    const dateIsCoherent = curpYear === inputYear &&
+                         curpMonth === inputMonth &&
+                         curpDay === inputDay;
+
+    // Validar coherencia de género
+    const genderIsCoherent = (curpGender === 'H' && gender === 'M') ||
+                           (curpGender === 'M' && gender === 'F');
+
+    if (!dateIsCoherent && !genderIsCoherent) {
+        return {
+            isValid: false,
+            message: "La CURP no coincide con la fecha de nacimiento ni con el género proporcionados."
+        };
+    } else if (!dateIsCoherent) {
+        return {
+            isValid: false,
+            message: "La CURP no coincide con la fecha de nacimiento proporcionada."
+        };
+    } else if (!genderIsCoherent) {
+        return {
+            isValid: false,
+            message: "La CURP no coincide con el género proporcionado (H para masculino, M para femenino)."
+        };
+    }
+
+    return { isValid: true, message: "CURP coherente con los datos proporcionados." };
+}
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -485,6 +542,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 const curp = this.value.trim();
                 const patientIdInput = document.querySelector('input[name="patient_id"]');
                 const patientId = patientIdInput ? patientIdInput.value : '';
+
+                // Validar coherencia con fecha de nacimiento y género
+                const birthDateInput = document.getElementById('birthDate');
+                const genderSelect = document.getElementById('gender');
+
+                if (birthDateInput && genderSelect && birthDateInput.value && genderSelect.value) {
+                    const coherenceResult = validateCURPCoherence(
+                        curp,
+                        birthDateInput.value,
+                        genderSelect.value
+                    );
+
+                    if (!coherenceResult.isValid) {
+                        showErrorMessage(this, coherenceResult.message);
+                        return;
+                    }
+                }
 
                 // Mostrar indicador de carga
                 showErrorMessage(this, "Verificando disponibilidad...");

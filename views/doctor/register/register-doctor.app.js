@@ -167,10 +167,11 @@ function validateCURPCoherence(curp, birthDate, gender) {
   const curpDay = curp.substring(8, 10);
 
   // Extraer fecha de nacimiento del input
-  const birthDateObj = new Date(birthDate);
-  const inputYear = birthDateObj.getUTCFullYear().toString().substring(2);
-  const inputMonth = String(birthDateObj.getUTCMonth() + 1).padStart(2, '0');
-  const inputDay = String(birthDateObj.getUTCDate()).padStart(2, '0');
+  // Usar split para evitar problemas de timezone
+  const dateParts = birthDate.split('-');
+  const inputYear = dateParts[0].substring(2);
+  const inputMonth = dateParts[1];
+  const inputDay = dateParts[2];
 
   // Extraer género de la CURP (posición 10)
   const curpGender = curp.charAt(10);

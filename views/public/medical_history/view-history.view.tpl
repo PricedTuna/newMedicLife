@@ -202,6 +202,27 @@
             font-size: 14px;
         }
 
+        /* Override body grid display that causes layout issues */
+        body {
+            display: block;
+        }
+
+        /* Center the form-container in the page */
+        .form-container {
+            max-width: 800px;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        /* Ensure center-container works properly with any content height */
+        .center-container {
+            min-height: 100%;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
         @media (max-width: 768px) {
             .actions-container {
                 flex-direction: column;

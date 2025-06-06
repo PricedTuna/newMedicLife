@@ -18,6 +18,43 @@
         var appointments = {$appointments|json_encode};
     </script>
     <script src="./dashboard.app.js" defer></script>
+    <script>
+        function confirmEndAppointment(button) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Realmente deseas marcar esta cita como terminada?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, terminar cita',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    button.closest('form').submit();
+                }
+            });
+        }
+
+        function confirmCancelAppointment(button) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Realmente deseas cancelar esta cita? Esta acción no se puede deshacer.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, cancelar cita',
+                cancelButtonText: 'No cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    button.closest('form').submit();
+                }
+            });
+        }
+    </script>
 
 </head>
 
@@ -104,18 +141,18 @@
 
                                         <td class="actions-td">
                                             <form action="/controllers/dashboard/dashboard.controller.php" method="POST"
-                                                class="action-wrapper">
+                                                class="action-wrapper end-appointment-form">
                                                 <input type="hidden" name="id_cita" value="{$appointment.cita}">
                                                 <input type="hidden" name="action" value="update">
-                                                <button type="submit" class="update-btn"
-                                                    data-id="{$patient.id}">Terminada</button>
+                                                <button type="button" class="update-btn"
+                                                    data-id="{$patient.id}" onclick="confirmEndAppointment(this)">Terminada</button>
                                             </form>
                                             <form action="/controllers/dashboard/dashboard.controller.php" method="POST"
-                                                class="action-wrapper">
+                                                class="action-wrapper cancel-appointment-form">
                                                 <input type="hidden" name="id_cita" value="{$appointment.cita}">
                                                 <input type="hidden" name="action" value="cancel">
-                                                <button type="submit" class="delete-btn"
-                                                    data-id="{$patient.id}">Cancelar</button>
+                                                <button type="button" class="delete-btn"
+                                                    data-id="{$patient.id}" onclick="confirmCancelAppointment(this)">Cancelar</button>
                                             </form>
                                         </td>
                                     </tr>

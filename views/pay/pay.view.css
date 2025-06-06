@@ -1,123 +1,140 @@
-body {
-    font-family: Poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f0f4fa;
-    margin: 0;
-    padding: 0;
-}
-
-.payment-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-    min-height: 100vh;
-}
-
-.payment-box {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 112, 186, 0.15);
-    padding: 32px;
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-    border: 1px solid #e0e6f1;
-}
-
-.payment-title {
+/* Custom styles for payment page */
+.section-title {
     color: #0070ba;
-    margin-bottom: 28px;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 600;
-    border-bottom: 2px solid #0070ba20;
-    padding-bottom: 10px;
+    margin-bottom: 15px;
+    margin-top: 25px;
+    border-bottom: 1px solid #e0e6f1;
+    padding-bottom: 8px;
 }
 
-.option {
+/* Payment options styling */
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.payment-option {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-bottom: 10px;
+    padding: 15px;
+    border: 2px solid #e0e6f1;
+    border-radius: 10px;
     cursor: pointer;
-    gap: 10px;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
 }
 
-.option input[type="radio"] {
-    margin-right: 10px;
-}
-
-
-.option input {
-    margin-right: 12px;
-    transform: scale(1.2);
-}
-
-label {
-    display: block;
-    margin-bottom: 14px;
-    text-align: left;
-    font-weight: 500;
-    color: #333;
-}
-
-input[type="number"],
-input[type="text"],
-select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #cbd5e0;
-    margin-top: 4px;
-    font-size: 15px;
-    box-sizing: border-box;
-    background: #fff;
-}
-
-input:focus,
-select:focus {
-    outline: none;
+.payment-option:hover {
     border-color: #0070ba;
-    box-shadow: 0 0 0 2px #0070ba40;
+    background-color: #f0f7ff;
 }
 
-.submit-btn {
-    width: 100%;
-    padding: 14px;
-    background-color: #0070ba;
-    color: white;
-    border: none;
+.payment-option.selected {
+    border-color: #0070ba;
+    background-color: #f0f7ff;
+    box-shadow: 0 4px 8px rgba(0, 112, 186, 0.15);
+}
+
+.payment-option-icon {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: #e6f2ff;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.payment-option-details {
+    flex: 1;
+}
+
+.payment-option-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.payment-option-description {
+    font-size: 13px;
+    color: #666;
+}
+
+/* Tooltips */
+.tooltip-icon {
+    margin-left: 5px;
+    color: #007bff;
+    cursor: help;
+    font-size: 14px;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Form elements */
+.form-section {
+    margin-bottom: 20px;
+}
+
+#paypal-fields {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f8fafc;
     border-radius: 8px;
-    font-size: 17px;
-    font-weight: bold;
-    margin-top: 24px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.submit-btn:hover {
-    background-color: #005f9e;
+    border: 1px solid #e0e6f1;
 }
 
 .hidden {
     display: none;
 }
 
-#monto {
-    margin-bottom: 20px;
-}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .payment-option {
+        padding: 12px;
+    }
 
-#paypal-fields {
-    margin-top: 24px;
-    border-top: 1px solid #e1e7f0;
-    padding-top: 16px;
-}
+    .payment-option-icon {
+        width: 40px;
+        height: 40px;
+    }
 
-#restante {
-    margin-top: 12px;
-    font-weight: bold;
-    color: #0070ba;
-    text-align: left;
+    .payment-option-title {
+        font-size: 15px;
+    }
+
+    .payment-option-description {
+        font-size: 12px;
+    }
 }

@@ -205,7 +205,7 @@
                         </div>
                         <div id="confirm-password-error" class="error-message" style="color: red; display: none;"></div>
                     </div>
-                    <button type="submit" class="submit-btn">
+                    <button type="submit" class="submit-btn" id="submit-btn">
                         {if $passwordChangeMode}
                             Cambiar contraseña
                         {elseif $editMode}
@@ -462,6 +462,14 @@
         document.addEventListener('DOMContentLoaded', function() {
             const userForm = document.getElementById('user-form');
 
+            // Check if userForm exists
+            if (!userForm) {
+                console.error('Form with ID "user-form" not found');
+                return;
+            }
+
+            console.log('Form action URL:', userForm.action);
+
             // Add real-time validation for name field
             const nameInput = document.getElementById('name');
             if (nameInput) {
@@ -501,6 +509,7 @@
 
             userForm.addEventListener('submit', function(event) {
                 event.preventDefault();
+                console.log('Form submission event triggered');
 
                 const nameInput = document.getElementById('name');
                 const emailInput = document.getElementById('email');
@@ -509,6 +518,13 @@
                 const isEmailLengthValid = emailInput ? validateEmailLength(emailInput) : true;
                 const isPasswordValid = validatePassword();
                 const isPasswordMatchValid = validatePasswordMatch();
+
+                console.log('Validation results:', {
+                    isNameValid,
+                    isEmailLengthValid,
+                    isPasswordValid,
+                    isPasswordMatchValid
+                });
 
                 // Verificar si el email es válido (no está ya registrado)
                 if (emailInput && emailInput.value.trim() !== '') {
@@ -543,6 +559,11 @@
                 const isEditMode = document.querySelector('input[name="edit_mode"]') !== null;
                 const isPasswordChangeMode = document.querySelector('input[name="password_change_mode"]') !== null;
 
+                console.log('Mode detection:', {
+                    isEditMode,
+                    isPasswordChangeMode
+                });
+
                 if (isPasswordChangeMode) {
                     title = "¿Estás seguro de que deseas cambiar la contraseña?";
                     confirmButtonText = "Cambiar contraseña";
@@ -563,7 +584,18 @@
                     cancelButtonText: "Cancelar"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        userForm.submit();
+                        console.log('Form is being submitted');
+
+                        // Log form data
+                        console.log('Form data:');
+                        const formData = new FormData(userForm);
+                        for (let pair of formData.entries()) {
+                            console.log(pair[0] + ': ' + pair[1]);
+                        }
+
+                        // Use a direct form submission instead of userForm.submit()
+                        // This is to ensure the form is submitted properly
+                        document.getElementById('user-form').submit();
                     }
                 });
             });

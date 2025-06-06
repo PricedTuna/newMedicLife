@@ -15,6 +15,25 @@
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <script src="/scripts/form-validations.js"></script>
     <script src="/views/appointment/list/list-appointments.js" defer></script>
+    <script>
+        function confirmDeleteAppointment(button) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¿Realmente deseas eliminar esta cita? Esta acción no se puede deshacer.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if confirmed
+                    button.closest('form').submit();
+                }
+            });
+        }
+    </script>
     <style>
         /* Add spacing between tables */
         .table-container {
@@ -126,13 +145,13 @@
                                                 <button class="finish-btn">Finalizar Cita</button>
                                             </a>
                                             <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST"
-                                                class="action-wrapper">
+                                                class="action-wrapper delete-appointment-form">
                                                 <input type="hidden" name="appointment_id" value="{$appointment.cita}">
                                                 <input type="hidden" name="patient_name" value="{$appointment.patient_name} {$appointment.last_name} {$appointment.last_name2}">
                                                 <input type="hidden" name="patient_email" value="{$appointment.patient_email}">
                                                 <input type="hidden" name="appointment_date" value="{$appointment.appointment_date}">
-                                                <button type="submit" class="delete-btn"
-                                                    data-id="{$appointment.cita}">Eliminar</button>
+                                                <button type="button" class="delete-btn"
+                                                    data-id="{$appointment.cita}" onclick="confirmDeleteAppointment(this)">Eliminar</button>
                                             </form>
                                             <a href="/views/appointment/register/register-appoiment.php?id={$appointment.cita}"
                                                 class="action-wrapper">

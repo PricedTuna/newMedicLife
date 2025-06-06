@@ -51,7 +51,10 @@ class DoctorModel {
         $this->validateRegex($data['CP'], '/^\d{5}$/', 'código postal');
         $this->validateField($data['street'], 50, 'calle');
         $this->validateField($data['external_number'], 8, 'número exterior');
-        $this->validateRegex($data['external_number'], '/^[A-Za-z0-9]+$/', 'número exterior (solo letras y números, sin caracteres especiales)');
+        // Permitir "0" como valor válido para número exterior
+        if ($data['external_number'] !== '0') {
+            $this->validateRegex($data['external_number'], '/^[A-Za-z0-9]+$/', 'número exterior (solo letras y números, sin caracteres especiales)');
+        }
         $this->validateField($data['neighborhood'], 50, 'colonia');
         $this->validateField($data['insurance_number'], 20, 'número de afiliación');
         $this->validateField($data['professional_id'], 15, 'cédula profesional');
@@ -64,7 +67,10 @@ class DoctorModel {
 
         if ($data['internal_number'] !== '' && $data['internal_number'] !== null) {
             $this->validateField($data['internal_number'], 8, 'número interior');
-            $this->validateRegex($data['internal_number'], '/^[A-Za-z0-9]+$/', 'número interior (solo letras y números, sin caracteres especiales)');
+            // Permitir "0" como valor válido para número interior
+            if ($data['internal_number'] !== '0') {
+                $this->validateRegex($data['internal_number'], '/^[A-Za-z0-9]+$/', 'número interior (solo letras y números, sin caracteres especiales)');
+            }
         }
 
         // Validación de unicidad

@@ -51,8 +51,18 @@ try {
         $stmt->execute([':id_emergency_contact' => $patientData['id_emergency_contact']]);
         $emergencyContact = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Put the emergency contact in an array to maintain compatibility with the template
-        $emergencyContacts = $emergencyContact ? [$emergencyContact] : [];
+        // Format the emergency contact data to match the template expectations
+        if ($emergencyContact) {
+            // Combine names, last_name, and last_name2 into a single name field for display
+            $emergencyContact['name'] = $emergencyContact['names'] . ' ' . 
+                                        $emergencyContact['last_name'] . ' ' . 
+                                        $emergencyContact['last_name2'];
+
+            // Put the emergency contact in an array to maintain compatibility with the template
+            $emergencyContacts = [$emergencyContact];
+        } else {
+            $emergencyContacts = [];
+        }
     } else {
         $emergencyContacts = [];
     }

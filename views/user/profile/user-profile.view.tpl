@@ -54,9 +54,59 @@
             visibility: visible;
             opacity: 1;
         }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+        .password-toggle:hover {
+            color: #333;
+        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Check for success message related to password change
+            const urlParams = new URLSearchParams(window.location.search);
+            const successMessage = urlParams.get('success');
+
+            if (successMessage && successMessage.includes('Contraseña actualizada correctamente')) {
+                // Hide password change form and show the change password button
+                const passwordChangeForm = document.getElementById('password-change-form');
+                const changePasswordBtn = document.getElementById('change-password-btn');
+
+                if (passwordChangeForm && changePasswordBtn) {
+                    passwordChangeForm.style.display = 'none';
+                    changePasswordBtn.style.display = 'inline-block';
+                }
+
+                // Show a SweetAlert notification
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Contraseña actualizada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+
+            // Function to toggle password visibility
+            window.togglePasswordVisibility = function(inputId) {
+                const passwordInput = document.getElementById(inputId);
+                const toggleIcon = document.getElementById(inputId + '-toggle-icon');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleIcon.classList.remove('bi-eye');
+                    toggleIcon.classList.add('bi-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    toggleIcon.classList.remove('bi-eye-slash');
+                    toggleIcon.classList.add('bi-eye');
+                }
+            };
+
             // Helper functions for form validation
             function showInputError(input, message) {
                 // Remove any existing error message
@@ -409,12 +459,22 @@
 
                                 <div class="form-group">
                                     <label for="current_password">Contraseña Actual: <span class="required">*</span></label>
-                                    <input type="password" id="current_password" name="current_password" required maxlength="50">
+                                    <div style="position: relative;">
+                                        <input type="password" id="current_password" name="current_password" required maxlength="50">
+                                        <span class="password-toggle" onclick="togglePasswordVisibility('current_password')">
+                                            <i class="bi bi-eye" id="current_password-toggle-icon"></i>
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="new_password">Nueva Contraseña: <span class="required">*</span></label>
-                                    <input type="password" id="new_password" name="new_password" required maxlength="50">
+                                    <div style="position: relative;">
+                                        <input type="password" id="new_password" name="new_password" required maxlength="50">
+                                        <span class="password-toggle" onclick="togglePasswordVisibility('new_password')">
+                                            <i class="bi bi-eye" id="new_password-toggle-icon"></i>
+                                        </span>
+                                    </div>
                                     <div class="password-requirements">
                                         <small>La contraseña debe tener al menos 8 caracteres y no exceder 50 caracteres</small>
                                     </div>
@@ -422,7 +482,12 @@
 
                                 <div class="form-group">
                                     <label for="confirm_password">Confirmar Contraseña: <span class="required">*</span></label>
-                                    <input type="password" id="confirm_password" name="confirm_password" required maxlength="50">
+                                    <div style="position: relative;">
+                                        <input type="password" id="confirm_password" name="confirm_password" required maxlength="50">
+                                        <span class="password-toggle" onclick="togglePasswordVisibility('confirm_password')">
+                                            <i class="bi bi-eye" id="confirm_password-toggle-icon"></i>
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div class="form-actions">

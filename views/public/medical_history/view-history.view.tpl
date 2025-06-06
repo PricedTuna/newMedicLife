@@ -202,11 +202,6 @@
             font-size: 14px;
         }
 
-        /* Override body grid display that causes layout issues */
-        body {
-            display: block;
-        }
-
         /* Center the form-container in the page */
         .form-container {
             max-width: 800px;

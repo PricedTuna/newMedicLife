@@ -157,7 +157,7 @@
                             </span>
                         </label>
                         <select name="id_doctor" id="doctor" required>
-                            <option value="">Seleccione un médico</option>
+                            <option value="">Seleccione un Médico</option>
                         </select>
                     </div>
 

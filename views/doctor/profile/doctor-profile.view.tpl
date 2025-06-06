@@ -19,7 +19,7 @@
     <main>
         <div class="main-content">
             <div class="profile-header">
-                <h1>Perfil de Doctor</h1>
+                <h1>Perfil de Médico</h1>
             </div>
 
             {if isset($error)}
@@ -37,7 +37,7 @@
             {if isset($doctorData)}
                 <div class="profile-container">
                     <div class="profile-section doctor-section">
-                        <h2>Información del Doctor</h2>
+                        <h2>Información del Médico</h2>
                         <div class="profile-info">
                             <div class="doctor-photo-profile">
                                 {if $doctorData.photo}

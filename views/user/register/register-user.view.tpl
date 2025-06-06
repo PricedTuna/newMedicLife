@@ -122,21 +122,21 @@
                             </span>
                         </label>
                         <select id="role" name="role" required>
-                            <option value="S" {if $editMode && $userData.role == 'S'}selected{/if}>Administración</option>
+                            <option value="S" {if $editMode && $userData.role == 'S'}selected{/if}>Recepcionista</option>
                             <option value="A" {if $editMode && $userData.role == 'A'}selected{/if}>Administrador</option>
-                            <option value="D" {if $editMode && $userData.role == 'D'}selected{/if}>Doctor</option>
+                            <option value="D" {if $editMode && $userData.role == 'D'}selected{/if}>Medico</option>
                       </select>
                     </div>
 
                     <div class="form-group" id="doctor-select-container" style="display: none;">
-                        <label for="id_doctor">Seleccionar doctor <span class="required">*</span>
+                        <label for="id_doctor">Seleccionar medico <span class="required">*</span>
                             <span class="tooltip-container">
                                 <i class="bi bi-question-circle tooltip-icon"></i>
-                                <span class="tooltip-text">Seleccione el doctor al que estará asociado este usuario.</span>
+                                <span class="tooltip-text">Seleccione el medico al que estará asociado este usuario.</span>
                             </span>
                         </label>
                         <select id="id_doctor" name="id_doctor">
-                            <option value="">Seleccione un doctor</option>
+                            <option value="">Seleccione un medico</option>
                             {foreach from=$doctors item=doctor}
                                 <option value="{$doctor.id}" {if $editMode && $userData.id_doctor == $doctor.id}selected{/if}>{$doctor.names} {$doctor.last_name} {$doctor.last_name2} - {$doctor.email}</option>
                             {/foreach}

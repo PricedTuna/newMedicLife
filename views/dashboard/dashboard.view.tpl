@@ -48,7 +48,7 @@
 
 
                 <div class="doctor-select-container" style="margin-top: 1rem;">
-                    <label for="doctor-select">Selecciona un doctor:</label>
+                    <label for="doctor-select">Selecciona un Médico:</label>
                     <select id="doctor-select">
                         {foreach from=$doctors item=doctor}
                             <option value="{$doctor.id}" {if $isDoctor}selected{/if}>{$doctor.names} {$doctor.last_name}
@@ -81,7 +81,7 @@
                                 <th>ID</th>
                                 <th>Paciente</th>
                                 <th>Área Médica</th>
-                                <th>Doctor</th>
+                                <th>Médico</th>
                                 <th>Fecha</th>
                                 <th>Acciones</th>
                             </tr>

@@ -119,7 +119,7 @@
                                         <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
                                             {$appointment.last_name2}</td>
                                         <td data-label="Área Médica">{$appointment.medical_area}</td>
-                                        <td data-label="Doctor">{$appointment.doctor_name}</td>
+                                        <td data-label="Médico">{$appointment.doctor_name}</td>
                                         <td data-label="Fecha">{$appointment.appointment_date}</td>
                                         <td class="actions-td">
                                             <a href="/views/pay/pay.view.php?id={$appointment.cita}" class="action-wrapper">
@@ -175,7 +175,7 @@
                                         <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
                                             {$appointment.last_name2}</td>
                                         <td data-label="Área Médica">{$appointment.medical_area}</td>
-                                        <td data-label="Doctor">{$appointment.doctor_name}</td>
+                                        <td data-label="Médico">{$appointment.doctor_name}</td>
                                         <td data-label="Fecha">{$appointment.appointment_date}</td>
                                         <td class="actions-td">
                                             <a href="/views/pay/pay.view.php?id={$appointment.cita}" class="action-wrapper">
@@ -223,7 +223,7 @@
                                         <td data-label="Paciente">{$appointment.patient_name} {$appointment.last_name}
                                             {$appointment.last_name2}</td>
                                         <td data-label="Área Médica">{$appointment.medical_area}</td>
-                                        <td data-label="Doctor">{$appointment.doctor_name}</td>
+                                        <td data-label="Médico">{$appointment.doctor_name}</td>
                                         <td data-label="Fecha">{$appointment.appointment_date}</td>
                                         <td class="actions-td">
                                             <span style="color: gray;">Finalizada</span>

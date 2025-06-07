@@ -184,7 +184,7 @@
                         <div style="position: relative;">
                             <input type="password" id="password" name="password" placeholder="Contraseña" {if !$editMode || $passwordChangeMode}required{/if} maxlength="50" onblur="validatePassword()">
                             <span class="password-toggle" onclick="togglePasswordVisibility('password')">
-                                <i class="bi bi-eye" id="password-toggle-icon"></i>
+                                <i class="bi bi-eye-fill" id="password-toggle-icon"></i>
                             </span>
                         </div>
                         <div id="password-error" class="error-message" style="color: red; display: none;"></div>
@@ -200,7 +200,7 @@
                         <div style="position: relative;">
                             <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirmar contraseña" {if !$editMode || $passwordChangeMode}required{/if} maxlength="50" onblur="validatePasswordMatch()">
                             <span class="password-toggle" onclick="togglePasswordVisibility('confirm_password')">
-                                <i class="bi bi-eye" id="confirm_password-toggle-icon"></i>
+                                <i class="bi bi-eye-fill" id="confirm_password-toggle-icon"></i>
                             </span>
                         </div>
                         <div id="confirm-password-error" class="error-message" style="color: red; display: none;"></div>
@@ -529,7 +529,7 @@
                 // Verificar si el email es válido (no está ya registrado)
                 if (emailInput && emailInput.value.trim() !== '') {
                     // Solo validamos si hay un error explícito de email ya registrado
-                    if (document.getElementById('email-error').style.display === 'block' && 
+                    if (document.getElementById('email-error').style.display === 'block' &&
                         document.getElementById('email-error').style.color === "red" &&
                         document.getElementById('email-error').textContent.includes("ya está registrado")) {
                         // Mostrar mensaje de error
@@ -549,7 +549,7 @@
                 }
 
                 // Verificamos si hay un error explícito de email ya registrado
-                if (document.getElementById('email-error').style.display === 'block' && 
+                if (document.getElementById('email-error').style.display === 'block' &&
                     document.getElementById('email-error').style.color === "red" &&
                     document.getElementById('email-error').textContent.includes("ya está registrado")) {
                     return;
@@ -609,12 +609,12 @@
 
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                toggleIcon.classList.remove('bi-eye');
-                toggleIcon.classList.add('bi-eye-slash');
+                toggleIcon.classList.remove('bi-eye-fill');
+                toggleIcon.classList.add('bi-eye-slash-fill');
             } else {
                 passwordInput.type = 'password';
-                toggleIcon.classList.remove('bi-eye-slash');
-                toggleIcon.classList.add('bi-eye');
+                toggleIcon.classList.remove('bi-eye-slash-fill');
+                toggleIcon.classList.add('bi-eye-fill');
             }
         }
 

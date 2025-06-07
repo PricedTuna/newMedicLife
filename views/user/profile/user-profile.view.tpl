@@ -98,12 +98,12 @@
 
                 if (passwordInput.type === 'password') {
                     passwordInput.type = 'text';
-                    toggleIcon.classList.remove('bi-eye');
-                    toggleIcon.classList.add('bi-eye-slash');
+                    toggleIcon.classList.remove('bi-eye-fill');
+                    toggleIcon.classList.add('bi-eye-slash-fill');
                 } else {
                     passwordInput.type = 'password';
-                    toggleIcon.classList.remove('bi-eye-slash');
-                    toggleIcon.classList.add('bi-eye');
+                    toggleIcon.classList.remove('bi-eye-slash-fill');
+                    toggleIcon.classList.add('bi-eye-fill');
                 }
             };
 
@@ -462,7 +462,7 @@
                                     <div style="position: relative;">
                                         <input type="password" id="current_password" name="current_password" required maxlength="50">
                                         <span class="password-toggle" onclick="togglePasswordVisibility('current_password')">
-                                            <i class="bi bi-eye" id="current_password-toggle-icon"></i>
+                                            <i class="bi bi-eye-fill" id="current_password-toggle-icon"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -472,7 +472,7 @@
                                     <div style="position: relative;">
                                         <input type="password" id="new_password" name="new_password" required maxlength="50">
                                         <span class="password-toggle" onclick="togglePasswordVisibility('new_password')">
-                                            <i class="bi bi-eye" id="new_password-toggle-icon"></i>
+                                            <i class="bi bi-eye-fill" id="new_password-toggle-icon"></i>
                                         </span>
                                     </div>
                                     <div class="password-requirements">
@@ -485,7 +485,7 @@
                                     <div style="position: relative;">
                                         <input type="password" id="confirm_password" name="confirm_password" required maxlength="50">
                                         <span class="password-toggle" onclick="togglePasswordVisibility('confirm_password')">
-                                            <i class="bi bi-eye" id="confirm_password-toggle-icon"></i>
+                                            <i class="bi bi-eye-fill" id="confirm_password-toggle-icon"></i>
                                         </span>
                                     </div>
                                 </div>

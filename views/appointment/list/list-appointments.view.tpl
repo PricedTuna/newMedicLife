@@ -15,25 +15,6 @@
     <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <script src="/scripts/form-validations.js"></script>
     <script src="/views/appointment/list/list-appointments.js" defer></script>
-    <script>
-        function confirmDeleteAppointment(button) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: '¿Realmente deseas eliminar esta cita? Esta acción no se puede deshacer.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Submit the form if confirmed
-                    button.closest('form').submit();
-                }
-            });
-        }
-    </script>
     <style>
         /* Add spacing between tables */
         .table-container {
@@ -151,7 +132,7 @@
                                                 <input type="hidden" name="patient_email" value="{$appointment.patient_email}">
                                                 <input type="hidden" name="appointment_date" value="{$appointment.appointment_date}">
                                                 <button type="button" class="delete-btn"
-                                                    data-id="{$appointment.cita}" onclick="confirmDeleteAppointment(this)">Eliminar</button>
+                                                    data-id="{$appointment.cita}">Eliminar</button>
                                             </form>
                                             <a href="/views/appointment/register/register-appoiment.php?id={$appointment.cita}"
                                                 class="action-wrapper">

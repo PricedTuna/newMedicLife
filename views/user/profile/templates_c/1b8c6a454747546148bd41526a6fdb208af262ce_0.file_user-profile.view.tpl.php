@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-04 00:11:46
+/* Smarty version 5.4.5, created on 2025-06-07 00:11:08
   from 'file:user-profile.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683f8f422270f6_18175036',
+  'unifunc' => 'content_6843839c82db31_94349785',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1b8c6a454747546148bd41526a6fdb208af262ce' => 
     array (
       0 => 'user-profile.view.tpl',
-      1 => 1748995340,
+      1 => 1749254595,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683f8f422270f6_18175036 (\Smarty\Template $_smarty_tpl) {
+function content_6843839c82db31_94349785 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/user/profile';
 ?><!DOCTYPE html>
 <html lang="es">
@@ -83,10 +83,60 @@ $_smarty_current_dir = '/var/www/html/views/user/profile';
             visibility: visible;
             opacity: 1;
         }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+        .password-toggle:hover {
+            color: #333;
+        }
     </style>
     <?php echo '<script'; ?>
 >
         document.addEventListener('DOMContentLoaded', function() {
+            // Check for success message related to password change
+            const urlParams = new URLSearchParams(window.location.search);
+            const successMessage = urlParams.get('success');
+
+            if (successMessage && successMessage.includes('Contraseña actualizada correctamente')) {
+                // Hide password change form and show the change password button
+                const passwordChangeForm = document.getElementById('password-change-form');
+                const changePasswordBtn = document.getElementById('change-password-btn');
+
+                if (passwordChangeForm && changePasswordBtn) {
+                    passwordChangeForm.style.display = 'none';
+                    changePasswordBtn.style.display = 'inline-block';
+                }
+
+                // Show a SweetAlert notification
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Contraseña actualizada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+
+            // Function to toggle password visibility
+            window.togglePasswordVisibility = function(inputId) {
+                const passwordInput = document.getElementById(inputId);
+                const toggleIcon = document.getElementById(inputId + '-toggle-icon');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleIcon.classList.remove('bi-eye-fill');
+                    toggleIcon.classList.add('bi-eye-slash-fill');
+                } else {
+                    passwordInput.type = 'password';
+                    toggleIcon.classList.remove('bi-eye-slash-fill');
+                    toggleIcon.classList.add('bi-eye-fill');
+                }
+            };
+
             // Helper functions for form validation
             function showInputError(input, message) {
                 // Remove any existing error message
@@ -455,12 +505,22 @@ echo $_smarty_tpl->getValue('user')['status'];?>
 
                                 <div class="form-group">
                                     <label for="current_password">Contraseña Actual: <span class="required">*</span></label>
-                                    <input type="password" id="current_password" name="current_password" required maxlength="50">
+                                    <div style="position: relative;">
+                                        <input type="password" id="current_password" name="current_password" required maxlength="50">
+                                        <span class="password-toggle" onclick="togglePasswordVisibility('current_password')">
+                                            <i class="bi bi-eye-fill" id="current_password-toggle-icon"></i>
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="new_password">Nueva Contraseña: <span class="required">*</span></label>
-                                    <input type="password" id="new_password" name="new_password" required maxlength="50">
+                                    <div style="position: relative;">
+                                        <input type="password" id="new_password" name="new_password" required maxlength="50">
+                                        <span class="password-toggle" onclick="togglePasswordVisibility('new_password')">
+                                            <i class="bi bi-eye-fill" id="new_password-toggle-icon"></i>
+                                        </span>
+                                    </div>
                                     <div class="password-requirements">
                                         <small>La contraseña debe tener al menos 8 caracteres y no exceder 50 caracteres</small>
                                     </div>
@@ -468,7 +528,12 @@ echo $_smarty_tpl->getValue('user')['status'];?>
 
                                 <div class="form-group">
                                     <label for="confirm_password">Confirmar Contraseña: <span class="required">*</span></label>
-                                    <input type="password" id="confirm_password" name="confirm_password" required maxlength="50">
+                                    <div style="position: relative;">
+                                        <input type="password" id="confirm_password" name="confirm_password" required maxlength="50">
+                                        <span class="password-toggle" onclick="togglePasswordVisibility('confirm_password')">
+                                            <i class="bi bi-eye-fill" id="confirm_password-toggle-icon"></i>
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div class="form-actions">

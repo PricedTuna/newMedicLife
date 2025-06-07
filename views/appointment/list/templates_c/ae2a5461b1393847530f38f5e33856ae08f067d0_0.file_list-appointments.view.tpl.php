@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-03 08:23:11
+/* Smarty version 5.4.5, created on 2025-06-07 00:15:27
   from 'file:list-appointments.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683eb0ef4dd7e1_71350910',
+  'unifunc' => 'content_6843849fe70611_13305407',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ae2a5461b1393847530f38f5e33856ae08f067d0' => 
     array (
       0 => 'list-appointments.view.tpl',
-      1 => 1748938988,
+      1 => 1749255309,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:../../components/sidebar.tpl' => 1,
   ),
 ))) {
-function content_683eb0ef4dd7e1_71350910 (\Smarty\Template $_smarty_tpl) {
+function content_6843849fe70611_13305407 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/appointment/list';
 ?><!DOCTYPE html>
 <html lang="en">
@@ -52,6 +52,50 @@ $_smarty_current_dir = '/var/www/html/views/appointment/list';
     <?php echo '<script'; ?>
  src="/views/appointment/list/list-appointments.js" defer><?php echo '</script'; ?>
 >
+    <style>
+        /* Add spacing between tables */
+        .table-container {
+            margin-bottom: 30px;
+        }
+
+        /* Different colors for each table */
+        h2 + .table-container table {
+            border: 1px solid #ddd;
+        }
+
+        /* Active appointments table - Blue */
+        h2:nth-of-type(1) + .table-container table {
+            background-color: #e6f2ff;
+            border-color: #007bff;
+        }
+
+        h2:nth-of-type(1) + .table-container table thead {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Terminated appointments table - Yellow with black text */
+        h2:nth-of-type(2) + .table-container table {
+            background-color: #fff8cc;
+            border-color: #ffc107;
+        }
+
+        h2:nth-of-type(2) + .table-container table thead {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        /* Finalized appointments table - Green */
+        h2:nth-of-type(3) + .table-container table {
+            background-color: #e6ffe6;
+            border-color: #28a745;
+        }
+
+        h2:nth-of-type(3) + .table-container table thead {
+            background-color: #28a745;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
@@ -72,9 +116,9 @@ $_smarty_current_dir = '/var/www/html/views/appointment/list';
                 <input type="text" id="searchInput" placeholder="Buscar por paciente o médico...">
                 <select id="statusFilter">
                     <option value="all">Todos los estados</option>
-                    <option value="A">Activas</option>
+                    <option value="A">Pendientes</option>
                     <option value="T">Terminadas</option>
-                    <option value="F">Finalizadas</option>
+                    <option value="F">Pagadas</option>
                 </select>
                 <button id="clearFilters">Limpiar filtros</button>
             </div>
@@ -93,7 +137,7 @@ $_smarty_current_dir = '/var/www/html/views/appointment/list';
                 </div>
             <?php }?>
 
-            <h2>Citas Activas</h2>
+            <h2>Citas Pendientes</h2>
             <div class="table-container">
                 <table>
                     <thead>
@@ -125,7 +169,7 @@ $foreach0DoElse = false;
 </td>
                                         <td data-label="Área Médica"><?php echo $_smarty_tpl->getValue('appointment')['medical_area'];?>
 </td>
-                                        <td data-label="Doctor"><?php echo $_smarty_tpl->getValue('appointment')['doctor_name'];?>
+                                        <td data-label="Médico"><?php echo $_smarty_tpl->getValue('appointment')['doctor_name'];?>
 </td>
                                         <td data-label="Fecha"><?php echo $_smarty_tpl->getValue('appointment')['appointment_date'];?>
 </td>
@@ -135,7 +179,7 @@ $foreach0DoElse = false;
                                                 <button class="finish-btn">Finalizar Cita</button>
                                             </a>
                                             <form action="/controllers/appoiment/delete-appointment.controller.php" method="POST"
-                                                class="action-wrapper">
+                                                class="action-wrapper delete-appointment-form">
                                                 <input type="hidden" name="appointment_id" value="<?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
 ">
                                                 <input type="hidden" name="patient_name" value="<?php echo $_smarty_tpl->getValue('appointment')['patient_name'];?>
@@ -146,7 +190,7 @@ $foreach0DoElse = false;
 ">
                                                 <input type="hidden" name="appointment_date" value="<?php echo $_smarty_tpl->getValue('appointment')['appointment_date'];?>
 ">
-                                                <button type="submit" class="delete-btn"
+                                                <button type="button" class="delete-btn"
                                                     data-id="<?php echo $_smarty_tpl->getValue('appointment')['cita'];?>
 ">Eliminar</button>
                                             </form>
@@ -204,7 +248,7 @@ $foreach1DoElse = false;
 </td>
                                         <td data-label="Área Médica"><?php echo $_smarty_tpl->getValue('appointment')['medical_area'];?>
 </td>
-                                        <td data-label="Doctor"><?php echo $_smarty_tpl->getValue('appointment')['doctor_name'];?>
+                                        <td data-label="Médico"><?php echo $_smarty_tpl->getValue('appointment')['doctor_name'];?>
 </td>
                                         <td data-label="Fecha"><?php echo $_smarty_tpl->getValue('appointment')['appointment_date'];?>
 </td>
@@ -233,7 +277,7 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                 </table>
             </div>
 
-            <h2>Citas Finalizadas</h2>
+            <h2>Citas Pagadas</h2>
             <div class="table-container">
                 <table>
                     <thead>
@@ -267,7 +311,7 @@ $foreach2DoElse = false;
 </td>
                                         <td data-label="Área Médica"><?php echo $_smarty_tpl->getValue('appointment')['medical_area'];?>
 </td>
-                                        <td data-label="Doctor"><?php echo $_smarty_tpl->getValue('appointment')['doctor_name'];?>
+                                        <td data-label="Médico"><?php echo $_smarty_tpl->getValue('appointment')['doctor_name'];?>
 </td>
                                         <td data-label="Fecha"><?php echo $_smarty_tpl->getValue('appointment')['appointment_date'];?>
 </td>

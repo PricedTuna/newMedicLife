@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 5.4.5, created on 2025-06-01 05:31:45
+/* Smarty version 5.4.5, created on 2025-06-07 00:50:46
   from 'file:login.view.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.5',
-  'unifunc' => 'content_683be5c1694cd3_02931454',
+  'unifunc' => 'content_68438ce62aa203_44591582',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '3630325cfa1d910fe352d3d6f7f7094315bc59aa' => 
     array (
       0 => 'login.view.tpl',
-      1 => 1748755867,
+      1 => 1749257431,
       2 => 'file',
     ),
   ),
@@ -20,14 +20,13 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_683be5c1694cd3_02931454 (\Smarty\Template $_smarty_tpl) {
+function content_68438ce62aa203_44591582 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = '/var/www/html/views/login';
 ?><!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/views/dashboard/icons/Untitled-design-_1_.ico" type="image/x-icon">
     <title>Iniciar sesión</title>
     <?php echo '<script'; ?>
  src="/views/login/login.app.js" defer><?php echo '</script'; ?>
@@ -47,7 +46,11 @@ $_smarty_current_dir = '/var/www/html/views/login';
         <?php }?>
 
         <div id="form-error" style="display: none; color: red; margin-bottom: 1rem; border: 1px solid red; padding: 0.5rem; border-radius: 5px;"></div>
-        <form id="loginForm" action="controllers/auth/login.controller.php" method="POST">
+        <form id="loginForm" action="/controllers/auth/login.controller.php" method="POST">
+            <?php if ((true && (true && null !== ($_GET['redirect'] ?? null)))) {?>
+                <input type="hidden" name="redirect" value="<?php echo htmlspecialchars((string)$_GET['redirect'], ENT_QUOTES, 'UTF-8', true);?>
+">
+            <?php }?>
             <div class="form-group">
                 <label for="email">Correo electrónico</label>
                 <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
@@ -66,6 +69,9 @@ $_smarty_current_dir = '/var/www/html/views/login';
             </div>
             <button type="submit" name="login">Ingresar</button>
         </form>
+        <div class="public-links">
+            <a href="/views/public/medical_history/public-medical-history.view.php" class="public-link">Consultar Historial Médico</a>
+        </div> 
     </div>
 
 </body>

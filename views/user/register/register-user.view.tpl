@@ -282,6 +282,47 @@
                                     emailInput.classList.remove('input-disabled');
                                 }
                             });
+
+                            // Check for URL parameters to pre-fill the form
+                            const urlParams = new URLSearchParams(window.location.search);
+                            if (urlParams.get('prefill') === '1') {
+                                const doctorId = urlParams.get('doctor_id');
+                                const doctorName = urlParams.get('doctor_name');
+                                const doctorEmail = urlParams.get('doctor_email');
+
+                                if (doctorId && doctorName && doctorEmail) {
+                                    // Set role to Doctor
+                                    roleSelect.value = 'D';
+                                    toggleDoctorSelect();
+
+                                    // Find and select the doctor in the dropdown
+                                    for (let i = 0; i < doctorSelect.options.length; i++) {
+                                        if (doctorSelect.options[i].value === doctorId) {
+                                            doctorSelect.selectedIndex = i;
+                                            break;
+                                        }
+                                    }
+
+                                    // If doctor not found in dropdown, add it
+                                    if (doctorSelect.value !== doctorId) {
+                                        const option = document.createElement('option');
+                                        option.value = doctorId;
+                                        option.text = doctorName + ' - ' + doctorEmail;
+                                        option.selected = true;
+                                        doctorSelect.add(option);
+                                    }
+
+                                    // Fill name and email fields
+                                    nameInput.value = doctorName;
+                                    emailInput.value = doctorEmail;
+
+                                    // Make name and email fields read-only
+                                    nameInput.readOnly = true;
+                                    emailInput.readOnly = true;
+                                    nameInput.classList.add('input-disabled');
+                                    emailInput.classList.add('input-disabled');
+                                }
+                            }
                         });
                     </script>
                 </form>

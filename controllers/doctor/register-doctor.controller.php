@@ -145,39 +145,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // Crear usuario para el doctor si se seleccionó la opción
-            if (isset($_POST['create_user']) && $_POST['create_user'] == '1') {
-                try {
+            // Mostrar un mensaje de confirmación para crear un usuario para el doctor
+            $confirmUrl = '/views/user/register/register-user.view.php?';
+            $confirmUrl .= 'prefill=1';
+            $confirmUrl .= '&doctor_id=' . $newDoctorId;
+            $confirmUrl .= '&doctor_name=' . urlencode($name);
+            $confirmUrl .= '&doctor_email=' . urlencode($email);
+            $confirmUrl .= '&success=' . urlencode("Doctor creado con éxito. Complete el registro de usuario.");
 
-                    // Generar una contraseña aleatoria
-                    $password = bin2hex(random_bytes(4)); // 8 caracteres aleatorios
-                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $cancelUrl = '/views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito");
 
-                    // Insertar el nuevo usuario con rol de doctor
-                    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, id_doctor, status) VALUES (:name, :email, :password, 'D', :id_doctor, 'AC')");
-                    $stmt->execute([
-                        ':name'     => $name,
-                        ':email'    => $email,
-                        ':password' => $hashedPassword,
-                        ':id_doctor'=> $newDoctorId
-                    ]);
-
-                    // Enviar correo con la contraseña
-                    $userSubject = "Credenciales de acceso a Medic Life";
-                    $userMessage = "Hola $name,\n\nSe ha creado una cuenta de usuario para ti en el sistema Medic Life.\n\nTus credenciales de acceso son:\nCorreo: $email\nContraseña: $password\n\nPor favor, cambia tu contraseña después de iniciar sesión por primera vez.\n\nSaludos.";
-                    $emailController->sendEmail($email, $userSubject, $userMessage, $from);
-
-                    header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito y usuario creado con contraseña enviada por correo"));
-                    exit;
-                } catch (Exception $e) {
-                    // Si hay un error al crear el usuario, continuamos con el flujo normal
-                    // pero mostramos un mensaje de error
-                    header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito") . '&error=' . urlencode("Error al crear usuario: " . $e->getMessage()));
-                    exit;
-                }
-            }
-
-            header('Location: /views/doctor/list/list-doctors.view.php?success=' . urlencode("Doctor creado con éxito"));
+            // Redirigir a una página de confirmación
+            header('Location: /views/doctor/register/confirm-user-creation.php?confirm_url=' . urlencode($confirmUrl) . '&cancel_url=' . urlencode($cancelUrl));
+            exit;
         }
     } catch (Exception $e) {
         header('Location: /views/doctor/register/register-doctor.view.php?error=' . urlencode($e->getMessage()) . '&id=' . ($doctorId ?? ''));

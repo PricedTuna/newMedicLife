@@ -14,6 +14,7 @@
     <script src="/views/doctor/list/views-handler.js" defer></script>
     <script src="/views/doctor/register/register-doctor.app.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/views/doctor/register/doctor-form-submit.js" defer></script>
     <title>Registro de Médicos</title>
     <style>
         .required {
@@ -120,34 +121,6 @@
                 });
             }
 
-            // Add event listener for form submission
-            const doctorForm = document.getElementById('doctor-form');
-            if (doctorForm) {
-                doctorForm.addEventListener('submit', function(e) {
-                    // Only show the dialog for new doctors, not for updates
-                    if (!document.querySelector('input[name="id"]').value) {
-                        e.preventDefault();
-                        Swal.fire({
-                            title: '¿Crear usuario para este doctor?',
-                            text: 'Desea crear un usuario en la sección de usuarios para este doctor?',
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonText: 'Sí, crear usuario',
-                            cancelButtonText: 'No, solo registrar doctor'
-                        }).then((result) => {
-                            // Add a hidden field to the form with the result
-                            const createUserInput = document.createElement('input');
-                            createUserInput.type = 'hidden';
-                            createUserInput.name = 'create_user';
-                            createUserInput.value = result.isConfirmed ? '1' : '0';
-                            doctorForm.appendChild(createUserInput);
-
-                            // Submit the form
-                            doctorForm.submit();
-                        });
-                    }
-                });
-            }
         });
     </script>
 
@@ -204,38 +177,25 @@
         </div>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const cancelBtn = document.getElementById('cancel-btn');
-            if (cancelBtn) {
-                cancelBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    Swal.fire({
-                        title: '¿Estás seguro?',
-                        text: 'Si cancelas, se perderán todos los datos ingresados en el formulario.',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Sí, cancelar',
-                        cancelButtonText: 'No, continuar editando'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '/views/doctor/main/main-doctor.view.php';
-                        }
-                    });
-                });
-            }
-        });
-    </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Add event listener for form submission
+        // Add event listener for the submit button
+        const submitBtn = document.getElementById('submit-doctor-btn');
         const doctorForm = document.getElementById('doctor-form');
-        if (doctorForm) {
+
+        if (submitBtn && doctorForm) {
             const isUpdateMode = document.querySelector('input[name="id"]') && document.querySelector('input[name="id"]').value;
 
-            if (!isUpdateMode) {
-                doctorForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
+            submitBtn.addEventListener('click', function() {
+                // Validate the form first
+                if (!doctorForm.checkValidity()) {
+                    // If the form is not valid, trigger the browser's validation
+                    doctorForm.reportValidity();
+                    return;
+                }
+
+                if (!isUpdateMode) {
+                    // Show confirmation dialog for new doctors
                     Swal.fire({
                         title: '¿Crear usuario para este doctor?',
                         text: '¿Desea crear un usuario en la sección de usuarios para este doctor?',
@@ -245,20 +205,27 @@
                         cancelButtonText: 'No, solo registrar doctor'
                     }).then((result) => {
                         // Add a hidden field to the form with the result
-                        const createUserInput = document.createElement('input');
-                        createUserInput.type = 'hidden';
-                        createUserInput.name = 'create_user';
+                        let createUserInput = document.querySelector('input[name="create_user"]');
+                        if (!createUserInput) {
+                            createUserInput = document.createElement('input');
+                            createUserInput.type = 'hidden';
+                            createUserInput.name = 'create_user';
+                            doctorForm.appendChild(createUserInput);
+                        }
                         createUserInput.value = result.isConfirmed ? '1' : '0';
-                        doctorForm.appendChild(createUserInput);
 
                         // Submit the form
                         doctorForm.submit();
                     });
-                });
-            }
+                } else {
+                    // For update mode, just submit the form
+                    doctorForm.submit();
+                }
+            });
         }
     });
 </script>
+<script src="/views/doctor/register/doctor-form-submit.js"></script>
 </body>
 
 </html>

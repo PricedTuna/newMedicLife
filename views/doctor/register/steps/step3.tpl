@@ -130,21 +130,9 @@
 
 
 
-    {if !$doctor}
-    <div class="form-group" style="margin-top: 20px;">
-        <label for="create_user">
-            <input type="checkbox" id="create_user" name="create_user" value="1">
-            Crear usuario en la sección de usuarios para este doctor
-            <span class="tooltip-container">
-                <i class="bi bi-question-circle tooltip-icon"></i>
-                <span class="tooltip-text">Si marca esta opción, se creará automáticamente un usuario con rol de Doctor para este médico.</span>
-            </span>
-        </label>
-    </div>
-    {/if}
 
     <button type="button" class="prev-btn" onclick="prevStep(2)">Atrás</button>
-    <button type="submit" class="submit-btn">
+    <button type="button" class="submit-btn" id="submit-doctor-btn">
         {if $doctor}Actualizar{else}Registrar{/if}
     </button>
     <input type="hidden" name="id" value="{$doctor.id|default:''}">

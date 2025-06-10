@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const paypalName = document.getElementById('paypal_name');
   const paypalCountry = document.getElementById('paypal_country');
   const form = document.getElementById('payment-form');
+  const cancelBtn = document.getElementById('cancel-btn');
 
   // Function to toggle payment-specific fields
   function toggleFields() {
@@ -49,6 +50,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize fields state
   toggleFields();
+
+  // Handle cancel button click
+  cancelBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Realmente deseas cancelar el proceso de pago?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, cancelar',
+      cancelButtonText: 'No, continuar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = '/views/appointment/list/list-appointments.view.php';
+      }
+    });
+  });
 
   // Format the amount input to show currency symbol
   montoInput.addEventListener('focus', function() {

@@ -50,6 +50,15 @@ if ($isDoctor && $doctorId) {
 
 $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Sort paid appointments (status 'F') by most recent date first
+usort($appointments, function($a, $b) {
+    // Only sort if both are paid appointments
+    if ($a['status'] === 'F' && $b['status'] === 'F') {
+        return strtotime($b['appointment_date']) - strtotime($a['appointment_date']);
+    }
+    return 0;
+});
+
 // Verifica si vienen mensajes desde GET
 $success = isset($_GET['success']) ? $_GET['success'] : null;
 $error = isset($_GET['error']) ? $_GET['error'] : null;

@@ -75,7 +75,7 @@ class DoctorModel {
 
         // Validación de unicidad
         $this->validateUnique('doctors', 'CURP', $data['CURP'], $doctorId, "La CURP que intentas registrar ya existe.");
-        $this->validateUnique('doctors', 'phone', $data['phone'], $doctorId, "El número de teléfono que intentas registrar ya existe.");
+        // Removed phone uniqueness validation as per requirements
         $this->validateUnique('doctors', 'insurance_number', $data['insurance_number'], $doctorId, "El número de afiliación que intentas registrar ya existe.");
         // Skip email uniqueness validation when updating a doctor
         if ($doctorId === null) {

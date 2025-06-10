@@ -593,8 +593,27 @@ function filterDoctorsByArea(
 }
 
 function isValidCURP(curp) {
+  // If we're updating an appointment, the CURP might be combined with the full name
+  // Extract just the CURP part (first 18 characters if longer)
+  let curpToValidate = curp;
+
+  // If the string contains spaces, it might be a combined CURP and name
+  if (curp.includes(' ')) {
+    // Try to extract just the CURP part (first word)
+    curpToValidate = curp.split(' ')[0];
+  }
+
+  // If we have an existing appointment with a patient already selected,
+  // and we're not changing the patient, consider it valid
+  if (typeof appointment !== 'undefined' && appointment.id && appointment.curp) {
+    if (curp.includes(appointment.curp)) {
+      return true;
+    }
+  }
+
+  // Otherwise, validate the CURP format
   const regex = /^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]\d$/;
-  return regex.test(curp);
+  return regex.test(curpToValidate);
 }
 
 function updateMedicalAreaName() {

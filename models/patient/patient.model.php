@@ -98,7 +98,7 @@ class PatientModel
 
         // Validación de unicidad
         $this->validateUnique('patients', 'CURP', $data['CURP'], $patientId, "La CURP que intentas registrar ya existe.");
-        $this->validateUnique('patients', 'phone', $data['phone'], $patientId, "El número de teléfono que intentas registrar ya existe.");
+        // Removed phone uniqueness validation as per requirements
         $this->validateUnique('patients', 'insurance_number', $data['insurance_number'], $patientId, "El número de afiliación que intentas registrar ya existe.");
     }
 

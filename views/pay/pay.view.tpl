@@ -21,6 +21,12 @@
         .hidden {
             display: none;
         }
+        .cancel-btn {
+            background-color: var(--delete-btn-clr) !important;
+        }
+        .cancel-btn:hover {
+            background-color: var(--delete-btn-hover-clr) !important;
+        }
         .payment-options {
             display: flex;
             flex-direction: column;
@@ -114,8 +120,8 @@
         <div class="center-container">
             <div class="form-container">
                 <div class="form-header">
-                    <a href="/views/appointment/list/list-appointments.view.php" class="form-back-btn">
-                        <button class="back-btn">Volver</button>
+                    <a href="#" class="form-back-btn" id="cancel-btn">
+                        <button class="back-btn cancel-btn">Cancelar</button>
                         <span class="back-btn-icon">&#8617;</span>
                     </a>
                     <h2 class="form-title">Método de Pago</h2>

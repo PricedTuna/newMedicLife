@@ -189,6 +189,37 @@
                                 </div>
                                 <input type="radio" name="metodo_pago" value="paypal" id="paypal" required />
                             </div>
+
+                            <!-- Opción de Tarjeta de Crédito/Débito -->
+                            <div class="payment-option" id="card-option">
+                                <div class="payment-option-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="#f57c00"
+                                        class="bi bi-credit-card" viewBox="0 0 16 16">
+                                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
+                                        <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                                    </svg>
+                                </div>
+                                <div class="payment-option-details">
+                                    <div class="payment-option-title">Tarjeta de Crédito/Débito</div>
+                                    <div class="payment-option-description">Paga de forma segura con tu tarjeta bancaria</div>
+                                </div>
+                                <input type="radio" name="metodo_pago" value="card" id="card" required />
+                            </div>
+
+                            <!-- Opción de Transferencia Bancaria -->
+                            <div class="payment-option" id="transfer-option">
+                                <div class="payment-option-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="#2e7d32"
+                                        class="bi bi-bank" viewBox="0 0 16 16">
+                                        <path d="M8 .95 14.61 4h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.379l.5 2A.5.5 0 0 1 15.5 17H.5a.5.5 0 0 1-.485-.621l.5-2A.5.5 0 0 1 1 14V7H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 4h.89L8 .95zM3.776 4h8.447L8 2.05 3.776 4zM2 7v7h1V7H2zm2 0v7h2.5V7H4zm3.5 0v7h1V7h-1zm2 0v7H12V7H9.5zM13 7v7h1V7h-1zm2-1V5H1v1h14zm-.39 9H1.39l-.25 1h13.72l-.25-1z"/>
+                                    </svg>
+                                </div>
+                                <div class="payment-option-details">
+                                    <div class="payment-option-title">Transferencia Bancaria</div>
+                                    <div class="payment-option-description">Realiza una transferencia a nuestra cuenta bancaria</div>
+                                </div>
+                                <input type="radio" name="metodo_pago" value="transfer" id="transfer" required />
+                            </div>
                         </div>
 
                         <!-- Campos específicos para PayPal -->
@@ -207,6 +238,85 @@
                                     <option value="US">Estados Unidos</option>
                                     <option value="ES">España</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <!-- Campos específicos para Tarjeta -->
+                        <div id="card-fields" class="hidden">
+                            <div class="form-group">
+                                <label for="card_number">
+                                    Número de Tarjeta
+                                    <span class="tooltip-container">
+                                        <i class="bi bi-question-circle tooltip-icon"></i>
+                                        <span class="tooltip-text">Ingrese el número de su tarjeta sin espacios.</span>
+                                    </span>
+                                </label>
+                                <input type="text" id="card_number" name="card_number" placeholder="1234 5678 9012 3456" maxlength="19" />
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="card_expiry">
+                                        Fecha de Expiración
+                                    </label>
+                                    <input type="text" id="card_expiry" name="card_expiry" placeholder="MM/AA" maxlength="5" />
+                                </div>
+                                <div class="form-group half">
+                                    <label for="card_cvv">
+                                        CVV
+                                        <span class="tooltip-container">
+                                            <i class="bi bi-question-circle tooltip-icon"></i>
+                                            <span class="tooltip-text">Código de seguridad de 3 o 4 dígitos en el reverso de su tarjeta.</span>
+                                        </span>
+                                    </label>
+                                    <input type="text" id="card_cvv" name="card_cvv" placeholder="123" maxlength="4" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="card_name">Nombre en la Tarjeta</label>
+                                <input type="text" id="card_name" name="card_name" placeholder="NOMBRE COMO APARECE EN LA TARJETA" />
+                            </div>
+                        </div>
+
+                        <!-- Campos específicos para Transferencia -->
+                        <div id="transfer-fields" class="hidden">
+                            <div class="form-group">
+                                <label for="transfer_bank">
+                                    Banco
+                                    <span class="tooltip-container">
+                                        <i class="bi bi-question-circle tooltip-icon"></i>
+                                        <span class="tooltip-text">Seleccione el banco desde el que realizará la transferencia.</span>
+                                    </span>
+                                </label>
+                                <select id="transfer_bank" name="transfer_bank">
+                                    <option value="">Selecciona un banco</option>
+                                    <option value="BBVA">BBVA</option>
+                                    <option value="Santander">Santander</option>
+                                    <option value="Banorte">Banorte</option>
+                                    <option value="HSBC">HSBC</option>
+                                    <option value="Citibanamex">Citibanamex</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="transfer_reference">
+                                    Número de Referencia
+                                    <span class="tooltip-container">
+                                        <i class="bi bi-question-circle tooltip-icon"></i>
+                                        <span class="tooltip-text">Ingrese el número de referencia de la transferencia.</span>
+                                    </span>
+                                </label>
+                                <input type="text" id="transfer_reference" name="transfer_reference" placeholder="Ej. 1234567890" />
+                            </div>
+                            <div class="form-group">
+                                <label for="transfer_date">Fecha de Transferencia</label>
+                                <input type="date" id="transfer_date" name="transfer_date" />
+                            </div>
+                            <div class="alert alert-info" style="padding: 15px; background-color: #e8f5e9; border: 1px solid #2e7d32; border-radius: 4px; color: #2e7d32; margin-bottom: 15px;">
+                                <p><strong>Datos para transferencia:</strong></p>
+                                <p>Banco: BBVA</p>
+                                <p>Titular: Medic Life S.A. de C.V.</p>
+                                <p>CLABE: 012 345 6789 0123 45</p>
+                                <p>Cuenta: 0123456789</p>
                             </div>
                         </div>
                     </div>

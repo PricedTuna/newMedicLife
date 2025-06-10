@@ -146,4 +146,54 @@
 
             return $status;
         }
+
+        /**
+         * Get payment summary for a specific date
+         * 
+         * @param string $date Date in Y-m-d format
+         * @return array Payment summary data
+         */
+        public function getPaymentSummary($date)
+        {
+            // Get all payments for the specified date
+            $stmt = $this->pdo->prepare("
+                SELECT p.id, p.user_id, p.patient_id, p.type, p.amount, p.currency, p.created_at,
+                       u.name as user_name,
+                       pt.names as patient_name, pt.last_name as patient_lastname, pt.last_name2 as patient_lastname2,
+                       a.id as appointment_id, a.appointment_date
+                FROM payments p
+                LEFT JOIN users u ON p.user_id = u.id
+                LEFT JOIN patients pt ON p.patient_id = pt.id
+                LEFT JOIN appointments a ON a.id_patient = p.patient_id AND DATE(a.updated_at) = DATE(p.created_at)
+                WHERE DATE(p.created_at) = :date
+                ORDER BY p.created_at DESC
+            ");
+            $stmt->execute(['date' => $date]);
+            $payments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Calculate totals by payment type
+            $totals = [
+                'cash' => 0,
+                'paypal' => 0,
+                'card' => 0,
+                'transfer' => 0,
+                'total' => 0
+            ];
+
+            foreach ($payments as $payment) {
+                $type = $payment['type'];
+                $amount = floatval($payment['amount']);
+
+                if (isset($totals[$type])) {
+                    $totals[$type] += $amount;
+                }
+                $totals['total'] += $amount;
+            }
+
+            return [
+                'payments' => $payments,
+                'totals' => $totals,
+                'date' => $date
+            ];
+        }
     }

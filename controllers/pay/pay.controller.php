@@ -12,7 +12,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php'
 // Only administrators and secretaries can access payment functionality
 checkUserRole(['A', 'S']);
 
-$paypalModel = new PaymentModel($pdo);
+$paypalModel = new PaymentModel($GLOBALS['pdo']);
 $emailController = new EmailController();
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -116,6 +116,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['patient_email'] = $email;
 
             $paypalModel->createPayment($name, $email, $monto, "MXN", $id_cita);
+            exit;
+        }
+
+        if ($metodoPago === 'card') {
+            if ($monto <= 0) {
+                throw new Exception("Monto inválido para pago con tarjeta.");
+            }
+
+            // Procesar pago con tarjeta
+            // En un entorno real, aquí se integraría con un procesador de pagos como Stripe, Conekta, etc.
+            // Para este ejemplo, simplemente registramos el pago como exitoso
+
+            $paypalModel->savePay($id_user, $id_patient, $monto, 'card');
+            $paypalModel->updateAppointment($id_cita);
+
+            if (empty($email)) {
+                throw new Exception("No se proporcionó correo electrónico.");
+            }
+
+            $subject = "Confirmación de pago exitoso";
+            $message = "Hola $name,\n\nTu pago de $monto MXN con tarjeta ha sido recibido con éxito.\nGracias por tu preferencia.\n\nSaludos.";
+            $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
+
+            // Usa el controlador de email si existe
+            $result = $emailController->sendEmail($email, $subject, $message, $from);
+
+            // Redirecciona con mensaje de éxito
+            header('Location: /views/appointment/list/list-appointments.view.php?success=' . urlencode("La cita ha sido pagada con éxito y se envió correo de confirmación."));
+            exit;
+        }
+
+        if ($metodoPago === 'transfer') {
+            if ($monto <= 0) {
+                throw new Exception("Monto inválido para pago con transferencia.");
+            }
+
+            // Validar datos de transferencia
+            $transferBank = isset($_POST['transfer_bank']) ? $_POST['transfer_bank'] : '';
+            $transferReference = isset($_POST['transfer_reference']) ? $_POST['transfer_reference'] : '';
+            $transferDate = isset($_POST['transfer_date']) ? $_POST['transfer_date'] : '';
+
+            if (empty($transferBank) || empty($transferReference) || empty($transferDate)) {
+                throw new Exception("Datos incompletos para pago con transferencia bancaria.");
+            }
+
+            // Registrar pago con transferencia
+            $paypalModel->savePay($id_user, $id_patient, $monto, 'transfer');
+            $paypalModel->updateAppointment($id_cita);
+
+            if (empty($email)) {
+                throw new Exception("No se proporcionó correo electrónico.");
+            }
+
+            $subject = "Confirmación de pago exitoso";
+            $message = "Hola $name,\n\nTu pago de $monto MXN mediante transferencia bancaria ha sido recibido con éxito.\nReferencia: $transferReference\nFecha: $transferDate\nGracias por tu preferencia.\n\nSaludos.";
+            $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
+
+            // Usa el controlador de email si existe
+            $result = $emailController->sendEmail($email, $subject, $message, $from);
+
+            // Redirecciona con mensaje de éxito
+            header('Location: /views/appointment/list/list-appointments.view.php?success=' . urlencode("La cita ha sido pagada con éxito y se envió correo de confirmación."));
             exit;
         }
 

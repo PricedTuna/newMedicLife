@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Mostrar próxima cita
       document.getElementById("next-appointments").textContent = nextAppointment
-        ? new Date(nextAppointment.appointment_date).toLocaleString()
+        ? new Date(nextAppointment.appointment_date).toLocaleString([], {hour12: true})
         : "Sin próximas citas";
 
       // Mostrar todas las citas del mes actual con ID
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ul.className = "appointments-list";
 
         monthAppointments.forEach((appt) => {
-          const apptDate = new Date(appt.appointment_date).toLocaleString();
+          const apptDate = new Date(appt.appointment_date).toLocaleString([], {hour12: true});
           const item = document.createElement("li");
           item.textContent = `Cita: ${appt.cita} - Fecha: ${apptDate}`;
           ul.appendChild(item);
@@ -218,7 +218,7 @@ function generateCalendar(year, month) {
       });
 
       const tooltipContent = appointmentsForDay.map(appt => {
-        const time = new Date(appt.appointment_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const time = new Date(appt.appointment_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
         return `${time} - ${appt.patient_names || 'Paciente'}`;
       }).join('<br>');
 
@@ -250,7 +250,7 @@ function generateCalendar(year, month) {
       if (filteredAppointments.length > 0) {
         filteredAppointments.forEach((appt) => {
           const apptItem = document.createElement("li");
-          const apptTime = new Date(appt.appointment_date).toLocaleTimeString();
+          const apptTime = new Date(appt.appointment_date).toLocaleTimeString([], {hour12: true});
           apptItem.textContent = `Cita: ${appt.cita} - Hora: ${apptTime} - Paciente: ${appt.patient_names}  ${appt.patient_last_name}  ${appt.patient_last_name2}`;
           container.appendChild(apptItem);
         });

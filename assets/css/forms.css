@@ -59,6 +59,12 @@
   border-radius: 8px;
   font-weight: 500;
   margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.step:hover {
+  background-color: #d0d0d0;
 }
 
 .step-active {

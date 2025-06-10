@@ -355,6 +355,38 @@ function validateHeight(input) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Add click event listeners to step indicators
+    document.querySelectorAll('.step').forEach(stepElement => {
+        stepElement.addEventListener('click', function() {
+            const targetStep = parseInt(this.getAttribute('data-step'));
+
+            // If trying to go forward, validate current step first
+            if (targetStep > currentStep) {
+                // Validate all steps between current and target
+                let canProceed = true;
+                for (let i = currentStep; i < targetStep; i++) {
+                    if (!validateStep(i)) {
+                        canProceed = false;
+                        Swal.fire({
+                            title: 'Campos incompletos',
+                            text: `Por favor, completa todos los campos obligatorios en el Paso ${i} antes de continuar.`,
+                            icon: 'error',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Entendido'
+                        });
+                        break;
+                    }
+                }
+
+                if (!canProceed) return;
+            }
+
+            // If validation passes or going backward, proceed to the target step
+            currentStep = targetStep;
+            showStep(currentStep);
+        });
+    });
+
     showStep(currentStep);
 
     // Añadir validación onBlur para todos los campos requeridos

@@ -549,6 +549,48 @@ window.nextStep = function (step) {
 // ===========================
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Add click event listeners to step indicators
+  document.querySelectorAll('.step').forEach(stepElement => {
+    stepElement.addEventListener('click', function() {
+      const targetStep = parseInt(this.getAttribute('data-step'));
+
+      // If trying to go forward, validate current step first
+      if (targetStep > currentStep) {
+        // Validate all steps between current and target
+        let canProceed = true;
+        for (let i = currentStep; i < targetStep; i++) {
+          if (i === 1 && !validateStep1()) {
+            canProceed = false;
+            Swal.fire({
+              title: "Error de validación",
+              text: "⚠️ Corrige los errores en el Paso 1 antes de continuar.",
+              icon: "warning",
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Entendido"
+            });
+            break;
+          } else if (i === 2 && !validateStep2()) {
+            canProceed = false;
+            Swal.fire({
+              title: "Error de validación",
+              text: "⚠️ Corrige los errores en el Paso 2 antes de continuar.",
+              icon: "warning",
+              confirmButtonColor: "#3085d6",
+              confirmButtonText: "Entendido"
+            });
+            break;
+          }
+        }
+
+        if (!canProceed) return;
+      }
+
+      // If validation passes or going backward, proceed to the target step
+      currentStep = targetStep;
+      showStep(currentStep);
+    });
+  });
+
   // Capitaliza los nombres al perder el foco y valida en tiempo real
   ["firstName", "lastName", "motherLastName"].forEach((id) => {
     const input = document.getElementById(id);

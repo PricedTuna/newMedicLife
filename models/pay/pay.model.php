@@ -164,7 +164,7 @@
                 FROM payments p
                 LEFT JOIN users u ON p.user_id = u.id
                 LEFT JOIN patients pt ON p.patient_id = pt.id
-                LEFT JOIN appointments a ON a.id_patient = p.patient_id AND DATE(a.updated_at) = DATE(p.created_at)
+                LEFT JOIN appointments a ON a.id_patient = p.patient_id AND DATE(a.created_at) = DATE(p.created_at)
                 WHERE DATE(p.created_at) = :date
                 ORDER BY p.created_at DESC
             ");

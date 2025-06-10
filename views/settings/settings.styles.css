@@ -223,6 +223,100 @@ main {
   color: var(--secondary-text-clr);
 }
 
+/* Transfer Configuration Section */
+.transfer-config-section {
+  background-color: var(--base-clr);
+  border: 1px solid var(--line-clr);
+  margin-top: 2rem;
+  transition: all 0.3s ease;
+}
+
+.transfer-config-form {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.transfer-config-form .form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.transfer-config-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-clr);
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.transfer-config-form input[type="text"],
+.transfer-config-form textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--line-clr);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--text-clr);
+  background-color: var(--hover-clr);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.transfer-config-form textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.transfer-config-form input[type="text"]:hover,
+.transfer-config-form textarea:hover {
+  border-color: var(--accent-clr);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.transfer-config-form input[type="text"]:focus,
+.transfer-config-form textarea:focus {
+  border-color: var(--accent-clr);
+  box-shadow: 0 4px 12px rgba(94, 99, 255, 0.2);
+  outline: none;
+}
+
+/* Add visual feedback when input is focused by changing the label color */
+.transfer-config-form .form-group:focus-within label {
+  color: var(--accent-clr);
+}
+
+.transfer-config-form .form-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.transfer-config-form .btn-primary {
+  background-color: var(--accent-clr);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.transfer-config-form .btn-primary:hover {
+  background-color: #4a54e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.transfer-config-form .btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 /* Keyboard Shortcuts Section */
 .shortcuts-info-section {
   background-color: var(--base-clr);
@@ -362,6 +456,16 @@ main {
     padding: 1.5rem;
   }
 
+  /* Responsive styles for transfer config form */
+  .transfer-config-form .form-actions {
+    justify-content: center;
+  }
+
+  .transfer-config-form .btn-primary {
+    width: 100%;
+    max-width: 300px;
+  }
+
   /* Responsive styles for shortcuts section */
   .shortcut-item {
     flex-direction: column;
@@ -396,9 +500,25 @@ main {
     font-size: 1.8rem;
   }
 
+  /* Responsive styles for transfer config form on very small screens */
+  .transfer-config-form label {
+    font-size: 0.9rem;
+  }
+
+  .transfer-config-form input[type="text"],
+  .transfer-config-form textarea {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+  }
+
+  .transfer-config-form .btn-primary {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
   /* Ensure settings section hover doesn't cause layout shifts */
   .settings-section:hover {
-    transform: none;
+      transform: none;
   }
 
   /* Additional responsive styles for shortcuts section on very small screens */

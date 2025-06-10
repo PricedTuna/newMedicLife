@@ -77,6 +77,52 @@
                     </div>
                 </div>
 
+                <!-- Sección de Configuración de Transferencia Bancaria (Solo para Administradores) -->
+                {if $isAdmin}
+                <div class="settings-section transfer-config-section">
+                    <h2>Configuración de Transferencia Bancaria</h2>
+                    <div class="settings-content">
+                        <div class="setting-description">
+                            <p>Configure los datos bancarios que se mostrarán a los usuarios cuando realicen pagos por transferencia.</p>
+                            <p>Esta información solo puede ser modificada por administradores del sistema.</p>
+                        </div>
+
+                        <form action="/controllers/pay/transfer_config.controller.php" method="POST" class="transfer-config-form">
+                            <input type="hidden" name="action" value="save_transfer_config">
+
+                            <div class="form-group">
+                                <label for="bank_name">Nombre del Banco:</label>
+                                <input type="text" id="bank_name" name="bank_name" value="{$transferConfig.bank_name|escape}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="account_holder">Titular de la Cuenta:</label>
+                                <input type="text" id="account_holder" name="account_holder" value="{$transferConfig.account_holder|escape}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="account_number">Número de Cuenta:</label>
+                                <input type="text" id="account_number" name="account_number" value="{$transferConfig.account_number|escape}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="clabe">CLABE Interbancaria:</label>
+                                <input type="text" id="clabe" name="clabe" value="{$transferConfig.clabe|escape}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="additional_info">Información Adicional:</label>
+                                <textarea id="additional_info" name="additional_info" rows="4">{$transferConfig.additional_info|escape}</textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-primary">Guardar Configuración</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {/if}
+
                 <!-- Sección de Atajos de Teclado -->
                 <div class="settings-section shortcuts-info-section">
                     <h2>Atajos de Teclado</h2>

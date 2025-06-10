@@ -8,11 +8,17 @@ use Smarty\Smarty;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/models/pay/transfer_config.model.php';
+
 // Pacientes obtenidos de la base de datos
 $patients = null;
 
+// Obtener la configuración de transferencia bancaria
+$transferConfigModel = new TransferConfigModel($GLOBALS['pdo']);
+$transferConfig = $transferConfigModel->getConfig();
+
 //EJecutar la consola
-$stmt = $pdo->prepare("SELECT id, names, last_name, last_name2, CURP FROM patients");
+$stmt = $GLOBALS['pdo']->prepare("SELECT id, names, last_name, last_name2, CURP FROM patients");
 $stmt->execute();
 
 //Obtener todos los datos como array asociativo
@@ -27,7 +33,7 @@ if (isset($_GET['id'])) {
     $appointmentId = (int)$appointmentId; // solo si es numérico
 
     // Luego puedes usarlo en una consulta, por ejemplo:
-    $stmt = $pdo->prepare("SELECT
+    $stmt = $GLOBALS['pdo']->prepare("SELECT
         ap.id AS id,
         ap.id_patient AS id_patient,
         p.email AS email,
@@ -53,5 +59,6 @@ $smarty->setTemplateDir(__DIR__);
 $sidebarPath = $_SERVER['DOCUMENT_ROOT'] . '/views/components/sidebar.tpl';
 $smarty->assign('sidebarPath', $sidebarPath);
 $smarty->assign('patients', $patients);
+$smarty->assign('transferConfig', $transferConfig);
 
 $smarty->display('pay.view.tpl');

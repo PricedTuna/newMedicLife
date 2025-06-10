@@ -124,10 +124,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception("Monto inválido para pago con tarjeta.");
             }
 
-            // Procesar pago con tarjeta
-            // En un entorno real, aquí se integraría con un procesador de pagos como Stripe, Conekta, etc.
-            // Para este ejemplo, simplemente registramos el pago como exitoso
+            // Validar referencia de pago con tarjeta
+            $cardReference = isset($_POST['card_reference']) ? $_POST['card_reference'] : '';
 
+            if (empty($cardReference)) {
+                throw new Exception("Debe ingresar una referencia de pago con tarjeta.");
+            }
+
+            // Registrar pago con tarjeta
             $paypalModel->savePay($id_user, $id_patient, $monto, 'card');
             $paypalModel->updateAppointment($id_cita);
 
@@ -136,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $subject = "Confirmación de pago exitoso";
-            $message = "Hola $name,\n\nTu pago de $monto MXN con tarjeta ha sido recibido con éxito.\nGracias por tu preferencia.\n\nSaludos.";
+            $message = "Hola $name,\n\nTu pago de $monto MXN con tarjeta ha sido recibido con éxito.\nReferencia: $cardReference\nGracias por tu preferencia.\n\nSaludos.";
             $from = 'Medic Life <no-reply@sandbox3e6934d33e59407a9be71bc8778b9998.mailgun.org>';
 
             // Usa el controlador de email si existe

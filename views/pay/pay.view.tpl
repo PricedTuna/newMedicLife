@@ -244,36 +244,14 @@
                         <!-- Campos específicos para Tarjeta -->
                         <div id="card-fields" class="hidden">
                             <div class="form-group">
-                                <label for="card_number">
-                                    Número de Tarjeta
+                                <label for="card_reference">
+                                    Referencia de Pago con Tarjeta
                                     <span class="tooltip-container">
                                         <i class="bi bi-question-circle tooltip-icon"></i>
-                                        <span class="tooltip-text">Ingrese el número de su tarjeta sin espacios.</span>
+                                        <span class="tooltip-text">Ingrese la referencia del pago con tarjeta proporcionada por la terminal.</span>
                                     </span>
                                 </label>
-                                <input type="text" id="card_number" name="card_number" placeholder="1234 5678 9012 3456" maxlength="19" />
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group half">
-                                    <label for="card_expiry">
-                                        Fecha de Expiración
-                                    </label>
-                                    <input type="text" id="card_expiry" name="card_expiry" placeholder="MM/AA" maxlength="5" />
-                                </div>
-                                <div class="form-group half">
-                                    <label for="card_cvv">
-                                        CVV
-                                        <span class="tooltip-container">
-                                            <i class="bi bi-question-circle tooltip-icon"></i>
-                                            <span class="tooltip-text">Código de seguridad de 3 o 4 dígitos en el reverso de su tarjeta.</span>
-                                        </span>
-                                    </label>
-                                    <input type="text" id="card_cvv" name="card_cvv" placeholder="123" maxlength="4" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="card_name">Nombre en la Tarjeta</label>
-                                <input type="text" id="card_name" name="card_name" placeholder="NOMBRE COMO APARECE EN LA TARJETA" />
+                                <input type="text" id="card_reference" name="card_reference" placeholder="Ej. 1234567890" />
                             </div>
                         </div>
 
@@ -313,10 +291,13 @@
                             </div>
                             <div class="alert alert-info" style="padding: 15px; background-color: #e8f5e9; border: 1px solid #2e7d32; border-radius: 4px; color: #2e7d32; margin-bottom: 15px;">
                                 <p><strong>Datos para transferencia:</strong></p>
-                                <p>Banco: BBVA</p>
-                                <p>Titular: Medic Life S.A. de C.V.</p>
-                                <p>CLABE: 012 345 6789 0123 45</p>
-                                <p>Cuenta: 0123456789</p>
+                                <p>Banco: {$transferConfig.bank_name|default:'BBVA'}</p>
+                                <p>Titular: {$transferConfig.account_holder|default:'Medic Life S.A. de C.V.'}</p>
+                                <p>CLABE: {$transferConfig.clabe|default:'012 345 6789 0123 45'}</p>
+                                <p>Cuenta: {$transferConfig.account_number|default:'0123456789'}</p>
+                                {if $transferConfig.additional_info}
+                                <p>{$transferConfig.additional_info}</p>
+                                {/if}
                             </div>
                         </div>
                     </div>

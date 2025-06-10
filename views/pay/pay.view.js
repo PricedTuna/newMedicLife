@@ -49,10 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reset all field requirements
     paypalName.required = false;
     paypalCountry.required = false;
-    document.getElementById('card_number').required = false;
-    document.getElementById('card_expiry').required = false;
-    document.getElementById('card_cvv').required = false;
-    document.getElementById('card_name').required = false;
+    document.getElementById('card_reference').required = false;
     document.getElementById('transfer_bank').required = false;
     document.getElementById('transfer_reference').required = false;
     document.getElementById('transfer_date').required = false;
@@ -64,10 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
       paypalCountry.required = true;
     } else if (cardRadio.checked) {
       cardFields.classList.remove('hidden');
-      document.getElementById('card_number').required = true;
-      document.getElementById('card_expiry').required = true;
-      document.getElementById('card_cvv').required = true;
-      document.getElementById('card_name').required = true;
+      document.getElementById('card_reference').required = true;
     } else if (transferRadio.checked) {
       transferFields.classList.remove('hidden');
       document.getElementById('transfer_bank').required = true;
@@ -193,58 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Validate Credit Card specific fields
     if (selected.value === 'card') {
-      const cardNumber = document.getElementById('card_number');
-      const cardExpiry = document.getElementById('card_expiry');
-      const cardCvv = document.getElementById('card_cvv');
-      const cardName = document.getElementById('card_name');
+      const cardReference = document.getElementById('card_reference');
 
-      // Validate card number (simple validation for demo)
-      if (!cardNumber.value.trim() || cardNumber.value.trim().length < 13) {
+      // Validate card reference
+      if (!cardReference.value.trim()) {
         Swal.fire({
           title: 'Error',
-          text: 'Ingresa un número de tarjeta válido.',
+          text: 'Ingresa la referencia del pago con tarjeta.',
           icon: 'error',
           confirmButtonText: 'Entendido'
         });
-        cardNumber.focus();
-        return;
-      }
-
-      // Validate expiry date (format MM/YY)
-      const expiryRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
-      if (!cardExpiry.value.trim() || !expiryRegex.test(cardExpiry.value.trim())) {
-        Swal.fire({
-          title: 'Error',
-          text: 'Ingresa una fecha de expiración válida (MM/AA).',
-          icon: 'error',
-          confirmButtonText: 'Entendido'
-        });
-        cardExpiry.focus();
-        return;
-      }
-
-      // Validate CVV (3-4 digits)
-      const cvvRegex = /^[0-9]{3,4}$/;
-      if (!cardCvv.value.trim() || !cvvRegex.test(cardCvv.value.trim())) {
-        Swal.fire({
-          title: 'Error',
-          text: 'Ingresa un código CVV válido (3 o 4 dígitos).',
-          icon: 'error',
-          confirmButtonText: 'Entendido'
-        });
-        cardCvv.focus();
-        return;
-      }
-
-      // Validate cardholder name
-      if (!cardName.value.trim()) {
-        Swal.fire({
-          title: 'Error',
-          text: 'Ingresa el nombre como aparece en la tarjeta.',
-          icon: 'error',
-          confirmButtonText: 'Entendido'
-        });
-        cardName.focus();
+        cardReference.focus();
         return;
       }
     }

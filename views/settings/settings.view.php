@@ -9,6 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/session.controller.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/config/database.config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/auth/role.controller.php';
 
 // Include Smarty
 use Smarty\Smarty;
@@ -32,6 +33,16 @@ try {
     // Assign the sidebar path
     $sidebarPath = $_SERVER['DOCUMENT_ROOT'] . '/views/components/sidebar.tpl';
     $smarty->assign('sidebarPath', $sidebarPath);
+
+    // Check if user is admin and load transfer configuration
+    $isAdmin = isAdmin(false);
+    $smarty->assign('isAdmin', $isAdmin);
+
+    if ($isAdmin) {
+        // Include transfer configuration controller
+        $transferConfig = include $_SERVER['DOCUMENT_ROOT'] . '/controllers/pay/transfer_config.controller.php';
+        $smarty->assign('transferConfig', $transferConfig);
+    }
 
     // Display template
     $smarty->display('settings.view.tpl');

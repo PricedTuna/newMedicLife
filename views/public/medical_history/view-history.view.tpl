@@ -149,16 +149,16 @@
 
         .actions-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             margin-top: 20px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
         }
 
         .actions-container .submit-btn {
-            min-width: 180px;
+            min-width: 200px;
             text-align: center;
-            margin: 5px;
+            margin: 10px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -205,14 +205,7 @@
         @media (max-width: 768px) {
             .actions-container {
                 flex-direction: column;
-                gap: 10px;
-                align-items: center;
-            }
-
-            .actions-container div {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
+                gap: 15px;
                 align-items: center;
             }
 
@@ -224,7 +217,7 @@
         }
     </style>
 </head>
-<body>
+<body style="display: block; grid-template-columns: none;">
     <div class="center-container">
         <div class="form-container">
             <div class="public-header">
@@ -299,14 +292,12 @@
                 {/if}
 
                 <div class="actions-container">
-                    <div>
-                        <a href="/controllers/public/medical_history/download-history-pdf.controller.php?curp={$patient.CURP|escape}" class="submit-btn">
-                            <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
-                        </a>
-                        <a href="/controllers/public/medical_history/send-history-report.controller.php?curp={$patient.CURP|escape}" class="submit-btn" style="background-color: #2ecc71;">
-                            <i class="bi bi-envelope"></i> Enviar por Correo
-                        </a>
-                    </div>
+                    <a href="/controllers/public/medical_history/download-history-pdf.controller.php?curp={$patient.CURP|escape}" class="submit-btn">
+                        <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+                    </a>
+                    <a href="/controllers/public/medical_history/send-history-report.controller.php?curp={$patient.CURP|escape}" class="submit-btn" style="background-color: #2ecc71;">
+                        <i class="bi bi-envelope"></i> Enviar por Correo
+                    </a>
                     <a href="/views/public/medical_history/view-history.view.php" class="submit-btn" style="background-color: #95a5a6;">
                         <i class="bi bi-search"></i> Nueva Consulta
                     </a>

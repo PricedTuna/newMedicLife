@@ -8,6 +8,7 @@
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   width: 100%;
+  max-width: 800px;
   margin: 20px auto;
 }
 
@@ -132,10 +133,17 @@ select {
 .submit-btn {
   background-color: var(--accent-clr);
   color: var(--hover-clr);
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .submit-btn:hover {
   background-color: #4a54e1;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* File upload */

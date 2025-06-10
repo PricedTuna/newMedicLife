@@ -134,8 +134,28 @@ document.addEventListener("DOMContentLoaded", function () {
       .map((day) => dayNameToNumber[day])
       .filter((v, i, a) => a.indexOf(v) === i);
 
-    // Habilitar solo los días que trabaja el doctor
-    fp.set("disable", [(date) => !workingDays.includes(date.getDay())]);
+    // Verificar si estamos editando una cita existente
+    const isEditingAppointment = typeof appointment !== 'undefined' && appointment.id;
+    let originalAppointmentDate = null;
+    let originalAppointmentDay = null;
+
+    // Si estamos editando, obtener la fecha original de la cita
+    if (isEditingAppointment && appointment.appointment_date) {
+      originalAppointmentDate = new Date(appointment.appointment_date);
+      originalAppointmentDay = originalAppointmentDate.getDay();
+    }
+
+    // Habilitar los días que trabaja el doctor y también el día original de la cita si estamos editando
+    fp.set("disable", [(date) => {
+      // Si estamos editando y esta fecha es el mismo día que la cita original, permitirla
+      if (isEditingAppointment && date.getDay() === originalAppointmentDay && 
+          date.getMonth() === originalAppointmentDate.getMonth() && 
+          date.getDate() === originalAppointmentDate.getDate()) {
+        return false;
+      }
+      // De lo contrario, solo permitir los días de trabajo normales
+      return !workingDays.includes(date.getDay());
+    }]);
 
     // Filtrar horas según el día seleccionado y el horario del doctor
     fp.set("enableTime", true);
@@ -167,11 +187,47 @@ document.addEventListener("DOMContentLoaded", function () {
         return { from, to };
       });
 
+      // Verificar si la fecha seleccionada es la misma que la cita original
+      const isOriginalAppointmentDate = isEditingAppointment && 
+                                       selectedDate.getDay() === originalAppointmentDay &&
+                                       selectedDate.getMonth() === originalAppointmentDate.getMonth() &&
+                                       selectedDate.getDate() === originalAppointmentDate.getDate();
+
+      // Si es la fecha original, agregar el horario original a los rangos permitidos
+      if (isOriginalAppointmentDate) {
+        const originalHour = originalAppointmentDate.getHours();
+        const originalMinute = originalAppointmentDate.getMinutes();
+
+        // Crear un rango de 30 minutos alrededor de la hora original
+        const from = new Date(selectedDate);
+        from.setHours(originalHour, originalMinute, 0, 0);
+
+        const to = new Date(selectedDate);
+        to.setHours(originalHour, originalMinute + 30, 0, 0);
+
+        allowedTimeRanges.push({ from, to });
+      }
+
       // Configurar la función disable para bloquear horas fuera de los rangos permitidos
       fp.set("disable", [
         (date) => {
-          // Deshabilitar si no está en el día de trabajo
-          if (!workingDays.includes(date.getDay())) return true;
+          // Si estamos editando y esta fecha es exactamente la misma que la cita original (día y hora), permitirla
+          if (isEditingAppointment && 
+              date.getDay() === originalAppointmentDay &&
+              date.getMonth() === originalAppointmentDate.getMonth() &&
+              date.getDate() === originalAppointmentDate.getDate() &&
+              date.getHours() === originalAppointmentDate.getHours() &&
+              date.getMinutes() === originalAppointmentDate.getMinutes()) {
+            return false;
+          }
+
+          // Deshabilitar si no está en el día de trabajo y no es el día original de la cita
+          if (!workingDays.includes(date.getDay()) && 
+              !(isEditingAppointment && date.getDay() === originalAppointmentDay &&
+                date.getMonth() === originalAppointmentDate.getMonth() &&
+                date.getDate() === originalAppointmentDate.getDate())) {
+            return true;
+          }
 
           // Para las horas, si la fecha es igual al día seleccionado
           if (
@@ -189,10 +245,14 @@ document.addEventListener("DOMContentLoaded", function () {
       ]);
     }
 
-    // Limpiar fecha si no corresponde al horario del doctor
+    // No limpiar la fecha si es la fecha original de la cita, incluso si no está en el horario regular
     if (appointmentDate.value) {
       const selectedDateCheck = new Date(appointmentDate.value);
-      if (!workingDays.includes(selectedDateCheck.getDay())) {
+      if (!workingDays.includes(selectedDateCheck.getDay()) && 
+          !(isEditingAppointment && 
+            selectedDateCheck.getDay() === originalAppointmentDay &&
+            selectedDateCheck.getMonth() === originalAppointmentDate.getMonth() &&
+            selectedDateCheck.getDate() === originalAppointmentDate.getDate())) {
         fp.clear();
       }
     }

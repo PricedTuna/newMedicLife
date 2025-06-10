@@ -121,12 +121,31 @@ function toggleSidebar() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Initialize font size from localStorage
+  initializeFontSize();
+
   const currentLocation = window.location.pathname.split("/").pop();
   const btn = document.getElementById("voiceToggleBtn");
   const menuItems = document.querySelectorAll("#sidebar ul li a"); // Selecciona todos los enlaces del sidebar
 
   if (VoiceAssistant.isActive()) {
     VoiceAssistant.play(); // Reproduce en la nueva ruta automáticamente
+  }
+
+  // Font size initialization function
+  function initializeFontSize() {
+    // Default font size in pixels
+    const DEFAULT_FONT_SIZE = 16;
+
+    // LocalStorage key for font size
+    const STORAGE_KEY = 'fontSizePreference';
+
+    // Get the current font size preference from localStorage or use default
+    const storedSize = localStorage.getItem(STORAGE_KEY);
+    const fontSize = storedSize ? parseInt(storedSize) : DEFAULT_FONT_SIZE;
+
+    // Apply font size to the html element
+    document.documentElement.style.fontSize = `${fontSize}px`;
   }
 
   // Actualiza el texto del botón solo si existe

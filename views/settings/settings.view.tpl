@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/views/components/sidebar.app.js" defer></script>
+    <script src="/views/settings/font-size-adjuster.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/views/settings/settings.styles.css">
     <link rel="stylesheet" href="/views/dashboard/dashboard.styles.css">
@@ -47,6 +48,31 @@
                         <div class="setting-description">
                             <p>El asistente de voz te guiará por la aplicación proporcionando información audible sobre cada página que visites.</p>
                             <p>Puedes activar o desactivar esta función en cualquier momento utilizando el botón de arriba.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Tamaño de Letra -->
+                <div class="settings-section font-size-section">
+                    <h2>Tamaño de Letra</h2>
+                    <div class="settings-content">
+                        <div class="setting-item">
+                            <span class="setting-label">Ajustar tamaño de letra:</span>
+                            <div class="font-size-controls">
+                                <button id="decreaseFontBtn" aria-label="Disminuir tamaño de letra" title="Disminuir tamaño de letra" class="font-size-btn">
+                                    A-
+                                </button>
+                                <button id="resetFontBtn" aria-label="Restablecer tamaño de letra" title="Restablecer tamaño de letra" class="font-size-btn">
+                                    A
+                                </button>
+                                <button id="increaseFontBtn" aria-label="Aumentar tamaño de letra" title="Aumentar tamaño de letra" class="font-size-btn">
+                                    A+
+                                </button>
+                            </div>
+                        </div>
+                        <div class="setting-description">
+                            <p>Ajusta el tamaño de letra de la interfaz para mejorar la legibilidad según tus necesidades visuales.</p>
+                            <p>Puedes aumentar, disminuir o restablecer el tamaño de letra utilizando los botones de arriba.</p>
                         </div>
                     </div>
                 </div>

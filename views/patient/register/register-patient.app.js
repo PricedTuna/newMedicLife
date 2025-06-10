@@ -73,6 +73,96 @@ function clearErrorMessage(input) {
     }
 }
 
+/**
+ * Valida que la CURP sea coherente con la fecha de nacimiento y el género.
+ *
+ * @param {string} curp - CURP a validar
+ * @param {string} birthDate - Fecha de nacimiento en formato YYYY-MM-DD
+ * @param {string} gender - Género (M o F)
+ * @returns {Object} Objeto con propiedades isValid y message
+ */
+function validateCURPCoherence(curp, birthDate, gender) {
+  if (!curp || !birthDate || !gender) {
+    return { isValid: false, message: "Faltan datos para validar la CURP." };
+  }
+
+  // Extraer fecha de nacimiento de la CURP (posiciones 4-9)
+  const curpYear = curp.substring(4, 6);
+  const curpMonth = curp.substring(6, 8);
+  const curpDay = curp.substring(8, 10);
+
+  // Extraer fecha de nacimiento del input
+  const birthDateObj = new Date(birthDate);
+  const inputYear = birthDateObj.getUTCFullYear().toString().substring(2);
+  const inputMonth = String(birthDateObj.getUTCMonth() + 1).padStart(2, '0');
+  const inputDay = String(birthDateObj.getUTCDate()).padStart(2, '0');
+
+  // Extraer género de la CURP (posición 10)
+  const curpGender = curp.charAt(10);
+
+  // Validar coherencia de fecha
+  const dateIsCoherent = curpYear === inputYear &&
+                       curpMonth === inputMonth &&
+                       curpDay === inputDay;
+
+  // Validar coherencia de género
+  const genderIsCoherent = (curpGender === 'H' && gender === 'M') ||
+                         (curpGender === 'M' && gender === 'F');
+
+  if (!dateIsCoherent && !genderIsCoherent) {
+    return {
+      isValid: false,
+      message: "La CURP no coincide con la fecha de nacimiento ni con el género proporcionados."
+    };
+  } else if (!dateIsCoherent) {
+    return {
+      isValid: false,
+      message: "La CURP no coincide con la fecha de nacimiento proporcionada."
+    };
+  } else if (!genderIsCoherent) {
+    return {
+      isValid: false,
+      message: "La CURP no coincide con el género proporcionado (H para masculino, M para femenino)."
+    };
+  }
+
+  return { isValid: true, message: "CURP coherente con los datos proporcionados." };
+}
+
+// Función para validar la coherencia de la CURP en tiempo real
+function validateCURPCoherenceRealTime() {
+  const curpInput = document.getElementById("curp");
+  const birthDateInput = document.getElementById("birthDate");
+  const genderSelect = document.getElementById("gender");
+
+  if (curpInput && curpInput.value && birthDateInput && birthDateInput.value && genderSelect && genderSelect.value) {
+    const coherenceResult = validateCURPCoherence(
+      curpInput.value,
+      birthDateInput.value,
+      genderSelect.value
+    );
+
+    if (!coherenceResult.isValid) {
+      // Mostrar alerta en tiempo real
+      Swal.fire({
+        title: 'Advertencia',
+        text: coherenceResult.message,
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Entendido'
+      });
+
+      // También mostrar el mensaje de error junto al campo CURP
+      showErrorMessage(curpInput, coherenceResult.message);
+      return false;
+    } else {
+      clearErrorMessage(curpInput);
+      return true;
+    }
+  }
+  return true;
+}
+
 // Función para validar un campo individual
 function validateField(input) {
     // Validar si el campo está vacío
@@ -271,6 +361,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('input[required], select[required]').forEach(input => {
         input.addEventListener('blur', function() {
             validateField(this);
+
+            // Validar coherencia de CURP cuando se actualiza la fecha de nacimiento o el género
+            if ((this.id === 'birthDate' || this.id === 'gender') && this.value) {
+                const curpInput = document.getElementById("curp");
+                if (curpInput && curpInput.value && curpInput.value.length === 18) {
+                    validateCURPCoherenceRealTime();
+                }
+            }
         });
     });
 
@@ -325,6 +423,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Capitaliza los nombres al perder el foco
             input.addEventListener('blur', function() {
+                // Si es uno de los campos principales del nombre, validar coherencia con CURP
+                if (['firstName', 'lastName', 'motherLastName'].includes(id)) {
+                    // Validar coherencia de CURP si ya existe un valor en el campo CURP
+                    const curpInput = document.getElementById("curp");
+                    if (curpInput && curpInput.value && curpInput.value.length === 18) {
+                        validateCURPCoherenceRealTime();
+                    }
+                }
                 // Solo capitalizar si no hay errores
                 if (!this.nextElementSibling || !this.nextElementSibling.classList.contains('error-message')) {
                     this.value = this.value
@@ -476,6 +582,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 showErrorMessage(this, `La CURP debe tener 18 caracteres alfanuméricos`);
             } else {
                 clearErrorMessage(this);
+                // Validar coherencia con fecha de nacimiento y género si están disponibles
+                validateCURPCoherenceRealTime();
             }
         });
 

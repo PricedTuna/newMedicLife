@@ -603,13 +603,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Añadir validación onBlur para los campos del paso 1
+  // Función para validar la coherencia de la CURP en tiempo real
+function validateCURPCoherenceRealTime() {
+  const curpInput = document.getElementById("curp");
+  const birthDateInput = document.getElementById("birthDate");
+  const genderSelect = document.getElementById("gender");
+
+  if (curpInput && curpInput.value && birthDateInput && birthDateInput.value && genderSelect && genderSelect.value) {
+    const coherenceResult = validateCURPCoherence(
+      curpInput.value,
+      birthDateInput.value,
+      genderSelect.value
+    );
+
+    if (!coherenceResult.isValid) {
+      // Mostrar alerta en tiempo real
+      Swal.fire({
+        title: 'Advertencia',
+        text: coherenceResult.message,
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Entendido'
+      });
+
+      // También mostrar el mensaje de error junto al campo CURP
+      showErrorMessage(curpInput, coherenceResult.message);
+      return false;
+    } else {
+      clearErrorMessage(curpInput);
+      return true;
+    }
+  }
+  return true;
+}
+
+// Añadir validación onBlur para los campos del paso 1
   document
     .querySelectorAll("#step-1 input, #step-1 select")
     .forEach((input) => {
       input.addEventListener("blur", () => {
         // Validar el campo específico que perdió el foco
-        if (input.id === "phoneNumber") {
+        if (input.id === "birthDate" || input.id === "gender" || input.id === "firstName" || input.id === "lastName" || input.id === "motherLastName") {
+          // Validar coherencia de CURP si ya existe un valor en el campo CURP
+          const curpInput = document.getElementById("curp");
+          if (curpInput && curpInput.value) {
+            validateCURPCoherenceRealTime();
+          }
+        }
+        else if (input.id === "phoneNumber") {
           if (!/^\d{10}$/.test(input.value.trim())) {
             showErrorMessage(input, "El número debe tener exactamente 10 dígitos numéricos. Ejemplo: 5512345678");
           } else {
@@ -798,6 +839,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("#step-3 input").forEach((input) => {
     input.addEventListener("blur", () => {
       if (input.id === "curp") {
+        // Validar coherencia con fecha de nacimiento y género si están disponibles
+        const birthDateInput = document.getElementById("birthDate");
+        const genderSelect = document.getElementById("gender");
+        if (input.value.trim().length === 18 && birthDateInput && birthDateInput.value && genderSelect && genderSelect.value) {
+          validateCURPCoherenceRealTime();
+        }
         const curpPattern =
           /^[A-Z]{4}\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])[HM][A-Z]{2}[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]\d$/;
         const curp = input.value.trim();

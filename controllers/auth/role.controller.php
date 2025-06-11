@@ -9,6 +9,80 @@
  */
 
 /**
+ * RoleController class for role-based access control
+ * This class provides methods to check if a user has the necessary role to access a specific feature
+ */
+class RoleController {
+    /**
+     * Check if the current user has the required role
+     * @param string|array $requiredRoles Single role or array of roles that are allowed
+     * @param bool $redirect Whether to redirect to dashboard if user doesn't have the required role
+     * @return bool True if user has the required role, false otherwise
+     */
+    public function checkUserRole($requiredRoles, $redirect = true) {
+        // Make sure session is started
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Check if user is logged in
+        if (!isset($_SESSION['usuario']) || !isset($_SESSION['role'])) {
+            if ($redirect) {
+                header('Location: /index.php');
+                exit();
+            }
+            return false;
+        }
+
+        // Convert single role to array for consistent handling
+        if (!is_array($requiredRoles)) {
+            $requiredRoles = [$requiredRoles];
+        }
+
+        // Check if user has one of the required roles
+        if (in_array($_SESSION['role'], $requiredRoles)) {
+            return true;
+        }
+
+        // User doesn't have the required role
+        if ($redirect) {
+            // Redirect to dashboard with access denied message
+            header('Location: /views/dashboard/dashboard.view.php?error=' . urlencode("Acceso denegado. No tienes permisos para esta acción."));
+            exit();
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the current user is an administrator
+     * @param bool $redirect Whether to redirect to dashboard if user is not an administrator
+     * @return bool True if user is an administrator, false otherwise
+     */
+    public function isUserAdmin($redirect = true) {
+        return $this->checkUserRole('A', $redirect);
+    }
+
+    /**
+     * Check if the current user is a doctor
+     * @param bool $redirect Whether to redirect to dashboard if user is not a doctor
+     * @return bool True if user is a doctor, false otherwise
+     */
+    public function isDoctor($redirect = true) {
+        return $this->checkUserRole('D', $redirect);
+    }
+
+    /**
+     * Check if the current user is a secretary
+     * @param bool $redirect Whether to redirect to dashboard if user is not a secretary
+     * @return bool True if user is a secretary, false otherwise
+     */
+    public function isSecretary($redirect = true) {
+        return $this->checkUserRole('S', $redirect);
+    }
+}
+
+/**
  * Check if the current user has the required role
  * @param string|array $requiredRoles Single role or array of roles that are allowed
  * @param bool $redirect Whether to redirect to dashboard if user doesn't have the required role

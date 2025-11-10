@@ -122,7 +122,7 @@
                                             class="update-btn small-purple-btn">
                                             Editar
                                         </a>
-                                        <a href="#" class="delete-study" data-id="{$study.id}">
+                                        <a href="/controllers/studies/delete-study.controller.php?id={$study.id}" class="delete-study" data-id="{$study.id}">
                                             <button class="delete-btn">Eliminar</button>
                                         </a>
                                     </td>

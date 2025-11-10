@@ -1,0 +1,195 @@
+.page-header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.form-container {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 900px) {
+    .form-container {
+        padding: 20px;
+        margin: 10px;
+    }
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.required {
+    color: red;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    outline: none;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    gap: 10px;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    /* verde */
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+    /* verde más oscuro al pasar el mouse */
+}
+
+.btn-secondary {
+    background-color: #e74c3c;
+    /* rojo */
+    color: #fff;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #c0392b;
+    /* rojo más oscuro al pasar el mouse */
+}
+
+
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    margin-right: 6px;
+    border-radius: 8px 8px 0 0;
+    transition: background 0.3s;
+}
+
+.tab.active {
+    background-color: #fff;
+    border-color: #ccc;
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ===================== CHECKBOX / TOGGLE ===================== */
+/* Contenedor de checkbox con label */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    /* alinea verticalmente el texto y el toggle */
+    gap: 10px;
+    /* espacio entre texto y toggle */
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* Texto a la izquierda */
+.checkbox-group span {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Checkbox oculto */
+.checkbox-group input[type="checkbox"] {
+    display: none;
+}
+
+/* Toggle */
+.checkbox-group label {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    background-color: #ccc;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Circulo del toggle */
+.checkbox-group label::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 2px;
+    top: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Estado checked */
+.checkbox-group input[type="checkbox"]:checked+label {
+    background-color: #4CAF50;
+}
+
+.checkbox-group input[type="checkbox"]:checked+label::after {
+    transform: translateX(26px);
+}
+
+/* Hover toggle */
+.checkbox-group label:hover::after {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}

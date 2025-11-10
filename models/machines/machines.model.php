@@ -739,4 +739,39 @@ class MachineModel
         }
     }
 
+    // Obtener todas las máquinas (activas y no activas)
+public function getAllMachines(): array
+{
+    try {
+        $sql = "
+        SELECT 
+            m.id,
+            m.name,
+            m.model,
+            m.description,
+            mt.name AS machine_type,
+            ma.name AS medical_area,
+            m.location,
+            m.operational_status,
+            m.buffer_minutes,
+            m.assignment_rules,
+            m.created_at,
+            m.updated_at
+        FROM machines m
+        INNER JOIN machine_types mt ON m.id_machine_type = mt.id
+        INNER JOIN medical_areas ma ON m.id_medical_area = ma.id
+        ORDER BY m.name ASC
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        error_log("Error al obtener todas las máquinas: " . $e->getMessage());
+        return [];
+    }
+}
+
+
 }

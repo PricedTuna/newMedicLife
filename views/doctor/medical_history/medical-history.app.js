@@ -67,6 +67,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const uploadPatientId = document.getElementById('upload-patient-id');
     const cancelUpload = document.getElementById('cancel-upload');
 
+    // Study modal elements
+    const newStudyBtn = document.getElementById('new-study-btn');
+    const studyModal = document.getElementById('study-modal');
+    const closeStudyModal = document.querySelector('.close-study-modal');
+    const studyForm = document.getElementById('study-form');
+    const studyPatientId = document.getElementById('study-patient-id');
+    const studyPatientDisplay = document.getElementById('study-patient-display');
+    const studySelect = document.getElementById('study-select');
+    const studyDate = document.getElementById('study-date');
+    const cancelStudy = document.getElementById('cancel-study');
+
     // Doctor selection elements
     const medicalAreaSelect = document.getElementById('medical-area');
     console.log('medicalAreaSelect:', medicalAreaSelect);
@@ -412,6 +423,205 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set patient ID for forms
         patientId.value = patient.id;
         uploadPatientId.value = patient.id;
+
+        // Load patient studies into the right panel
+        console.log('Loading patient studies for patient id:', patient.id);
+        loadPatientStudies(patient.id);
+    }
+
+    // Load patient studies (patient_studies table)
+    function loadPatientStudies(patientIdParam) {
+        if (!patientIdParam) {
+            console.warn('No patientId provided to loadPatientStudies');
+            return;
+        }
+
+        fetch(`/controllers/doctor/medical_history/get-patient-studies.controller.php?patient_id=${patientIdParam}`)
+            .then(resp => resp.json())
+            .then(data => {
+                console.log('get-patient-studies response:', data);
+                if (data.success) {
+                    renderPatientStudies(data.studies || []);
+                } else {
+                    console.error('Error cargando patient studies:', data.message);
+                    const container = document.getElementById('patient-studies-list');
+                    if (container) container.innerHTML = '<p class="muted">Error al cargar estudios.</p>';
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching patient studies:', err);
+                const container = document.getElementById('patient-studies-list');
+                if (container) container.innerHTML = '<p class="muted">Error al cargar estudios.</p>';
+            });
+    }
+
+    function renderPatientStudies(studies) {
+        const container = document.getElementById('patient-studies-list');
+        if (!container) return;
+        container.innerHTML = '';
+
+        if (!studies || studies.length === 0) {
+            container.innerHTML = '<p class="muted">No hay estudios solicitados.</p>';
+            return;
+        }
+
+        // Filtrar estudios cancelados para que no aparezcan en el listado (se eliminan al cancelar)
+        const visibleStudies = studies.filter(st => (st.status || '').toLowerCase() !== 'cancelado');
+        if (visibleStudies.length === 0) {
+            container.innerHTML = '<p class="muted">No hay estudios solicitados.</p>';
+            return;
+        }
+
+        visibleStudies.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'study-card';
+            card.style = 'border:1px solid #ddd; padding:10px; margin-bottom:8px; border-radius:6px; background:#fff;';
+
+            const title = document.createElement('div');
+            title.innerHTML = `<strong>${s.study_name || 'Estudio'}</strong>`;
+
+            const date = document.createElement('div');
+            // Normalize datetime string to ISO for Date parsing
+            let sched = s.scheduled_at ? s.scheduled_at.replace(' ', 'T') : null;
+            const dtObj = sched ? new Date(sched) : null;
+            const dateText = sched && !isNaN(dtObj) ? formatDate(s.scheduled_at) + ' ' + dtObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Fecha no disponible';
+            date.textContent = dateText;
+            date.style = 'font-size:0.95em; color:#333; margin-top:6px;';
+
+            const status = document.createElement('div');
+            status.textContent = 'Estado: ' + (s.status || 'Pendiente');
+            status.style = 'font-size:0.85em; color:#666; margin-top:6px;';
+
+            const actions = document.createElement('div');
+            actions.style = 'margin-top:8px; display:flex; gap:8px;';
+
+            const btnCancel = document.createElement('button');
+            btnCancel.className = 'cancel-btn small';
+            // misma tipografía/estilo; texto en mayúsculas
+            btnCancel.classList.add('study-action');
+            btnCancel.textContent = 'Cancelar'.toUpperCase();
+            btnCancel.addEventListener('click', () => handleCancelStudy(s.id));
+
+            const btnEdit = document.createElement('button');
+            // Botón MODIFICAR debe ser azul (action-btn)
+            btnEdit.className = 'action-btn small';
+            // misma tipografía/estilo; texto en mayúsculas
+            btnEdit.classList.add('study-action');
+            btnEdit.textContent = 'Modificar'.toUpperCase();
+            btnEdit.addEventListener('click', () => handleEditStudy(s));
+
+            actions.appendChild(btnEdit);
+            actions.appendChild(btnCancel);
+
+            card.appendChild(title);
+            card.appendChild(date);
+            card.appendChild(status);
+            card.appendChild(actions);
+
+            container.appendChild(card);
+        });
+    }
+
+    function handleCancelStudy(studyId) {
+        if (!studyId) return;
+        Swal.fire({
+            title: 'Confirmar cancelación',
+            text: '¿Desea cancelar este estudio?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cancelar',
+            cancelButtonText: 'No'
+        }).then(result => {
+            if (result.isConfirmed) {
+                const payload = new URLSearchParams();
+                payload.append('action', 'cancel');
+                payload.append('id', studyId);
+
+                fetch('/controllers/doctor/medical_history/update-patient-study.controller.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: payload.toString()
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        showAlert(data.message || 'Estudio cancelado', 'success');
+                        // refresh list
+                        const pid = patientId ? patientId.value : window.currentPatientId;
+                        loadPatientStudies(pid);
+                    } else showAlert(data.message || 'No se pudo cancelar', 'error');
+                })
+                .catch(err => {
+                    console.error('Error cancelling study:', err);
+                    showAlert('Ocurrió un error', 'error');
+                });
+            }
+        });
+    }
+
+    function handleEditStudy(study) {
+        if (!study) return;
+        // Usar Swal para pedir nueva fecha/hora
+        Swal.fire({
+            title: 'Reprogramar Estudio',
+            html: `<input type="datetime-local" id="swal-dt" class="swal2-input" value="${(study.scheduled_at||'').replace(' ', 'T').slice(0,16)}">`,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Reprogramar',
+            preConfirm: () => {
+                const val = document.getElementById('swal-dt').value;
+                if (!val) {
+                    Swal.showValidationMessage('Ingrese una fecha y hora');
+                    return false;
+                }
+                // Validación cliente: al reprogramar debe ser al menos 10 minutos en el futuro
+                // val is 'YYYY-MM-DDTHH:MM' (local time from datetime-local input)
+                // Parse as local time: create a Date and adjust by timezone offset to get correct local instant
+                const parts = val.split('T');
+                const [year, month, day] = parts[0].split('-');
+                const [hours, minutes] = parts[1].split(':');
+                const selected = new Date(year, month - 1, day, hours, minutes, 0, 0);
+                const minDate = new Date(Date.now() + 10 * 60 * 1000);
+                if (selected.getTime() < minDate.getTime()) {
+                    Swal.showValidationMessage('La fecha y hora deben ser al menos 10 minutos en el futuro');
+                    return false;
+                }
+                return val;
+            }
+        }).then(result => {
+            if (result.isConfirmed && result.value) {
+                const local = result.value; // 'YYYY-MM-DDTHH:MM'
+                // send local datetime and client tz offset to server to avoid timezone mismatches
+                // local is 'YYYY-MM-DDTHH:MM' from the input
+                const scheduledAt = local.replace('T', ' ') + ':00';
+                const clientOffset = String(new Date().getTimezoneOffset());
+                const payload = new URLSearchParams();
+                payload.append('action', 'reschedule');
+                payload.append('id', study.id);
+                payload.append('scheduled_at', scheduledAt);
+                payload.append('client_tz_offset', clientOffset);
+
+                fetch('/controllers/doctor/medical_history/update-patient-study.controller.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: payload.toString()
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        showAlert(data.message || 'Estudio reprogramado', 'success');
+                        const pid = patientId ? patientId.value : window.currentPatientId;
+                        loadPatientStudies(pid);
+                    } else {
+                        showAlert(data.message || 'No se pudo reprogramar', 'error');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error reprogramming:', err);
+                    showAlert('Ocurrió un error', 'error');
+                });
+            }
+        });
     }
 
     // Create a record card element
@@ -1627,6 +1837,156 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } else {
         console.error('uploadPdfBtn not found in the DOM');
+    }
+
+    // Agendar Estudio button click
+    if (newStudyBtn) {
+        newStudyBtn.addEventListener('click', function() {
+            // Reset form
+            if (studyForm) studyForm.reset();
+
+            // Set patient id if available
+            if (currentPatientId) {
+                if (studyPatientId) studyPatientId.value = currentPatientId;
+                if (studyPatientDisplay) studyPatientDisplay.value = patientName.textContent || '';
+            }
+
+            // Set default datetime to now (rounded to minutes)
+            const now = new Date();
+            now.setSeconds(0);
+            now.setMilliseconds(0);
+            const tzOffset = now.getTimezoneOffset() * 60000;
+            const localISOTime = new Date(now - tzOffset).toISOString().slice(0,16); // YYYY-MM-DDTHH:MM
+            if (studyDate) studyDate.value = localISOTime;
+
+            // Load studies into select
+            loadStudiesIntoSelect();
+
+            if (studyModal) {
+                studyModal.style.display = 'flex';
+            } else {
+                showAlert('Error: No se pudo encontrar el modal de agendar estudio', 'error');
+            }
+        });
+    } else {
+        console.error('newStudyBtn not found in the DOM');
+    }
+
+    function loadStudiesIntoSelect() {
+        if (!studySelect) return;
+        // Clear existing options except first
+        while (studySelect.options.length > 1) studySelect.remove(1);
+
+        fetch('/controllers/studies/get-studies.controller.php')
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.success && Array.isArray(data.studies)) {
+                    data.studies.forEach(st => {
+                        const opt = document.createElement('option');
+                        opt.value = st.id;
+                        opt.textContent = st.name;
+                        studySelect.appendChild(opt);
+                    });
+                } else {
+                    console.error('No se pudieron cargar los estudios', data);
+                }
+            })
+            .catch(err => {
+                console.error('Error cargando estudios:', err);
+            });
+    }
+
+    // Close study modal
+    if (closeStudyModal) {
+        closeStudyModal.addEventListener('click', function() {
+            if (studyModal) studyModal.style.display = 'none';
+        });
+    }
+
+    if (cancelStudy) {
+        cancelStudy.addEventListener('click', function() {
+            if (studyModal) studyModal.style.display = 'none';
+        });
+    }
+
+    // Submit study form
+    if (studyForm) {
+        studyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Basic validation
+            let valid = true;
+            if (!studySelect || !studySelect.value) {
+                const el = document.getElementById('study-select-error');
+                if (el) el.textContent = 'Seleccione un estudio';
+                valid = false;
+            } else {
+                const el = document.getElementById('study-select-error'); if (el) el.textContent = '';
+            }
+
+            if (!studyDate || !studyDate.value) {
+                const el = document.getElementById('study-date-error');
+                if (el) el.textContent = 'La fecha es obligatoria';
+                valid = false;
+            } else {
+                const el = document.getElementById('study-date-error'); if (el) el.textContent = '';
+            }
+
+            if (!valid) return;
+
+            // Validación cliente: la fecha debe ser al menos 10 minutos en el futuro
+            try {
+                const scheduledLocalStr = studyDate.value; // 'YYYY-MM-DDTHH:MM'
+                if (scheduledLocalStr && scheduledLocalStr.indexOf('T') !== -1) {
+                    // Parse as local time (datetime-local always gives local time)
+                    const parts = scheduledLocalStr.split('T');
+                    const [year, month, day] = parts[0].split('-');
+                    const [hours, minutes] = parts[1].split(':');
+                    const selectedDate = new Date(year, month - 1, day, hours, minutes, 0, 0);
+                    const minDate = new Date(Date.now() + 10 * 60 * 1000);
+                    if (selectedDate.getTime() < minDate.getTime()) {
+                        showAlert('La fecha y hora deben ser al menos 10 minutos en el futuro', 'error');
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.error('Error validating date client-side:', err);
+            }
+
+            const payload = new URLSearchParams();
+            payload.append('patient_id', studyPatientId ? studyPatientId.value : '');
+            payload.append('study_id', studySelect.value);
+            // send scheduled_at as local datetime plus client timezone offset to avoid timezone mismatches
+            // studyDate.value is 'YYYY-MM-DDTHH:MM' (datetime-local format)
+            // Transform to 'YYYY-MM-DD HH:MM:SS'
+            const scheduledLocalRaw = studyDate.value || ''; // 'YYYY-MM-DDTHH:MM'
+            const scheduledLocalForServer = scheduledLocalRaw.replace('T', ' ') + ':00'; // 'YYYY-MM-DD HH:MM:00'
+            payload.append('scheduled_at', scheduledLocalForServer);
+            // client timezone offset in minutes (as returned by Date.getTimezoneOffset())
+            payload.append('client_tz_offset', String(new Date().getTimezoneOffset()));
+
+            fetch('/controllers/doctor/medical_history/schedule-study.controller.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: payload.toString()
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert(data.message || 'Estudio agendado correctamente', 'success');
+                    if (studyModal) studyModal.style.display = 'none';
+                    // Refresh patient studies list
+                    const pid = studyPatientId ? studyPatientId.value : window.currentPatientId;
+                    if (pid) loadPatientStudies(pid);
+                } else {
+                    showAlert(data.message || 'No se pudo agendar el estudio', 'error');
+                }
+            })
+            .catch(err => {
+                console.error('Error agendando estudio:', err);
+                showAlert('Ocurrió un error al agendar el estudio', 'error');
+            });
+        });
     }
 
     // Close upload modal

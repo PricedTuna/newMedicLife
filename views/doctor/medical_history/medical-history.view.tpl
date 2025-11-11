@@ -99,11 +99,13 @@
 
                 <div class="history-actions">
                     <button id="new-record-btn" class="action-btn">Crear Historial</button>
+                    <button id="new-study-btn" class="action-btn">Agendar Estudio</button>
                     <button id="download-pdf-btn" class="action-btn">Descargar PDF</button>
                     <button id="upload-pdf-btn" class="action-btn">Subir PDF</button>
                 </div>
 
-                <div id="history-list" class="history-list" style="{if isset($showPatientHistory) && $showPatientHistory}display: block;{/if}">
+                <div style="display:flex; gap:20px; align-items:flex-start;">
+                    <div id="history-list" class="history-list" style="{if isset($showPatientHistory) && $showPatientHistory}display: block;{/if}; flex:1;">
                     <h3>Registros Médicos</h3>
                     <div class="records-container">
                         {if isset($patientHistory) && $patientHistory|@count > 0}
@@ -255,6 +257,15 @@
                             <p id="no-records-message">No hay registros médicos para este paciente.</p>
                         {/if}
                     </div>
+                    </div>
+
+                    <!-- Panel derecho: Estudios solicitados -->
+                    <aside id="patient-studies-panel" style="width:360px; flex:0 0 360px;">
+                        <h3>Estudios Solicitados</h3>
+                        <div id="patient-studies-list">
+                            <p class="muted">No hay estudios cargados.</p>
+                        </div>
+                    </aside>
                 </div>
 
 
@@ -446,6 +457,42 @@
                         <div class="form-actions">
                             <button type="submit" class="save-btn">Subir</button>
                             <button type="button" class="cancel-btn" id="cancel-upload">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal para agendar estudio -->
+            <div id="study-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-study-modal">&times;</span>
+                    <h2>Agendar Estudio</h2>
+                    <form id="study-form">
+                        <input type="hidden" id="study-patient-id" name="patient-id" value="{if isset($patient)}{$patient.id}{/if}">
+
+                        <div class="form-group">
+                            <label for="study-patient-display">Paciente:</label>
+                            <input type="text" id="study-patient-display" name="patient-display" value="{if isset($patient)}{$patient.names|escape} {$patient.last_name|escape}{/if}" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="study-select">Estudio: <span class="required">*</span></label>
+                            <select id="study-select" name="study-id">
+                                <option value="">Seleccione un estudio</option>
+                                <!-- Opciones cargadas vía AJAX -->
+                            </select>
+                            <span class="error-message" id="study-select-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="study-date">Fecha y Hora: <span class="required">*</span></label>
+                            <input type="datetime-local" id="study-date" name="study-date">
+                            <span class="error-message" id="study-date-error"></span>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="save-btn">Agendar</button>
+                            <button type="button" class="cancel-btn" id="cancel-study">Cancelar</button>
                         </div>
                     </form>
                 </div>

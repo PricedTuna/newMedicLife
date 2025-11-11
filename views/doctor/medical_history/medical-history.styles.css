@@ -367,6 +367,19 @@ table tr:hover {
     box-shadow: 0 1px 3px rgba(231, 76, 60, 0.3);
 }
 
+/* Clase compartida para acciones de estudio: misma tipografía y dimensiones
+   El color sigue siendo controlado por .action-btn (azul) y .cancel-btn (rojo) */
+.study-action {
+    padding: 12px 24px; /* mismo tamaño */
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
 /* Estilos para el contenedor de próxima cita */
 .next-appointment-container {
     display: flex;
